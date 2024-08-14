@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/routes/routes.dart';
+import 'package:frontend/screens/splash_screen/splash_screen.dart';
 import 'package:frontend/utils/theme/theme.dart';
 
 void main() {
@@ -11,9 +13,15 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Scholarium',
       themeMode: ThemeMode.system,
       theme: TAppTheme.lightTheme,
       darkTheme: TAppTheme.darkTheme,
+      //initial is the first screen to pop up when u open the app
+      initialRoute: SplashScreen.routeName,
+      //defined the routes file here in order to access the routes any where all over the app
+      routes: routes,
     );
   }
 }
