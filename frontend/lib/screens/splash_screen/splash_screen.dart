@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/screens/login_screen/login_screen.dart';
+import 'package:isHKolarium/constants/strings.dart';
+import 'package:isHKolarium/screens/login_screen/login_screen.dart';
 
 class SplashScreen extends StatelessWidget {
   // Route name for our screen
@@ -24,17 +25,13 @@ class SplashScreen extends StatelessWidget {
               children: [
                 Image.asset(
                   'assets/images/logo_college.png',
-                  width: 100.0,
-                  height: 100.0,
+                  width: 150.0,
+                  height: 150.0,
                 ),
                 SizedBox(height: 20.0),
                 Text(
-                  'Scholarium',
-                  style: Theme.of(context).textTheme.headlineLarge!.copyWith(
-                        fontFamily: 'Montserrat',
-                        fontSize: 40.0,
-                        letterSpacing: 1.5,
-                      ),
+                  ScholariumStrings.appTitle,
+                  style: Theme.of(context).textTheme.headlineLarge,
                 ),
               ],
             ),
