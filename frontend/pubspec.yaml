@@ -1,5 +1,5 @@
-name: frontend
-description: "A new Flutter project."
+name: isHKolarium
+description: "isHKolarium is an innovative digital platform designed to streamline the management and tracking of student scholars duties. The system provides an efficient way for scholars to access their duty schedules, mark their duty completion, and for teachers to monitor and manage the scholars under their supervision."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
