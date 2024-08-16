@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/constants/colors.dart';
+import 'package:isHKolarium/constants/colors.dart';
 
 class Inputs {
   static OutlineInputBorder enabledBorder = OutlineInputBorder(
     borderSide: const BorderSide(
-      color: Colors.transparent,
+      color: ColorPalette.accent,
+      width: 1.5,
     ),
     borderRadius: BorderRadius.circular(8.0),
   );
@@ -12,6 +13,7 @@ class Inputs {
   static OutlineInputBorder focusedBorder = OutlineInputBorder(
     borderSide: const BorderSide(
       color: ColorPalette.primary,
+      width: 2.3,
     ),
     borderRadius: BorderRadius.circular(8.0),
   );

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/utils/theme/custom_themes/appbar_theme.dart';
-import 'package:frontend/utils/theme/custom_themes/checkbox_theme.dart';
-import 'package:frontend/utils/theme/custom_themes/chip_theme.dart';
-import 'package:frontend/utils/theme/custom_themes/elevated_button_theme.dart';
-import 'package:frontend/utils/theme/custom_themes/text_theme.dart';
-import 'package:frontend/utils/theme/custom_themes/textfield_theme.dart';
+import 'package:isHKolarium/utils/theme/custom_themes/appbar_theme.dart';
+import 'package:isHKolarium/utils/theme/custom_themes/checkbox_theme.dart';
+import 'package:isHKolarium/utils/theme/custom_themes/chip_theme.dart';
+import 'package:isHKolarium/utils/theme/custom_themes/elevated_button_theme.dart';
+import 'package:isHKolarium/utils/theme/custom_themes/text_theme.dart';
+import 'package:isHKolarium/utils/theme/custom_themes/textfield_theme.dart';
 
 class TAppTheme {
   TAppTheme._(); //with underscore to become private
@@ -15,7 +15,7 @@ class TAppTheme {
     fontFamily: 'Montserrat',
     brightness: Brightness.light,
     primaryColor: Color(0xFF6BA292),
-    scaffoldBackgroundColor: Colors.white,
+    scaffoldBackgroundColor: Color(0xFFE8E8E8),
     textTheme: TTextTheme.lightTextTheme,
     appBarTheme: TAppBarTheme.lightAppBarTheme,
     elevatedButtonTheme: TElevatedButtonTheme.LightElevatedButtonTheme,
@@ -30,7 +30,7 @@ class TAppTheme {
     fontFamily: 'Montserrat',
     brightness: Brightness.dark,
     primaryColor: Color(0xFF6BA292),
-    scaffoldBackgroundColor: Colors.black,
+    scaffoldBackgroundColor: Color(0xFF222831),
     textTheme: TTextTheme.darkTextTheme,
     appBarTheme: TAppBarTheme.darkAppBarTheme,
     elevatedButtonTheme: TElevatedButtonTheme.darkElevatedButtonTheme,
