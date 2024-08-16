@@ -1,5 +1,5 @@
 class ScholariumStrings {
-  static const String appTitle = "Scholarium";
+  static const String appTitle = "isHKolarium";
   static const emailValidation = [
     "@phinmaed.com",
     "@phinmaed.co",
