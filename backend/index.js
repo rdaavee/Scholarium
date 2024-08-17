@@ -29,9 +29,10 @@ app.get('/', (req, res) => {
             connection.release();
 
             if (!error) {
-                res.send(rows);
+                res.status(200).json(rows);
             } else {
                 console.log(error)
+                res.status(500).json(error);
             };
         });
     });
@@ -46,9 +47,10 @@ app.get('/:id', (req, res) => {
             connection.release();
 
             if (!error) {
-                res.send(rows);
+                res.status(200).json(rows);
             } else {
                 console.log(error)
+                res.status(500).json(error);
             };
         });
     });
@@ -63,9 +65,10 @@ app.delete('/:id', (req, res) => {
             connection.release();
 
             if (!error) {
-                res.send(`Record of ID # ${[req.params.id]} has been deleted.`);
+                res.status(200).json({ message: `Record of ID # ${[req.params.id]} has been deleted.`});
             } else {
                 console.log(error);
+                res.status(500).json({ message: error});
             };
         });
     });
@@ -82,9 +85,10 @@ app.post('/insert', (req, res) => {
             connection.release();
 
             if (!error) {
-                res.send(`Record of ${[params.last_name, params.first_name, params.middle_name]} has been added.`);
+                res.status(200).json({ message: `Record of ${[params.last_name, params.first_name, params.middle_name]} has been added.`});
             } else {
                 console.log(error);
+                res.status(500).json({ message: error});
             };
         });
     });
@@ -101,12 +105,42 @@ app.put('/update', (req, res) => {
             connection.release();
 
             if (!error) {
-                res.send(`Record of ${last_name}, ${first_name} ${middle_name} has been updated.`);
+                res.status(200).json({ message: `Record of ${last_name}, ${first_name} ${middle_name} has been updated.`});
             } else {
                 console.log(error);
+                res.status(500).json({ message: error});
             };
         });
     });
 });
+
+app.post('/api/login', (req, res) => {
+    try {
+        pool.getConnection((error, connection) => {
+            if (error) {throw error;}
+            console.log(`Connected as id ${connection.threadId}`);
+
+            const { school_id, password } = req.body;
+
+            connection.query('SELECT * FROM users WHERE school_id = ? AND password = ?', [school_id, password], (error, results) => {
+                connection.release();
+
+                if (error) {throw error;}
+
+                if (results.length > 0) {
+                    const user = results[0];
+                    res.status(200).json({ message: `Welcome, ${user.first_name} ${user.last_name}` });
+                } else {
+                    res.status(401).json({ message: 'Invalid school ID or password' });
+                }
+            });
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error occurred' });
+    }
+});
+
+
 //listen on env port
 app.listen(port, () => console.log( `Listen on port ${port}`));
