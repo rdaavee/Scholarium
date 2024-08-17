@@ -3,8 +3,12 @@ import 'package:isHKolarium/constants/paddings.dart';
 import 'package:isHKolarium/constants/strings.dart';
 
 Widget buildEmailTextField(
-    BuildContext context, InputDecorationTheme inputDecorationTheme) {
+  BuildContext context,
+  InputDecorationTheme inputDecorationTheme,
+  TextEditingController schoolIdController,
+) {
   return TextFormField(
+    controller: schoolIdController,
     textAlign: TextAlign.start,
     keyboardType: TextInputType.emailAddress,
     decoration: InputDecoration(
@@ -40,8 +44,10 @@ Widget buildPasswordTextField(
     BuildContext context,
     InputDecorationTheme inputDecorationTheme,
     bool passwordVisible,
-    VoidCallback onTogglePasswordVisibility) {
+    VoidCallback onTogglePasswordVisibility,
+    TextEditingController passwordController) {
   return TextFormField(
+    controller: passwordController,
     obscureText: passwordVisible,
     textAlign: TextAlign.start,
     keyboardType: TextInputType.visiblePassword,
@@ -78,4 +84,3 @@ Widget buildPasswordTextField(
     },
   );
 }
-
