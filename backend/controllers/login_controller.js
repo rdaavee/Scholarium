@@ -6,7 +6,7 @@ const pool = mysql.createPool({
   host: 'localhost',
   user: 'root',
   password: '',
-  database: 'scholarium' // Ensure this matches your actual database name
+  database: 'ishkolarium' // Ensure this matches your actual database name
 });
 
 exports.login = (req, res) => {

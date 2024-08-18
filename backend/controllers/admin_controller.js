@@ -4,7 +4,7 @@ const pool = mysql.createPool({
   host: 'localhost',
   user: 'root',
   password: '',
-  database: 'scholarium'
+  database: 'ishkolarium'
 });
 
 exports.createUser = (req, res) => {
@@ -67,6 +67,25 @@ exports.createAnnounce = (req, res) => {
             } else {
                 console.log(error);
                 res.status(500).json({ message: error});
+            };
+        });
+    });
+};
+
+//List all users
+exports.getAllUsers = (req, res) => {
+    pool.getConnection((error, connection) => {
+        if (error) throw error;
+        console.log(`connected as id ${connection.threadId}`);
+  
+        connection.query('SELECT * from users', (error, rows) => {
+            connection.release();
+  
+            if (!error) {
+                res.status(200).json(rows);
+            } else {
+                console.log(error)
+                res.status(500).json(error);
             };
         });
     });
