@@ -55,7 +55,7 @@ exports.getUserProfile = (req, res) => {
 
     console.log(`Connected as id ${connection.threadId}`);
 
-    connection.query('SELECT * FROM users WHERE school_id = ?', [req.params.school_id], (error, rows) => {
+    connection.query('SELECT * FROM users WHERE token = ?', [req.params.token], (error, rows) => {
       connection.release();
 
       if (error) {
@@ -91,7 +91,7 @@ exports.getUserSchedule = (req, res) => {
       }
 
       if (rows.length > 0) {
-        res.status(200).json(rows[0]);
+        res.status(200).json(rows);
       } else {
         res.status(404).json({ message: 'User schedule not found' });
       }
@@ -118,7 +118,7 @@ exports.getUserDTR = (req, res) => {
       }
 
       if (rows.length > 0) {
-        res.status(200).json(rows[0]);
+        res.status(200).json(rows);
       } else {
         res.status(404).json({ message: 'User dtr not found' });
       }
