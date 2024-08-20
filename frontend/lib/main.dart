@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:isHKolarium/features/login/ui/login_page.dart';
 import 'package:isHKolarium/routes/routes.dart';
-import 'package:isHKolarium/screens/login_screen/login_screen.dart';
 import 'package:isHKolarium/utils/theme/theme.dart';
 
 void main() {
@@ -19,7 +19,7 @@ class App extends StatelessWidget {
       theme: TAppTheme.lightTheme,
       darkTheme: TAppTheme.darkTheme,
       //initial is the first screen to pop up when u open the app
-      initialRoute: LoginScreen.routeName,
+      initialRoute: LoginPage.routeName,
       //defined the routes file here in order to access the routes any where all over the app
       routes: routes,
     );
