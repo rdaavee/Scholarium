@@ -1,0 +1,51 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:isHKolarium/constants/colors.dart';
+import 'package:isHKolarium/features/students/bottom_nav/bloc/bottom_nav_bloc.dart';
+import 'package:isHKolarium/features/students/bottom_nav/widgets/page_provider.dart';
+
+class BottomNavWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<BottomNavBloc, BottomNavState>(
+      builder: (context, state) {
+        int selectedIndex = 0;
+        if (state is BottomNavItemSelectedState) {
+          selectedIndex = state.selectedIndex;
+        }
+
+        return Scaffold(
+          backgroundColor: ColorPalette.accentBlack,
+          body: Center(
+            child: getPage(selectedIndex),
+          ),
+          bottomNavigationBar: BottomNavigationBar(
+            currentIndex: selectedIndex,
+            onTap: (index) {
+              context.read<BottomNavBloc>().add(BottomNavItemSelected(index));
+            },
+            items: const <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home),
+                label: 'Home',
+                backgroundColor: Colors.white,
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.school),
+                label: 'Schedule',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.notifications),
+                label: 'Notification',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.account_circle_rounded),
+                label: 'Profile',
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}

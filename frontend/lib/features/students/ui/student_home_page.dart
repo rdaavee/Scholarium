@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:isHKolarium/features/login/bloc/login_bloc.dart';
 import 'package:isHKolarium/features/students/bloc/students_bloc.dart';
+import 'package:isHKolarium/features/students/bottom_nav/bloc/bottom_nav_bloc.dart';
+import 'package:isHKolarium/features/students/bottom_nav/widgets/bottom_nav_widget.dart';
+import 'package:isHKolarium/features/students/widgets/loading_widget.dart';
 
 class StudentHomePage extends StatefulWidget {
   const StudentHomePage({super.key});
@@ -12,6 +15,7 @@ class StudentHomePage extends StatefulWidget {
 
 class _StudentHomePageState extends State<StudentHomePage> {
   final StudentsBloc studentBloc = StudentsBloc();
+  final BottomNavBloc bottomNavBloc = BottomNavBloc();
 
   @override
   void initState() {
@@ -21,51 +25,21 @@ class _StudentHomePageState extends State<StudentHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<StudentsBloc, StudentsState>(
-      bloc: studentBloc,
-      listener: (context, state) {},
-      builder: (context, state) {
-        if (state is StudentsLoadingState) {
-          return _buildLoading();
-        } else if (state is StudentLoadedSuccessState) {
-          return _buildStudentHome();
-        } else if (state is LoginErrorState) {
-          return _buildError();
-        }
-        return SizedBox.shrink();
-      },
-    );
-  }
-
-  Widget _buildLoading() {
-    return Scaffold(
-      body: Center(
-        child: CircularProgressIndicator(),
-      ),
-    );
-  }
-
-  Widget _buildStudentHome() {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.teal,
-        title: Text(
-          'isHKolarium',
-          style: TextStyle(
-            color: Colors.white,
-          ),
-        ),
-      ),
-      body: Center(
-        child: Text('Hello, Student'),
-      ),
-    );
-  }
-
-  Widget _buildError() {
-    return Scaffold(
-      body: Center(
-        child: Text('Error'),
+    return BlocProvider(
+      create: (_) => bottomNavBloc,
+      child: BlocConsumer<StudentsBloc, StudentsState>(
+        bloc: studentBloc,
+        listener: (context, state) {},
+        builder: (context, studentState) {
+          if (studentState is StudentsLoadingState) {
+            return LoadingWidget();
+          } else if (studentState is StudentLoadedSuccessState) {
+            return BottomNavWidget();
+          } else if (studentState is LoginErrorState) {
+            // return ErrorWidget();
+          }
+          return SizedBox.shrink();
+        },
       ),
     );
   }
