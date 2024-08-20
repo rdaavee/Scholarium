@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:isHKolarium/features/login/bloc/login_bloc.dart';
 import 'package:isHKolarium/features/students/bloc/students_bloc.dart';
-import 'package:isHKolarium/features/students/bottom_nav/bloc/bottom_nav_bloc.dart';
-import 'package:isHKolarium/features/students/bottom_nav/widgets/bottom_nav_widget.dart';
+import 'package:isHKolarium/features/bottom_nav/bloc/bottom_nav_bloc.dart';
+import 'package:isHKolarium/features/students/widgets/bottom_nav_widget.dart';
 import 'package:isHKolarium/features/students/widgets/loading_widget.dart';
 
 class StudentHomePage extends StatefulWidget {

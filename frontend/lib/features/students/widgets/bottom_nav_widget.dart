@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:isHKolarium/constants/colors.dart';
-import 'package:isHKolarium/features/students/bottom_nav/bloc/bottom_nav_bloc.dart';
-import 'package:isHKolarium/features/students/bottom_nav/widgets/page_provider.dart';
+import 'package:isHKolarium/features/bottom_nav/bloc/bottom_nav_bloc.dart';
+import 'package:isHKolarium/features/students/widgets/page_provider.dart';
 
 class BottomNavWidget extends StatelessWidget {
   @override
