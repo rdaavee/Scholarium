@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:isHKolarium/constants/colors.dart';
 import 'package:isHKolarium/features/students/bloc/students_bloc.dart';
+import 'package:isHKolarium/features/students/ui/announcements_page.dart';
 import 'package:isHKolarium/features/students/widgets/announcement_card.dart';
 
 class StudentHome extends StatefulWidget {
@@ -15,7 +16,7 @@ class _StudentHomeState extends State<StudentHome> {
   @override
   void initState() {
     super.initState();
-    context.read<StudentsBloc>().add(FetchAnnouncementEvent());
+    context.read<StudentsBloc>().add(FetchLatestAnnouncementEvent());
   }
 
   @override
@@ -30,7 +31,7 @@ class _StudentHomeState extends State<StudentHome> {
       },
       builder: (context, state) {
         if (state is StudentsLoadingState) {
-          return Scaffold(
+          return const Scaffold(
             backgroundColor: ColorPalette.accent,
             body: Center(child: CircularProgressIndicator()),
           );
@@ -45,7 +46,7 @@ class _StudentHomeState extends State<StudentHome> {
                     height: 100.0,
                     color: ColorPalette.accent,
                     alignment: Alignment.centerLeft,
-                    child: Text(
+                    child: const Text(
                       "Hi, Ranier",
                       style: TextStyle(
                         fontSize: 17,
@@ -59,7 +60,7 @@ class _StudentHomeState extends State<StudentHome> {
                 Expanded(
                   child: Container(
                     height: MediaQuery.of(context).size.height - 100.0,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: Color(0xFFF0F3F4),
                       borderRadius: BorderRadius.vertical(
                         top: Radius.circular(20),
@@ -71,27 +72,50 @@ class _StudentHomeState extends State<StudentHome> {
                         itemCount: state.announcements.length,
                         itemBuilder: (context, index) {
                           final announcement = state.announcements[index];
-                          return GestureDetector(
-                            child: AnnouncementCard(
-                              textLabel: Text(
-                                announcement.title,  
-                                style: TextStyle(
-                                  fontFamily: 'Inter',
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFF6D7278),
-                                  letterSpacing: 0.5,
+                          return Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text("Announcements"),
+                                  GestureDetector(
+                                    child: Text("View All"),
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => const AnnouncementsPage(),
+                                        ),
+                                      );
+                                    },
+                                  )
+                                ],
+                              ),
+                              GestureDetector(
+                                child: AnnouncementCard(
+                                  textLabel: Text(
+                                    announcement.title,  
+                                    style: const TextStyle(
+                                      fontFamily: 'Inter',
+                                      fontWeight: FontWeight.bold,
+                                      color: Color(0xFF6D7278),
+                                      letterSpacing: 0.5,
+                                    ),
+                                  ),
+                                  textBody: Text(
+                                    announcement.body,  
+                                    style: const TextStyle(
+                                      fontFamily: 'Inter',
+                                    ),
+                                  ),
+                                  date: Text(announcement.date), 
+                                  time: Text(announcement.time),  
+                                  cardColor: Colors.white,
                                 ),
                               ),
-                              textBody: Text(
-                                announcement.body,  
-                                style: TextStyle(
-                                  fontFamily: 'Inter',
-                                ),
-                              ),
-                              date: Text(announcement.date), 
-                              time: Text(announcement.time),  
-                              cardColor: Colors.white,
-                            ),
+                            ],
                           );
                         },
                       ),
@@ -102,7 +126,7 @@ class _StudentHomeState extends State<StudentHome> {
             ),
           );
         } else {
-          return Scaffold(
+          return const Scaffold(
             backgroundColor: ColorPalette.accent,
             body: Center(child: Text('No Data')),
           );

@@ -21,30 +21,22 @@ class AnnouncementCard extends StatelessWidget {
     return Stack(
       clipBehavior: Clip.none,
       children: [
-        Positioned(
-          top: 25,
-          left: 12,
-          right: 16,
-          child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 16),
-            child: textLabel,
-          ),
-        ),
         Container(
           height: 180,
-          margin: EdgeInsets.only(
+          margin: const EdgeInsets.only(
             top: 30,
           ),
           child: Card(
-            margin: EdgeInsets.all(20.0),
+            margin: const EdgeInsets.all(20.0),
             color: cardColor,
             child: Padding(
               padding: const EdgeInsets.all(15.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  textLabel,
                   textBody,
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [date, time],
