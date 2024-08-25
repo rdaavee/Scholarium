@@ -32,7 +32,7 @@ exports.login = (req, res) => {
       if (results.length > 0) {
         const user = results[0];
         
-        const token = jwt.sign({ id: user.id, school_id: user.school_id }, secretKey, { expiresIn: '1h' });
+        const token = jwt.sign({ id: user.id, school_id: user.school_id, role: user.role }, secretKey, { expiresIn: '1h' });
 
         connection.query('UPDATE users SET token = ? WHERE id = ?', [token, user.id], (error, results) => {
           connection.release();
@@ -42,7 +42,11 @@ exports.login = (req, res) => {
             return res.status(500).json({ message: 'Server error occurred' });
           }
 
-          res.status(200).json({ message: `Welcome, ${user.first_name} ${user.last_name}`, token: token });
+          res.status(200).json({
+            message: `Welcome, ${user.first_name} ${user.last_name}`,
+            token: token,
+            role: user.role  // Include the role in the response
+          });
         });
       } else {
         connection.release();

@@ -4,7 +4,10 @@ import 'package:isHKolarium/features/login/widgets/sign_in_button.dart';
 
 class LoginForm extends StatelessWidget {
   final LoginBloc loginBloc;
-  const LoginForm({required this.loginBloc, super.key});
+  final TextEditingController _schoolIdController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  LoginForm({required this.loginBloc, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +25,12 @@ class LoginForm extends StatelessWidget {
                   SizedBox(height: 5),
                   _passwordField(),
                   SizedBox(height: 35),
-                  SignInButton(loginBloc: loginBloc),
+                  SignInButton(onPressed: () {
+                    loginBloc.add(LoginButtonClickedEvent(
+                      _schoolIdController.text,
+                      _passwordController.text,
+                    ));
+                  })
                 ],
               ),
               Positioned(
@@ -55,6 +63,7 @@ class LoginForm extends StatelessWidget {
       width: 287,
       height: 55,
       child: TextField(
+        controller: _schoolIdController,
         decoration: InputDecoration(
           hintText: 'School ID',
           filled: true,
@@ -102,6 +111,7 @@ class LoginForm extends StatelessWidget {
       width: 287,
       height: 55,
       child: TextField(
+        controller: _passwordController,
         obscureText: true,
         decoration: InputDecoration(
           hintText: 'Password',

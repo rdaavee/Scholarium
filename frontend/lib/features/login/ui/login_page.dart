@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:isHKolarium/api/api_service/api_service.dart';
 import 'package:isHKolarium/features/login/bloc/login_bloc.dart';
 import 'package:isHKolarium/features/login/widgets/login_form.dart';
 import 'package:isHKolarium/features/professors/ui/professor_home_page.dart';
@@ -14,7 +15,14 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final LoginBloc loginBloc = LoginBloc();
+  late final LoginBloc loginBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    final ApiService apiService = ApiService(); // Initialize ApiService
+    loginBloc = LoginBloc(apiService); // Pass ApiService to LoginBloc
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,29 +35,29 @@ class _LoginPageState extends State<LoginPage> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => StudentHomePage(),
+              builder: (context) => const StudentHomePage(),
             ),
           );
         } else if (state is LoginNavigateToProfessorHomePageActionState) {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => ProfessorHomePage(),
+              builder: (context) => const ProfessorHomePage(),
             ),
           );
         }
       },
       builder: (context, state) {
         return Scaffold(
-          backgroundColor: Color(0xFFF0F3F4),
+          backgroundColor: const Color(0xFFF0F3F4),
           body: Column(
             children: [
               Container(
                 width: double.infinity,
-                padding: EdgeInsets.symmetric(vertical: 20),
+                padding: const EdgeInsets.symmetric(vertical: 20),
                 child: RichText(
                   textAlign: TextAlign.center,
-                  text: TextSpan(
+                  text: const TextSpan(
                     children: <TextSpan>[
                       TextSpan(
                         text: 'is',
@@ -92,7 +100,7 @@ class _LoginPageState extends State<LoginPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text(
+                        const Text(
                           'Login your account',
                           style: TextStyle(
                             fontSize: 17,
@@ -101,9 +109,9 @@ class _LoginPageState extends State<LoginPage> {
                             color: Color(0xFF6D7278),
                           ),
                         ),
-                        SizedBox(height: 30),
+                        const SizedBox(height: 30),
                         LoginForm(loginBloc: loginBloc),
-                        SizedBox(height: 50),
+                        const SizedBox(height: 50),
                       ],
                     ),
                   ),
