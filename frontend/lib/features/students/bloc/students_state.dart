@@ -1,7 +1,8 @@
 part of 'students_bloc.dart';
 
 @immutable
-abstract class StudentsState {}
+abstract class StudentsState {
+}
 
 abstract class StudentsActionState extends StudentsState {}
 

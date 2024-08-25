@@ -11,6 +11,10 @@ class BottomNavBloc extends Bloc<BottomNavEvent, BottomNavState> {
 
   void _onItemTapped(
       BottomNavItemSelected event, Emitter<BottomNavState> emit) {
-    emit(BottomNavItemSelectedState(event.index));
+    if (state is! BottomNavItemSelectedState ||
+        (state as BottomNavItemSelectedState).selectedIndex != event.index) {
+      emit(BottomNavItemSelectedState(event.index));
+      print(event.index);
+    }
   }
 }
