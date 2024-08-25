@@ -26,6 +26,32 @@ exports.getAnnouncements = (req, res) => {
   });
 };
 
+//Get Latest Announcement
+exports.getLatestAnnouncement = (req, res) => {
+  pool.getConnection((error, connection) => {
+    if (error) {
+      console.error('Error getting database connection:', error);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+    console.log(`Connected as id ${connection.threadId}`);
+
+    connection.query(
+      'SELECT * FROM announcements ORDER BY date DESC, time DESC',
+      (error, result) => {
+        connection.release();
+
+        if (error) {
+          console.error('Error executing query:', error);
+          return res.status(500).json({ error: 'Internal Server Error' });
+        }
+
+        res.status(200).json(result[0]); 
+      }
+    );
+  });
+};
+
+
 //Get posts
 exports.getPosts = (req, res) => {
   pool.getConnection((error, connection) => {
@@ -100,7 +126,7 @@ exports.getUserSchedule = (req, res) => {
 };
 
 //Get User DTR
-exports.getUserDTR = (req, res) => {
+exports.getUserTotalHours = (req, res) => {
   pool.getConnection((error, connection) => {
     if (error) {
       console.error('Error getting MySQL connection:', error);
@@ -109,7 +135,7 @@ exports.getUserDTR = (req, res) => {
 
     console.log(`Connected as id ${connection.threadId}`);
 
-    connection.query('SELECT * FROM dtr WHERE school_id = ?', [req.params.school_id], (error, rows) => {
+    connection.query('SELECT SUM(hours_rendered) AS total_hours FROM dtr WHERE school_id = ?', [req.params.school_id], (error, result) => {
       connection.release();
 
       if (error) {
@@ -117,10 +143,10 @@ exports.getUserDTR = (req, res) => {
         return res.status(500).json({ message: 'Server error occurred' });
       }
 
-      if (rows.length > 0) {
-        res.status(200).json(rows);
+      if (result[0].total_hours != null) {
+        res.status(200).json({ total_hours: result[0].total_hours});
       } else {
-        res.status(404).json({ message: 'User dtr not found' });
+        res.status(404).json({ message: 'No hours rendered found for this user' });
       }
     });
   });

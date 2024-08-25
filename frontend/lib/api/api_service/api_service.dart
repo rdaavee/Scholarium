@@ -41,14 +41,26 @@ class ApiService {
   }
 
   //Users
-  //Get Announcement
+  //Get all Announcement
 
   Future<List<AnnouncementModel>> fetchAnnoucementData() async {
-    final response = await http.get(Uri.parse('http://localhost:3000/api/user/getAnnouncements'));
+    final response = await http.get(Uri.parse('$baseUrl/user/getAnnouncements'));
 
     if (response.statusCode == 200) {
       final List<dynamic> data = jsonDecode(response.body);
       return data.map((json) => AnnouncementModel.fromJson(json)).toList();
+    } else {
+      throw Exception('Failed to load annoucement data');
+    }
+  }
+
+  //Get Latest Announcement
+  Future<AnnouncementModel> fetchLatestAnnoucementData() async {
+    final response = await http.get(Uri.parse('$baseUrl/user/getLatestAnnouncement'));
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> data = jsonDecode(response.body);
+      return AnnouncementModel.fromJson(data);
     } else {
       throw Exception('Failed to load annoucement data');
     }
