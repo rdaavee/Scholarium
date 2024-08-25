@@ -1,9 +1,11 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:isHKolarium/api/models/announcement_model.dart';
 
 class ApiService {
   final String baseUrl = 'http://localhost:3000/api';
 
+  //Login
   Future<Map<String, dynamic>> loginUser(
       String schoolID, String password) async {
     final url = Uri.parse('$baseUrl/login');
@@ -35,6 +37,20 @@ class ApiService {
       }
     } catch (e) {
       return {'statusCode': 500, 'error': 'Error: $e'};
+    }
+  }
+
+  //Users
+  //Get Announcement
+
+  Future<List<AnnouncementModel>> fetchAnnoucementData() async {
+    final response = await http.get(Uri.parse('http://localhost:3000/api/user/getAnnouncements'));
+
+    if (response.statusCode == 200) {
+      final List<dynamic> data = jsonDecode(response.body);
+      return data.map((json) => AnnouncementModel.fromJson(json)).toList();
+    } else {
+      throw Exception('Failed to load annoucement data');
     }
   }
 }

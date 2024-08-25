@@ -5,12 +5,12 @@ import 'package:isHKolarium/features/students/ui/student_home.dart';
 Widget getPage(int index) {
   switch (index) {
     case 1:
-      return ScheduleScreen();
+      return const ScheduleScreen();
     case 2:
-      return Text('Notification Page');
+      return const Text('Notification Page');
     case 3:
-      return Text('Profile Page');
+      return const Text('Profile Page');
     default:
-      return StudentHome();
+      return const StudentHome();
   }
 }
