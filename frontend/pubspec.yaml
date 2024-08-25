@@ -30,10 +30,12 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  shared_preferences: ^2.0.13 
   bloc:
   flutter_bloc:
   timeline_tile:
   http: ^1.2.2
+
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

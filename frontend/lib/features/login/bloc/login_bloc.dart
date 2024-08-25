@@ -1,7 +1,8 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
 import 'package:isHKolarium/api/api_service/api_service.dart';
-import 'package:meta/meta.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'login_event.dart';
 part 'login_state.dart';
@@ -15,29 +16,40 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   }
 
   Future<void> loginInitialEvent(
-      LoginInitialEvent event, 
-      Emitter<LoginState> emit
-  ) async {
-      emit(LoginLoadingState());
-      await Future.delayed(
-        const Duration(seconds: 3),
-      );
-    }
+      LoginInitialEvent event, Emitter<LoginState> emit) async {
+    emit(LoginLoadingState());
+    await Future.delayed(
+      const Duration(seconds: 3),
+    );
+  }
+
+  Future<void> storeToken(String token) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('token', token);
+    getToken();
+  }
+
+  Future<String?> getToken() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('token');
+    print('token: $token');
+    return token;
+  }
 
   Future<void> loginButtonClickedEvent(
-      LoginButtonClickedEvent event, 
-      Emitter<LoginState> emit
-  ) async {
+      LoginButtonClickedEvent event, Emitter<LoginState> emit) async {
     print("Login btn clicked!");
 
     try {
       emit(LoginLoadingState());
 
-      final result = await _apiService.loginUser(event.schoolID, event.password);
+      final result =
+          await _apiService.loginUser(event.schoolID, event.password);
 
       if (result['statusCode'] == 200) {
         final token = result['token'];
         final role = result['role'];
+        storeToken(token);
 
         if (token != null && role != null) {
           switch (role) {
