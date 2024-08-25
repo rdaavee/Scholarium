@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:isHKolarium/constants/colors.dart';
-import 'package:isHKolarium/features/login/bloc/login_bloc.dart';
 
 class SignInButton extends StatelessWidget {
-  final LoginBloc loginBloc;
-  const SignInButton({required this.loginBloc, super.key});
+  final VoidCallback onPressed;
+  const SignInButton({required this.onPressed, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: () {
-        loginBloc.add(LoginButtonClickedEvent());
-      },
+      onPressed: onPressed,
       style: ElevatedButton.styleFrom(
         backgroundColor: ColorPalette.primary,
         side: BorderSide(

@@ -11,8 +11,14 @@ class LoginLoadingState extends LoginState {}
 
 class LoginLoadedSuccessState extends LoginState {}
 
-class LoginErrorState extends LoginState {}
+class LoginErrorState extends LoginState {
+  final String errorMessage;
+
+  LoginErrorState({required this.errorMessage});
+}
 
 class LoginNavigateToStudentHomePageActionState extends LoginActionState {}
 
 class LoginNavigateToProfessorHomePageActionState extends LoginActionState {}
+
+class LoginNavigateToAdmiinHomePageActionState extends LoginActionState {}
