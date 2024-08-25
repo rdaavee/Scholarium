@@ -126,7 +126,7 @@ exports.getUserSchedule = (req, res) => {
 };
 
 //Get User DTR
-exports.getUserTotalHours = (req, res) => {
+exports.getUserDTR = (req, res) => {
   pool.getConnection((error, connection) => {
     if (error) {
       console.error('Error getting MySQL connection:', error);
@@ -135,7 +135,7 @@ exports.getUserTotalHours = (req, res) => {
 
     console.log(`Connected as id ${connection.threadId}`);
 
-    connection.query('SELECT SUM(hours_rendered) AS total_hours FROM dtr WHERE school_id = ?', [req.params.school_id], (error, result) => {
+    connection.query('SELECT * FROM dtr WHERE school_id = ?', [req.params.token], (error, rows) => {
       connection.release();
 
       if (error) {
@@ -143,14 +143,56 @@ exports.getUserTotalHours = (req, res) => {
         return res.status(500).json({ message: 'Server error occurred' });
       }
 
-      if (result[0].total_hours != null) {
-        res.status(200).json({ total_hours: result[0].total_hours});
+      if (rows.length > 0) {
+        res.status(200).json(rows);
       } else {
-        res.status(404).json({ message: 'No hours rendered found for this user' });
+        res.status(404).json({ message: 'User dtr not found' });
       }
     });
   });
 };
+
+exports.getUserTotalHours = (req, res) => {
+  const token = req.params.token;
+
+  // Step 1: Validate the Token and Get User ID
+  pool.getConnection((error, connection) => {
+    if (error) {
+      console.error('Error getting MySQL connection:', error);
+      return res.status(500).json({ message: 'Server error occurred' });
+    }
+
+    console.log(`Connected as id ${connection.threadId}`);
+
+    connection.query('SELECT school_id FROM users WHERE token = ?', [token], (error, userResult) => {
+      if (error) {
+        connection.release();
+        console.error('Error executing query:', error);
+        return res.status(500).json({ message: 'Server error occurred' });
+      }
+
+      
+
+      const student_id = userResult[0].school_id;
+
+      connection.query('SELECT SUM(hours_rendered) AS total_hours, hours_to_rendered AS target_hours FROM dtr WHERE school_id = ?', [student_id], (error, result) => {
+        connection.release();
+
+        if (error) {
+          console.error('Error executing query:', error);
+          return res.status(500).json({ message: 'Server error occurred' });
+        }
+
+        if (result[0].total_hours != null) {
+          res.status(200).json({ totalhours: result[0].total_hours, targethours: result[0].target_hours });
+        } else {
+          res.status(404).json({ message: 'No hours rendered found for this user' });
+        }
+      });
+    });
+  });
+};
+
 
 
 
