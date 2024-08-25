@@ -5,7 +5,6 @@ import 'package:isHKolarium/features/students/bloc/students_bloc.dart';
 import 'package:isHKolarium/features/bottom_nav/bloc/bottom_nav_bloc.dart';
 import 'package:isHKolarium/features/students/widgets/bottom_nav_widget.dart';
 import 'package:isHKolarium/features/students/widgets/loading_widget.dart';
-import 'package:isHKolarium/main.dart';
 
 class StudentHomePage extends StatefulWidget {
   const StudentHomePage({super.key});
