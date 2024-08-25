@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:isHKolarium/constants/colors.dart';
 import 'package:isHKolarium/features/login/bloc/login_bloc.dart';
 
 class SignInButton extends StatelessWidget {
@@ -12,16 +13,20 @@ class SignInButton extends StatelessWidget {
         loginBloc.add(LoginButtonClickedEvent());
       },
       style: ElevatedButton.styleFrom(
-        backgroundColor: Color(0xFF3B4F26),
+        backgroundColor: ColorPalette.primary,
         side: BorderSide(
-          color: Color(0xFF3B4F26),
+          color: ColorPalette.primary,
         ),
-        minimumSize: Size(250, 55),
+        minimumSize: Size(287, 55),
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
       ),
       child: Text(
         'Sign In',
-        style: Theme.of(context).textTheme.labelSmall,
+        style: TextStyle(
+          fontFamily: 'Inter',
+          fontWeight: FontWeight.normal,
+          fontSize: 12,
+        ),
       ),
     );
   }

@@ -19,30 +19,42 @@ class BottomNavWidget extends StatelessWidget {
           body: Center(
             child: getPage(selectedIndex),
           ),
-          bottomNavigationBar: BottomNavigationBar(
-            currentIndex: selectedIndex,
-            onTap: (index) {
-              context.read<BottomNavBloc>().add(BottomNavItemSelected(index));
-            },
-            items: const <BottomNavigationBarItem>[
-              BottomNavigationBarItem(
-                icon: Icon(Icons.home),
-                label: 'Home',
-                backgroundColor: Colors.white,
+          bottomNavigationBar: BottomNavigationBarTheme(
+            data: BottomNavigationBarThemeData(
+              selectedItemColor: ColorPalette.accent,
+              unselectedItemColor: Colors.grey,
+              selectedLabelStyle: TextStyle(
+                fontFamily: 'Inter',
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+                letterSpacing: 0.5,
               ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.school),
-                label: 'Schedule',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.notifications),
-                label: 'Notification',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.account_circle_rounded),
-                label: 'Profile',
-              ),
-            ],
+            ),
+            child: BottomNavigationBar(
+              currentIndex: selectedIndex,
+              onTap: (index) {
+                context.read<BottomNavBloc>().add(BottomNavItemSelected(index));
+              },
+              items: const <BottomNavigationBarItem>[
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.home),
+                  label: 'Home',
+                  backgroundColor: Colors.white,
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.calendar_month),
+                  label: 'Schedule',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.notifications),
+                  label: 'Notification',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.account_circle_rounded),
+                  label: 'Profile',
+                ),
+              ],
+            ),
           ),
         );
       },

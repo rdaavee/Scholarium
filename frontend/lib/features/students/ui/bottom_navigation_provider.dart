@@ -5,6 +5,7 @@ import 'package:isHKolarium/features/students/bloc/students_bloc.dart';
 import 'package:isHKolarium/features/bottom_nav/bloc/bottom_nav_bloc.dart';
 import 'package:isHKolarium/features/students/widgets/bottom_nav_widget.dart';
 import 'package:isHKolarium/features/students/widgets/loading_widget.dart';
+import 'package:isHKolarium/main.dart';
 
 class StudentHomePage extends StatefulWidget {
   const StudentHomePage({super.key});
@@ -38,7 +39,7 @@ class _StudentHomePageState extends State<StudentHomePage> {
           } else if (studentState is LoginErrorState) {
             // return ErrorWidget();
           }
-          return SizedBox.shrink();
+          return SizedBox();
         },
       ),
     );
