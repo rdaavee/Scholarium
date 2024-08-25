@@ -11,7 +11,8 @@ class StudentsLoadingState extends StudentsState {}
 
 class StudentsLoadedSuccessState extends StudentsState {
   final List<AnnouncementModel> announcements;
-  StudentsLoadedSuccessState({required this.announcements});
+  final List<DtrHoursModel> hours;
+  StudentsLoadedSuccessState({required this.announcements, required this.hours});
 }
 
 class StudentsErrorState extends StudentsState {

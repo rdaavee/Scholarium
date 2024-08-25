@@ -1,6 +1,7 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:isHKolarium/api/models/announcement_model.dart';
+import 'package:isHKolarium/api/models/dtr_total_hours_model.dart';
 
 class ApiService {
   final String baseUrl = 'http://localhost:3000/api';
@@ -63,6 +64,24 @@ class ApiService {
       return AnnouncementModel.fromJson(data);
     } else {
       throw Exception('Failed to load annoucement data');
+    }
+  }
+
+  //Get Student Total hours DTR
+  Future<DtrHoursModel> fetchDtrTotalHoursData({
+    required String? token,
+  }) async {
+    final response = await http.get(Uri.parse('$baseUrl/user/getTotalHours/$token'),
+    headers: <String, String>{
+        'Content-Type': 'application/json',
+      },
+  );
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> data = jsonDecode(response.body);
+      return DtrHoursModel.fromJson(data);
+    } else {
+      throw Exception('Failed to load student DTR total hours data');
     }
   }
 }

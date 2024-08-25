@@ -16,7 +16,7 @@ router.get('/user/getPosts/:status', userController.getPosts);
 router.get('/user/profile/:token', userController.getUserProfile);
 router.get('/user/getSchedule/:school_id', userController.getUserSchedule);
 router.get('/user/getDTR/:school_id', userController.getUserDTR);
-router.get('/user/getTotalHours/:school_id', userController.getUserTotalHours);
+router.get('/user/getTotalHours/:token', userController.getUserTotalHours);
 
 
 //professor routes
