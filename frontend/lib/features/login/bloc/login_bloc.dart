@@ -15,22 +15,25 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   }
 
   Future<void> loginInitialEvent(
-      LoginInitialEvent event, Emitter<LoginState> emit) async {
-    emit(LoginLoadingState());
-    await Future.delayed(
-      Duration(seconds: 3),
-    );
-  }
+      LoginInitialEvent event, 
+      Emitter<LoginState> emit
+  ) async {
+      emit(LoginLoadingState());
+      await Future.delayed(
+        const Duration(seconds: 3),
+      );
+    }
 
   Future<void> loginButtonClickedEvent(
-      LoginButtonClickedEvent event, Emitter<LoginState> emit) async {
+      LoginButtonClickedEvent event, 
+      Emitter<LoginState> emit
+  ) async {
     print("Login btn clicked!");
 
     try {
       emit(LoginLoadingState());
 
-      final result =
-          await _apiService.loginUser(event.schoolID, event.password);
+      final result = await _apiService.loginUser(event.schoolID, event.password);
 
       if (result['statusCode'] == 200) {
         final token = result['token'];
