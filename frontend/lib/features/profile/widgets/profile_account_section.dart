@@ -13,7 +13,7 @@ class AccountSection extends StatelessWidget {
         color: Color(0x196DD400),
         borderRadius: BorderRadius.circular(10),
       ),
-      child: Text(
+      child: const Text(
         'ACCOUNT',
         style: TextStyle(
           color: Color(0xFF6DD400),

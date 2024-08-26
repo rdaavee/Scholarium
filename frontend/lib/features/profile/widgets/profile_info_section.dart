@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:isHKolarium/features/students/widgets/profile_widgets/profile_divider.dart';
-import 'package:isHKolarium/features/students/widgets/profile_widgets/profile_info_header.dart';
+import 'package:isHKolarium/features/profile/widgets/profile_divider.dart';
+import 'package:isHKolarium/features/profile/widgets/profile_info_header.dart';
 
 class InfoSection extends StatelessWidget {
   final String title;

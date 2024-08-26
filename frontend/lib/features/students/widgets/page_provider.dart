@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:isHKolarium/features/students/ui/profile_screen.dart';
-import 'package:isHKolarium/features/students/ui/schedule_screen.dart';
+import 'package:isHKolarium/features/profile/ui/profile_screen.dart';
+import 'package:isHKolarium/features/schedule/ui/schedule_screen.dart';
 import 'package:isHKolarium/features/students/ui/student_home.dart';
 
 Widget getPage(int index) {

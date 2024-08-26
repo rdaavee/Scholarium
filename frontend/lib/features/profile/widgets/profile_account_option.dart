@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:isHKolarium/features/students/widgets/profile_widgets/profile_divider.dart';
+import 'package:isHKolarium/features/profile/widgets/profile_divider.dart';
 
 class AccountOptions extends StatelessWidget {
   const AccountOptions({super.key});
@@ -33,7 +33,7 @@ class AccountOptions extends StatelessWidget {
         GestureDetector(
           child: Text(
             text,
-            style: TextStyle(
+            style: const TextStyle(
               color: Color(0xFF3C3C3C),
               fontSize: 16.5,
               fontFamily: 'Inter',
