@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:isHKolarium/constants/colors.dart';
-import '../widgets/schedule_widget/schedule_header.dart';
-import '../widgets/schedule_widget/timeline_item.dart';
+import '../widgets/schedule_widgets/schedule_header.dart';
+import '../widgets/schedule_widgets/timeline_item.dart';
 
 class ScheduleScreen extends StatefulWidget {
   const ScheduleScreen({super.key});
