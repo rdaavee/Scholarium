@@ -1,7 +1,10 @@
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:isHKolarium/api/models/announcement_model.dart';
 import 'package:isHKolarium/api/models/dtr_total_hours_model.dart';
+import 'package:isHKolarium/features/login/ui/login_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ApiService {
   final String baseUrl = 'http://localhost:3000/api';
@@ -45,7 +48,8 @@ class ApiService {
   //Get all Announcement
 
   Future<List<AnnouncementModel>> fetchAnnoucementData() async {
-    final response = await http.get(Uri.parse('$baseUrl/user/getAnnouncements'));
+    final response =
+        await http.get(Uri.parse('$baseUrl/user/getAnnouncements'));
 
     if (response.statusCode == 200) {
       final List<dynamic> data = jsonDecode(response.body);
@@ -57,7 +61,8 @@ class ApiService {
 
   //Get Latest Announcement
   Future<AnnouncementModel> fetchLatestAnnoucementData() async {
-    final response = await http.get(Uri.parse('$baseUrl/user/getLatestAnnouncement'));
+    final response =
+        await http.get(Uri.parse('$baseUrl/user/getLatestAnnouncement'));
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> data = jsonDecode(response.body);
@@ -71,11 +76,12 @@ class ApiService {
   Future<DtrHoursModel> fetchDtrTotalHoursData({
     required String? token,
   }) async {
-    final response = await http.get(Uri.parse('$baseUrl/user/getTotalHours/$token'),
-    headers: <String, String>{
+    final response = await http.get(
+      Uri.parse('$baseUrl/user/getTotalHours/$token'),
+      headers: <String, String>{
         'Content-Type': 'application/json',
       },
-  );
+    );
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> data = jsonDecode(response.body);
@@ -83,5 +89,32 @@ class ApiService {
     } else {
       throw Exception('Failed to load student DTR total hours data');
     }
+  }
+
+  Future<Map<String, dynamic>> fetchProfileData(String token) async {
+    final url = Uri.parse('$baseUrl/user/profile/$token');
+    try {
+      final response = await http.get(
+        url,
+        headers: {'Authorization': 'Bearer $token'},
+      );
+
+      if (response.statusCode == 200) {
+        return json.decode(response.body) as Map<String, dynamic>;
+      } else {
+        // Handle non-200 status codes
+        return {};
+      }
+    } catch (e) {
+      // Handle any exceptions
+      return {};
+    }
+  }
+
+  Future<void> logout(BuildContext context) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('token');
+
+    Navigator.of(context).pushReplacementNamed(LoginPage.routeName);
   }
 }
