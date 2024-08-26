@@ -1,91 +1,134 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:isHKolarium/api/api_service/api_service.dart';
+import 'package:isHKolarium/features/profile/bloc/profile_bloc.dart';
+import 'package:isHKolarium/features/profile/bloc/profile_event.dart';
+import 'package:isHKolarium/features/profile/bloc/profile_state.dart';
 import 'package:isHKolarium/constants/colors.dart';
-import 'package:isHKolarium/features/profile/widgets/profile_account_option.dart';
-import 'package:isHKolarium/features/profile/widgets/profile_account_section.dart';
-import 'package:isHKolarium/features/profile/widgets/profile_divider.dart';
-import 'package:isHKolarium/features/profile/widgets/profile_info_data.dart';
-import 'package:isHKolarium/features/profile/widgets/profile_info_section.dart';
 import '../widgets/profile_circle.dart';
+import '../widgets/profile_account_option.dart';
+import '../widgets/profile_account_section.dart';
+import '../widgets/profile_divider.dart';
+import '../widgets/profile_info_data.dart';
+import '../widgets/profile_info_section.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: ColorPalette.primary,
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 30.0),
-            child: Container(
-              height: 100.0,
-              color: ColorPalette.primary,
-              alignment: Alignment.centerLeft,
-              child: const Text(
-                "Profile",
-                style: TextStyle(
-                  fontSize: 17,
-                  fontFamily: 'Inter',
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 1.1,
-                ),
-              ),
-            ),
-          ),
-          Expanded(
-            child: Container(
-              decoration: const BoxDecoration(
-                color: Color(0xFFF0F3F4),
-                borderRadius: BorderRadius.vertical(
-                  top: Radius.circular(20),
-                ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: ListView(
-                  children: const [
-                    SizedBox(height: 50),
-                    ProfileCircle(),
-                    SizedBox(height: 80),
-                    InfoSection(
-                      title: 'BASIC INFORMATION',
-                      infoRows: [
-                        SizedBox(height: 20),
-                        InfoRow(
-                            label: 'Name', value: 'David Aldrin Mondero'),
-                        SizedBox(height: 15),
-                        DividerWidget(),
-                        SizedBox(height: 15),
-                        InfoRow(
-                            label: 'Email',
-                            value: 'dafe.mondero.up@phinmaed.com'),
-                        SizedBox(height: 15),
-                        DividerWidget(),
-                        SizedBox(height: 15),
-                        InfoRow(
-                            label: 'Student ID', value: '03-2223-12345'),
-                        SizedBox(height: 15),
-                        DividerWidget(),
-                        SizedBox(height: 15),
-                        InfoRow(label: 'HK Type', value: '50%'),
-                        SizedBox(height: 15),
-                        DividerWidget(),
-                        SizedBox(height: 15),
-                        InfoRow(label: 'Status', value: 'Active'),
-                      ],
+    final token =
+        'token'; // Replace this with the actual method to retrieve the token
+
+    return BlocProvider(
+      create: (context) =>
+          ProfileBloc(ApiService())..add(LoadProfileEvent(token: token)),
+      child: Scaffold(
+        backgroundColor: ColorPalette.primary,
+        body: BlocBuilder<ProfileBloc, ProfileState>(
+          builder: (context, state) {
+            if (state is ProfileLoading) {
+              return Center(child: CircularProgressIndicator());
+            } else if (state is ProfileLoaded) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 30.0),
+                    child: Container(
+                      height: 100.0,
+                      color: ColorPalette.primary,
+                      alignment: Alignment.centerLeft,
+                      child: const Text(
+                        "Profile",
+                        style: TextStyle(
+                          fontSize: 17,
+                          fontFamily: 'Inter',
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 1.1,
+                        ),
+                      ),
                     ),
-                    SizedBox(height: 30),
-                    AccountSection(),
-                    SizedBox(height: 20),
-                    AccountOptions(),
-                  ],
+                  ),
+                  Expanded(
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        color: Color(0xFFF0F3F4),
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(20),
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: ListView(
+                          children: [
+                            const SizedBox(height: 50),
+                            const ProfileCircle(),
+                            const SizedBox(height: 80),
+                            InfoSection(
+                              title: 'BASIC INFORMATION',
+                              infoRows: [
+                                const SizedBox(height: 20),
+                                InfoRow(label: 'Name', value: state.name),
+                                const SizedBox(height: 15),
+                                const DividerWidget(),
+                                const SizedBox(height: 15),
+                                InfoRow(label: 'Email', value: state.email),
+                                const SizedBox(height: 15),
+                                const DividerWidget(),
+                                const SizedBox(height: 15),
+                                InfoRow(
+                                    label: 'Student ID',
+                                    value: state.studentId),
+                                const SizedBox(height: 15),
+                                const DividerWidget(),
+                                const SizedBox(height: 15),
+                                InfoRow(label: 'HK Type', value: state.hkType),
+                                const SizedBox(height: 15),
+                                const DividerWidget(),
+                                const SizedBox(height: 15),
+                                InfoRow(label: 'Status', value: state.status),
+                              ],
+                            ),
+                            const SizedBox(height: 30),
+                            AccountSection(),
+                            const SizedBox(height: 20),
+                            AccountOptions(
+                              onLogout: () {
+                                BlocProvider.of<ProfileBloc>(context)
+                                    .add(LogoutEvent(context: context));
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            } else if (state is ProfileError) {
+              return Center(
+                child: Text(
+                  state.message,
+                  style: const TextStyle(color: Colors.red),
                 ),
-              ),
-            ),
-          ),
-        ],
+              );
+            } else if (state is LogoutSuccess) {
+              // Navigate to the login screen or another appropriate screen
+              Navigator.pushReplacementNamed(context, '/login');
+              return Container(); // or a splash screen
+            } else if (state is LogoutError) {
+              return Center(
+                child: Text(
+                  state.message,
+                  style: const TextStyle(color: Colors.red),
+                ),
+              );
+            } else {
+              return Center(child: Text('No Data Available'));
+            }
+          },
+        ),
       ),
     );
   }

@@ -1,4 +1,15 @@
-part of 'profile_bloc.dart';
+import 'package:flutter/material.dart';
 
-@immutable
-sealed class ProfileEvent {}
+abstract class ProfileEvent {}
+
+class LoadProfileEvent extends ProfileEvent {
+  final String token;
+
+  LoadProfileEvent({required this.token});
+}
+
+class LogoutEvent extends ProfileEvent {
+  final BuildContext context;
+
+  LogoutEvent({required this.context});
+}
