@@ -8,7 +8,7 @@ class ScheduleHeader extends StatelessWidget {
       padding: const EdgeInsets.only(left: 30.0),
       child: Container(
         height: 100.0,
-        color: ColorPalette.accent,
+        color: ColorPalette.primary,
         alignment: Alignment.centerLeft,
         child: Text(
           "Schedule",

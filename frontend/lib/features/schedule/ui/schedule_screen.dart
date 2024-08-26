@@ -16,7 +16,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: ColorPalette.accent,
+      backgroundColor: ColorPalette.primary,
       body: Column(
         children: [
           ScheduleHeader(),
