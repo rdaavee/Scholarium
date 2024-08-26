@@ -1,20 +1,17 @@
 import 'package:flutter/material.dart';
 
-class AnnouncementCard extends StatelessWidget {
-  final Text textLabel;
-  final Text textBody;
-  final Text date;
-  final Text time;
+class ScheduleCard extends StatelessWidget {
+  final Text scheduleDate;
+  final Text scheduleTime;
+  final Text roomName;
   final Color cardColor;
 
-  const AnnouncementCard({
-    Key? key,
-    required this.textLabel,
-    required this.textBody,
-    required this.date,
-    required this.time,
+  const ScheduleCard({
+    required this.scheduleDate,
+    required this.scheduleTime,
+    required this.roomName,
     required this.cardColor,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -22,9 +19,9 @@ class AnnouncementCard extends StatelessWidget {
       clipBehavior: Clip.none,
       children: [
         Container(
-          height: 170,
+          height: 220,
           margin: const EdgeInsets.only(
-            top: 30,
+            top: 10,
           ),
           child: Card(
             margin: const EdgeInsets.all(20.0),
@@ -34,12 +31,13 @@ class AnnouncementCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  textLabel,
-                  textBody,
-                  const SizedBox(height: 16),
+                  scheduleDate,
+                  const SizedBox(height: 5),
+                  scheduleTime,
+                  const SizedBox(height: 35),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [date, time],
+                    children: [roomName],
                   ),
                 ],
               ),

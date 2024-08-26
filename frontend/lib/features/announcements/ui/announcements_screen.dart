@@ -5,14 +5,14 @@ import 'package:isHKolarium/constants/colors.dart';
 import 'package:isHKolarium/features/students/bloc/students_bloc.dart';
 import 'package:isHKolarium/features/announcements/widgets/announcement_card.dart';
 
-class AnnouncementsPage extends StatefulWidget {
-  const AnnouncementsPage({super.key});
+class AnnouncementsScreen extends StatefulWidget {
+  const AnnouncementsScreen({super.key});
 
   @override
-  State<AnnouncementsPage> createState() => _AnnouncementsPageState();
+  State<AnnouncementsScreen> createState() => _AnnouncementsPageState();
 }
 
-class _AnnouncementsPageState extends State<AnnouncementsPage> {
+class _AnnouncementsPageState extends State<AnnouncementsScreen> {
   late StudentsBloc studentBloc;
 
   @override
