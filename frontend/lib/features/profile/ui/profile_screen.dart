@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:isHKolarium/constants/colors.dart';
-import 'package:isHKolarium/features/students/widgets/profile_widgets/profile_account_option.dart';
-import 'package:isHKolarium/features/students/widgets/profile_widgets/profile_account_section.dart';
-import 'package:isHKolarium/features/students/widgets/profile_widgets/profile_divider.dart';
-import 'package:isHKolarium/features/students/widgets/profile_widgets/profile_info_data.dart';
-import 'package:isHKolarium/features/students/widgets/profile_widgets/profile_info_section.dart';
-import '../widgets/profile_widgets/profile_circle.dart';
+import 'package:isHKolarium/features/profile/widgets/profile_account_option.dart';
+import 'package:isHKolarium/features/profile/widgets/profile_account_section.dart';
+import 'package:isHKolarium/features/profile/widgets/profile_divider.dart';
+import 'package:isHKolarium/features/profile/widgets/profile_info_data.dart';
+import 'package:isHKolarium/features/profile/widgets/profile_info_section.dart';
+import '../widgets/profile_circle.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -45,41 +45,41 @@ class ProfileScreen extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: ListView(
-                  children: [
+                  children: const [
                     SizedBox(height: 50),
-                    const ProfileCircle(),
+                    ProfileCircle(),
                     SizedBox(height: 80),
                     InfoSection(
                       title: 'BASIC INFORMATION',
                       infoRows: [
-                        const SizedBox(height: 20),
-                        const InfoRow(
+                        SizedBox(height: 20),
+                        InfoRow(
                             label: 'Name', value: 'David Aldrin Mondero'),
-                        const SizedBox(height: 15),
-                        const DividerWidget(),
-                        const SizedBox(height: 15),
-                        const InfoRow(
+                        SizedBox(height: 15),
+                        DividerWidget(),
+                        SizedBox(height: 15),
+                        InfoRow(
                             label: 'Email',
                             value: 'dafe.mondero.up@phinmaed.com'),
-                        const SizedBox(height: 15),
-                        const DividerWidget(),
-                        const SizedBox(height: 15),
-                        const InfoRow(
+                        SizedBox(height: 15),
+                        DividerWidget(),
+                        SizedBox(height: 15),
+                        InfoRow(
                             label: 'Student ID', value: '03-2223-12345'),
-                        const SizedBox(height: 15),
-                        const DividerWidget(),
-                        const SizedBox(height: 15),
-                        const InfoRow(label: 'HK Type', value: '50%'),
-                        const SizedBox(height: 15),
-                        const DividerWidget(),
-                        const SizedBox(height: 15),
-                        const InfoRow(label: 'Status', value: 'Active'),
+                        SizedBox(height: 15),
+                        DividerWidget(),
+                        SizedBox(height: 15),
+                        InfoRow(label: 'HK Type', value: '50%'),
+                        SizedBox(height: 15),
+                        DividerWidget(),
+                        SizedBox(height: 15),
+                        InfoRow(label: 'Status', value: 'Active'),
                       ],
                     ),
                     SizedBox(height: 30),
-                    const AccountSection(),
+                    AccountSection(),
                     SizedBox(height: 20),
-                    const AccountOptions(),
+                    AccountOptions(),
                   ],
                 ),
               ),

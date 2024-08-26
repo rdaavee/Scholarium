@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:isHKolarium/api/api_service/api_service.dart';
 import 'package:isHKolarium/constants/colors.dart';
 import 'package:isHKolarium/features/students/bloc/students_bloc.dart';
-import 'package:isHKolarium/features/students/ui/announcements_page.dart';
-import 'package:isHKolarium/features/students/widgets/announcement_card.dart';
+import 'package:isHKolarium/features/announcements/ui/announcements_screen.dart';
+import 'package:isHKolarium/features/announcements/widgets/announcement_card.dart';
 
 class StudentHome extends StatefulWidget {
   const StudentHome({super.key});

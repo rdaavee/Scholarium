@@ -4,7 +4,7 @@ import 'package:isHKolarium/api/api_service/api_service.dart';
 import 'package:isHKolarium/features/login/bloc/login_bloc.dart';
 import 'package:isHKolarium/features/login/widgets/login_form.dart';
 import 'package:isHKolarium/features/professors/ui/professor_home_page.dart';
-import 'package:isHKolarium/features/students/ui/bottom_navigation_provider.dart';
+import 'package:isHKolarium/features/bottom_nav/ui/bottom_navigation_provider.dart';
 
 class LoginPage extends StatefulWidget {
   static String routeName = 'LoginPage';

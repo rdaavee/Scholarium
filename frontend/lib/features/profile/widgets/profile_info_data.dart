@@ -13,7 +13,7 @@ class InfoRow extends StatelessWidget {
       children: [
         Text(
           label,
-          style: TextStyle(
+          style: const TextStyle(
             color: Color(0xFF3C3C3C),
             fontSize: 16.5,
             fontFamily: 'Inter',
@@ -22,7 +22,7 @@ class InfoRow extends StatelessWidget {
         ),
         Text(
           value,
-          style: TextStyle(
+          style: const TextStyle(
             color: Color(0xFFC1C1C1),
             fontSize: 16.5,
             fontFamily: 'Inter',
