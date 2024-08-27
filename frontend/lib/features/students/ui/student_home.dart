@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:isHKolarium/api/api_service/api_service.dart';
 import 'package:isHKolarium/constants/colors.dart';
+import 'package:isHKolarium/features/dtr/ui/dtr_screen.dart';
 import 'package:isHKolarium/features/dtr/widgets/dtr_card.dart';
 import 'package:isHKolarium/features/events/ui/events_screen.dart';
 import 'package:isHKolarium/features/events/widgets/events_card.dart';
@@ -85,282 +86,285 @@ class _StudentHomeState extends State<StudentHome> {
                       ),
                       child: Padding(
                         padding: const EdgeInsets.all(5.0),
-                        child: ListView.builder(
-                          itemCount: state.announcements.length,
-                          itemBuilder: (context, index) {
-                            final announcement = state.announcements[index];
-                            final hours = state.hours[index];
-                            final progress =
-                                (hours.totalhours / hours.targethours)
-                                    .clamp(0.0, 1.0);
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                        child: ListView(
+                          children: [
+                            // Upcoming Duties
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Row(
                               children: [
-                                Stack(
-                                  clipBehavior: Clip.none,
-                                  children: [
-                                    GestureDetector(
-                                      onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                const AnnouncementsScreen(),
+                                Expanded(
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const ScheduleScreen(),
+                                        ),
+                                      );
+                                    },
+                                    child: const Stack(
+                                      clipBehavior: Clip.none,
+                                      children: [
+                                        ScheduleCard(
+                                          scheduleDate: Text(
+                                            '10\nSept',
+                                            style: TextStyle(
+                                              fontSize: 24,
+                                              fontFamily: 'Inter',
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white,
+                                              letterSpacing: 0.5,
+                                            ),
                                           ),
-                                        );
-                                      },
-                                      child: AnnouncementCard(
-                                        textLabel: Text(
-                                          announcement.title.toString(),
-                                          style: const TextStyle(
-                                            fontSize: 18,
-                                            fontFamily: 'Inter',
-                                            fontWeight: FontWeight.bold,
-                                            color: Color(0xFF6DD400),
-                                            letterSpacing: 0.5,
+                                          scheduleTime: Text(
+                                            '10:30AM - 12:00PM',
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              fontFamily: 'Inter',
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                              letterSpacing: 0.8,
+                                            ),
+                                          ),
+                                          roomName: Text(
+                                            'PTC-303',
+                                            style: TextStyle(
+                                              fontSize: 17,
+                                              fontFamily: 'Inter',
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                              letterSpacing: 1.2,
+                                            ),
+                                          ),
+                                          cardColor: Color(0xFF6DD400),
+                                        ),
+                                        Positioned(
+                                          top: 0.0,
+                                          left: 26.0,
+                                          child: Text(
+                                            "Upcoming Duties",
+                                            style: TextStyle(
+                                              fontSize: 15,
+                                              fontFamily: 'Inter',
+                                              fontWeight: FontWeight.bold,
+                                              color: Color(0xFF6D7278),
+                                              letterSpacing: 0.5,
+                                            ),
                                           ),
                                         ),
-                                        textBody: Text(
-                                          announcement.body.toString(),
-                                          style: const TextStyle(
-                                            fontSize: 13,
-                                            fontFamily: 'Inter',
-                                            color: Color(0xFFC1C1C1),
-                                            fontWeight: FontWeight.w400,
-                                            letterSpacing: 0.8,
-                                          ),
-                                        ),
-                                        date: Text(
-                                          announcement.date.toString(),
-                                          style: const TextStyle(
-                                            fontFamily: 'Inter',
-                                            color: Color(0xFFC1C1C1),
-                                            fontWeight: FontWeight.w500,
-                                            letterSpacing: 1.2,
-                                          ),
-                                        ),
-                                        time: Text(
-                                          announcement.time.toString(),
-                                          style: const TextStyle(
-                                            fontFamily: 'Inter',
-                                            color: Color(0xFFC1C1C1),
-                                            fontWeight: FontWeight.w500,
-                                            letterSpacing: 1.2,
-                                          ),
-                                        ),
-                                        cardColor: Colors.white,
-                                      ),
+                                      ],
                                     ),
-                                    const Positioned(
-                                      top: 20.0,
-                                      left: 25.0,
-                                      child: Text(
-                                        "Announcements",
-                                        style: TextStyle(
-                                          fontSize: 15,
-                                          fontFamily: 'Inter',
-                                          fontWeight: FontWeight.bold,
-                                          color: Color(0xFF6D7278),
-                                          letterSpacing: 0.5,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
+                                  ),
                                 ),
-                                Stack(
-                                  clipBehavior: Clip.none,
-                                  children: [
-                                    GestureDetector(
-                                      onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                const EventsScreen(),
+                                Expanded(
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const ScheduleScreen(),
+                                        ),
+                                      );
+                                    },
+                                    child: const Stack(
+                                      clipBehavior: Clip.none,
+                                      children: [
+                                        ScheduleCard(
+                                          scheduleDate: Text(
+                                            '11\nSept',
+                                            style: TextStyle(
+                                              fontSize: 24,
+                                              fontFamily: 'Inter',
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white,
+                                              letterSpacing: 0.5,
+                                            ),
                                           ),
-                                        );
-                                      },
-                                      child: const EventsCard(
-                                        textLabel: Text(
-                                          'Sunkissed Lola Concert',
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontFamily: 'Inter',
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold,
+                                          scheduleTime: Text(
+                                            '7:30AM - 8:30AM',
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              fontFamily: 'Inter',
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                              letterSpacing: 0.8,
+                                            ),
                                           ),
-                                        ),
-                                        cardColor: Colors.white,
-                                        imageAssetPath:
-                                            'assets/images/image_2.jpg',
-                                      ),
-                                    ),
-                                    const Positioned(
-                                      top: 20.0,
-                                      left: 25.0,
-                                      child: Text(
-                                        "Events",
-                                        style: TextStyle(
-                                          fontSize: 15,
-                                          fontFamily: 'Inter',
-                                          fontWeight: FontWeight.bold,
-                                          color: Color(0xFF6D7278),
-                                          letterSpacing: 0.5,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Stack(
-                                  clipBehavior: Clip.none,
-                                  children: [
-                                    DTRCard(
-                                      progress: progress,
-                                      cardColor: Colors.white,
-                                    ),
-                                    const Positioned(
-                                      top: 20.0,
-                                      left: 25.0,
-                                      child: Text(
-                                        "Your DTR",
-                                        style: TextStyle(
-                                          fontSize: 15,
-                                          fontFamily: 'Inter',
-                                          fontWeight: FontWeight.bold,
-                                          color: Color(0xFF6D7278),
-                                          letterSpacing: 0.5,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const ScheduleScreen(),
-                                              // TODO: Fix issue where the bottom navigation in ScheduleScreen becomes hidden or invisible when an upcoming duty is clicked. Ensure that the bottomNav remains visible and functional.
+                                          roomName: Text(
+                                            'CMA-123',
+                                            style: TextStyle(
+                                              fontSize: 17,
+                                              fontFamily: 'Inter',
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                              letterSpacing: 1.2,
                                             ),
-                                          );
-                                        },
-                                        child: const Stack(
-                                          clipBehavior: Clip.none,
-                                          children: [
-                                            ScheduleCard(
-                                              scheduleDate: Text(
-                                                '10\nSept',
-                                                style: TextStyle(
-                                                  fontSize: 24,
-                                                  fontFamily: 'Inter',
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.white,
-                                                  letterSpacing: 0.5,
-                                                ),
-                                              ),
-                                              scheduleTime: Text(
-                                                '10:30AM - 12:00PM',
-                                                style: TextStyle(
-                                                  fontSize: 12,
-                                                  fontFamily: 'Inter',
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold,
-                                                  letterSpacing: 0.8,
-                                                ),
-                                              ),
-                                              roomName: Text(
-                                                'PTC-303',
-                                                style: TextStyle(
-                                                  fontSize: 17,
-                                                  fontFamily: 'Inter',
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold,
-                                                  letterSpacing: 1.2,
-                                                ),
-                                              ),
-                                              cardColor: Color(0xFF6DD400),
-                                            ),
-                                            Positioned(
-                                              top: 0.0,
-                                              left: 26.0,
-                                              child: Text(
-                                                "Upcoming Duties",
-                                                style: TextStyle(
-                                                  fontSize: 15,
-                                                  fontFamily: 'Inter',
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Color(0xFF6D7278),
-                                                  letterSpacing: 0.5,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
+                                          ),
+                                          cardColor: Color(0xFF549E73),
                                         ),
-                                      ),
+                                      ],
                                     ),
-                                    Expanded(
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const ScheduleScreen(),
-                                            ),
-                                          );
-                                        },
-                                        child: const Stack(
-                                          clipBehavior: Clip.none,
-                                          children: [
-                                            ScheduleCard(
-                                              scheduleDate: Text(
-                                                '11\nSept',
-                                                style: TextStyle(
-                                                  fontSize: 24,
-                                                  fontFamily: 'Inter',
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.white,
-                                                  letterSpacing: 0.5,
-                                                ),
-                                              ),
-                                              scheduleTime: Text(
-                                                '7:30AM - 8:30AM',
-                                                style: TextStyle(
-                                                  fontSize: 12,
-                                                  fontFamily: 'Inter',
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold,
-                                                  letterSpacing: 0.8,
-                                                ),
-                                              ),
-                                              roomName: Text(
-                                                'CMA-123',
-                                                style: TextStyle(
-                                                  fontSize: 17,
-                                                  fontFamily: 'Inter',
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold,
-                                                  letterSpacing: 1.2,
-                                                ),
-                                              ),
-                                              cardColor: Color(0xFF549E73),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ],
+                                  ),
                                 ),
                               ],
-                            );
-                          },
+                            ),
+                            // Your DTR
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const DtrScreen(),
+                                  ),
+                                );
+                              },
+                              child: Stack(
+                                clipBehavior: Clip.none,
+                                children: [
+                                  DTRCard(
+                                    progress: (state.hours[0].totalhours /
+                                            state.hours[0].targethours)
+                                        .clamp(0.0, 1.0),
+                                    cardColor: Colors.white,
+                                  ),
+                                  const Positioned(
+                                    top: 20.0,
+                                    left: 25.0,
+                                    child: Text(
+                                      "Your DTR",
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                        fontFamily: 'Inter',
+                                        fontWeight: FontWeight.bold,
+                                        color: Color(0xFF6D7278),
+                                        letterSpacing: 0.5,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            // Announcements
+                            Stack(
+                              clipBehavior: Clip.none,
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            const AnnouncementsScreen(),
+                                      ),
+                                    );
+                                  },
+                                  child: AnnouncementCard(
+                                    textLabel: Text(
+                                      state.announcements[0].title.toString(),
+                                      style: const TextStyle(
+                                        fontSize: 18,
+                                        fontFamily: 'Inter',
+                                        fontWeight: FontWeight.bold,
+                                        color: Color(0xFF6DD400),
+                                        letterSpacing: 0.5,
+                                      ),
+                                    ),
+                                    textBody: Text(
+                                      state.announcements[0].body.toString(),
+                                      style: const TextStyle(
+                                        fontSize: 13,
+                                        fontFamily: 'Inter',
+                                        color: Color(0xFFC1C1C1),
+                                        fontWeight: FontWeight.w400,
+                                        letterSpacing: 0.8,
+                                      ),
+                                    ),
+                                    date: Text(
+                                      state.announcements[0].date.toString(),
+                                      style: const TextStyle(
+                                        fontFamily: 'Inter',
+                                        color: Color(0xFFC1C1C1),
+                                        fontWeight: FontWeight.w500,
+                                        letterSpacing: 1.2,
+                                      ),
+                                    ),
+                                    time: Text(
+                                      state.announcements[0].time.toString(),
+                                      style: const TextStyle(
+                                        fontFamily: 'Inter',
+                                        color: Color(0xFFC1C1C1),
+                                        fontWeight: FontWeight.w500,
+                                        letterSpacing: 1.2,
+                                      ),
+                                    ),
+                                    cardColor: Colors.white,
+                                  ),
+                                ),
+                                const Positioned(
+                                  top: 20.0,
+                                  left: 25.0,
+                                  child: Text(
+                                    "Announcements",
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      fontFamily: 'Inter',
+                                      fontWeight: FontWeight.bold,
+                                      color: Color(0xFF6D7278),
+                                      letterSpacing: 0.5,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            // Events
+                            Stack(
+                              clipBehavior: Clip.none,
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            const EventsScreen(),
+                                      ),
+                                    );
+                                  },
+                                  child: const EventsCard(
+                                    textLabel: Text(
+                                      'Sunkissed Lola Concert',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: 'Inter',
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    cardColor: Colors.white,
+                                    imageAssetPath: 'assets/images/image_2.jpg',
+                                  ),
+                                ),
+                                const Positioned(
+                                  top: 20.0,
+                                  left: 25.0,
+                                  child: Text(
+                                    "Events",
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      fontFamily: 'Inter',
+                                      fontWeight: FontWeight.bold,
+                                      color: Color(0xFF6D7278),
+                                      letterSpacing: 0.5,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                       ),
                     ),
