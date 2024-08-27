@@ -111,7 +111,7 @@ class _StudentHomeState extends State<StudentHome> {
                                       },
                                       child: AnnouncementCard(
                                         textLabel: Text(
-                                          announcement.title,
+                                          announcement.title.toString(),
                                           style: const TextStyle(
                                             fontSize: 18,
                                             fontFamily: 'Inter',
@@ -121,7 +121,7 @@ class _StudentHomeState extends State<StudentHome> {
                                           ),
                                         ),
                                         textBody: Text(
-                                          announcement.body,
+                                          announcement.body.toString(),
                                           style: const TextStyle(
                                             fontSize: 13,
                                             fontFamily: 'Inter',
@@ -131,8 +131,8 @@ class _StudentHomeState extends State<StudentHome> {
                                           ),
                                         ),
                                         date: Text(
-                                          announcement.date,
-                                          style: TextStyle(
+                                          announcement.date.toString(),
+                                          style: const TextStyle(
                                             fontFamily: 'Inter',
                                             color: Color(0xFFC1C1C1),
                                             fontWeight: FontWeight.w500,
@@ -140,8 +140,8 @@ class _StudentHomeState extends State<StudentHome> {
                                           ),
                                         ),
                                         time: Text(
-                                          announcement.time,
-                                          style: TextStyle(
+                                          announcement.time.toString(),
+                                          style: const TextStyle(
                                             fontFamily: 'Inter',
                                             color: Color(0xFFC1C1C1),
                                             fontWeight: FontWeight.w500,
@@ -151,10 +151,10 @@ class _StudentHomeState extends State<StudentHome> {
                                         cardColor: Colors.white,
                                       ),
                                     ),
-                                    Positioned(
+                                    const Positioned(
                                       top: 20.0,
                                       left: 25.0,
-                                      child: const Text(
+                                      child: Text(
                                         "Announcements",
                                         style: TextStyle(
                                           fontSize: 15,
@@ -180,7 +180,7 @@ class _StudentHomeState extends State<StudentHome> {
                                           ),
                                         );
                                       },
-                                      child: EventsCard(
+                                      child: const EventsCard(
                                         textLabel: Text(
                                           'Sunkissed Lola Concert',
                                           style: TextStyle(
@@ -195,10 +195,10 @@ class _StudentHomeState extends State<StudentHome> {
                                             'assets/images/image_2.jpg',
                                       ),
                                     ),
-                                    Positioned(
+                                    const Positioned(
                                       top: 20.0,
                                       left: 25.0,
-                                      child: const Text(
+                                      child: Text(
                                         "Events",
                                         style: TextStyle(
                                           fontSize: 15,
@@ -218,10 +218,10 @@ class _StudentHomeState extends State<StudentHome> {
                                       progress: progress,
                                       cardColor: Colors.white,
                                     ),
-                                    Positioned(
+                                    const Positioned(
                                       top: 20.0,
                                       left: 25.0,
-                                      child: const Text(
+                                      child: Text(
                                         "Your DTR",
                                         style: TextStyle(
                                           fontSize: 15,
@@ -234,7 +234,7 @@ class _StudentHomeState extends State<StudentHome> {
                                     ),
                                   ],
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 10,
                                 ),
                                 Row(
@@ -251,13 +251,13 @@ class _StudentHomeState extends State<StudentHome> {
                                             ),
                                           );
                                         },
-                                        child: Stack(
+                                        child: const Stack(
                                           clipBehavior: Clip.none,
                                           children: [
                                             ScheduleCard(
                                               scheduleDate: Text(
                                                 '10\nSept',
-                                                style: const TextStyle(
+                                                style: TextStyle(
                                                   fontSize: 24,
                                                   fontFamily: 'Inter',
                                                   fontWeight: FontWeight.bold,
@@ -267,7 +267,7 @@ class _StudentHomeState extends State<StudentHome> {
                                               ),
                                               scheduleTime: Text(
                                                 '10:30AM - 12:00PM',
-                                                style: const TextStyle(
+                                                style: TextStyle(
                                                   fontSize: 12,
                                                   fontFamily: 'Inter',
                                                   color: Colors.white,
@@ -290,7 +290,7 @@ class _StudentHomeState extends State<StudentHome> {
                                             Positioned(
                                               top: 0.0,
                                               left: 26.0,
-                                              child: const Text(
+                                              child: Text(
                                                 "Upcoming Duties",
                                                 style: TextStyle(
                                                   fontSize: 15,
@@ -316,13 +316,13 @@ class _StudentHomeState extends State<StudentHome> {
                                             ),
                                           );
                                         },
-                                        child: Stack(
+                                        child: const Stack(
                                           clipBehavior: Clip.none,
                                           children: [
                                             ScheduleCard(
                                               scheduleDate: Text(
                                                 '11\nSept',
-                                                style: const TextStyle(
+                                                style: TextStyle(
                                                   fontSize: 24,
                                                   fontFamily: 'Inter',
                                                   fontWeight: FontWeight.bold,
@@ -332,7 +332,7 @@ class _StudentHomeState extends State<StudentHome> {
                                               ),
                                               scheduleTime: Text(
                                                 '7:30AM - 8:30AM',
-                                                style: const TextStyle(
+                                                style: TextStyle(
                                                   fontSize: 12,
                                                   fontFamily: 'Inter',
                                                   color: Colors.white,

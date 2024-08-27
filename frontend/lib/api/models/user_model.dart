@@ -5,6 +5,9 @@ class UserModel {
   final String firstName;
   final String middleName;
   final String lastName;
+  final String gender;
+  final String contact;
+  final String address;
   final String role;
   final String hkType;
   final String status;
@@ -18,6 +21,9 @@ class UserModel {
     required this.middleName,
     required this.lastName,
     required this.role,
+    required this.gender,
+    required this.contact,
+    required this.address,
     required this.hkType,
     required this.status,
     required this.token,
@@ -30,6 +36,9 @@ class UserModel {
       firstName: map['first_name'] ?? '',
       middleName: map['middle_name'] ?? '',
       lastName: map['last_name'] ?? '',
+      gender: map['gender'] ?? '',
+      contact: map['contact'] ?? '',
+      address: map['address'] ?? '',
       role: map['role'] ?? '',
       hkType: map['hk_type'],
       status: map['status'] ?? '',
@@ -45,6 +54,9 @@ class UserModel {
       'first_name': firstName,
       'middle_name': middleName,
       'last_name': lastName,
+      'gender':gender,
+      'contact':contact,
+      'address':address,
       'role': role,
       'hk_type': hkType,
       'status': status,

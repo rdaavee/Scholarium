@@ -68,7 +68,12 @@ class ApiService {
       final Map<String, dynamic> data = jsonDecode(response.body);
       return AnnouncementModel.fromJson(data);
     } else {
-      throw Exception('Failed to load annoucement data');
+      return const AnnouncementModel(
+          title: "No Announcements Today", 
+          body: "Your future is created by what you do today, not tomorrow.\n — Robert Kiyosaki", 
+          time: "", 
+          date: ""
+        );
     }
   }
 
@@ -87,7 +92,10 @@ class ApiService {
       final Map<String, dynamic> data = jsonDecode(response.body);
       return DtrHoursModel.fromJson(data);
     } else {
-      throw Exception('Failed to load student DTR total hours data');
+      return const DtrHoursModel(
+        totalhours: 0,
+        targethours: 10,
+      );
     }
   }
 

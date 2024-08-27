@@ -102,7 +102,7 @@ class _AnnouncementsPageState extends State<AnnouncementsScreen> {
                                 GestureDetector(
                                   child: AnnouncementCard(
                                     textLabel: Text(
-                                      announcement.title,
+                                      announcement.title.toString(),
                                       style: const TextStyle(
                                         fontFamily: 'Inter',
                                         fontWeight: FontWeight.bold,
@@ -111,13 +111,13 @@ class _AnnouncementsPageState extends State<AnnouncementsScreen> {
                                       ),
                                     ),
                                     textBody: Text(
-                                      announcement.body,
+                                      announcement.body.toString(),
                                       style: const TextStyle(
                                         fontFamily: 'Inter',
                                       ),
                                     ),
-                                    date: Text(announcement.date),
-                                    time: Text(announcement.time),
+                                    date: Text(announcement.date.toString()),
+                                    time: Text(announcement.time.toString()),
                                     cardColor: Colors.white,
                                   ),
                                 ),

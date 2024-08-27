@@ -2,37 +2,43 @@ abstract class ProfileState {}
 
 class ProfileInitial extends ProfileState {}
 
-class ProfileLoading extends ProfileState {}
+class ProfileLoadingState extends ProfileState {}
 
-class ProfileLoaded extends ProfileState {
+class ProfileLoadedSuccessState extends ProfileState {
   final String name;
   final String email;
   final String studentId;
+  final String gender;
+  final String contact;
+  final String address;
   final String hkType;
   final String status;
 
-  ProfileLoaded({
+  ProfileLoadedSuccessState({
     required this.name,
     required this.email,
     required this.studentId,
+    required this.gender,
+    required this.contact,
+    required this.address,
     required this.hkType,
     required this.status,
   });
 }
 
-class ProfileError extends ProfileState {
+class ProfileErrorState extends ProfileState {
   final String message;
 
-  ProfileError({required this.message});
+  ProfileErrorState({required this.message});
 }
 
-class LogoutInitial extends ProfileState {}
+class LogoutInitialState extends ProfileState {}
 
-class LogoutInProgress extends ProfileState {}
+class LogoutLoadingState extends ProfileState {}
 
-class LogoutSuccess extends ProfileState {}
+class LogoutLoadedSuccessState extends ProfileState {}
 
-class LogoutError extends ProfileState {
+class LogoutErrorState extends ProfileState {
   final String message;
-  LogoutError({required this.message});
+  LogoutErrorState({required this.message});
 }
