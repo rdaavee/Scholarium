@@ -23,7 +23,7 @@ class StudentsBloc extends Bloc<StudentsEvent, StudentsState> {
     emit(StudentsLoadingState());
     await Future.delayed(const Duration(seconds: 2));
     emit(
-      StudentsLoadedSuccessState(announcements: const [], hours: []),
+      StudentsLoadedSuccessState(announcements: const [], hours: const []),
     );
   }
 
@@ -34,12 +34,10 @@ class StudentsBloc extends Bloc<StudentsEvent, StudentsState> {
     try {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       final token = prefs.getString('token');
-      print(token);
-      List<AnnouncementModel> announcements =
-          await _apiService.fetchAnnoucementData();
-      DtrHoursModel totalhours =
-          await _apiService.fetchDtrTotalHoursData(token: token);
-      print('Fetched announcements: $announcements');
+  
+      List<AnnouncementModel> announcements = await _apiService.fetchAnnoucementData();
+      DtrHoursModel totalhours = await _apiService.fetchDtrTotalHoursData(token: token);
+      
       emit(StudentsLoadedSuccessState(
         announcements: announcements,
         hours: [totalhours],

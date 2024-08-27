@@ -27,9 +27,10 @@ class ProfileScreen extends StatelessWidget {
         backgroundColor: ColorPalette.primary,
         body: BlocBuilder<ProfileBloc, ProfileState>(
           builder: (context, state) {
-            if (state is ProfileLoading) {
+            print('Building UI with state: $state');
+            if (state is ProfileLoadingState) {
               return Center(child: CircularProgressIndicator());
-            } else if (state is ProfileLoaded) {
+            } else if (state is ProfileLoadedSuccessState) {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -77,9 +78,19 @@ class ProfileScreen extends StatelessWidget {
                                 const SizedBox(height: 15),
                                 const DividerWidget(),
                                 const SizedBox(height: 15),
-                                InfoRow(
-                                    label: 'Student ID',
-                                    value: state.studentId),
+                                InfoRow(label: 'Student ID', value: state.studentId),
+                                const SizedBox(height: 15),
+                                const DividerWidget(),
+                                const SizedBox(height: 15),
+                                InfoRow(label: 'Gender', value: state.gender),
+                                const SizedBox(height: 15),
+                                const DividerWidget(),
+                                const SizedBox(height: 15),
+                                InfoRow(label: 'Contact #', value: state.contact),
+                                const SizedBox(height: 15),
+                                const DividerWidget(),
+                                const SizedBox(height: 15),
+                                InfoRow(label: 'Address', value: state.address),
                                 const SizedBox(height: 15),
                                 const DividerWidget(),
                                 const SizedBox(height: 15),
@@ -106,18 +117,18 @@ class ProfileScreen extends StatelessWidget {
                   ),
                 ],
               );
-            } else if (state is ProfileError) {
+            } else if (state is ProfileErrorState) {
               return Center(
                 child: Text(
                   state.message,
                   style: const TextStyle(color: Colors.red),
                 ),
               );
-            } else if (state is LogoutSuccess) {
+            } else if (state is LogoutLoadedSuccessState) {
               // Navigate to the login screen or another appropriate screen
               Navigator.pushReplacementNamed(context, '/login');
               return Container(); // or a splash screen
-            } else if (state is LogoutError) {
+            } else if (state is LogoutErrorState) {
               return Center(
                 child: Text(
                   state.message,
@@ -125,7 +136,7 @@ class ProfileScreen extends StatelessWidget {
                 ),
               );
             } else {
-              return Center(child: Text('No Data Available'));
+              return const Center(child: Text('No Data Available'));
             }
           },
         ),

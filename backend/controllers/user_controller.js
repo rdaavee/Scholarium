@@ -6,6 +6,7 @@ const pool = mysql.createPool({
   password: '',
   database: 'ishkolarium'
 });
+const moment = require('moment');
 
 //Get Announcement
 exports.getAnnouncements = (req, res) => {
@@ -45,8 +46,18 @@ exports.getLatestAnnouncement = (req, res) => {
           return res.status(500).json({ error: 'Internal Server Error' });
         }
 
-        res.status(200).json(result[0]); 
-      }
+        if (result.length > 0) {
+          const latestAnnouncement = result[0];
+          const announcementDate = moment(latestAnnouncement.date); // Assuming date is stored in 'YYYY-MM-DD' format
+          const currentDate = moment().format('YYYY-MM-DD'); // Get today's date in 'YYYY-MM-DD' format
+
+          if (announcementDate.isSame(currentDate)) {
+            res.status(200).json(latestAnnouncement);
+          } else {
+            res.status(204).json({ message: 'No data today' });
+          }
+        }
+      } 
     );
   });
 };

@@ -16,43 +16,49 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
   Future<void> _onLoadProfile(
       LoadProfileEvent event, Emitter<ProfileState> emit) async {
-    emit(ProfileLoading());
+    emit(ProfileLoadingState());
 
     try {
       final response = await _apiService.fetchProfileData(event.token);
 
       if (response.isEmpty) {
-        emit(ProfileLoaded(
+        emit(ProfileLoadedSuccessState(
           name: 'N/A',
           email: 'N/A',
           studentId: 'N/A',
+          gender: 'N/A',
+          contact: 'N/A',
+          address: 'N/A',
           hkType: 'N/A',
           status: 'N/A',
         ));
       } else {
         final user = UserModel.fromMap(response);
 
-        emit(ProfileLoaded(
+        emit(ProfileLoadedSuccessState(
           name: '${user.firstName} ${user.lastName}',
           email: user.email,
           studentId: user.schoolID,
-          hkType: user.role,
+          gender: user.gender,
+          contact: user.contact,
+          address: user.address,
+          hkType: user.hkType,
           status: user.status,
         ));
       }
     } catch (e) {
-      emit(ProfileError(message: 'Failed to load profile data: $e'));
+      emit(ProfileErrorState(message: 'Failed to load profile data: $e'));
     }
   }
 
   Future<void> _onLogout(LogoutEvent event, Emitter<ProfileState> emit) async {
-    emit(ProfileLoading());
+    emit(ProfileLoadingState());
 
     try {
       await _apiService.logout(event.context);
       emit(ProfileInitial());
     } catch (e) {
-      emit(LogoutError(message: 'Failed to logout: $e'));
+      emit(LogoutErrorState(message: 'Failed to logout: $e'));
     }
   }
 
@@ -61,7 +67,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     if (token.isNotEmpty) {
       add(LoadProfileEvent(token: token));
     } else {
-      emit(ProfileError(message: 'No authentication token found.'));
+      emit(ProfileErrorState(message: 'No authentication token found.'));
     }
   }
 
