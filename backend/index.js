@@ -3,7 +3,9 @@ require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const userRoutes = require('./routers/user_routes'); 
+const professorRoutes = require('./routers/professor_routes'); 
 const adminRoutes = require('./routers/admin_routes'); 
+const loginRoutes = require('./routers/login_routes'); 
 const path = require('path');
 
 
@@ -15,7 +17,10 @@ app.use(bodyParser.json());
 
 // Use routes
 app.use('/api', userRoutes);
+app.use('/api', professorRoutes);
 app.use('/api', adminRoutes);
+app.use('/api', loginRoutes);
+
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.listen(PORT, () => {
