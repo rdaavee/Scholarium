@@ -1,167 +1,228 @@
 import 'package:flutter/material.dart';
+import 'package:isHKolarium/constants/colors.dart';
+import 'package:isHKolarium/features/professors/widgets/duty_card.dart';
 
 class ProfessorScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Hi, Professor'),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: GestureDetector(
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: Text('Post Something'),
-                        content: TextField(
-                          decoration: InputDecoration(
-                            hintText: 'Write your post here...',
+      backgroundColor: ColorPalette.primary,
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 30.0),
+            child: Container(
+              height: 100.0,
+              color: ColorPalette.primary,
+              alignment: Alignment.centerLeft,
+              child: const Text(
+                "Hi, Professor",
+                style: TextStyle(
+                  fontSize: 17,
+                  fontFamily: 'Montserrat',
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 1.1,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            child: Container(
+              height: MediaQuery.of(context).size.height - 100.0,
+              decoration: const BoxDecoration(
+                color: Color(0xFFF0F3F4),
+                borderRadius: BorderRadius.vertical(
+                  top: Radius.circular(20),
+                ),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        showModalBottomSheet(
+                          context: context,
+                          shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.vertical(top: Radius.circular(20)),
                           ),
+                          isScrollControlled: true,
+                          backgroundColor: Colors.white,
+                          builder: (BuildContext context) {
+                            return Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Center(
+                                    child: SizedBox(
+                                      width: 100,
+                                      child: Divider(
+                                        height: 20,
+                                        thickness: 0.8,
+                                        color: Color(0xFFC1C1C1),
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                  Text(
+                                    'Post Something',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: 'Inter',
+                                      fontSize: 18,
+                                      color: Color(0xFF6D7278),
+                                    ),
+                                  ),
+                                  SizedBox(height: 10),
+                                  TextField(
+                                    maxLines: 5,
+                                    decoration: InputDecoration(
+                                      hintText: 'Write something...',
+                                      border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(8.0),
+                                        borderSide: BorderSide(
+                                          color: Color(0xFF6D7278),
+                                        ),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(8.0),
+                                        borderSide: BorderSide(
+                                          color: Color(0xFF549E73),
+                                        ),
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(8.0),
+                                        borderSide: BorderSide(
+                                          color: Color(0xFF6D7278),
+                                        ),
+                                      ),
+                                      contentPadding: EdgeInsets.symmetric(
+                                        vertical: 20,
+                                        horizontal: 20,
+                                      ),
+                                    ),
+                                    style: TextStyle(
+                                      color: Color(0xFF000000),
+                                    ),
+                                  ),
+                                  SizedBox(height: 20),
+                                  Align(
+                                    alignment: Alignment.centerRight,
+                                    child: ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(8.0),
+                                        ),
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 20, vertical: 15),
+                                      ).copyWith(
+                                        elevation:
+                                            ButtonStyleButton.allOrNull(0.0),
+                                        backgroundColor: WidgetStateProperty
+                                            .resolveWith<Color>(
+                                          (Set<WidgetState> states) {
+                                            if (states.contains(
+                                                WidgetState.hovered)) {
+                                              return Color(0xFF549E73);
+                                            }
+                                            return Color(0xFFC1C1C1);
+                                          },
+                                        ),
+                                      ),
+                                      child: Text('Post'),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        );
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.only(bottom: 16.0),
+                        padding: const EdgeInsets.all(10.0),
+                        decoration: BoxDecoration(
+                          color: Colors.transparent,
+                          borderRadius: BorderRadius.circular(8.0),
+                          border: Border.all(color: Colors.transparent),
                         ),
-                        actions: [
-                          TextButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: Text('Post'),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            CircleAvatar(
+                              backgroundColor: Colors.grey[300],
+                              radius: 25,
+                              child: Icon(Icons.person, color: Colors.white),
+                            ),
+                            SizedBox(width: 10),
+                            Expanded(
+                              child: Text(
+                                'Post something',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.normal,
+                                  fontFamily: 'Inter',
+                                  fontSize: 15,
+                                  color: Color(0xFFC1C1C1),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Divider(
+                      thickness: 0.2,
+                      color: Color(0xFF6D7278),
+                    ),
+                    SizedBox(height: 10),
+                    Text(
+                      'Ongoing Duties',
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontFamily: 'Inter',
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF6D7278),
+                        letterSpacing: 0.5,
+                      ),
+                    ),
+                    SizedBox(height: 16),
+                    Expanded(
+                      child: ListView(
+                        children: [
+                          DutyCard(
+                            cardColor: Color(0xFF549E73),
+                            time: '7:30AM-9:00AM',
+                            roomName: 'PTC-206',
+                          ),
+                          SizedBox(height: 16),
+                          DutyCard(
+                            cardColor: Color(0xFF6DD400),
+                            time: '7:30AM-9:00AM',
+                            roomName: 'PTC-206',
                           ),
                         ],
-                      );
-                    },
-                  );
-                },
-                child: Container(
-                  height: 50,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8.0),
-                    border: Border.all(color: Colors.grey),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      children: [
-                        Icon(Icons.person, color: Colors.grey),
-                        SizedBox(width: 10),
-                        Text(
-                          'Post something',
-                          style: TextStyle(color: Colors.grey),
-                        ),
-                      ],
+                      ),
                     ),
-                  ),
+                  ],
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Text(
-                'Ongoing Duties',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Column(
-                children: [
-                  DutyCard(
-                    color: Colors.green[400]!,
-                    time: '7:30AM-9:00AM',
-                    location: 'PTC-206',
-                  ),
-                  SizedBox(height: 16),
-                  DutyCard(
-                    color: Colors.lightGreen,
-                    time: '7:30AM-9:00AM',
-                    location: 'PTC-206',
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.schedule), label: 'Schedule'),
-          BottomNavigationBarItem(icon: Icon(Icons.notifications), label: 'Notification'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+          ),
         ],
-        currentIndex: 0,
-        selectedItemColor: Colors.black,
-        unselectedItemColor: Colors.grey,
-        showUnselectedLabels: true,
-        onTap: (index) {
-          // Handle bottom navigation taps here
-        },
-      ),
-    );
-  }
-}
-
-class DutyCard extends StatelessWidget {
-  final Color color;
-  final String time;
-  final String location;
-
-  const DutyCard({
-    required this.color,
-    required this.time,
-    required this.location,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      color: color,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Facilitator Duty',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
-            ),
-            SizedBox(height: 10),
-            Text(
-              time,
-              style: TextStyle(fontSize: 16, color: Colors.white),
-            ),
-            SizedBox(height: 5),
-            Text(
-              location,
-              style: TextStyle(fontSize: 16, color: Colors.white),
-            ),
-            SizedBox(height: 10),
-            Row(
-              children: [
-                Text(
-                  'People',
-                  style: TextStyle(fontSize: 16, color: Colors.white),
-                ),
-                SizedBox(width: 10),
-                CircleAvatar(backgroundColor: Colors.white),
-                SizedBox(width: 5),
-                CircleAvatar(backgroundColor: Colors.grey[300]),
-                SizedBox(width: 5),
-                CircleAvatar(backgroundColor: Colors.grey),
-              ],
-            ),
-          ],
-        ),
       ),
     );
   }
