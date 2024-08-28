@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:isHKolarium/api/models/announcement_model.dart';
 import 'package:isHKolarium/api/models/dtr_total_hours_model.dart';
+import 'package:isHKolarium/api/models/update_password_model.dart';
 import 'package:isHKolarium/features/login/ui/login_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -124,5 +125,31 @@ class ApiService {
     await prefs.remove('token');
 
     Navigator.of(context).pushReplacementNamed(LoginPage.routeName);
+  }
+
+  Future<UpdatePasswordModel> updatePassword({
+    required String token,
+    required String oldPassword,
+    required String newPassword,
+    required String confirmPassword,
+  }) async {
+    final response = await http.put(
+      Uri.parse('$baseUrl/user/updatePassword/$token'),
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(<String, dynamic>{
+        'oldPassword': oldPassword,
+        'newPassword': newPassword,
+        'confirmPassword': confirmPassword,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      return UpdatePasswordModel.fromJson(
+          jsonDecode(response.body) as Map<String, dynamic>);
+    } else {
+      throw Exception('Failed to update student password data');
+    }
   }
 }
