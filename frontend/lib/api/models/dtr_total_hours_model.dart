@@ -1,16 +1,16 @@
 class DtrHoursModel {
-  final int totalhours;
-  final int targethours;
+  final double totalhours;
+  final double targethours;
 
   const DtrHoursModel({
     required this.totalhours,
     required this.targethours,
   });
 
-  factory DtrHoursModel.fromJson(Map<String, dynamic> map) {
+  factory DtrHoursModel.fromJson(Map<String, dynamic> json) {
     return DtrHoursModel(
-      totalhours: map['totalhours'] as int,
-      targethours: map['targethours'] as int,
+      totalhours: (json['totalhours'] as num).toDouble(),
+      targethours: (json['targethours'] as num).toDouble(),
     );
   }
 }

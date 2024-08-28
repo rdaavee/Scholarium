@@ -3,7 +3,9 @@ require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const userRoutes = require('./routers/user_routes'); 
+const professorRoutes = require('./routers/professor_routes'); 
 const adminRoutes = require('./routers/admin_routes'); 
+const loginRoutes = require('./routers/login_routes'); 
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -13,7 +15,9 @@ app.use(bodyParser.json());
 
 // Use routes
 app.use('/api', userRoutes);
+app.use('/api', professorRoutes);
 app.use('/api', adminRoutes);
+app.use('/api', loginRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

@@ -3,11 +3,13 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:isHKolarium/api/models/announcement_model.dart';
 import 'package:isHKolarium/api/models/dtr_total_hours_model.dart';
+import 'package:isHKolarium/api/models/update_password_model.dart';
 import 'package:isHKolarium/features/login/ui/login_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ApiService {
   final String baseUrl = 'http://localhost:3000/api';
+  // final String baseUrl = 'http://10.0.2.2:3000/api';
 
   //Login
   Future<Map<String, dynamic>> loginUser(
@@ -100,10 +102,9 @@ class ApiService {
   }
 
   Future<Map<String, dynamic>> fetchProfileData(String token) async {
-    final url = Uri.parse('$baseUrl/user/profile/$token');
     try {
       final response = await http.get(
-        url,
+        Uri.parse('$baseUrl/user/profile/$token'),
         headers: {'Authorization': 'Bearer $token'},
       );
 
@@ -124,5 +125,31 @@ class ApiService {
     await prefs.remove('token');
 
     Navigator.of(context).pushReplacementNamed(LoginPage.routeName);
+  }
+
+  Future<UpdatePasswordModel> updatePassword({
+    required String token,
+    required String oldPassword,
+    required String newPassword,
+    required String confirmPassword,
+  }) async {
+    final response = await http.put(
+      Uri.parse('$baseUrl/user/updatePassword/$token'),
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(<String, dynamic>{
+        'oldPassword': oldPassword,
+        'newPassword': newPassword,
+        'confirmPassword': confirmPassword,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      return UpdatePasswordModel.fromJson(
+          jsonDecode(response.body) as Map<String, dynamic>);
+    } else {
+      throw Exception('Failed to update student password data');
+    }
   }
 }

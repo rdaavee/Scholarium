@@ -14,7 +14,7 @@ class StudentsBloc extends Bloc<StudentsEvent, StudentsState> {
 
   StudentsBloc(this._apiService) : super(StudentsInitial()) {
     on<StudentsInitialEvent>(studentInitialEvents);
-    on<FetchAnnouncementEvent>(fetchAnnoucementEvent);
+    on<FetchAllEvent>(fetchAllEvent);
     on<FetchLatestEvent>(fetchLatestEvent);
   }
 
@@ -27,8 +27,8 @@ class StudentsBloc extends Bloc<StudentsEvent, StudentsState> {
     );
   }
 
-  Future<void> fetchAnnoucementEvent(
-      FetchAnnouncementEvent event, Emitter<StudentsState> emit) async {
+  Future<void> fetchAllEvent(
+      FetchAllEvent event, Emitter<StudentsState> emit) async {
     emit(StudentsLoadingState());
 
     try {

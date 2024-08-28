@@ -20,7 +20,7 @@ class _AnnouncementsPageState extends State<AnnouncementsScreen> {
     super.initState();
     final apiService = ApiService();
     studentBloc = StudentsBloc(apiService);
-    studentBloc.add(FetchAnnouncementEvent());
+    studentBloc.add(FetchAllEvent());
   }
 
   @override

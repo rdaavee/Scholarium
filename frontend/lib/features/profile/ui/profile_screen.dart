@@ -17,8 +17,7 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final token =
-        'token'; // Replace this with the actual method to retrieve the token
+    final token = 'token'; // Replace this with the actual method to retrieve the token
 
     return BlocProvider(
       create: (context) =>
@@ -29,7 +28,7 @@ class ProfileScreen extends StatelessWidget {
           builder: (context, state) {
             print('Building UI with state: $state');
             if (state is ProfileLoadingState) {
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             } else if (state is ProfileLoadedSuccessState) {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

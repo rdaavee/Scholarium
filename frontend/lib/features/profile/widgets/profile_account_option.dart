@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:isHKolarium/features/profile/ui/profile_update_password.dart';
 import 'package:isHKolarium/features/profile/widgets/profile_divider.dart';
 import 'package:isHKolarium/api/api_service/api_service.dart';
 
@@ -11,7 +12,17 @@ class AccountOptions extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildOption(FontAwesomeIcons.lock, 'Change Password'),
+        GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const ProfileChangePassword(),
+              ),
+            );
+          },
+          child: _buildOption(FontAwesomeIcons.lock, 'Change Password'),
+        ),
         const SizedBox(height: 16),
         const DividerWidget(),
         const SizedBox(height: 20),

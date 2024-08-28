@@ -4,5 +4,5 @@ part of 'students_bloc.dart';
 abstract class StudentsEvent {}
 
 class StudentsInitialEvent extends StudentsEvent {}
-class FetchAnnouncementEvent extends StudentsEvent {}
+class FetchAllEvent extends StudentsEvent {}
 class FetchLatestEvent extends StudentsEvent {}

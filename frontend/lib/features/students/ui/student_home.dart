@@ -373,10 +373,7 @@ class _StudentHomeState extends State<StudentHome> {
               ),
             );
           } else {
-            return const Scaffold(
-              backgroundColor: ColorPalette.primary,
-              body: Center(child: Text('No Data')),
-            );
+            return const Scaffold();
           }
         },
       ),
