@@ -64,7 +64,10 @@ class ProfileScreen extends StatelessWidget {
                         child: ListView(
                           children: [
                             const SizedBox(height: 50),
-                            const ProfileCircle(),
+                            ProfileCircle(
+                              profilePictureUrl:
+                                  state.profilePicture, // Pass the URL here
+                            ),
                             const SizedBox(height: 80),
                             InfoSection(
                               title: 'BASIC INFORMATION',
@@ -78,7 +81,9 @@ class ProfileScreen extends StatelessWidget {
                                 const SizedBox(height: 15),
                                 const DividerWidget(),
                                 const SizedBox(height: 15),
-                                InfoRow(label: 'Student ID', value: state.studentId),
+                                InfoRow(
+                                    label: 'Student ID',
+                                    value: state.studentId),
                                 const SizedBox(height: 15),
                                 const DividerWidget(),
                                 const SizedBox(height: 15),
@@ -86,7 +91,8 @@ class ProfileScreen extends StatelessWidget {
                                 const SizedBox(height: 15),
                                 const DividerWidget(),
                                 const SizedBox(height: 15),
-                                InfoRow(label: 'Contact #', value: state.contact),
+                                InfoRow(
+                                    label: 'Contact #', value: state.contact),
                                 const SizedBox(height: 15),
                                 const DividerWidget(),
                                 const SizedBox(height: 15),

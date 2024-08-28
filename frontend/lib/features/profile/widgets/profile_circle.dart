@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 
 class ProfileCircle extends StatelessWidget {
-  const ProfileCircle({super.key});
+  final String profilePictureUrl; // Add this field
+
+  const ProfileCircle(
+      {super.key, required this.profilePictureUrl}); // Add this parameter
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 170,
-      height: 170,
-      decoration: BoxDecoration(
-        color: Color(0xFFECECEC),
-        shape: BoxShape.circle,
-      ),
+    return CircleAvatar(
+      radius: 85, // Adjust the size as needed
+      backgroundColor: Color(0xFFECECEC),
+      backgroundImage: NetworkImage(profilePictureUrl),
+      child: profilePictureUrl.isEmpty
+          ? Icon(Icons.person, size: 80, color: Colors.grey[800])
+          : null,
     );
   }
 }
