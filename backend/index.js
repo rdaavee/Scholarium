@@ -1,5 +1,6 @@
 //imports
 require('dotenv').config();
+const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 const userRoutes = require('./routers/user_routes'); 
@@ -12,6 +13,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // Use routes
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/api', userRoutes);
 app.use('/api', adminRoutes);
 

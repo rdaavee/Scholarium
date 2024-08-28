@@ -1,18 +1,9 @@
-const mysql = require('mysql');
 const jwt = require('jsonwebtoken');
 const secretKey = process.env.SECRET_KEY;
-
-// Set up MySQL pool
-const pool = mysql.createPool({
-  connectionLimit: 10,
-  host: 'localhost',
-  user: 'root',
-  password: '',
-  database: 'ishkolarium'
-});
+const db = require('../config/db');
 
 exports.login = (req, res) => {
-  pool.getConnection((error, connection) => {
+  db.getConnection((error, connection) => {
     if (error) {
       console.error('Error getting MySQL connection:', error);
       return res.status(500).json({ message: 'Server error occurred' });

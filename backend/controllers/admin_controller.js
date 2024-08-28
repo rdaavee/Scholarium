@@ -1,15 +1,8 @@
-const mysql = require('mysql');
-const pool = mysql.createPool({
-  connectionLimit: 10,
-  host: 'localhost',
-  user: 'root',
-  password: '',
-  database: 'ishkolarium'
-});
+const db = require('../config/db');
 
 //Create a user
 exports.createUser = (req, res) => {
-    pool.getConnection((error, connection) => {
+    db.getConnection((error, connection) => {
         if (error) throw error;
         console.log(`connected as id ${connection.threadId}`);
 
@@ -30,7 +23,7 @@ exports.createUser = (req, res) => {
 
 //Update user
 exports.updateUser = (req, res) => {
-    pool.getConnection((error, connection) => {
+    db.getConnection((error, connection) => {
         if (error) {
             console.error('Error getting connection:', error);
             return res.status(500).json({ message: 'Error connecting to the database' });
@@ -69,7 +62,7 @@ exports.updateUser = (req, res) => {
 
 //Delete a user
 exports.deleteUser = (req, res) => {
-    pool.getConnection((error, connection) => {
+    db.getConnection((error, connection) => {
         if (error) {
             console.error('Error getting MySQL connection:', error);
             return res.status(500).json({ message: 'Server error occurred' });
@@ -95,7 +88,7 @@ exports.deleteUser = (req, res) => {
 
 //List all users
 exports.getAllUsers = (req, res) => {
-    pool.getConnection((error, connection) => {
+    db.getConnection((error, connection) => {
         if (error) throw error;
         console.log(`connected as id ${connection.threadId}`);
   
@@ -114,7 +107,7 @@ exports.getAllUsers = (req, res) => {
 
 //Create announcement
 exports.createAnnounce = (req, res) => {
-    pool.getConnection((error, connection) => {
+    db.getConnection((error, connection) => {
         if (error) throw error;
         console.log(`connected as id ${connection.threadId}`);
 
@@ -135,7 +128,7 @@ exports.createAnnounce = (req, res) => {
 
 //Update announcement
 exports.updateAnnounce = (req, res) => {
-    pool.getConnection((error, connection) => {
+    db.getConnection((error, connection) => {
         if (error) throw error;
         console.log(`connected as id ${connection.threadId}`);
 
@@ -161,7 +154,7 @@ exports.updateAnnounce = (req, res) => {
 
 //Delete announcement
 exports.deleteAnnounce = (req, res) => {
-    pool.getConnection((error, connection) => {
+    db.getConnection((error, connection) => {
         if (error) {
             console.error('Error getting MySQL connection:', error);
             return res.status(500).json({ message: 'Server error occurred' });

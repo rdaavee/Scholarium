@@ -1,15 +1,8 @@
-const mysql = require('mysql');
-const pool = mysql.createPool({
-  connectionLimit: 10,
-  host: 'localhost',
-  user: 'root',
-  password: '',
-  database: 'ishkolarium'
-});
+const db = require('../config/db');
 
 //Get Announcement
 exports.getAnnouncements = (req, res) => {
-    pool.getConnection((error, connection) => {
+    db.getConnection((error, connection) => {
         if (error) throw error;
         console.log(`connected as id ${connection.threadId}`);
   
@@ -28,7 +21,7 @@ exports.getAnnouncements = (req, res) => {
 
 //Create post
 exports.createPost = (req, res) => {
-    pool.getConnection((error, connection) => {
+    db.getConnection((error, connection) => {
         if (error) throw error;
         console.log(`connected as id ${connection.threadId}`);
 
@@ -49,7 +42,7 @@ exports.createPost = (req, res) => {
 
 //Get user posts
 exports.getUserPosts = (req, res) => {
-  pool.getConnection((error, connection) => {
+  db.getConnection((error, connection) => {
       if (error) throw error;
       console.log(`connected as id ${connection.threadId}`);
 
@@ -68,7 +61,7 @@ exports.getUserPosts = (req, res) => {
 
 //Update post
 exports.updatePost = (req, res) => {
-  pool.getConnection((error, connection) => {
+  db.getConnection((error, connection) => {
       if (error) {
           console.error('Error getting connection:', error);
           return res.status(500).json({ message: 'Error connecting to the database' });
@@ -109,7 +102,7 @@ exports.updatePost = (req, res) => {
 
 //Get specific user
 exports.getUserProfile = (req, res) => {
-  pool.getConnection((error, connection) => {
+  db.getConnection((error, connection) => {
     if (error) {
       console.error('Error getting MySQL connection:', error);
       return res.status(500).json({ message: 'Server error occurred' });
@@ -136,7 +129,7 @@ exports.getUserProfile = (req, res) => {
 
 //Get Profs Schedule
 exports.getProfSchedule = (req, res) => {
-  pool.getConnection((error, connection) => {
+  db.getConnection((error, connection) => {
     if (error) {
       console.error('Error getting MySQL connection:', error);
       return res.status(500).json({ message: 'Server error occurred' });

@@ -1,16 +1,9 @@
-const mysql = require('mysql');
-const pool = mysql.createPool({
-  connectionLimit: 10,
-  host: 'localhost',
-  user: 'root',
-  password: '',
-  database: 'ishkolarium'
-});
+const db = require('../config/db');
 const moment = require('moment');
 
 //Get Announcement
 exports.getAnnouncements = (req, res) => {
-  pool.getConnection((error, connection) => {
+  db.getConnection((error, connection) => {
       if (error) throw error;
       console.log(`connected as id ${connection.threadId}`);
 
@@ -29,7 +22,7 @@ exports.getAnnouncements = (req, res) => {
 
 //Get Latest Announcement
 exports.getLatestAnnouncement = (req, res) => {
-  pool.getConnection((error, connection) => {
+  db.getConnection((error, connection) => {
     if (error) {
       console.error('Error getting database connection:', error);
       return res.status(500).json({ error: 'Internal Server Error' });
@@ -65,7 +58,7 @@ exports.getLatestAnnouncement = (req, res) => {
 
 //Get posts
 exports.getPosts = (req, res) => {
-  pool.getConnection((error, connection) => {
+  db.getConnection((error, connection) => {
       if (error) throw error;
       console.log(`connected as id ${connection.threadId}`);
 
@@ -84,7 +77,7 @@ exports.getPosts = (req, res) => {
 
 //Get specific user
 exports.getUserProfile = (req, res) => {
-  pool.getConnection((error, connection) => {
+  db.getConnection((error, connection) => {
     if (error) {
       console.error('Error getting MySQL connection:', error);
       return res.status(500).json({ message: 'Server error occurred' });
@@ -101,7 +94,25 @@ exports.getUserProfile = (req, res) => {
       }
 
       if (rows.length > 0) {
-        res.status(200).json(rows[0]);
+        const user = rows[0];
+        const baseUrl = 'http://localhost:3000';
+
+        res.status(200).json({
+          id: user.id,
+          school_id: user.school_id,
+          email: user.email,
+          first_name: user.first_name,
+          middle_name: user.middle_name,
+          last_name: user.last_name,
+          profile_picture: user.profile_picture ? `${baseUrl}/uploads/profile_pictures/${user.profile_picture}` : null,
+          gender: user.gender,
+          contact: user.contact,
+          address: user.address,
+          role: user.role,
+          hk_type: user.hk_type,
+          status: user.status,
+          token: user.token
+        });
       } else {
         res.status(404).json({ message: 'User not found' });
       }
@@ -109,9 +120,10 @@ exports.getUserProfile = (req, res) => {
   });
 };
 
+
 //Get User Schedule
 exports.getUserSchedule = (req, res) => {
-  pool.getConnection((error, connection) => {
+  db.getConnection((error, connection) => {
     if (error) {
       console.error('Error getting MySQL connection:', error);
       return res.status(500).json({ message: 'Server error occurred' });
@@ -138,7 +150,7 @@ exports.getUserSchedule = (req, res) => {
 
 //Get User DTR
 exports.getUserDTR = (req, res) => {
-  pool.getConnection((error, connection) => {
+  db.getConnection((error, connection) => {
     if (error) {
       console.error('Error getting MySQL connection:', error);
       return res.status(500).json({ message: 'Server error occurred' });
@@ -167,7 +179,7 @@ exports.getUserTotalHours = (req, res) => {
   const token = req.params.token;
 
   // Step 1: Validate the Token and Get User ID
-  pool.getConnection((error, connection) => {
+  db.getConnection((error, connection) => {
     if (error) {
       console.error('Error getting MySQL connection:', error);
       return res.status(500).json({ message: 'Server error occurred' });
@@ -181,9 +193,7 @@ exports.getUserTotalHours = (req, res) => {
         console.error('Error executing query:', error);
         return res.status(500).json({ message: 'Server error occurred' });
       }
-
       
-
       const student_id = userResult[0].school_id;
 
       connection.query('SELECT SUM(hours_rendered) AS total_hours, hours_to_rendered AS target_hours FROM dtr WHERE school_id = ?', [student_id], (error, result) => {
