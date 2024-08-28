@@ -101,13 +101,32 @@ exports.getUserProfile = (req, res) => {
       }
 
       if (rows.length > 0) {
-        res.status(200).json(rows[0]);
+        const user = rows[0];
+        const baseUrl = 'http://localhost:3000'; // Update this with your server's base URL
+
+        res.status(200).json({
+          id: user.id,
+          school_id: user.school_id,
+          email: user.email,
+          first_name: user.first_name,
+          middle_name: user.middle_name,
+          last_name: user.last_name,
+          profile_picture: user.profile_picture ? `${baseUrl}/uploads/profile_pictures/${user.profile_picture}` : null, // Include full URL
+          gender: user.gender,
+          contact: user.contact,
+          address: user.address,
+          role: user.role,
+          hk_type: user.hk_type,
+          status: user.status,
+          token: user.token
+        });
       } else {
         res.status(404).json({ message: 'User not found' });
       }
     });
   });
 };
+
 
 //Get User Schedule
 exports.getUserSchedule = (req, res) => {

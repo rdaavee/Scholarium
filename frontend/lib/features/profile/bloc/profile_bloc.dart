@@ -31,6 +31,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
           address: 'N/A',
           hkType: 'N/A',
           status: 'N/A',
+          profilePicture: '',
         ));
       } else {
         final user = UserModel.fromMap(response);
@@ -44,6 +45,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
           address: user.address,
           hkType: user.hkType,
           status: user.status,
+          profilePicture: user.profilePicture,
         ));
       }
     } catch (e) {

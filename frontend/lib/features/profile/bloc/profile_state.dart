@@ -13,6 +13,7 @@ class ProfileLoadedSuccessState extends ProfileState {
   final String address;
   final String hkType;
   final String status;
+  final String profilePicture;
 
   ProfileLoadedSuccessState({
     required this.name,
@@ -23,6 +24,7 @@ class ProfileLoadedSuccessState extends ProfileState {
     required this.address,
     required this.hkType,
     required this.status,
+    required this.profilePicture,
   });
 }
 
