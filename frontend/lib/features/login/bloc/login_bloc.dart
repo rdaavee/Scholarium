@@ -55,7 +55,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             case 'Student':
               emit(LoginNavigateToStudentHomePageActionState());
               break;
-            case 'Teacher':
+            case 'Professor':
               emit(LoginNavigateToProfessorHomePageActionState());
               break;
             case 'Administrator':
