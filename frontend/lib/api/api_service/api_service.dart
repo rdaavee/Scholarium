@@ -8,7 +8,8 @@ import 'package:isHKolarium/features/login/ui/login_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ApiService {
-  final String baseUrl = 'http://localhost:3000/api';
+  // final String baseUrl = 'http://localhost:3000/api';
+  final String baseUrl = 'http://192.168.42.137:3000/api';
 
   //Login
   Future<Map<String, dynamic>> loginUser(
@@ -70,11 +71,11 @@ class ApiService {
       return AnnouncementModel.fromJson(data);
     } else {
       return const AnnouncementModel(
-          title: "No Announcements Today", 
-          body: "Your future is created by what you do today, not tomorrow.\n — Robert Kiyosaki", 
-          time: "", 
-          date: ""
-        );
+          title: "No Announcements Today",
+          body:
+              "Your future is created by what you do today, not tomorrow.\n — Robert Kiyosaki",
+          time: "",
+          date: "");
     }
   }
 
