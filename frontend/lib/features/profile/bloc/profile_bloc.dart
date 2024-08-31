@@ -16,8 +16,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
   Future<void> _onLoadProfile(
       LoadProfileEvent event, Emitter<ProfileState> emit) async {
-    emit(ProfileLoadingState());
-
     try {
       final response = await _apiService.fetchProfileData(event.token);
 
@@ -54,8 +52,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   }
 
   Future<void> _onLogout(LogoutEvent event, Emitter<ProfileState> emit) async {
-    emit(ProfileLoadingState());
-
     try {
       await _apiService.logout(event.context);
       emit(ProfileInitial());

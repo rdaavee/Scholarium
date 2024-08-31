@@ -89,9 +89,6 @@ class _StudentHomeState extends State<StudentHome> {
                         child: ListView(
                           children: [
                             // Upcoming Duties
-                            SizedBox(
-                              height: 20,
-                            ),
                             Row(
                               children: [
                                 Expanded(
@@ -112,7 +109,7 @@ class _StudentHomeState extends State<StudentHome> {
                                           scheduleDate: Text(
                                             '10\nSept',
                                             style: TextStyle(
-                                              fontSize: 24,
+                                              fontSize: 27,
                                               fontFamily: 'Inter',
                                               fontWeight: FontWeight.bold,
                                               color: Colors.white,
@@ -142,8 +139,8 @@ class _StudentHomeState extends State<StudentHome> {
                                           cardColor: Color(0xFF6DD400),
                                         ),
                                         Positioned(
-                                          top: 0.0,
-                                          left: 26.0,
+                                          top: -5.0,
+                                          left: 20.0,
                                           child: Text(
                                             "Upcoming Duties",
                                             style: TextStyle(
@@ -177,7 +174,7 @@ class _StudentHomeState extends State<StudentHome> {
                                           scheduleDate: Text(
                                             '11\nSept',
                                             style: TextStyle(
-                                              fontSize: 24,
+                                              fontSize: 27,
                                               fontFamily: 'Inter',
                                               fontWeight: FontWeight.bold,
                                               color: Colors.white,
@@ -232,8 +229,8 @@ class _StudentHomeState extends State<StudentHome> {
                                     cardColor: Colors.white,
                                   ),
                                   const Positioned(
-                                    top: 20.0,
-                                    left: 25.0,
+                                    top: 15.0,
+                                    left: 20.0,
                                     child: Text(
                                       "Your DTR",
                                       style: TextStyle(
@@ -305,8 +302,8 @@ class _StudentHomeState extends State<StudentHome> {
                                   ),
                                 ),
                                 const Positioned(
-                                  top: 20.0,
-                                  left: 25.0,
+                                  top: 15.0,
+                                  left: 20.0,
                                   child: Text(
                                     "Announcements",
                                     style: TextStyle(
@@ -349,8 +346,8 @@ class _StudentHomeState extends State<StudentHome> {
                                   ),
                                 ),
                                 const Positioned(
-                                  top: 20.0,
-                                  left: 25.0,
+                                  top: 15.0,
+                                  left: 20.0,
                                   child: Text(
                                     "Events",
                                     style: TextStyle(
@@ -374,8 +371,8 @@ class _StudentHomeState extends State<StudentHome> {
             );
           } else {
             return const Scaffold(
-              backgroundColor: ColorPalette.primary,
-              body: Center(child: Text('No Data')),
+              backgroundColor: Colors.white,
+              body: Center(child: CircularProgressIndicator()),
             );
           }
         },

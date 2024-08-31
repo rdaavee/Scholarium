@@ -142,7 +142,10 @@ class ProfileScreen extends StatelessWidget {
                 ),
               );
             } else {
-              return const Center(child: Text('No Data Available'));
+              return const Scaffold(
+                backgroundColor: Colors.white,
+                body: Center(child: CircularProgressIndicator()),
+              );
             }
           },
         ),
