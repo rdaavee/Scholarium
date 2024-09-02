@@ -36,6 +36,7 @@ dependencies:
   timeline_tile:
   http: ^1.2.2
   font_awesome_flutter:
+  intl:
 
 
   # The following adds the Cupertino Icons font to your application.
