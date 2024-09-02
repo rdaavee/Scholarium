@@ -1,19 +1,13 @@
 class UpdatePasswordModel {
-  final String oldPassword;
-  final String newPassword;
-  final String confirmPassword;
+  final bool success;
+  final String message;
 
-  const UpdatePasswordModel({
-    required this.oldPassword,
-    required this.newPassword,
-    required this.confirmPassword,
-  });
+  UpdatePasswordModel({required this.success, required this.message});
 
-  factory UpdatePasswordModel.fromJson(Map<String, dynamic> map) {
+  factory UpdatePasswordModel.fromJson(Map<String, dynamic> json) {
     return UpdatePasswordModel(
-      oldPassword: map['oldPassword'] as String,
-      newPassword: map['newPassword'] as String,
-      confirmPassword: map['confirmPassword'] as String,
+      success: json['success'],
+      message: json['message'] ?? '',
     );
   }
 }

@@ -4,7 +4,8 @@ import 'package:isHKolarium/features/screens/screen_profile/profile_screen.dart'
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileChangePassword extends StatelessWidget {
-  const ProfileChangePassword({super.key});
+  final VoidCallback onPasswordChanged;
+  const ProfileChangePassword({super.key, required  this.onPasswordChanged});
 
   @override
   Widget build(BuildContext context) {
@@ -71,6 +72,7 @@ class ProfileChangePassword extends StatelessWidget {
                     return null;
                   },
                 ),
+                const SizedBox(height: 16),
                 TextFormField(
                   controller: newPasswordController,
                   decoration: InputDecoration(
@@ -101,6 +103,7 @@ class ProfileChangePassword extends StatelessWidget {
                     return null;
                   },
                 ),
+                const SizedBox(height: 16),
                 TextFormField(
                   controller: confirmPasswordController,
                   decoration: InputDecoration(
@@ -131,6 +134,7 @@ class ProfileChangePassword extends StatelessWidget {
                     return null;
                   },
                 ),
+                const SizedBox(height: 20),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blue,
@@ -146,28 +150,37 @@ class ProfileChangePassword extends StatelessWidget {
                   ),
                   onPressed: () async {
                     if (formKey.currentState!.validate()) {
-                      final SharedPreferences prefs = await SharedPreferences.getInstance();
+                      final SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
                       final token = prefs.getString('token').toString();
-                      await apiService.updatePassword(
+
+                      try {
+                        final updateResult = await apiService.updatePassword(
                           token: token,
                           oldPassword: oldPasswordController.text,
                           newPassword: newPasswordController.text,
-                          confirmPassword: confirmPasswordController.text);
+                          confirmPassword: confirmPasswordController.text,
+                        );
 
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                            content: Text('Password updated successfully')),
-                      );
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const ProfileScreen()
-                            )
+                        if (updateResult.success) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                content: Text('Password updated successfully')),
                           );
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Failed to update password')),
-                      );
+                          onPasswordChanged();  
+                          Navigator.of(context).pop();  
+                        } else {
+                          // Show error message
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Failed to update password')),
+                          );
+                        }
+                      } catch (e) {
+                        print('Failed to update password: $e');
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Failed to update password')),
+                        );
+                      }
                     }
                   },
                 ),

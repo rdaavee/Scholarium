@@ -71,7 +71,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
   Future<String> _getTokenFromSharedPreferences() async {
     final prefs = await SharedPreferences.getInstance();
-    final token = prefs.getString('token');
-    return token ?? '';
+    return prefs.getString('token') ?? '';
   }
 }

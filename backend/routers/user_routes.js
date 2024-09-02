@@ -8,11 +8,13 @@ router.get('/user/getAnnouncements', userController.getAnnouncements);
 router.get('/user/getLatestAnnouncement', userController.getLatestAnnouncement);
 router.get('/user/getPosts/:status', userController.getPosts);
 router.get('/user/profile/:token', userController.getUserProfile);
-router.post('/user/profile/upload/:token', uploadcontroller.uploadImage);
 router.get('/user/getSchedule/:school_id', userController.getUserSchedule);
 router.get('/user/getDTR/:school_id', userController.getUserDTR);
 router.get('/user/getTotalHours/:token', userController.getUserTotalHours);
+
 router.put('/user/updatePassword/:token', userController.updatePassword);
+
+router.post('/user/profile/upload/:token', uploadcontroller.uploadImage);
 
 
 module.exports = router;
