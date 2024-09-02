@@ -47,33 +47,36 @@ class _AnnouncementsPageState extends State<AnnouncementsScreen> {
             );
           } else if (state is StudentsLoadedSuccessState) {
             return Scaffold(
-              backgroundColor: ColorPalette.accent,
+              backgroundColor: ColorPalette.primary,
               body: Column(
                 children: [
                   Row(
                     children: [
-                      IconButton(
-                        icon: Icon(
-                          Icons.arrow_back_sharp,
-                          color: Colors.white,
+                      Container(
+                        margin: const EdgeInsets.only(left: 16),
+                        child: IconButton(
+                          icon: const Icon(
+                            Icons.arrow_back_sharp,
+                            color: Colors.white,
+                          ),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
                         ),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
                       ),
                       Padding(
                         padding: const EdgeInsets.only(left: 30.0),
                         child: Container(
                           height: 100.0,
-                          color: ColorPalette.accent,
                           alignment: Alignment.centerLeft,
                           child: const Text(
-                            "Hi, Ranier",
+                            "ANNOUNCEMENTS",
                             style: TextStyle(
                               fontSize: 17,
                               fontFamily: 'Montserrat',
                               fontWeight: FontWeight.bold,
                               letterSpacing: 1.1,
+                              color: ColorPalette.accentWhite,
                             ),
                           ),
                         ),
@@ -133,8 +136,10 @@ class _AnnouncementsPageState extends State<AnnouncementsScreen> {
             );
           } else {
             return const Scaffold(
-              backgroundColor: ColorPalette.accent,
-              body: Center(child: Text('No Data')),
+              backgroundColor: Colors.white,
+              body: Center(
+                child: CircularProgressIndicator(),
+              ),
             );
           }
         },

@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:isHKolarium/api/api_service/api_service.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
 import 'package:isHKolarium/features/screens/screen_dtr/dtr_screen.dart';
-import 'package:isHKolarium/features/widgets/dtr_card.dart';
+import 'package:isHKolarium/features/widgets/dtr_hours_card.dart';
 import 'package:isHKolarium/features/screens/screen_event/events_screen.dart';
 import 'package:isHKolarium/features/widgets/events_card.dart';
 import 'package:isHKolarium/features/screens/screen_schedule/schedule_screen.dart';
@@ -71,6 +71,7 @@ class _StudentHomeState extends State<StudentHome> {
                           fontFamily: 'Montserrat',
                           fontWeight: FontWeight.bold,
                           letterSpacing: 1.1,
+                          color: ColorPalette.accentWhite,
                         ),
                       ),
                     ),
@@ -222,7 +223,7 @@ class _StudentHomeState extends State<StudentHome> {
                               child: Stack(
                                 clipBehavior: Clip.none,
                                 children: [
-                                  DTRCard(
+                                  DtrHoursCard(
                                     progress: (state.hours[0].totalhours /
                                             state.hours[0].targethours)
                                         .clamp(0.0, 1.0),

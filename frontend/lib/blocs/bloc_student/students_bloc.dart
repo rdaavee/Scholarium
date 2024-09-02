@@ -19,51 +19,55 @@ class StudentsBloc extends Bloc<StudentsEvent, StudentsState> {
   }
 
   Future<void> studentInitialEvents(
-      StudentsInitialEvent event, Emitter<StudentsState> emit) async {
-    emit(StudentsLoadingState());
-    emit(
-      StudentsLoadedSuccessState(announcements: const [], hours: const []),
-    );
+    StudentsInitialEvent event, 
+    Emitter<StudentsState> emit) async {
+      emit(StudentsLoadingState());
+      emit(StudentsLoadedSuccessState(
+        announcements: const [],
+        hours: const []),
+      );
   }
 
   Future<void> fetchAnnoucementEvent(
-      FetchAnnouncementEvent event, Emitter<StudentsState> emit) async {
-    try {
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      final token = prefs.getString('token');
+    FetchAnnouncementEvent event, 
+    Emitter<StudentsState> emit) async {
+      try {
+        final SharedPreferences prefs = await SharedPreferences.getInstance();
+        final token = prefs.getString('token');
 
-      List<AnnouncementModel> announcements =
-          await _apiService.fetchAnnoucementData();
-      DtrHoursModel totalhours =
-          await _apiService.fetchDtrTotalHoursData(token: token);
+        List<AnnouncementModel> announcements =
+            await _apiService.fetchAnnoucementData();
+        DtrHoursModel totalhours =
+            await _apiService.fetchDtrTotalHoursData(token: token);
 
-      emit(StudentsLoadedSuccessState(
-        announcements: announcements,
-        hours: [totalhours],
-      ));
-    } catch (e) {
-      print('Error fetching announcements: $e');
-      emit(StudentsErrorState(message: e.toString()));
-    }
+        emit(StudentsLoadedSuccessState(
+          announcements: announcements,
+          hours: [totalhours],
+        ));
+      } catch (e) {
+        print('Error fetching announcements: $e');
+        emit(StudentsErrorState(message: e.toString()));
+      }
   }
 
   Future<void> fetchLatestEvent(
-      FetchLatestEvent event, Emitter<StudentsState> emit) async {
-    try {
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      final token = prefs.getString('token');
-      print(token);
-      AnnouncementModel latestAnnouncement =
-          await _apiService.fetchLatestAnnoucementData();
-      DtrHoursModel totalhours =
-          await _apiService.fetchDtrTotalHoursData(token: token);
-      emit(StudentsLoadedSuccessState(
-        announcements: [latestAnnouncement],
-        hours: [totalhours],
-      ));
-    } catch (e) {
-      print('Error fetching latest announcement: $e');
-      emit(StudentsErrorState(message: e.toString()));
+    FetchLatestEvent event, 
+    Emitter<StudentsState> emit) async {
+      try {
+        final SharedPreferences prefs = await SharedPreferences.getInstance();
+        final token = prefs.getString('token');
+        print(token);
+        AnnouncementModel latestAnnouncement =
+            await _apiService.fetchLatestAnnoucementData();
+        DtrHoursModel totalhours =
+            await _apiService.fetchDtrTotalHoursData(token: token);
+        emit(StudentsLoadedSuccessState(
+          announcements: [latestAnnouncement],
+          hours: [totalhours],
+        ));
+      } catch (error) {
+        print('Error fetching latest announcement: $error');
+        emit(StudentsErrorState(message: error.toString()));
+      }
     }
-  }
 }
