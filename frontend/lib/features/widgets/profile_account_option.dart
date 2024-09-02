@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:isHKolarium/features/screens/screen_profile/profile_update_password.dart';
 import 'package:isHKolarium/features/widgets/profile_divider.dart';
 import 'package:isHKolarium/api/api_service/api_service.dart';
 
 class AccountOptions extends StatelessWidget {
-  const AccountOptions({super.key, required Null Function() onLogout});
+  final VoidCallback onProfileUpdated;
+  const AccountOptions({super.key, required this.onProfileUpdated, required Null Function() onLogout, });
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +19,7 @@ class AccountOptions extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => const ProfileChangePassword(),
+                  builder: (context) => ProfileChangePassword(onPasswordChanged: onProfileUpdated,),
               ),
             );
           },

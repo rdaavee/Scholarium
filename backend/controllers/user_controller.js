@@ -388,7 +388,7 @@ exports.updatePassword = (req, res) => {
 
             res
               .status(200)
-              .json({ message: "Password has been successfully updated" });
+              .json({ success: true ,message: "Password has been successfully updated" });
           }
         );
       }

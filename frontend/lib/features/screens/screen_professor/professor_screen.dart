@@ -45,7 +45,7 @@ class ProfessorScreen extends StatelessWidget {
                       onTap: () {
                         showModalBottomSheet(
                           context: context,
-                          shape: RoundedRectangleBorder(
+                          shape: const RoundedRectangleBorder(
                             borderRadius:
                                 BorderRadius.vertical(top: Radius.circular(20)),
                           ),
@@ -58,7 +58,7 @@ class ProfessorScreen extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  Center(
+                                  const Center(
                                     child: SizedBox(
                                       width: 100,
                                       child: Divider(
@@ -68,10 +68,10 @@ class ProfessorScreen extends StatelessWidget {
                                       ),
                                     ),
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 20,
                                   ),
-                                  Text(
+                                  const Text(
                                     'Post Something',
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
@@ -80,7 +80,7 @@ class ProfessorScreen extends StatelessWidget {
                                       color: Color(0xFF6D7278),
                                     ),
                                   ),
-                                  SizedBox(height: 10),
+                                  const SizedBox(height: 10),
                                   TextField(
                                     maxLines: 5,
                                     decoration: InputDecoration(
@@ -88,34 +88,34 @@ class ProfessorScreen extends StatelessWidget {
                                       border: OutlineInputBorder(
                                         borderRadius:
                                             BorderRadius.circular(8.0),
-                                        borderSide: BorderSide(
+                                        borderSide: const BorderSide(
                                           color: Color(0xFF6D7278),
                                         ),
                                       ),
                                       focusedBorder: OutlineInputBorder(
                                         borderRadius:
                                             BorderRadius.circular(8.0),
-                                        borderSide: BorderSide(
+                                        borderSide: const BorderSide(
                                           color: Color(0xFF549E73),
                                         ),
                                       ),
                                       enabledBorder: OutlineInputBorder(
                                         borderRadius:
                                             BorderRadius.circular(8.0),
-                                        borderSide: BorderSide(
+                                        borderSide: const BorderSide(
                                           color: Color(0xFF6D7278),
                                         ),
                                       ),
-                                      contentPadding: EdgeInsets.symmetric(
+                                      contentPadding: const EdgeInsets.symmetric(
                                         vertical: 20,
                                         horizontal: 20,
                                       ),
                                     ),
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       color: Color(0xFF000000),
                                     ),
                                   ),
-                                  SizedBox(height: 20),
+                                  const SizedBox(height: 20),
                                   Align(
                                     alignment: Alignment.centerRight,
                                     child: ElevatedButton(
@@ -127,7 +127,7 @@ class ProfessorScreen extends StatelessWidget {
                                           borderRadius:
                                               BorderRadius.circular(8.0),
                                         ),
-                                        padding: EdgeInsets.symmetric(
+                                        padding: const EdgeInsets.symmetric(
                                             horizontal: 20, vertical: 15),
                                       ).copyWith(
                                         elevation:
@@ -137,13 +137,13 @@ class ProfessorScreen extends StatelessWidget {
                                           (Set<WidgetState> states) {
                                             if (states.contains(
                                                 WidgetState.hovered)) {
-                                              return Color(0xFF549E73);
+                                              return const Color(0xFF549E73);
                                             }
-                                            return Color(0xFFC1C1C1);
+                                            return const Color(0xFFC1C1C1);
                                           },
                                         ),
                                       ),
-                                      child: Text('Post'),
+                                      child: const Text('Post'),
                                     ),
                                   ),
                                 ],
@@ -166,10 +166,10 @@ class ProfessorScreen extends StatelessWidget {
                             CircleAvatar(
                               backgroundColor: Colors.grey[300],
                               radius: 25,
-                              child: Icon(Icons.person, color: Colors.white),
+                              child: const Icon(Icons.person, color: Colors.white),
                             ),
-                            SizedBox(width: 10),
-                            Expanded(
+                            const SizedBox(width: 10),
+                            const Expanded(
                               child: Text(
                                 'Post something',
                                 style: TextStyle(
@@ -184,12 +184,12 @@ class ProfessorScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Divider(
+                    const Divider(
                       thickness: 0.2,
                       color: Color(0xFF6D7278),
                     ),
-                    SizedBox(height: 10),
-                    Text(
+                    const SizedBox(height: 10),
+                    const Text(
                       'Ongoing Duties',
                       style: TextStyle(
                         fontSize: 15,
@@ -199,17 +199,17 @@ class ProfessorScreen extends StatelessWidget {
                         letterSpacing: 0.5,
                       ),
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     Expanded(
                       child: ListView(
                         children: [
-                          DutyCard(
+                          const DutyCard(
                             cardColor: Color(0xFF549E73),
                             time: '7:30AM-9:00AM',
                             roomName: 'PTC-206',
                           ),
-                          SizedBox(height: 16),
-                          DutyCard(
+                          const SizedBox(height: 16),
+                          const DutyCard(
                             cardColor: Color(0xFF6DD400),
                             time: '7:30AM-9:00AM',
                             roomName: 'PTC-206',

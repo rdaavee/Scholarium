@@ -8,8 +8,8 @@ import 'package:isHKolarium/features/screens/screen_login/login_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ApiService {
-  // final String baseUrl = 'http://localhost:3000/api';
-  final String baseUrl = 'http://192.168.42.137:3000/api';
+  final String baseUrl = 'http://localhost:3000/api';
+  // final String baseUrl = 'http://192.168.42.137:3000/api';
 
   //Login
   Future<Map<String, dynamic>> loginUser(
@@ -128,6 +128,7 @@ class ApiService {
     Navigator.of(context).pushReplacementNamed(LoginPage.routeName);
   }
 
+  //Update password
   Future<UpdatePasswordModel> updatePassword({
     required String token,
     required String oldPassword,
@@ -147,10 +148,13 @@ class ApiService {
     );
 
     if (response.statusCode == 200) {
-      return UpdatePasswordModel.fromJson(
-          jsonDecode(response.body) as Map<String, dynamic>);
+      return UpdatePasswordModel.fromJson(jsonDecode(response.body));
     } else {
-      throw Exception('Failed to update student password data');
+      return UpdatePasswordModel(
+        success: false,
+        message: 'Failed to update password',
+      );
     }
   }
+
 }
