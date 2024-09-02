@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:isHKolarium/api/api_service/api_service.dart';
-import 'package:isHKolarium/features/screens/screen_profile/profile_screen.dart';
+import 'package:isHKolarium/config/constants/colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileChangePassword extends StatelessWidget {
   final VoidCallback onPasswordChanged;
-  const ProfileChangePassword({super.key, required  this.onPasswordChanged});
+  const ProfileChangePassword({super.key, required this.onPasswordChanged});
 
   @override
   Widget build(BuildContext context) {
@@ -17,24 +17,19 @@ class ProfileChangePassword extends StatelessWidget {
         TextEditingController();
 
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text(
+          'Change Password',
+          style: TextStyle(
+            fontFamily: 'Inter',
+            color: Colors.black,
+            letterSpacing: 0.5,
+          ),
+        ),
+      ),
+      backgroundColor: const Color(0xFFF0F3F4),
       body: SingleChildScrollView(
         child: Container(
-          constraints: const BoxConstraints(
-            minHeight: 350,
-            maxHeight: 500,
-          ),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(15),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.5),
-                spreadRadius: 5,
-                blurRadius: 7,
-              ),
-            ],
-          ),
           margin: const EdgeInsets.all(20),
           padding: const EdgeInsets.all(20),
           child: Form(
@@ -44,26 +39,44 @@ class ProfileChangePassword extends StatelessWidget {
               children: [
                 TextFormField(
                   controller: oldPasswordController,
+                  obscureText: true,
                   decoration: InputDecoration(
                     hintText: 'Please enter your Old Password',
-                    hintStyle: const TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.normal,
+                    hintStyle: TextStyle(
+                      color: Colors.grey,
+                      fontSize: 12.0,
                     ),
                     filled: true,
                     fillColor: Colors.white,
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
                     border: OutlineInputBorder(
-                        borderSide: const BorderSide(
-                          color: Colors.black,
-                          width: 2.0,
-                        ),
-                        borderRadius: BorderRadius.circular(15)),
+                      borderSide: BorderSide(
+                        width: 1,
+                        color: Colors.black.withOpacity(0.1),
+                      ),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        width: 1,
+                        color: Colors.black.withOpacity(0.1),
+                      ),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                     focusedBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(
-                          color: Colors.black,
-                          width: 1.0,
-                        ),
-                        borderRadius: BorderRadius.circular(15)),
+                      borderSide: BorderSide(
+                        width: 1,
+                        color: Colors.black.withOpacity(0.1),
+                      ),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 12.0,
+                    fontFamily: 'Inter',
+                    fontWeight: FontWeight.w100,
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -75,26 +88,44 @@ class ProfileChangePassword extends StatelessWidget {
                 const SizedBox(height: 16),
                 TextFormField(
                   controller: newPasswordController,
+                  obscureText: true,
                   decoration: InputDecoration(
                     hintText: 'Please enter your New Password',
-                    hintStyle: const TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.normal,
+                    hintStyle: TextStyle(
+                      color: Colors.grey,
+                      fontSize: 12.0,
                     ),
                     filled: true,
                     fillColor: Colors.white,
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
                     border: OutlineInputBorder(
-                        borderSide: const BorderSide(
-                          color: Colors.black,
-                          width: 2.0,
-                        ),
-                        borderRadius: BorderRadius.circular(15)),
+                      borderSide: BorderSide(
+                        width: 1,
+                        color: Colors.black.withOpacity(0.1),
+                      ),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        width: 1,
+                        color: Colors.black.withOpacity(0.1),
+                      ),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                     focusedBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(
-                          color: Colors.black,
-                          width: 1.0,
-                        ),
-                        borderRadius: BorderRadius.circular(15)),
+                      borderSide: BorderSide(
+                        width: 1,
+                        color: Colors.black.withOpacity(0.1),
+                      ),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 12.0,
+                    fontFamily: 'Inter',
+                    fontWeight: FontWeight.w100,
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -106,30 +137,48 @@ class ProfileChangePassword extends StatelessWidget {
                 const SizedBox(height: 16),
                 TextFormField(
                   controller: confirmPasswordController,
+                  obscureText: true,
                   decoration: InputDecoration(
                     hintText: 'Confirm New Password',
-                    hintStyle: const TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.normal,
+                    hintStyle: TextStyle(
+                      color: Colors.grey,
+                      fontSize: 12.0,
                     ),
                     filled: true,
                     fillColor: Colors.white,
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
                     border: OutlineInputBorder(
-                        borderSide: const BorderSide(
-                          color: Colors.black,
-                          width: 2.0,
-                        ),
-                        borderRadius: BorderRadius.circular(15)),
+                      borderSide: BorderSide(
+                        width: 1,
+                        color: Colors.black.withOpacity(0.1),
+                      ),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        width: 1,
+                        color: Colors.black.withOpacity(0.1),
+                      ),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                     focusedBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(
-                          color: Colors.black,
-                          width: 1.0,
-                        ),
-                        borderRadius: BorderRadius.circular(15)),
+                      borderSide: BorderSide(
+                        width: 1,
+                        color: Colors.black.withOpacity(0.1),
+                      ),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 12.0,
+                    fontFamily: 'Inter',
+                    fontWeight: FontWeight.w100,
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter your New Password';
+                      return 'Please confirm your New Password';
                     }
                     return null;
                   },
@@ -137,15 +186,19 @@ class ProfileChangePassword extends StatelessWidget {
                 const SizedBox(height: 20),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15)),
+                    backgroundColor: ColorPalette.primary,
+                    side: BorderSide(
+                      color: ColorPalette.primary,
+                    ),
+                    minimumSize: Size(287, 55),
+                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                   ),
-                  child: const Text(
-                    'Confirm New Password',
+                  child: Text(
+                    'Change Password',
                     style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
+                      fontFamily: 'Inter',
+                      fontWeight: FontWeight.normal,
+                      fontSize: 12,
                     ),
                   ),
                   onPressed: () async {
@@ -167,18 +220,20 @@ class ProfileChangePassword extends StatelessWidget {
                             const SnackBar(
                                 content: Text('Password updated successfully')),
                           );
-                          onPasswordChanged();  
-                          Navigator.of(context).pop();  
+                          onPasswordChanged();
+                          Navigator.of(context).pop();
                         } else {
                           // Show error message
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Failed to update password')),
+                            const SnackBar(
+                                content: Text('Failed to update password')),
                           );
                         }
                       } catch (e) {
                         print('Failed to update password: $e');
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Failed to update password')),
+                          const SnackBar(
+                              content: Text('Failed to update password')),
                         );
                       }
                     }

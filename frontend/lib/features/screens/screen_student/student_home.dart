@@ -89,6 +89,9 @@ class _StudentHomeState extends State<StudentHome> {
                         padding: const EdgeInsets.all(5.0),
                         child: ListView(
                           children: [
+                            SizedBox(
+                              height: 30,
+                            ),
                             // Upcoming Duties
                             Row(
                               children: [

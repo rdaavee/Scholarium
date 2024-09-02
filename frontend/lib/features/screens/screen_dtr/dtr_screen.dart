@@ -5,6 +5,8 @@ import 'package:isHKolarium/blocs/bloc_dtr/dtr_bloc.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
 import 'package:isHKolarium/features/widgets/dtr_card.dart';
 import 'package:isHKolarium/features/widgets/dtr_hours_card.dart';
+import 'package:isHKolarium/features/widgets/your_dtr_card.dart';
+import 'package:isHKolarium/features/widgets/your_dtr_hours_card.dart';
 
 class DtrScreen extends StatefulWidget {
   const DtrScreen({super.key});
@@ -28,9 +30,7 @@ class _DtrScreenState extends State<DtrScreen> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<DtrBloc>(
-          create: (context) => dtrBloc
-        ),
+        BlocProvider<DtrBloc>(create: (context) => dtrBloc),
       ],
       child: BlocConsumer<DtrBloc, DtrState>(listener: (context, state) {
         if (state is DtrErrorState) {
@@ -92,43 +92,54 @@ class _DtrScreenState extends State<DtrScreen> {
                       ),
                     ),
                     child: Container(
-                          padding: const EdgeInsets.all(5.0),
-                          child: ListView.builder(
-                            itemCount: state.dtr.length,
-                            itemBuilder: (context, index) {
-                              final dtr = state.dtr[index];
-                              return Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
+                      padding: const EdgeInsets.all(5.0),
+                      child: ListView.builder(
+                        itemCount: state.dtr.length,
+                        itemBuilder: (context, index) {
+                          final dtr = state.dtr[index];
+                          return Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Stack(
+                                clipBehavior: Clip.none,
                                 children: [
-                                  DtrCard(
-                                    date: Text(dtr.date.toString()), 
-                                    timeIn: Text(dtr.timeIn.toString()), 
-                                    timeOut: Text(dtr.timeOut.toString()), 
-                                    hoursToRenderd: Text(dtr.hoursToRendered.toString()), 
-                                    hoursRenderd: Text(dtr.hoursRendered.toString()), 
-                                    teacher: Text(dtr.teacher.toString()), 
-                                    teacherSignature: Text(dtr.teacherSignature.toString()), 
+                                  YourDtrHoursCard(
+                                    progress: (state.hours[0].totalhours /
+                                            state.hours[0].targethours)
+                                        .clamp(0.0, 1.0),
                                     cardColor: Colors.white,
                                   ),
                                 ],
-                              );
-                            },
-                          ),
-                        ),
-                        //idk paano hehe
-                    // Column(
-                    //   children: [
-                    //     DtrHoursCard(
-                    //       progress: (state.hours[0].totalhours /
-                    //               state.hours[0].targethours)
-                    //           .clamp(0.0, 1.0),
-                    //       cardColor: Colors.white,
-                    //     ),
-                        
-                    //   ],
+                              ),
+                              Divider(
+                                thickness: 0.1,
+                              ),
+                              Stack(
+                                clipBehavior: Clip.none,
+                                children: [
+                                  YourDtrCard(
+                                    date: DateTime.parse(
+                                        "2024-08-27T16:00:00.000Z"),
+                                    timeIn: dtr.timeIn.toString(),
+                                    timeOut: dtr.timeOut.toString(),
+                                    hoursToRendered:
+                                        dtr.hoursToRendered.toString(),
+                                    hoursRendered: dtr.hoursRendered.toString(),
+                                    teacher: dtr.teacher.toString(),
+                                    teacherSignature:
+                                        dtr.teacherSignature.toString(),
+                                    cardColor: Colors.white,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          );
+                        },
+                      ),
                     ),
                   ),
+                ),
               ],
             ),
           );

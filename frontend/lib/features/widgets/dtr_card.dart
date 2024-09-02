@@ -4,8 +4,8 @@ class DtrCard extends StatelessWidget {
   final Text date;
   final Text timeIn;
   final Text timeOut;
-  final Text hoursToRenderd;
-  final Text hoursRenderd;
+  final Text hoursToRendered;
+  final Text hoursRendered;
   final Text teacher;
   final Text teacherSignature;
   final Color cardColor;
@@ -15,8 +15,8 @@ class DtrCard extends StatelessWidget {
     required this.date,
     required this.timeIn,
     required this.timeOut,
-    required this.hoursToRenderd,
-    required this.hoursRenderd,
+    required this.hoursToRendered,
+    required this.hoursRendered,
     required this.teacher,
     required this.teacherSignature,
     required this.cardColor,
@@ -43,8 +43,8 @@ class DtrCard extends StatelessWidget {
                   date,
                   timeIn,
                   timeOut,
-                  hoursToRenderd,
-                  hoursRenderd,
+                  hoursToRendered,
+                  hoursRendered,
                   teacher,
                   teacherSignature,
                 ],
