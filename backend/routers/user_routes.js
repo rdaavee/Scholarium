@@ -9,7 +9,7 @@ router.get('/user/getLatestAnnouncement', userController.getLatestAnnouncement);
 router.get('/user/getPosts/:status', userController.getPosts);
 router.get('/user/profile/:token', userController.getUserProfile);
 router.get('/user/getSchedule/:school_id', userController.getUserSchedule);
-router.get('/user/getDTR/:school_id', userController.getUserDTR);
+router.get('/user/getDTR/:token', userController.getUserDTR);
 router.get('/user/getTotalHours/:token', userController.getUserTotalHours);
 
 router.put('/user/updatePassword/:token', userController.updatePassword);

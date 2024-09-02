@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:isHKolarium/api/models/announcement_model.dart';
+import 'package:isHKolarium/api/models/dtr_model.dart';
 import 'package:isHKolarium/api/models/dtr_total_hours_model.dart';
 import 'package:isHKolarium/api/models/update_password_model.dart';
 import 'package:isHKolarium/features/screens/screen_login/login_page.dart';
@@ -157,4 +158,17 @@ class ApiService {
     }
   }
 
+
+  Future<List<DtrModel>> fetchDtrData({
+    required String? token,
+  }) async {
+    final response = await http.get(Uri.parse('$baseUrl/user/getDTR/$token'));
+
+    if (response.statusCode == 200) {
+      final List<dynamic> data = jsonDecode(response.body);
+      return data.map((json) => DtrModel.fromJson(json)).toList();
+    } else {
+      throw Exception('Failed to load DTR data');
+    }
+  }
 }
