@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:isHKolarium/features/login/ui/login_page.dart';
-import 'package:isHKolarium/routes/routes.dart';
-import 'package:isHKolarium/utils/theme/theme.dart';
+import 'package:isHKolarium/features/screens/screen_login/login_page.dart';
+import 'package:isHKolarium/config/routes/routes.dart';
+import 'package:isHKolarium/config/utils/theme/theme.dart';
 
 void main() {
   runApp(const App());
