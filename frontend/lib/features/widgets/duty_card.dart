@@ -86,8 +86,8 @@ class DutyCard extends StatelessWidget {
                 SizedBox(width: 5),
                 GestureDetector(
                   onTap: () {
-                    _showBottomSheet(context, 'David Mondero', '03-0000-00003',
-                        'Bayambang, Pangasinan', true);
+                    _showBottomSheet(context, 'Olibird Ferrer', '03-0000-00003',
+                        'Mangaldan, Pangasinan', true);
                   },
                   child: CircleAvatar(backgroundColor: Colors.grey),
                 ),

@@ -25,9 +25,7 @@ class ApiService {
           'password': password,
         }),
       );
-
       print('Response status code: ${response.statusCode}');
-
       if (response.statusCode == 200) {
         final Map<String, dynamic> responseData = json.decode(response.body);
         return {
@@ -158,7 +156,6 @@ class ApiService {
     }
   }
 
-
   Future<List<DtrModel>> fetchDtrData({
     required String? token,
   }) async {
@@ -169,6 +166,28 @@ class ApiService {
       return data.map((json) => DtrModel.fromJson(json)).toList();
     } else {
       throw Exception('Failed to load DTR data');
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> getSchedule(
+      {required String token}) async {
+    final url = Uri.parse('$baseUrl/user/getSchedule/$token');
+    try {
+      final response = await http.get(url);
+      // Check if the request was successful
+      if (response.statusCode == 200) {
+        // Decode the response body to JSON
+        final List<dynamic> data = jsonDecode(response.body);
+        // Map the JSON data to a list of maps
+        return data.map((item) => item as Map<String, dynamic>).toList();
+      } else {
+        // Handle the error if the status code is not 200
+        throw Exception('Failed to load schedule: ${response.statusCode}');
+      }
+    } catch (e) {
+      // Handle any other errors
+      print('Error fetching schedule: $e'); // Debug print
+      throw Exception('Error fetching schedule: $e');
     }
   }
 }

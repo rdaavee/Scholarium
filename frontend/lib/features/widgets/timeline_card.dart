@@ -24,18 +24,23 @@ class TimelineCard extends StatelessWidget {
     final Color completedDetailTextColor =
         Colors.grey[400] ?? Colors.grey.shade400;
 
+    final Color currentCardColor = isCompleted ? completedCardColor : cardColor;
+    final Color currentTextColor =
+        isCompleted ? completedTextColor : Colors.black;
+    final Color currentDetailTextColor =
+        isCompleted ? completedDetailTextColor : Colors.black54;
+
     return SizedBox(
-      width: 250,
-      height: 170,
+      width: double.infinity,
       child: Card(
-        margin: const EdgeInsets.all(20),
+        margin: const EdgeInsets.all(8.0),
         elevation: 4.0,
-        color: isCompleted ? completedCardColor : cardColor,
+        color: currentCardColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12.0),
         ),
         child: Padding(
-          padding: const EdgeInsets.all(18.0),
+          padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -43,18 +48,16 @@ class TimelineCard extends StatelessWidget {
                 dutyTitle,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  color: isCompleted ? completedTextColor : Color(0xFF6D7278),
+                  color: currentTextColor,
                 ),
               ),
               Text(
                 professorName,
                 style: TextStyle(
-                  color: isCompleted
-                      ? completedDetailTextColor
-                      : Color(0xFFC1C1C1),
+                  color: currentDetailTextColor,
                 ),
               ),
-              SizedBox(height: 30.0),
+              const SizedBox(height: 8.0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -62,17 +65,14 @@ class TimelineCard extends StatelessWidget {
                     roomName,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      color:
-                          isCompleted ? completedTextColor : Color(0xFF6D7278),
+                      color: currentTextColor,
                     ),
                   ),
                   Text(
                     timeInAndOut,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      color: isCompleted
-                          ? completedDetailTextColor
-                          : Color(0xFF6D7278),
+                      color: currentDetailTextColor,
                     ),
                   ),
                 ],

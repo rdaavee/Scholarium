@@ -37,6 +37,7 @@ dependencies:
   http: ^1.2.2
   font_awesome_flutter:
   intl:
+  equatable:
 
 
   # The following adds the Cupertino Icons font to your application.
