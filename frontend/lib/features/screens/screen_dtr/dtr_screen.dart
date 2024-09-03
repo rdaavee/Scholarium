@@ -3,8 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:isHKolarium/api/api_service/api_service.dart';
 import 'package:isHKolarium/blocs/bloc_dtr/dtr_bloc.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
-import 'package:isHKolarium/features/widgets/dtr_card.dart';
-import 'package:isHKolarium/features/widgets/dtr_hours_card.dart';
 import 'package:isHKolarium/features/widgets/your_dtr_card.dart';
 import 'package:isHKolarium/features/widgets/your_dtr_hours_card.dart';
 
