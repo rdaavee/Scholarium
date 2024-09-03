@@ -1,4 +1,6 @@
+// duty_card.dart
 import 'package:flutter/material.dart';
+import 'package:isHKolarium/features/widgets/profile_modal_bottom_sheet.dart';
 
 class DutyCard extends StatelessWidget {
   final Color cardColor;
@@ -26,11 +28,12 @@ class DutyCard extends StatelessWidget {
             Text(
               'Facilitator Duty',
               style: TextStyle(
-                  fontSize: 26,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'Inter',
-                  letterSpacing: 1.1,
-                  color: Colors.white),
+                fontSize: 26,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'Inter',
+                letterSpacing: 1.1,
+                color: Colors.white,
+              ),
             ),
             SizedBox(height: 10),
             Text(
@@ -65,16 +68,59 @@ class DutyCard extends StatelessWidget {
             SizedBox(height: 5),
             Row(
               children: [
-                CircleAvatar(backgroundColor: Colors.white),
+                GestureDetector(
+                  onTap: () {
+                    _showBottomSheet(context, 'Ranier Tan', '03-0000-00001',
+                        'Pantal, Dagupan City', true);
+                  },
+                  child: CircleAvatar(backgroundColor: Colors.white),
+                ),
                 SizedBox(width: 5),
-                CircleAvatar(backgroundColor: Colors.grey[300]),
+                GestureDetector(
+                  onTap: () {
+                    _showBottomSheet(context, 'Mark Benedict Abalos',
+                        '03-0000-00002', 'Lingayen, Pangasinan', true);
+                  },
+                  child: CircleAvatar(backgroundColor: Colors.grey[300]),
+                ),
                 SizedBox(width: 5),
-                CircleAvatar(backgroundColor: Colors.grey),
+                GestureDetector(
+                  onTap: () {
+                    _showBottomSheet(context, 'David Mondero', '03-0000-00003',
+                        'Bayambang, Pangasinan', true);
+                  },
+                  child: CircleAvatar(backgroundColor: Colors.grey),
+                ),
               ],
             ),
           ],
         ),
       ),
+    );
+  }
+
+  void _showBottomSheet(
+    BuildContext context,
+    String name,
+    String schoolId,
+    String address,
+    bool isActive,
+  ) {
+    showModalBottomSheet(
+      context: context,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      isScrollControlled: true,
+      backgroundColor: Colors.white,
+      builder: (BuildContext context) {
+        return ProfileModalBottomSheet(
+          name: name,
+          schoolId: schoolId,
+          address: address,
+          isActive: isActive,
+        );
+      },
     );
   }
 }
