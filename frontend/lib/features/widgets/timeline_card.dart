@@ -6,6 +6,7 @@ class TimelineCard extends StatelessWidget {
   final String roomName;
   final String timeInAndOut;
   final bool isCompleted;
+  final bool isNotCompleted;
   final Color cardColor;
 
   TimelineCard({
@@ -14,19 +15,29 @@ class TimelineCard extends StatelessWidget {
     required this.roomName,
     required this.timeInAndOut,
     required this.isCompleted,
+    required this.isNotCompleted,
     required this.cardColor,
   });
 
   @override
   Widget build(BuildContext context) {
-    final Color completedCardColor = Colors.grey[200] ?? Colors.grey.shade200;
+    final Color completedCardColor = Colors.grey[300] ?? Colors.grey.shade300;
+
+    final Color notCompletedCardColor =
+        Colors.grey[300] ?? Colors.grey.shade200;
+
     final Color completedTextColor = Colors.grey[600] ?? Colors.grey.shade600;
+
     final Color completedDetailTextColor =
         Colors.grey[400] ?? Colors.grey.shade400;
 
-    final Color currentCardColor = isCompleted ? completedCardColor : cardColor;
+    final Color currentCardColor = isCompleted
+        ? completedCardColor
+        : (isNotCompleted ? notCompletedCardColor : cardColor);
+
     final Color currentTextColor =
         isCompleted ? completedTextColor : Colors.black;
+
     final Color currentDetailTextColor =
         isCompleted ? completedDetailTextColor : Colors.black54;
 

@@ -88,30 +88,50 @@ exports.getPosts = (req, res) => {
 
 //Get User Schedule
 exports.getUserSchedule = (req, res) => {
+  const token = req.params.token;
+
+  // Step 1: Validate the Token and Get School ID
   pool.getConnection((error, connection) => {
     if (error) {
       console.error("Error getting MySQL connection:", error);
       return res.status(500).json({ message: "Server error occurred" });
     }
 
-    console.log(`Connected as id ${connection.threadId}`);
-
     connection.query(
-      "SELECT * FROM schedule WHERE school_id = ?",
-      [req.params.school_id],
-      (error, rows) => {
-        connection.release();
-
+      "SELECT school_id FROM users WHERE token = ?",
+      [token],
+      (error, userResult) => {
         if (error) {
+          connection.release();
           console.error("Error executing query:", error);
           return res.status(500).json({ message: "Server error occurred" });
         }
 
-        if (rows.length > 0) {
-          res.status(200).json(rows);
-        } else {
-          res.status(404).json({ message: "User schedule not found" });
+        if (userResult.length === 0) {
+          connection.release();
+          return res.status(404).json({ message: "User not found" });
         }
+
+        const school_id = userResult[0].school_id;
+
+        connection.query(
+          "SELECT * FROM schedule WHERE school_id = ?",
+          [school_id],
+          (error, rows) => {
+            connection.release();
+
+            if (error) {
+              console.error("Error executing query:", error);
+              return res.status(500).json({ message: "Server error occurred" });
+            }
+
+            if (rows.length > 0) {
+              res.status(200).json(rows);
+            } else {
+              res.status(404).json({ message: "User schedule not found" });
+            }
+          }
+        );
       }
     );
   });
@@ -355,14 +375,16 @@ exports.updatePassword = (req, res) => {
 
             res
               .status(200)
-              .json({ success: true ,message: "Password has been successfully updated" });
+              .json({
+                success: true,
+                message: "Password has been successfully updated",
+              });
           }
         );
       }
     );
   });
 };
-
 
 //-------------------------------------FOR STUDENT PROFILE PAGE-----------------------------------------------------
 //Get User DTR
@@ -374,7 +396,7 @@ exports.getUserDTR = (req, res) => {
     }
 
     console.log(`Connected as id ${connection.threadId}`);
-    
+
     connection.query(
       "SELECT school_id, password FROM users WHERE token = ?",
       [req.params.token],
@@ -391,27 +413,26 @@ exports.getUserDTR = (req, res) => {
         }
 
         const { school_id } = userResult[0];
-      
-      connection.query(
-        "SELECT * FROM dtr WHERE school_id = ?",
-        [school_id],
-        (error, rows) => {
-          connection.release();
 
-          if (error) {
-            console.error("Error executing query:", error);
-            return res.status(500).json({ message: "Server error occurred" });
-          }
+        connection.query(
+          "SELECT * FROM dtr WHERE school_id = ?",
+          [school_id],
+          (error, rows) => {
+            connection.release();
 
-          if (rows.length > 0) {
-            res.status(200).json(rows);
-          } else {
-            res.status(404).json({ message: "User dtr not found" });
+            if (error) {
+              console.error("Error executing query:", error);
+              return res.status(500).json({ message: "Server error occurred" });
+            }
+
+            if (rows.length > 0) {
+              res.status(200).json(rows);
+            } else {
+              res.status(404).json({ message: "User dtr not found" });
+            }
           }
-        }
-      );
-    }
-    )
+        );
+      }
+    );
   });
 };
-
