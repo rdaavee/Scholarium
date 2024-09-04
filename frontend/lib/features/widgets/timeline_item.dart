@@ -18,15 +18,18 @@ class TimelineItem extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Container(
-          width: 75,
-          alignment: Alignment.centerRight,
-          child: Text(
-            _formatDate(duty['date'].toString()), // Ensure it's a string
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontFamily: 'Poppins',
-              color: Colors.grey[600],
+        Padding(
+          padding: const EdgeInsets.only(left: 30),
+          child: Container(
+            width: 75,
+            alignment: Alignment.centerRight,
+            child: Text(
+              _formatDate(duty['date'].toString()), // Ensure it's a string
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontFamily: 'Poppins',
+                color: Colors.grey[600],
+              ),
             ),
           ),
         ),
@@ -56,6 +59,7 @@ class TimelineItem extends StatelessWidget {
               roomName: duty['room'].toString(), // Ensure it's a string
               timeInAndOut: duty['time'].toString(), // Ensure it's a string
               isCompleted: completionStatus == "true",
+              isNotCompleted: completionStatus == "false",
               cardColor: Colors.white,
             ),
           ),
