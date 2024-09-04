@@ -1,24 +1,121 @@
 import 'package:flutter/material.dart';
 
 class NotificationCard extends StatelessWidget {
-  final String name;
+  final String sender;
   final String role;
   final String message;
+  final String status;
+  final String date;
   final String time;
 
   NotificationCard({
-    required this.name,
+    required this.sender,
     required this.role,
     required this.message,
+    required this.status,
+    required this.date,
     required this.time,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    if (status == 'unread') {
+      return Column(
+        children: [
+          const SizedBox(height: 10),
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: CircleAvatar(
+                    backgroundColor: Colors.grey[300],
+                    radius: 25,
+                    child: const Icon(Icons.person, color: Colors.white),
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Divider(
+                              thickness: .1,
+                              color: Colors.black,
+                            ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              sender,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'Inter',
+                                fontSize: 15,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.only(right: 16),
+                            child: Text(
+                              date,
+                              style: const TextStyle(
+                                color: Colors.grey,
+                                fontFamily: 'Inter',
+                                fontSize: 11,
+                              ),
+                            ),
+                          ),
+                          Text(
+                            time,
+                            style: const TextStyle(
+                              color: Colors.grey,
+                              fontFamily: 'Inter',
+                              fontSize: 11,
+                            ),
+                          ),
+                          const SizedBox(width: 22),
+                        ],
+                      ),
+                      Text(
+                        role,
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: Colors.green,
+                          fontWeight: FontWeight.w500,
+                          fontFamily: 'Inter',
+                        ),
+                      ),
+                      Text(
+                        message,
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: Color(0xFFC1C1C1),
+                          fontFamily: 'Inter',
+                        ),
+                      ),
+                      const Divider(
+                              thickness: .1,
+                              color: Colors.black,
+                            ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      );
+    } else {
+      return Column(
       children: [
-        SizedBox(height: 10),
-        Padding(
+        const SizedBox(height: 10),
+        Container(
+          color: Colors.grey[300],
           padding: const EdgeInsets.all(10.0),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -28,21 +125,25 @@ class NotificationCard extends StatelessWidget {
                 child: CircleAvatar(
                   backgroundColor: Colors.grey[300],
                   radius: 25,
-                  child: Icon(Icons.person, color: Colors.white),
+                  child: const Icon(Icons.person, color: Colors.white),
                 ),
               ),
-              SizedBox(width: 10),
+              const SizedBox(width: 10),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    const Divider(
+                            thickness: .1,
+                            color: Colors.black,
+                          ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Expanded(
                           child: Text(
-                            name,
-                            style: TextStyle(
+                            sender,
+                            style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               fontFamily: 'Inter',
                               fontSize: 15,
@@ -50,20 +151,31 @@ class NotificationCard extends StatelessWidget {
                             ),
                           ),
                         ),
+                        Container(
+                          margin: const EdgeInsets.only(right: 16),
+                          child: Text(
+                            date,
+                            style: const TextStyle(
+                              color: Colors.grey,
+                              fontFamily: 'Inter',
+                              fontSize: 11,
+                            ),
+                          ),
+                        ),
                         Text(
                           time,
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Colors.grey,
                             fontFamily: 'Inter',
                             fontSize: 11,
                           ),
                         ),
-                        SizedBox(width: 22),
+                        const SizedBox(width: 22),
                       ],
                     ),
                     Text(
                       role,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 12,
                         color: Colors.green,
                         fontWeight: FontWeight.w500,
@@ -72,12 +184,16 @@ class NotificationCard extends StatelessWidget {
                     ),
                     Text(
                       message,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 12,
                         color: Color(0xFFC1C1C1),
                         fontFamily: 'Inter',
                       ),
                     ),
+                    const Divider(
+                            thickness: .1,
+                            color: Colors.black,
+                          ),
                   ],
                 ),
               ),
@@ -86,5 +202,7 @@ class NotificationCard extends StatelessWidget {
         ),
       ],
     );
+    }
+    
   }
 }

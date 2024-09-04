@@ -1,13 +1,43 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
+import 'package:flutter/material.dart';
+import 'package:isHKolarium/api/api_service/api_service.dart';
+import 'package:isHKolarium/api/models/notifications_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'notification_event.dart';
 part 'notification_state.dart';
 
-class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
-  NotificationBloc() : super(NotificationInitial()) {
-    on<NotificationEvent>((event, emit) {
-      // TODO: implement event handler
-    });
+class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
+  final ApiService _apiService;
+  NotificationsBloc(this._apiService) : super(NotificationsInitial()) {
+    on<NotificationsInitialEvent>(notificationsInitialEvent);
+    on<FetchNotificationsEvent>(fetchNotificationsEvent);
+  }
+
+  FutureOr<void> notificationsInitialEvent(
+    NotificationsInitialEvent event, Emitter<NotificationsState> emit) async {
+      emit(NotificationsLoadingState());
+      emit(NotificationsLoadedSuccessState(notifications: const []));
+  }
+
+  FutureOr<void> fetchNotificationsEvent(
+    FetchNotificationsEvent event, 
+    Emitter<NotificationsState> emit) async {
+      try {
+        final SharedPreferences prefs = await SharedPreferences.getInstance();
+        final token = prefs.getString('token');
+
+        List<NotificationsModel> notifications =
+            await _apiService.fetchNotificationsData(token: token);
+
+        emit(NotificationsLoadedSuccessState(
+          notifications: notifications,
+        ));
+      } catch (e) {
+        print('Error fetching notifications: $e');
+        emit(NotificationsErrorState(message: e.toString()));
+      }
   }
 }

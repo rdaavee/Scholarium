@@ -10,6 +10,7 @@ router.get("/user/getPosts/:status", userController.getPosts);
 router.get("/user/profile/:token", userController.getUserProfile);
 router.get("/user/getSchedule/:token", userController.getUserSchedule);
 router.get("/user/getDTR/:token", userController.getUserDTR);
+router.get("/user/getNotifications/:token", userController.getUserNotifications);
 router.get("/user/getTotalHours/:token", userController.getUserTotalHours);
 
 router.put("/user/updatePassword/:token", userController.updatePassword);

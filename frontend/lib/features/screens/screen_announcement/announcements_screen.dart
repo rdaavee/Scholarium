@@ -135,12 +135,12 @@ class _AnnouncementsPageState extends State<AnnouncementsScreen> {
               ),
             );
           } else {
-            return const Scaffold(
-              backgroundColor: Colors.white,
-              body: Center(
-                child: CircularProgressIndicator(),
-              ),
-            );
+              return const Scaffold(
+                backgroundColor: Colors.white,
+                body: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              );
           }
         },
       ),
