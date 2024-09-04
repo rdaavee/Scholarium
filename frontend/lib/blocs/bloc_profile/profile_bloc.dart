@@ -65,6 +65,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     if (token.isNotEmpty) {
       add(LoadProfileEvent(token: token));
     } else {
+      // ignore: invalid_use_of_visible_for_testing_member
       emit(ProfileErrorState(message: 'No authentication token found.'));
     }
   }

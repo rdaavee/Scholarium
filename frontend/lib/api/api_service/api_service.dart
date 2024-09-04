@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:isHKolarium/api/models/announcement_model.dart';
 import 'package:isHKolarium/api/models/dtr_model.dart';
 import 'package:isHKolarium/api/models/dtr_total_hours_model.dart';
+import 'package:isHKolarium/api/models/notifications_model.dart';
 import 'package:isHKolarium/api/models/update_password_model.dart';
 import 'package:isHKolarium/features/screens/screen_login/login_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -174,20 +175,33 @@ class ApiService {
     final url = Uri.parse('$baseUrl/user/getSchedule/$token');
     try {
       final response = await http.get(url);
-      // Check if the request was successful
       if (response.statusCode == 200) {
-        // Decode the response body to JSON
         final List<dynamic> data = jsonDecode(response.body);
-        // Map the JSON data to a list of maps
         return data.map((item) => item as Map<String, dynamic>).toList();
       } else {
-        // Handle the error if the status code is not 200
         throw Exception('Failed to load schedule: ${response.statusCode}');
       }
     } catch (e) {
-      // Handle any other errors
       print('Error fetching schedule: $e'); // Debug print
       throw Exception('Error fetching schedule: $e');
+    }
+  }
+
+  Future<List<NotificationsModel>> fetchNotificationsData({
+    required String? token,
+  }) async {
+    try {
+      final response = await http.get(Uri.parse('$baseUrl/user/getNotifications/$token'));
+
+      if (response.statusCode == 200) {
+        final List<dynamic> data = jsonDecode(response.body);
+        return data.map((json) => NotificationsModel.fromJson(json)).toList();
+      } else {
+        throw Exception('Failed to load Notifications data');
+      }
+    } catch (error) {
+      print('Error fetching notification: $error'); // Debug print
+      throw Exception('Error fetching notification: $error');
     }
   }
 }

@@ -137,6 +137,57 @@ exports.getUserSchedule = (req, res) => {
   });
 };
 
+//Get User DTR
+exports.getUserDTR = (req, res) => {
+  pool.getConnection((error, connection) => {
+    if (error) {
+      console.error("Error getting MySQL connection:", error);
+      return res.status(500).json({ message: "Server error occurred" });
+    }
+
+    console.log(`Connected as id ${connection.threadId}`);
+
+    connection.query(
+      "SELECT school_id, password FROM users WHERE token = ?",
+      [req.params.token],
+      (error, userResult) => {
+        if (error) {
+          connection.release();
+          console.error("Error executing query:", error);
+          return res.status(500).json({ message: "Server error occurred" });
+        }
+
+        if (userResult.length === 0) {
+          connection.release();
+          return res.status(404).json({ message: "User not found" });
+        }
+
+        const { school_id } = userResult[0];
+
+        connection.query(
+          "SELECT * FROM dtr WHERE school_id = ?",
+          [school_id],
+          (error, rows) => {
+            connection.release();
+
+            if (error) {
+              console.error("Error executing query:", error);
+              return res.status(500).json({ message: "Server error occurred" });
+            }
+
+            if (rows.length > 0) {
+              res.status(200).json(rows);
+            } else {
+              res.status(404).json({ message: "User dtr not found" });
+            }
+          }
+        );
+      }
+    );
+  });
+};
+
+
 exports.getUserTotalHours = (req, res) => {
   const token = req.params.token;
 
@@ -188,6 +239,58 @@ exports.getUserTotalHours = (req, res) => {
     );
   });
 };
+
+//-------------------------------------FOR STUDENT NOTIFICATIONS PAGE-----------------------------------------------------
+//Get Student Notifications
+exports.getUserNotifications = (req, res) => {
+  pool.getConnection((error, connection) => {
+    if (error) {
+      console.error("Error getting MySQL connection:", error);
+      return res.status(500).json({ message: "Server error occurred" });
+    }
+
+    console.log(`Connected as id ${connection.threadId}`);
+
+    connection.query(
+      "SELECT school_id, password FROM users WHERE token = ?",
+      [req.params.token],
+      (error, userResult) => {
+        if (error) {
+          connection.release();
+          console.error("Error executing query:", error);
+          return res.status(500).json({ message: "Server error occurred" });
+        }
+
+        if (userResult.length === 0) {
+          connection.release();
+          return res.status(404).json({ message: "User not found" });
+        }
+
+        const { school_id } = userResult[0];
+
+        connection.query(
+          "SELECT * FROM notifications WHERE school_id = ?",
+          [school_id],
+          (error, rows) => {
+            connection.release();
+
+            if (error) {
+              console.error("Error executing query:", error);
+              return res.status(500).json({ message: "Server error occurred" });
+            }
+
+            if (rows.length > 0) {
+              res.status(200).json(rows);
+            } else {
+              res.status(404).json({ message: "User dtr not found" });
+            }
+          }
+        );
+      }
+    );
+  });
+};
+
 
 //-------------------------------------FOR STUDENT PROFILE PAGE-----------------------------------------------------
 //Get specific user
@@ -386,53 +489,4 @@ exports.updatePassword = (req, res) => {
   });
 };
 
-//-------------------------------------FOR STUDENT PROFILE PAGE-----------------------------------------------------
-//Get User DTR
-exports.getUserDTR = (req, res) => {
-  pool.getConnection((error, connection) => {
-    if (error) {
-      console.error("Error getting MySQL connection:", error);
-      return res.status(500).json({ message: "Server error occurred" });
-    }
 
-    console.log(`Connected as id ${connection.threadId}`);
-
-    connection.query(
-      "SELECT school_id, password FROM users WHERE token = ?",
-      [req.params.token],
-      (error, userResult) => {
-        if (error) {
-          connection.release();
-          console.error("Error executing query:", error);
-          return res.status(500).json({ message: "Server error occurred" });
-        }
-
-        if (userResult.length === 0) {
-          connection.release();
-          return res.status(404).json({ message: "User not found" });
-        }
-
-        const { school_id } = userResult[0];
-
-        connection.query(
-          "SELECT * FROM dtr WHERE school_id = ?",
-          [school_id],
-          (error, rows) => {
-            connection.release();
-
-            if (error) {
-              console.error("Error executing query:", error);
-              return res.status(500).json({ message: "Server error occurred" });
-            }
-
-            if (rows.length > 0) {
-              res.status(200).json(rows);
-            } else {
-              res.status(404).json({ message: "User dtr not found" });
-            }
-          }
-        );
-      }
-    );
-  });
-};
