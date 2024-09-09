@@ -89,14 +89,11 @@ exports.getPosts = (req, res) => {
 //Get User Schedule
 exports.getUserSchedule = (req, res) => {
   const token = req.params.token;
-
-  // Step 1: Validate the Token and Get School ID
   pool.getConnection((error, connection) => {
     if (error) {
       console.error("Error getting MySQL connection:", error);
       return res.status(500).json({ message: "Server error occurred" });
     }
-
     connection.query(
       "SELECT school_id FROM users WHERE token = ?",
       [token],
@@ -106,28 +103,54 @@ exports.getUserSchedule = (req, res) => {
           console.error("Error executing query:", error);
           return res.status(500).json({ message: "Server error occurred" });
         }
-
         if (userResult.length === 0) {
           connection.release();
           return res.status(404).json({ message: "User not found" });
         }
-
         const school_id = userResult[0].school_id;
-
         connection.query(
           "SELECT * FROM schedule WHERE school_id = ?",
           [school_id],
           (error, rows) => {
-            connection.release();
-
             if (error) {
+              connection.release();
               console.error("Error executing query:", error);
               return res.status(500).json({ message: "Server error occurred" });
             }
-
             if (rows.length > 0) {
-              res.status(200).json(rows);
+              const currentDate = moment().startOf('day');
+              let updatePromises = [];
+              rows.forEach((schedule) => {
+                const scheduleDate = moment(schedule.date).startOf('day');
+                if (schedule.completed === 'pending' && scheduleDate.isBefore(currentDate)) {
+                  const updateQuery = new Promise((resolve, reject) => {
+                    connection.query(
+                      "UPDATE schedule SET completed = 'false' WHERE id = ?",
+                      [schedule.id],
+                      (error) => {
+                        if (error) {
+                          reject(error);
+                        } else {
+                          resolve();
+                        }
+                      }
+                    );
+                  });
+                  updatePromises.push(updateQuery);
+                }
+              });
+              Promise.all(updatePromises)
+                .then(() => {
+                  connection.release();
+                  res.status(200).json(rows);
+                })
+                .catch((err) => {
+                  connection.release();
+                  console.error("Error updating schedules:", err);
+                  res.status(500).json({ message: "Error updating schedules" });
+                });
             } else {
+              connection.release();
               res.status(404).json({ message: "User schedule not found" });
             }
           }
@@ -136,6 +159,7 @@ exports.getUserSchedule = (req, res) => {
     );
   });
 };
+
 
 //Get User DTR
 exports.getUserDTR = (req, res) => {
