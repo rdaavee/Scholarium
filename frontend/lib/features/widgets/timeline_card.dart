@@ -44,7 +44,7 @@ class TimelineCard extends StatelessWidget {
     return SizedBox(
       width: double.infinity,
       child: Card(
-        margin: const EdgeInsets.all(8.0),
+        margin: const EdgeInsets.all(10.0),
         elevation: 4.0,
         color: currentCardColor,
         shape: RoundedRectangleBorder(

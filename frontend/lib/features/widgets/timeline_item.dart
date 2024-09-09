@@ -19,12 +19,12 @@ class TimelineItem extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Padding(
-          padding: const EdgeInsets.only(left: 30),
+          padding: const EdgeInsets.only(left: 15),
           child: Container(
-            width: 75,
+            width: 60,
             alignment: Alignment.centerRight,
             child: Text(
-              _formatDate(duty['date'].toString()), // Ensure it's a string
+              _formatDate(duty['date'].toString()),
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontFamily: 'Poppins',
@@ -36,7 +36,7 @@ class TimelineItem extends StatelessWidget {
         Expanded(
           child: TimelineTile(
             alignment: TimelineAlign.manual,
-            lineXY: 0.1,
+            lineXY: 0.01,
             indicatorStyle: IndicatorStyle(
               width: 20,
               color: _getIndicatorColor(completionStatus),

@@ -64,8 +64,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                       itemCount: duties.length,
                       itemBuilder: (context, index) {
                         final duty = Map<String, dynamic>.from(duties[index]);
-                        final isCompleted = duty['completed'] ==
-                            'true'; // Map 'completed' value to boolean
+                        final isCompleted = duty['completed'] == 'true';
 
                         return TimelineItem(
                           duty: duty,

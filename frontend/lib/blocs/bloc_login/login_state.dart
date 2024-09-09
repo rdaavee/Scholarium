@@ -21,4 +21,4 @@ class LoginNavigateToStudentHomePageActionState extends LoginActionState {}
 
 class LoginNavigateToProfessorHomePageActionState extends LoginActionState {}
 
-class LoginNavigateToAdmiinHomePageActionState extends LoginActionState {}
+class LoginNavigateToAdminHomePageActionState extends LoginActionState {}

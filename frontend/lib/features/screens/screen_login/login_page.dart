@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:isHKolarium/api/api_service/api_service.dart';
 import 'package:isHKolarium/blocs/bloc_login/login_bloc.dart';
+import 'package:isHKolarium/features/screens/screen_admin/admin_home_page.dart';
 import 'package:isHKolarium/features/widgets/login_form.dart';
 import 'package:isHKolarium/features/screens/screen_bottom_nav/bottom_navigation_provider.dart';
 import 'package:isHKolarium/features/screens/screen_professor/professor_screen.dart';
@@ -45,6 +46,9 @@ class _LoginPageState extends State<LoginPage> {
               builder: (context) => ProfessorScreen(),
             ),
           );
+        } else if (state is LoginNavigateToAdminHomePageActionState) {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => AdminHomePage()));
         }
       },
       builder: (context, state) {

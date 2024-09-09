@@ -58,8 +58,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             case 'Professor':
               emit(LoginNavigateToProfessorHomePageActionState());
               break;
-            case 'Administrator':
-              emit(LoginNavigateToAdmiinHomePageActionState());
+            case 'Admin':
+              emit(LoginNavigateToAdminHomePageActionState());
               break;
             default:
               emit(LoginErrorState(errorMessage: 'Undefined role'));
