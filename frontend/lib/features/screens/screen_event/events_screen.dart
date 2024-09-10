@@ -36,10 +36,10 @@ class _EventsScreenState extends State<EventsScreen> {
                   height: 100.0,
                   alignment: Alignment.centerLeft,
                   child: const Text(
-                    "EVENT",
+                    "Events",
                     style: TextStyle(
                       fontSize: 17,
-                      fontFamily: 'Montserrat',
+                      fontFamily: 'Inter',
                       fontWeight: FontWeight.bold,
                       letterSpacing: 1.1,
                       color: ColorPalette.accentWhite,
@@ -69,8 +69,3 @@ class _EventsScreenState extends State<EventsScreen> {
     );
   }
 }
-
-
-
-
-

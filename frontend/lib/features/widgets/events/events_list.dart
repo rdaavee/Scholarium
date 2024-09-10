@@ -33,13 +33,14 @@ class EventsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemCount: eventsImages.length, 
+      itemCount: eventsImages.length,
       itemBuilder: (context, index) {
         return Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(2.0),
           child: EventsCard(
             imagePath: eventsImages[index],
-            eventName: eventsNames[index], 
+            eventName: eventsNames[index],
+            cardColor: Colors.white,
           ),
         );
       },
