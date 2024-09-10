@@ -22,14 +22,16 @@ class NotificationCard extends StatelessWidget {
     if (status == 'unread') {
       return Column(
         children: [
-          const SizedBox(height: 10),
+          Divider(
+            thickness: .03,
+          ),
           Padding(
             padding: const EdgeInsets.all(10.0),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(10.0),
                   child: CircleAvatar(
                     backgroundColor: Colors.grey[300],
                     radius: 25,
@@ -41,10 +43,9 @@ class NotificationCard extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Divider(
-                              thickness: .1,
-                              color: Colors.black,
-                            ),
+                      SizedBox(
+                        height: 12,
+                      ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -98,10 +99,6 @@ class NotificationCard extends StatelessWidget {
                           fontFamily: 'Inter',
                         ),
                       ),
-                      const Divider(
-                              thickness: .1,
-                              color: Colors.black,
-                            ),
                     ],
                   ),
                 ),
@@ -112,97 +109,97 @@ class NotificationCard extends StatelessWidget {
       );
     } else {
       return Column(
-      children: [
-        const SizedBox(height: 10),
-        Container(
-          color: Colors.grey[300],
-          padding: const EdgeInsets.all(10.0),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: CircleAvatar(
-                  backgroundColor: Colors.grey[300],
-                  radius: 25,
-                  child: const Icon(Icons.person, color: Colors.white),
+        children: [
+          Divider(
+            thickness: .03,
+          ),
+          SizedBox(
+            height: 5,
+          ),
+          Container(
+            color: Color(0xFF549E73).withOpacity(0.05),
+            padding: const EdgeInsets.all(10.0),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: CircleAvatar(
+                    backgroundColor: Colors.grey[300],
+                    radius: 25,
+                    child: const Icon(Icons.person, color: Colors.white),
+                  ),
                 ),
-              ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Divider(
-                            thickness: .1,
-                            color: Colors.black,
-                          ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: Text(
-                            sender,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontFamily: 'Inter',
-                              fontSize: 15,
-                              color: Colors.black,
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        height: 12,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              sender,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'Inter',
+                                fontSize: 15,
+                                color: Colors.black,
+                              ),
                             ),
                           ),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.only(right: 16),
-                          child: Text(
-                            date,
+                          Column(
+                            children: [
+                              Text(
+                                date,
+                                style: const TextStyle(
+                                  color: Colors.grey,
+                                  fontFamily: 'Inter',
+                                  fontSize: 11,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Text(
+                            time,
                             style: const TextStyle(
                               color: Colors.grey,
                               fontFamily: 'Inter',
                               fontSize: 11,
                             ),
                           ),
-                        ),
-                        Text(
-                          time,
-                          style: const TextStyle(
-                            color: Colors.grey,
-                            fontFamily: 'Inter',
-                            fontSize: 11,
-                          ),
-                        ),
-                        const SizedBox(width: 22),
-                      ],
-                    ),
-                    Text(
-                      role,
-                      style: const TextStyle(
-                        fontSize: 12,
-                        color: Colors.green,
-                        fontWeight: FontWeight.w500,
-                        fontFamily: 'Inter',
+                          const SizedBox(width: 22),
+                        ],
                       ),
-                    ),
-                    Text(
-                      message,
-                      style: const TextStyle(
-                        fontSize: 12,
-                        color: Color(0xFFC1C1C1),
-                        fontFamily: 'Inter',
+                      Text(
+                        role,
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: Colors.green,
+                          fontWeight: FontWeight.w500,
+                          fontFamily: 'Inter',
+                        ),
                       ),
-                    ),
-                    const Divider(
-                            thickness: .1,
-                            color: Colors.black,
-                          ),
-                  ],
+                      Text(
+                        message,
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: Color(0xFFC1C1C1),
+                          fontFamily: 'Inter',
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-      ],
-    );
+        ],
+      );
     }
-    
   }
 }
