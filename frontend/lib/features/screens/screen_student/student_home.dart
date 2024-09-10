@@ -341,7 +341,7 @@ class _StudentHomeState extends State<StudentHome> {
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) =>
-                                            const EventsScreen(),
+                                            EventsScreen(),
                                       ),
                                     );
                                   },

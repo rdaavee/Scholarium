@@ -53,15 +53,18 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         if (token != null && role != null) {
           switch (role) {
             case 'Student':
+              print("Login to student!");
               emit(LoginNavigateToStudentHomePageActionState());
               break;
             case 'Professor':
+              print("Login to professor!");
               emit(LoginNavigateToProfessorHomePageActionState());
               break;
             case 'Admin':
               emit(LoginNavigateToAdminHomePageActionState());
               break;
             default:
+              print("Login Error!");
               emit(LoginErrorState(errorMessage: 'Undefined role'));
           }
         } else {
