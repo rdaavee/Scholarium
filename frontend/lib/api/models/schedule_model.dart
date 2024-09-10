@@ -5,7 +5,7 @@ class ScheduleModel {
   final String? block;
   final String? subject;
   final String? profID;
-  final String? teacher;
+  final String? professor;
   final String? department;
   final String? time;
   final String? date;
@@ -18,7 +18,7 @@ class ScheduleModel {
     required this.block,
     required this.subject,
     required this.profID,
-    required this.teacher,
+    required this.professor,
     required this.department,
     required this.time,
     required this.date,
@@ -33,7 +33,7 @@ class ScheduleModel {
       block: map['block'] as String?,
       subject: map['subject'] as String?,
       profID: map['profID'] as String?,
-      teacher: map['teacher'] as String?,
+      professor: map['professor'] as String?,
       department: map['department'] as String?,
       time: map['time'] as String?,
       date: map['date'] as String?,

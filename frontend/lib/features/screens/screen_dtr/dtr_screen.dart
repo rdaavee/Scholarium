@@ -6,9 +6,9 @@ import 'package:isHKolarium/blocs/bloc_dtr/dtr_bloc.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
 import 'package:isHKolarium/features/widgets/your_dtr_card.dart';
 import 'package:isHKolarium/features/widgets/your_dtr_hours_card.dart';
-import 'dart:io';
+import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
-import 'package:path_provider/path_provider.dart';
+import 'package:printing/printing.dart'; 
 
 class DtrScreen extends StatefulWidget {
   const DtrScreen({super.key});
@@ -29,7 +29,7 @@ class _DtrScreenState extends State<DtrScreen> {
   }
 
   Future<void> generatePdf(List<DtrModel> dtrList) async {
-    final pdfDocument = pw.Document(); // Create a PDF document
+    final pdfDocument = pw.Document();
 
     pdfDocument.addPage(
       pw.MultiPage(
@@ -44,8 +44,8 @@ class _DtrScreenState extends State<DtrScreen> {
               'Time In',
               'Time Out',
               'Hours Rendered',
-              'Teacher',
-              'Teacher Signature',
+              'Professor',
+              'Professor Signature',
             ],
             data: dtrList.map((dtr) {
               return [
@@ -53,8 +53,8 @@ class _DtrScreenState extends State<DtrScreen> {
                 dtr.timeIn,
                 dtr.timeOut,
                 dtr.hoursRendered.toString(),
-                dtr.teacher,
-                dtr.teacherSignature,
+                dtr.professor,
+                dtr.professorSignature,
               ];
             }).toList(),
           ),
@@ -62,13 +62,12 @@ class _DtrScreenState extends State<DtrScreen> {
       ),
     );
 
-    // Save the PDF to a file
-    final output = await getTemporaryDirectory();
-    final file = File('${output.path}/dtr_report.pdf');
-    await file.writeAsBytes(await pdfDocument.save());
+    Printing.layoutPdf(
+      onLayout: (PdfPageFormat format) async => pdfDocument.save(),
+    );
 
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('PDF saved to ${file.path}')),
+      const SnackBar(content: Text('Download Completed')),
     );
   }
 
@@ -165,7 +164,7 @@ class _DtrScreenState extends State<DtrScreen> {
                                 color: Colors.white.withOpacity(0.1),
                                 width: 1,
                               ),
-                              columnWidths: {
+                              columnWidths: const {
                                 0: FixedColumnWidth(100),
                                 1: FixedColumnWidth(100),
                                 2: FixedColumnWidth(100),

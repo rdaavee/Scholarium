@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(MyApp());
+class EventsScreen extends StatefulWidget {
+  @override
+  State<EventsScreen> createState() => _EventsScreenState();
 }
 
-class MyApp extends StatelessWidget {
+class _EventsScreenState extends State<EventsScreen> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

@@ -10,8 +10,9 @@ import 'package:isHKolarium/features/screens/screen_login/login_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ApiService {
-  final String baseUrl = 'http://localhost:3000/api';
-  // final String baseUrl = 'http://192.168.42.137:3000/api';
+  final String baseUrl = 'http://localhost:3000/api'; //local api
+  // final String baseUrl = 'http://192.168.42.137:3000/api'; //physical device api
+  // final String baseUrl = 'http://10.0.2.2:3000/api'; //mobile api
 
   //Login
   Future<Map<String, dynamic>> loginUser(
