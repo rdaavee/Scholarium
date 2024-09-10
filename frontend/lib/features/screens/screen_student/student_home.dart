@@ -58,21 +58,35 @@ class _StudentHomeState extends State<StudentHome> {
               backgroundColor: ColorPalette.primary,
               body: Column(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 30.0),
-                    child: Container(
-                      height: 100.0,
-                      color: ColorPalette.primary,
-                      alignment: Alignment.centerLeft,
-                      child: const Text(
-                        "Hi, Ranier",
-                        style: TextStyle(
-                          fontSize: 17,
-                          fontFamily: 'Montserrat',
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 1.1,
-                          color: ColorPalette.accentWhite,
-                        ),
+                  Container(
+                    height: 100.0,
+                    color: ColorPalette.primary,
+                    alignment: Alignment.centerLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 30.0, right: 20.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            "Hi, Ranier",
+                            style: TextStyle(
+                              fontSize: 17,
+                              fontFamily: 'Inter',
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 1.1,
+                              color: ColorPalette.accentWhite,
+                            ),
+                          ),
+                          IconButton(
+                            icon: const Icon(
+                              Icons.message,
+                              color: ColorPalette.accentWhite,
+                            ),
+                            onPressed: () {
+                              //logic here
+                            },
+                          ),
+                        ],
                       ),
                     ),
                   ),

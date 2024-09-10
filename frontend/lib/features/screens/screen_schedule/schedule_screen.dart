@@ -6,7 +6,6 @@ import 'package:isHKolarium/blocs/bloc_schedule/schedule_event.dart';
 import 'package:isHKolarium/blocs/bloc_schedule/schedule_state.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../widgets/schedule_header.dart';
 import '../../widgets/timeline_item.dart';
 
 class ScheduleScreen extends StatefulWidget {
@@ -39,7 +38,37 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
       backgroundColor: ColorPalette.primary,
       body: Column(
         children: [
-          ScheduleHeader(),
+          Padding(
+            padding: const EdgeInsets.only(left: 30.0, right: 20.0),
+            child: Container(
+              height: 100.0,
+              alignment: Alignment.centerLeft,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    "Hi, Ranier",
+                    style: TextStyle(
+                      fontSize: 17,
+                      fontFamily: 'Montserrat',
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1.1,
+                      color: ColorPalette.accentWhite,
+                    ),
+                  ),
+                  IconButton(
+                    icon: const Icon(
+                      Icons.message,
+                      color: ColorPalette.accentWhite,
+                    ),
+                    onPressed: () {
+                      //logic here
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
           Expanded(
             child: Container(
               decoration: const BoxDecoration(

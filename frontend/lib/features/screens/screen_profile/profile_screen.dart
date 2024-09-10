@@ -70,19 +70,33 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(left: 30.0),
+                        padding: const EdgeInsets.only(left: 30.0, right: 20.0),
                         child: Container(
                           height: 100.0,
                           color: ColorPalette.primary,
                           alignment: Alignment.centerLeft,
-                          child: const Text(
-                            "Profile",
-                            style: TextStyle(
-                              fontSize: 17,
-                              fontFamily: 'Inter',
-                              fontWeight: FontWeight.bold,
-                              letterSpacing: 1.1,
-                            ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text(
+                                "Profile",
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  fontFamily: 'Inter',
+                                  fontWeight: FontWeight.bold,
+                                  letterSpacing: 1.1,
+                                ),
+                              ),
+                              IconButton(
+                                icon: const Icon(
+                                  Icons.message,
+                                  color: ColorPalette.accentWhite,
+                                ),
+                                onPressed: () {
+                                  //logic here
+                                },
+                              ),
+                            ],
                           ),
                         ),
                       ),
@@ -166,7 +180,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   );
                 } else if (state is LogoutLoadedSuccessState) {
                   Navigator.pushReplacementNamed(context, '/login');
-                  return Container(); // or a splash screen
+                  return Container();
                 } else if (state is LogoutErrorState) {
                   return Center(
                     child: Text(

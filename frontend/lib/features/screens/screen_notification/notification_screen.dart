@@ -49,45 +49,60 @@ class _NotificationScreenState extends State<NotificationScreen> {
               body: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(left: 30.0),
+                    padding: const EdgeInsets.only(left: 30.0, right: 20.0),
                     child: Container(
                       height: 100.0,
                       color: ColorPalette.primary,
                       alignment: Alignment.centerLeft,
-                      child: const Text(
-                        "Notification",
-                        style: TextStyle(
-                            fontSize: 20,
-                            fontFamily: 'Inter',
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: 1.1,
-                            color: ColorPalette.accentWhite),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Notification",
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontFamily: 'Inter',
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 1.1,
+                              color: ColorPalette.accentWhite,
+                            ),
+                          ),
+                          IconButton(
+                            icon: const Icon(
+                              Icons.message,
+                              color: ColorPalette.accentWhite,
+                            ),
+                            onPressed: () {
+                              //logic here
+                            },
+                          ),
+                        ],
                       ),
                     ),
                   ),
                   Expanded(
                     child: Container(
-                        decoration: const BoxDecoration(
-                          color: Color(0xFFF0F3F4),
-                          borderRadius: BorderRadius.vertical(
-                            top: Radius.circular(20),
-                          ),
+                      decoration: const BoxDecoration(
+                        color: Color(0xFFF0F3F4),
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(20),
                         ),
-                        child: ListView.builder(
-                            itemCount: state.notifications.length,
-                            itemBuilder: (context, index) {
-                              final notifications = state.notifications[index];
-                              return Container(
-                                child: NotificationCard(
-                                  sender: notifications.sender.toString(),
-                                  role: notifications.role.toString(),
-                                  message: notifications.message.toString(),
-                                  status: notifications.status.toString(),
-                                  date: notifications.date.toString(),
-                                  time: notifications.time.toString(),
-                                ),
-                              );
-                            })),
+                      ),
+                      child: ListView.builder(
+                        itemCount: state.notifications.length,
+                        itemBuilder: (context, index) {
+                          final notifications = state.notifications[index];
+                          return NotificationCard(
+                            sender: notifications.sender.toString(),
+                            role: notifications.role.toString(),
+                            message: notifications.message.toString(),
+                            status: notifications.status.toString(),
+                            date: notifications.date.toString(),
+                            time: notifications.time.toString(),
+                          );
+                        },
+                      ),
+                    ),
                   ),
                 ],
               ),
