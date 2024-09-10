@@ -5,10 +5,8 @@ class YourDtrCard extends StatelessWidget {
   final DateTime date;
   final String timeIn;
   final String timeOut;
-  final String hoursToRendered;
   final String hoursRendered;
-  final String teacher;
-  final String teacherSignature;
+
   final Color cardColor;
 
   const YourDtrCard({
@@ -16,10 +14,7 @@ class YourDtrCard extends StatelessWidget {
     required this.date,
     required this.timeIn,
     required this.timeOut,
-    required this.hoursToRendered,
     required this.hoursRendered,
-    required this.teacher,
-    required this.teacherSignature,
     required this.cardColor,
   });
 
@@ -41,34 +36,14 @@ class YourDtrCard extends StatelessWidget {
             1: FixedColumnWidth(100),
             2: FixedColumnWidth(100),
             3: FixedColumnWidth(120),
-            4: FixedColumnWidth(120),
-            5: FixedColumnWidth(100),
-            6: FixedColumnWidth(150),
           },
           children: [
-            TableRow(
-              decoration: BoxDecoration(
-                color: Colors.grey[200],
-              ),
-              children: [
-                _buildHeader('Date'),
-                _buildHeader('Time In'),
-                _buildHeader('Time Out'),
-                _buildHeader('Hours Rendered'),
-                _buildHeader('Hours to Render'),
-                _buildHeader('Teacher'),
-                _buildHeader('Teacher Signature'),
-              ],
-            ),
             TableRow(
               children: [
                 _buildCell(formattedDate),
                 _buildCell(timeIn),
                 _buildCell(timeOut),
                 _buildCell(hoursRendered),
-                _buildCell(hoursToRendered),
-                _buildCell(teacher),
-                _buildCell(teacherSignature),
               ],
             ),
           ],

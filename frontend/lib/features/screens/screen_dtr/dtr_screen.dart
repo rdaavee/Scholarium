@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:isHKolarium/api/api_service/api_service.dart';
 import 'package:isHKolarium/api/models/dtr_model.dart';
@@ -8,7 +7,6 @@ import 'package:isHKolarium/config/constants/colors.dart';
 import 'package:isHKolarium/features/widgets/your_dtr_card.dart';
 import 'package:isHKolarium/features/widgets/your_dtr_hours_card.dart';
 import 'dart:io';
-import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:path_provider/path_provider.dart';
 
@@ -31,48 +29,48 @@ class _DtrScreenState extends State<DtrScreen> {
   }
 
   Future<void> generatePdf(List<DtrModel> dtrList) async {
-  final pdfDocument = pw.Document(); // Create a PDF document
+    final pdfDocument = pw.Document(); // Create a PDF document
 
-  pdfDocument.addPage(
-    pw.MultiPage(
-      build: (pw.Context context) => [
-        pw.Header(level: 0, child: pw.Text('DTR Report', style: const pw.TextStyle(fontSize: 24))),
-        pw.TableHelper.fromTextArray(
-          headers: [
-            'Date',
-            'Time In',
-            'Time Out',
-            'Hours Rendered',
-            'Hours To Rendered',
-            'Teacher',
-            'Teacher Signature',
-          ],
-          data: dtrList.map((dtr) {
-            return [
-              dtr.date,  // Format the date as required
-              dtr.timeIn,
-              dtr.timeOut,
-              dtr.hoursRendered.toString(),
-              dtr.hoursToRendered.toString(),
-              dtr.teacher,
-              dtr.teacherSignature,
-            ];
-          }).toList(),
-        ),
-      ],
-    ),
-  );
+    pdfDocument.addPage(
+      pw.MultiPage(
+        build: (pw.Context context) => [
+          pw.Header(
+              level: 0,
+              child: pw.Text('DTR Report',
+                  style: const pw.TextStyle(fontSize: 24))),
+          pw.TableHelper.fromTextArray(
+            headers: [
+              'Date',
+              'Time In',
+              'Time Out',
+              'Hours Rendered',
+              'Teacher',
+              'Teacher Signature',
+            ],
+            data: dtrList.map((dtr) {
+              return [
+                dtr.date,
+                dtr.timeIn,
+                dtr.timeOut,
+                dtr.hoursRendered.toString(),
+                dtr.teacher,
+                dtr.teacherSignature,
+              ];
+            }).toList(),
+          ),
+        ],
+      ),
+    );
 
-  // Save the PDF to a file
-  final output = await getTemporaryDirectory();
-  final file = File('${output.path}/dtr_report.pdf');
-  await file.writeAsBytes(await pdfDocument.save());
+    // Save the PDF to a file
+    final output = await getTemporaryDirectory();
+    final file = File('${output.path}/dtr_report.pdf');
+    await file.writeAsBytes(await pdfDocument.save());
 
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(content: Text('PDF saved to ${file.path}')),
-  );
-}
-
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('PDF saved to ${file.path}')),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -146,52 +144,75 @@ class _DtrScreenState extends State<DtrScreen> {
                         top: Radius.circular(20),
                       ),
                     ),
-                    child: Container(
-                      padding: const EdgeInsets.all(5.0),
-                      child: ListView.builder(
-                        itemCount: state.dtr.length,
-                        itemBuilder: (context, index) {
-                          final dtr = state.dtr[index];
-                          return Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Stack(
-                                clipBehavior: Clip.none,
-                                children: [
-                                  YourDtrHoursCard(
-                                    progress: (state.hours[0].totalhours /
-                                            state.hours[0].targethours)
-                                        .clamp(0.0, 1.0),
-                                    cardColor: Colors.white,
+                    child: Column(
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.all(16.0),
+                          padding: const EdgeInsets.all(8.0),
+                          child: YourDtrHoursCard(
+                            progress: (state.hours[0].totalhours /
+                                    state.hours[0].targethours)
+                                .clamp(0.0, 1.0),
+                            cardColor: Colors.white,
+                          ),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.all(15.0),
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Table(
+                              border: TableBorder.all(
+                                color: Colors.white.withOpacity(0.1),
+                                width: 1,
+                              ),
+                              columnWidths: {
+                                0: FixedColumnWidth(100),
+                                1: FixedColumnWidth(100),
+                                2: FixedColumnWidth(100),
+                                3: FixedColumnWidth(120),
+                              },
+                              children: [
+                                TableRow(
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey[200],
                                   ),
-                                ],
-                              ),
-                              const Divider(
-                                thickness: 0.1,
-                              ),
-                              Stack(
-                                clipBehavior: Clip.none,
+                                  children: [
+                                    _buildHeader('Date'),
+                                    _buildHeader('Time In'),
+                                    _buildHeader('Time Out'),
+                                    _buildHeader('Hours Rendered'),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: ListView.builder(
+                            itemCount: state.dtr.length,
+                            itemBuilder: (context, index) {
+                              final dtr = state.dtr[index];
+                              return Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   YourDtrCard(
                                     date: DateTime.parse(
                                         "2024-08-27T16:00:00.000Z"),
                                     timeIn: dtr.timeIn.toString(),
                                     timeOut: dtr.timeOut.toString(),
-                                    hoursToRendered:
-                                        dtr.hoursToRendered.toString(),
                                     hoursRendered: dtr.hoursRendered.toString(),
-                                    teacher: dtr.teacher.toString(),
-                                    teacherSignature:
-                                        dtr.teacherSignature.toString(),
                                     cardColor: Colors.white,
                                   ),
+                                  const Divider(
+                                    thickness: 0.1,
+                                  ),
                                 ],
-                              ),
-                            ],
-                          );
-                        },
-                      ),
+                              );
+                            },
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -204,8 +225,24 @@ class _DtrScreenState extends State<DtrScreen> {
             body: Center(child: CircularProgressIndicator()),
           );
         }
-        
       }),
+    );
+  }
+
+  Widget _buildHeader(String text) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Center(
+        child: Text(
+          text,
+          style: TextStyle(
+            color: Colors.black,
+            fontFamily: 'Inter',
+            fontSize: 12,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
     );
   }
 }
