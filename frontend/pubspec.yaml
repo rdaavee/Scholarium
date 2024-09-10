@@ -64,18 +64,6 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
-  assets:
-    - assets/img1.png
-    - assets/img2.png
-    - assets/img3.png
-    - assets/img4.png
-    - assets/img5.png
-    - assets/img6.png
-    - assets/img7.png
-    - assets/img8.png
-    - assets/img9.png
-    - assets/img10.png
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
@@ -86,6 +74,16 @@ flutter:
   assets:
     - assets/
     - assets/images/
+    - assets/images/img1.png
+    - assets/images/img2.png
+    - assets/images/img3.png
+    - assets/images/img4.png
+    - assets/images/img5.png
+    - assets/images/img6.png
+    - assets/images/img7.png
+    - assets/images/img8.png
+    - assets/images/img9.png
+    - assets/images/img10.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
 
