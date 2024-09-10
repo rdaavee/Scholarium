@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:isHKolarium/config/constants/colors.dart';
+import 'package:isHKolarium/features/widgets/events/events_list.dart';
 
 class EventsScreen extends StatefulWidget {
+  const EventsScreen({super.key});
+
   @override
   State<EventsScreen> createState() => _EventsScreenState();
 }
@@ -8,130 +12,56 @@ class EventsScreen extends StatefulWidget {
 class _EventsScreenState extends State<EventsScreen> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Events'),
-          backgroundColor: Colors.green,
-        ),
-        body: CurvedWhiteContainer(
-          child: EventList(),
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          currentIndex: 0,
-          items: [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.schedule),
-              label: 'Schedule',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.notifications),
-              label: 'Notification',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: 'Profile',
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class CurvedWhiteContainer extends StatelessWidget {
-  final Widget child;
-
-  CurvedWhiteContainer({required this.child});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(30.0),
-          topRight: Radius.circular(30.0),
-        ),
-      ),
-      child: child,
-    );
-  }
-}
-
-class EventList extends StatelessWidget {
-  final List<String> eventImages = [
-    'assets/img1.png',
-    'assets/img2.png',
-    'assets/img3.png',
-    'assets/img4.png',
-    'assets/img5.png',
-    'assets/img6.png',
-    'assets/img7.png',
-    'assets/img8.png',
-    'assets/img9.png',
-    'assets/img10.png',
-  ];
-
-  final List<String> eventNames = [
-    'LEADERSHIP CAMP',
-    'KOMSAYAHAN 2024',
-    'CITE GENERAL ASSEMBLY 2024',
-    'MASS BLOOD DONATION',
-    'Community Baratilyo',
-    'KAPEHAN at KAMUSTAHAN',
-    'CITE STUDENT ONBOARDING ORIENTATION',
-    'FIRST WEEK HI',
-    'BRIGADA ESKWELA',
-    'NAMEPLATING CEREMONY',
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: eventImages.length, 
-      itemBuilder: (context, index) {
-        return Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: EventCard(
-            imagePath: eventImages[index],
-            eventName: eventNames[index], 
-          ),
-        );
-      },
-    );
-  }
-}
-
-class EventCard extends StatelessWidget {
-  final String imagePath;
-  final String eventName;
-
-  const EventCard({required this.imagePath, required this.eventName});
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: Column(
+    return Scaffold(
+      backgroundColor: ColorPalette.primary,
+      body: Column(
         children: [
-          Image.asset(
-            imagePath, 
-            fit: BoxFit.cover,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              eventName, 
-              style: TextStyle(
-                fontSize: 16.0,
-                fontWeight: FontWeight.bold,
+          Row(
+            children: [
+              Container(
+                margin: const EdgeInsets.only(left: 16),
+                child: IconButton(
+                  icon: const Icon(
+                    Icons.arrow_back_sharp,
+                    color: Colors.white,
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
               ),
-              textAlign: TextAlign.center,
+              Padding(
+                padding: const EdgeInsets.only(left: 30.0),
+                child: Container(
+                  height: 100.0,
+                  alignment: Alignment.centerLeft,
+                  child: const Text(
+                    "EVENT",
+                    style: TextStyle(
+                      fontSize: 17,
+                      fontFamily: 'Montserrat',
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1.1,
+                      color: ColorPalette.accentWhite,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Expanded(
+            child: Container(
+              height: MediaQuery.of(context).size.height - 100.0,
+              decoration: const BoxDecoration(
+                color: Color(0xFFF0F3F4),
+                borderRadius: BorderRadius.vertical(
+                  top: Radius.circular(20),
+                ),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: EventsList(),
+              ),
             ),
           ),
         ],
@@ -139,3 +69,8 @@ class EventCard extends StatelessWidget {
     );
   }
 }
+
+
+
+
+
