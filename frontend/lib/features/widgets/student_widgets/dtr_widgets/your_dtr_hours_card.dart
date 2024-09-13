@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:isHKolarium/features/widgets/gradient_progress_indicator.dart';
+import 'package:isHKolarium/features/widgets/student_widgets/dtr_widgets/gradient_progress_indicator.dart';
 
 class YourDtrHoursCard extends StatelessWidget {
   final double progress;

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:timeline_tile/timeline_tile.dart';
-import 'package:isHKolarium/features/widgets/timeline_card.dart';
+import 'package:isHKolarium/features/widgets/student_widgets/schedule_widgets/timeline_card.dart';
 
 class TimelineItem extends StatelessWidget {
   final Map<String, dynamic> duty;
@@ -55,7 +55,7 @@ class TimelineItem extends StatelessWidget {
             ),
             endChild: TimelineCard(
               dutyTitle: duty['subject'].toString(), // Ensure it's a string
-              professorName: duty['teacher'].toString(), // Ensure it's a string
+              professorName: duty['professor'].toString(), // Ensure it's a string
               roomName: duty['room'].toString(), // Ensure it's a string
               timeInAndOut: duty['time'].toString(), // Ensure it's a string
               isCompleted: completionStatus == "true",

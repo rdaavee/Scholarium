@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:isHKolarium/features/widgets/events/events_card.dart';
+import 'package:isHKolarium/features/widgets/event_widgets/events_card.dart';
 
 class EventsList extends StatelessWidget {
   final List<String> eventsImages = [

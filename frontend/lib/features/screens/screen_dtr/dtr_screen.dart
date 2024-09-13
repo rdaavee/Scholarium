@@ -4,11 +4,11 @@ import 'package:isHKolarium/api/api_service/api_service.dart';
 import 'package:isHKolarium/api/models/dtr_model.dart';
 import 'package:isHKolarium/blocs/bloc_dtr/dtr_bloc.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
-import 'package:isHKolarium/features/widgets/your_dtr_card.dart';
-import 'package:isHKolarium/features/widgets/your_dtr_hours_card.dart';
+import 'package:isHKolarium/features/widgets/student_widgets/dtr_widgets/your_dtr_card.dart';
+import 'package:isHKolarium/features/widgets/student_widgets/dtr_widgets/your_dtr_hours_card.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
-import 'package:printing/printing.dart'; 
+import 'package:printing/printing.dart';
 
 class DtrScreen extends StatefulWidget {
   const DtrScreen({super.key});
@@ -146,7 +146,7 @@ class _DtrScreenState extends State<DtrScreen> {
                     child: Column(
                       children: [
                         Container(
-                          margin: const EdgeInsets.all(16.0),
+                          margin: const EdgeInsets.all(10.0),
                           padding: const EdgeInsets.all(8.0),
                           child: YourDtrHoursCard(
                             progress: (state.hours[0].totalhours /
@@ -156,7 +156,7 @@ class _DtrScreenState extends State<DtrScreen> {
                           ),
                         ),
                         Container(
-                          padding: const EdgeInsets.all(15.0),
+                          padding: const EdgeInsets.all(10.0),
                           child: SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
                             child: Table(
