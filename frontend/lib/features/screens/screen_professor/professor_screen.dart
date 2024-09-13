@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
-import 'package:isHKolarium/features/widgets/duty_card.dart';
+import 'package:isHKolarium/features/widgets/student_widgets/dtr_widgets/duty_card.dart';
 
 class ProfessorScreen extends StatelessWidget {
   @override

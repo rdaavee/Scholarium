@@ -6,12 +6,12 @@ import 'package:isHKolarium/blocs/bloc_profile/profile_event.dart';
 import 'package:isHKolarium/blocs/bloc_profile/profile_state.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../widgets/profile_circle.dart';
-import '../../widgets/profile_account_option.dart';
-import '../../widgets/profile_account_section.dart';
-import '../../widgets/profile_divider.dart';
-import '../../widgets/profile_info_data.dart';
-import '../../widgets/profile_info_section.dart';
+import '../../widgets/profile_widgets/profile_circle.dart';
+import '../../widgets/profile_widgets/profile_account_option.dart';
+import '../../widgets/profile_widgets/profile_account_section.dart';
+import '../../widgets/profile_widgets/profile_divider.dart';
+import '../../widgets/profile_widgets/profile_info_data.dart';
+import '../../widgets/profile_widgets/profile_info_section.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});

@@ -1,6 +1,6 @@
 // duty_card.dart
 import 'package:flutter/material.dart';
-import 'package:isHKolarium/features/widgets/profile_modal_bottom_sheet.dart';
+import 'package:isHKolarium/features/widgets/profile_widgets/profile_modal_bottom_sheet.dart';
 
 class DutyCard extends StatelessWidget {
   final Color cardColor;

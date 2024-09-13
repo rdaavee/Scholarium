@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:isHKolarium/blocs/bloc_login/login_bloc.dart';
-import 'package:isHKolarium/features/widgets/sign_in_button.dart';
+import 'package:isHKolarium/features/widgets/authentication_widgets/sign_in_button.dart';
 
 class LoginForm extends StatelessWidget {
   final LoginBloc loginBloc;

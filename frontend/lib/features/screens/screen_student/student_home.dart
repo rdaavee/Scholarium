@@ -3,14 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:isHKolarium/api/api_service/api_service.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
 import 'package:isHKolarium/features/screens/screen_dtr/dtr_screen.dart';
-import 'package:isHKolarium/features/widgets/dtr_hours_card.dart';
+import 'package:isHKolarium/features/widgets/student_widgets/dtr_widgets/dtr_hours_card.dart';
 import 'package:isHKolarium/features/screens/screen_event/events_screen.dart';
-import 'package:isHKolarium/features/widgets/events_card.dart';
+import 'package:isHKolarium/features/widgets/student_widgets/event_widgets/events_card.dart';
 import 'package:isHKolarium/features/screens/screen_schedule/schedule_screen.dart';
-import 'package:isHKolarium/features/widgets/schedule_card.dart';
+import 'package:isHKolarium/features/widgets/student_widgets/schedule_widgets/schedule_card.dart';
 import 'package:isHKolarium/blocs/bloc_student/students_bloc.dart';
 import 'package:isHKolarium/features/screens/screen_announcement/announcements_screen.dart';
-import 'package:isHKolarium/features/widgets/announcement_card.dart';
+import 'package:isHKolarium/features/widgets/student_widgets/annuncement_widgets/announcement_card.dart';
 
 class StudentHome extends StatefulWidget {
   const StudentHome({super.key});

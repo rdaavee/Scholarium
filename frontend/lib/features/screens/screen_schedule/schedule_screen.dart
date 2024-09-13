@@ -6,7 +6,7 @@ import 'package:isHKolarium/blocs/bloc_schedule/schedule_event.dart';
 import 'package:isHKolarium/blocs/bloc_schedule/schedule_state.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../widgets/timeline_item.dart';
+import '../../widgets/student_widgets/schedule_widgets/timeline_item.dart';
 
 class ScheduleScreen extends StatefulWidget {
   const ScheduleScreen({super.key});

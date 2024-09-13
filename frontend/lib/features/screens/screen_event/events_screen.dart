@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
-import 'package:isHKolarium/features/widgets/events/events_list.dart';
+import 'package:isHKolarium/features/widgets/event_widgets/events_list.dart';
 
 class EventsScreen extends StatefulWidget {
   const EventsScreen({super.key});

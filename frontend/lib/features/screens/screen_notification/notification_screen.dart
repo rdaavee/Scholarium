@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:isHKolarium/api/api_service/api_service.dart';
 import 'package:isHKolarium/blocs/bloc_notification/notification_bloc.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
-import 'package:isHKolarium/features/widgets/notification_card.dart';
+import 'package:isHKolarium/features/widgets/student_widgets/notification_widgets/notification_card.dart';
 
 class NotificationScreen extends StatefulWidget {
   const NotificationScreen({super.key});

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart'; // Import the fl_chart package
 import 'package:isHKolarium/config/constants/colors.dart';
-import 'package:isHKolarium/features/widgets/duty_card.dart';
+import 'package:isHKolarium/features/widgets/student_widgets/dtr_widgets/duty_card.dart';
 
 class AdminHomePage extends StatefulWidget {
   const AdminHomePage({super.key});
