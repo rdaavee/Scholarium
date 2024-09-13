@@ -5,6 +5,8 @@ import 'package:isHKolarium/blocs/bloc_bottom_nav/bottom_nav_bloc.dart';
 import 'package:isHKolarium/features/widgets/botton_nav/page_provider.dart';
 
 class BottomNavWidget extends StatelessWidget {
+  const BottomNavWidget({super.key});
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<BottomNavBloc, BottomNavState>(
@@ -20,7 +22,7 @@ class BottomNavWidget extends StatelessWidget {
             child: getPage(selectedIndex),
           ),
           bottomNavigationBar: BottomNavigationBarTheme(
-            data: BottomNavigationBarThemeData(
+            data: const BottomNavigationBarThemeData(
               selectedItemColor: ColorPalette.accent,
               unselectedItemColor: Colors.grey,
               selectedLabelStyle: TextStyle(

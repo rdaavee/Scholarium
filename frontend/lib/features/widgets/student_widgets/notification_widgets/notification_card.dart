@@ -8,7 +8,8 @@ class NotificationCard extends StatelessWidget {
   final String date;
   final String time;
 
-  NotificationCard({
+  const NotificationCard({
+    super.key, 
     required this.sender,
     required this.role,
     required this.message,
@@ -22,7 +23,7 @@ class NotificationCard extends StatelessWidget {
     if (status == 'unread') {
       return Column(
         children: [
-          Divider(
+          const Divider(
             thickness: .03,
           ),
           Padding(
@@ -43,7 +44,7 @@ class NotificationCard extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(
+                      const SizedBox(
                         height: 12,
                       ),
                       Row(
@@ -110,14 +111,14 @@ class NotificationCard extends StatelessWidget {
     } else {
       return Column(
         children: [
-          Divider(
+          const Divider(
             thickness: .03,
           ),
-          SizedBox(
+          const SizedBox(
             height: 5,
           ),
           Container(
-            color: Color(0xFF549E73).withOpacity(0.05),
+            color: const Color(0xFF549E73).withOpacity(0.05),
             padding: const EdgeInsets.all(10.0),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -135,7 +136,7 @@ class NotificationCard extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(
+                      const SizedBox(
                         height: 12,
                       ),
                       Row(
@@ -152,17 +153,16 @@ class NotificationCard extends StatelessWidget {
                               ),
                             ),
                           ),
-                          Column(
-                            children: [
-                              Text(
-                                date,
-                                style: const TextStyle(
-                                  color: Colors.grey,
-                                  fontFamily: 'Inter',
-                                  fontSize: 11,
-                                ),
+                          Container(
+                            margin: const EdgeInsets.only(right: 16),
+                            child: Text(
+                              date,
+                              style: const TextStyle(
+                                color: Colors.grey,
+                                fontFamily: 'Inter',
+                                fontSize: 11,
                               ),
-                            ],
+                            ),
                           ),
                           Text(
                             time,

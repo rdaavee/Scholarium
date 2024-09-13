@@ -100,7 +100,7 @@ class _StudentHomeState extends State<StudentHome> {
                         ),
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.all(5.0),
+                        padding: const EdgeInsets.all(10.0),
                         child: ListView(
                           children: [
                             Row(
