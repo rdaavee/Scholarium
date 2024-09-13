@@ -57,7 +57,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
+                          const Text(
                             "Notification",
                             style: TextStyle(
                               fontSize: 20,

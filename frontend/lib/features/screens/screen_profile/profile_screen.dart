@@ -85,6 +85,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   fontFamily: 'Inter',
                                   fontWeight: FontWeight.bold,
                                   letterSpacing: 1.1,
+                                  color: ColorPalette.accentWhite
                                 ),
                               ),
                               IconButton(
