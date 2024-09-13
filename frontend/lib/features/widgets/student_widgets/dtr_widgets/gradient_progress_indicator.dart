@@ -4,9 +4,9 @@ class GradientProgressIndicator extends StatelessWidget {
   final double progress;
 
   const GradientProgressIndicator({
-    Key? key,
+    super.key,
     required this.progress,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

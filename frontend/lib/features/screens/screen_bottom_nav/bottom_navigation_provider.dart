@@ -44,13 +44,13 @@ class _StudentHomePageState extends State<StudentHomePage> {
           if (studentState is StudentsLoadingState) {
             return LoadingWidget();
           } else if (studentState is StudentsLoadedSuccessState) {
-            return BottomNavWidget();
+            return const BottomNavWidget();
           } else if (studentState is StudentsErrorState) {
             return Scaffold(
               body: Center(child: Text('Error: ${studentState.message}')),
             );
           }
-          return Scaffold(
+          return const Scaffold(
             body: Center(child: Text('No Data Available')),
           );
         },

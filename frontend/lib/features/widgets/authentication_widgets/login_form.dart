@@ -12,7 +12,7 @@ class LoginForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16.0),
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Container(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -22,9 +22,9 @@ class LoginForm extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _schoolIdField(),
-                  SizedBox(height: 5),
+                  const SizedBox(height: 5),
                   _passwordField(),
-                  SizedBox(height: 35),
+                  const SizedBox(height: 35),
                   SignInButton(onPressed: () {
                     loginBloc.add(LoginButtonClickedEvent(
                       _schoolIdController.text,
@@ -40,7 +40,7 @@ class LoginForm extends StatelessWidget {
                   onTap: () {
                     // Handle forgot password action
                   },
-                  child: Text(
+                  child: const Text(
                     'Forgot Password?',
                     style: TextStyle(
                       color: Color(0xFF6D7278),
@@ -59,7 +59,7 @@ class LoginForm extends StatelessWidget {
   }
 
   Widget _schoolIdField() {
-    return Container(
+    return SizedBox(
       width: 287,
       height: 55,
       child: TextField(
@@ -69,7 +69,7 @@ class LoginForm extends StatelessWidget {
           filled: true,
           fillColor: Colors.white,
           contentPadding:
-              EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+              const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
           border: OutlineInputBorder(
             borderSide: BorderSide(
               width: 1,
@@ -91,12 +91,12 @@ class LoginForm extends StatelessWidget {
             ),
             borderRadius: BorderRadius.circular(10),
           ),
-          hintStyle: TextStyle(
+          hintStyle: const TextStyle(
             color: Colors.grey,
             fontSize: 12.0,
           ),
         ),
-        style: TextStyle(
+        style: const TextStyle(
           color: Colors.black,
           fontSize: 12.0,
           fontFamily: 'Inter',
@@ -107,7 +107,7 @@ class LoginForm extends StatelessWidget {
   }
 
   Widget _passwordField() {
-    return Container(
+    return SizedBox(
       width: 287,
       height: 55,
       child: TextField(
@@ -118,7 +118,7 @@ class LoginForm extends StatelessWidget {
           filled: true,
           fillColor: Colors.white,
           contentPadding:
-              EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+              const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
           border: OutlineInputBorder(
             borderSide: BorderSide(
               width: 1,
@@ -140,12 +140,12 @@ class LoginForm extends StatelessWidget {
             ),
             borderRadius: BorderRadius.circular(10),
           ),
-          hintStyle: TextStyle(
+          hintStyle: const TextStyle(
             color: Colors.grey,
             fontSize: 12.0,
           ),
         ),
-        style: TextStyle(
+        style: const TextStyle(
           color: Colors.black,
           fontSize: 12.0,
           fontFamily: 'Inter',

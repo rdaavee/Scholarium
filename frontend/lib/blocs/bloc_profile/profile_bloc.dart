@@ -32,7 +32,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
           profilePicture: '',
         ));
       } else {
-        final user = UserModel.fromMap(response);
+        final user = UserModel.fromJson(response);
 
         emit(ProfileLoadedSuccessState(
           name: '${user.firstName} ${user.lastName}',

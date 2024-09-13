@@ -6,11 +6,11 @@ class EventsCard extends StatelessWidget {
   final String imageAssetPath;
 
   const EventsCard({
-    Key? key,
+    super.key,
     required this.textLabel,
     required this.cardColor,
     required this.imageAssetPath,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class EventsCard extends StatelessWidget {
       child: Card(
         margin: const EdgeInsets.all(10.0),
         color: cardColor,
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(10)),
         ),
         child: Stack(
@@ -28,7 +28,7 @@ class EventsCard extends StatelessWidget {
               height: 150.0,
               width: double.infinity,
               child: ClipRRect(
-                borderRadius: BorderRadius.all(Radius.circular(10)),
+                borderRadius: const BorderRadius.all(Radius.circular(10)),
                 child: Image.asset(
                   imageAssetPath,
                   fit: BoxFit.cover,
@@ -42,14 +42,14 @@ class EventsCard extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.all(15.0),
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                     bottomLeft: Radius.circular(10.0),
                     bottomRight: Radius.circular(10.0),
                   ),
                   gradient: LinearGradient(
                     colors: [
-                      Color.fromARGB(255, 21, 41, 29).withOpacity(1),
-                      Color(0xFF6DD400).withOpacity(0.3),
+                      const Color.fromARGB(255, 21, 41, 29).withOpacity(1),
+                      const Color(0xFF6DD400).withOpacity(0.3),
                     ],
                     begin: Alignment.bottomCenter,
                     end: Alignment.topCenter,

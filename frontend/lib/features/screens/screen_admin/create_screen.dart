@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
 class CreateFormScreen extends StatelessWidget {
+  const CreateFormScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('CREATE'),
+        title: const Text('CREATE'),
         centerTitle: true,
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -42,7 +44,7 @@ class CreateFormScreen extends StatelessWidget {
       child: TextField(
         decoration: InputDecoration(
           labelText: labelText,
-          border: OutlineInputBorder(),
+          border: const OutlineInputBorder(),
         ),
       ),
     );

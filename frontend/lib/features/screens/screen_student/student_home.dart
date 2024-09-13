@@ -67,10 +67,10 @@ class _StudentHomeState extends State<StudentHome> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text(
-                            "Hi, Ranier",
-                            style: TextStyle(
-                              fontSize: 17,
+                          Text(
+                            "Hi, ${state.users[0].firstName}" ,
+                            style: const TextStyle(
+                              fontSize: 20,
                               fontFamily: 'Inter',
                               fontWeight: FontWeight.bold,
                               letterSpacing: 1.1,
@@ -341,7 +341,7 @@ class _StudentHomeState extends State<StudentHome> {
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) =>
-                                            EventsScreen(),
+                                            const EventsScreen(),
                                       ),
                                     );
                                   },

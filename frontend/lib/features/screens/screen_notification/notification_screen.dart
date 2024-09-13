@@ -92,13 +92,21 @@ class _NotificationScreenState extends State<NotificationScreen> {
                         itemCount: state.notifications.length,
                         itemBuilder: (context, index) {
                           final notifications = state.notifications[index];
-                          return NotificationCard(
-                            sender: notifications.sender.toString(),
-                            role: notifications.role.toString(),
-                            message: notifications.message.toString(),
-                            status: notifications.status.toString(),
-                            date: notifications.date.toString(),
-                            time: notifications.time.toString(),
+                          return GestureDetector(
+                            onTap: () {
+                              
+                            },
+                            onLongPress: () {
+                              print("Long press");
+                            },
+                            child: NotificationCard(
+                              sender: notifications.sender.toString(),
+                              role: notifications.role.toString(),
+                              message: notifications.message.toString(),
+                              status: notifications.status.toString(),
+                              date: notifications.date.toString(),
+                              time: notifications.time.toString(),
+                            ),
                           );
                         },
                       ),

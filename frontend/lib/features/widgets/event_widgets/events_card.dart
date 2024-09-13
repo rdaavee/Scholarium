@@ -6,11 +6,11 @@ class EventsCard extends StatelessWidget {
   final Color cardColor;
 
   const EventsCard({
-    Key? key,
+    super.key,
     required this.imagePath,
     required this.eventName,
     required this.cardColor,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

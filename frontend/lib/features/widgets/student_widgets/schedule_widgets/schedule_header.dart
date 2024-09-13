@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
 
 class ScheduleHeader extends StatelessWidget {
+  const ScheduleHeader({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -10,7 +12,7 @@ class ScheduleHeader extends StatelessWidget {
         height: 100.0,
         color: ColorPalette.primary,
         alignment: Alignment.centerLeft,
-        child: Text(
+        child: const Text(
           "Schedule",
           style: TextStyle(
             fontSize: 17,

@@ -7,7 +7,7 @@ class DutyCard extends StatelessWidget {
   final String time;
   final String roomName;
 
-  const DutyCard({
+  const DutyCard({super.key, 
     required this.cardColor,
     required this.time,
     required this.roomName,
@@ -25,7 +25,7 @@ class DutyCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               'Facilitator Duty',
               style: TextStyle(
                 fontSize: 26,
@@ -35,10 +35,10 @@ class DutyCard extends StatelessWidget {
                 color: Colors.white,
               ),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Text(
               time,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 18,
                 fontFamily: 'Inter',
                 fontWeight: FontWeight.bold,
@@ -46,10 +46,10 @@ class DutyCard extends StatelessWidget {
                 color: Colors.white,
               ),
             ),
-            SizedBox(height: 5),
+            const SizedBox(height: 5),
             Text(
               roomName,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 18,
                 fontFamily: 'Inter',
                 fontWeight: FontWeight.bold,
@@ -57,15 +57,15 @@ class DutyCard extends StatelessWidget {
                 color: Colors.white,
               ),
             ),
-            SizedBox(height: 10),
-            Text(
+            const SizedBox(height: 10),
+            const Text(
               'People',
               style: TextStyle(
                 fontSize: 11,
                 color: Colors.white,
               ),
             ),
-            SizedBox(height: 5),
+            const SizedBox(height: 5),
             Row(
               children: [
                 GestureDetector(
@@ -73,9 +73,9 @@ class DutyCard extends StatelessWidget {
                     _showBottomSheet(context, 'Ranier Tan', '03-0000-00001',
                         'Pantal, Dagupan City', true);
                   },
-                  child: CircleAvatar(backgroundColor: Colors.white),
+                  child: const CircleAvatar(backgroundColor: Colors.white),
                 ),
-                SizedBox(width: 5),
+                const SizedBox(width: 5),
                 GestureDetector(
                   onTap: () {
                     _showBottomSheet(context, 'Mark Benedict Abalos',
@@ -83,13 +83,13 @@ class DutyCard extends StatelessWidget {
                   },
                   child: CircleAvatar(backgroundColor: Colors.grey[300]),
                 ),
-                SizedBox(width: 5),
+                const SizedBox(width: 5),
                 GestureDetector(
                   onTap: () {
                     _showBottomSheet(context, 'Olibird Ferrer', '03-0000-00003',
                         'Mangaldan, Pangasinan', true);
                   },
-                  child: CircleAvatar(backgroundColor: Colors.grey),
+                  child: const CircleAvatar(backgroundColor: Colors.grey),
                 ),
               ],
             ),
@@ -108,7 +108,7 @@ class DutyCard extends StatelessWidget {
   ) {
     showModalBottomSheet(
       context: context,
-      shape: RoundedRectangleBorder(
+      shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       isScrollControlled: true,

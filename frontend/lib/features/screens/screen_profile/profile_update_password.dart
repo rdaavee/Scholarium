@@ -18,7 +18,7 @@ class ProfileChangePassword extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Change Password',
           style: TextStyle(
             fontFamily: 'Inter',
@@ -42,14 +42,14 @@ class ProfileChangePassword extends StatelessWidget {
                   obscureText: true,
                   decoration: InputDecoration(
                     hintText: 'Please enter your Old Password',
-                    hintStyle: TextStyle(
+                    hintStyle: const TextStyle(
                       color: Colors.grey,
                       fontSize: 12.0,
                     ),
                     filled: true,
                     fillColor: Colors.white,
                     contentPadding:
-                        EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+                        const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
                     border: OutlineInputBorder(
                       borderSide: BorderSide(
                         width: 1,
@@ -72,7 +72,7 @@ class ProfileChangePassword extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.black,
                     fontSize: 12.0,
                     fontFamily: 'Inter',
@@ -91,14 +91,14 @@ class ProfileChangePassword extends StatelessWidget {
                   obscureText: true,
                   decoration: InputDecoration(
                     hintText: 'Please enter your New Password',
-                    hintStyle: TextStyle(
+                    hintStyle: const TextStyle(
                       color: Colors.grey,
                       fontSize: 12.0,
                     ),
                     filled: true,
                     fillColor: Colors.white,
                     contentPadding:
-                        EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+                        const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
                     border: OutlineInputBorder(
                       borderSide: BorderSide(
                         width: 1,
@@ -121,7 +121,7 @@ class ProfileChangePassword extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.black,
                     fontSize: 12.0,
                     fontFamily: 'Inter',
@@ -140,14 +140,14 @@ class ProfileChangePassword extends StatelessWidget {
                   obscureText: true,
                   decoration: InputDecoration(
                     hintText: 'Confirm New Password',
-                    hintStyle: TextStyle(
+                    hintStyle: const TextStyle(
                       color: Colors.grey,
                       fontSize: 12.0,
                     ),
                     filled: true,
                     fillColor: Colors.white,
                     contentPadding:
-                        EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+                        const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
                     border: OutlineInputBorder(
                       borderSide: BorderSide(
                         width: 1,
@@ -170,7 +170,7 @@ class ProfileChangePassword extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.black,
                     fontSize: 12.0,
                     fontFamily: 'Inter',
@@ -187,13 +187,13 @@ class ProfileChangePassword extends StatelessWidget {
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: ColorPalette.primary,
-                    side: BorderSide(
+                    side: const BorderSide(
                       color: ColorPalette.primary,
                     ),
-                    minimumSize: Size(287, 55),
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                    minimumSize: const Size(287, 55),
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                   ),
-                  child: Text(
+                  child: const Text(
                     'Change Password',
                     style: TextStyle(
                       fontFamily: 'Inter',

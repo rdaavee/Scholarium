@@ -3,6 +3,8 @@ import 'package:isHKolarium/config/constants/colors.dart';
 import 'package:isHKolarium/features/widgets/student_widgets/dtr_widgets/duty_card.dart';
 
 class ProfessorScreen extends StatelessWidget {
+  const ProfessorScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -202,14 +204,14 @@ class ProfessorScreen extends StatelessWidget {
                     const SizedBox(height: 16),
                     Expanded(
                       child: ListView(
-                        children: [
-                          const DutyCard(
+                        children: const [
+                          DutyCard(
                             cardColor: Color(0xFF549E73),
                             time: '7:30AM-9:00AM',
                             roomName: 'PTC-206',
                           ),
-                          const SizedBox(height: 16),
-                          const DutyCard(
+                          SizedBox(height: 16),
+                          DutyCard(
                             cardColor: Color(0xFF6DD400),
                             time: '7:30AM-9:00AM',
                             roomName: 'PTC-206',

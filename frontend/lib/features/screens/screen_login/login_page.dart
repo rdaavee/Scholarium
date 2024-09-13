@@ -48,7 +48,7 @@ class _LoginPageState extends State<LoginPage> {
           );
         } else if (state is LoginNavigateToAdminHomePageActionState) {
           Navigator.push(context,
-              MaterialPageRoute(builder: (context) => AdminHomePage()));
+              MaterialPageRoute(builder: (context) => const AdminHomePage()));
         }
       },
       builder: (context, state) {

@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 
 class UpdateFormScreen extends StatelessWidget {
   static String routeName = 'UpdateFormScreen';
+
+  const UpdateFormScreen({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('UPDATE'),
+        title: const Text('UPDATE'),
         centerTitle: true,
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -43,7 +45,7 @@ class UpdateFormScreen extends StatelessWidget {
       child: TextField(
         decoration: InputDecoration(
           labelText: labelText,
-          border: OutlineInputBorder(),
+          border: const OutlineInputBorder(),
         ),
         controller: TextEditingController(text: initialValue),
       ),

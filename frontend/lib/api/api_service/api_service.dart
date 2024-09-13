@@ -6,6 +6,7 @@ import 'package:isHKolarium/api/models/dtr_model.dart';
 import 'package:isHKolarium/api/models/dtr_total_hours_model.dart';
 import 'package:isHKolarium/api/models/notifications_model.dart';
 import 'package:isHKolarium/api/models/update_password_model.dart';
+import 'package:isHKolarium/api/models/user_model.dart';
 import 'package:isHKolarium/features/screens/screen_login/login_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -98,6 +99,40 @@ class ApiService {
       return const DtrHoursModel(
         totalhours: 0,
         targethours: 10,
+      );
+    }
+  }
+
+  //Get Student Data
+  Future<UserModel> fetchStudentData({
+    required String? token,
+  }) async {
+    final response = await http.get(
+      Uri.parse('$baseUrl/user/profile/$token'),
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> data = jsonDecode(response.body);
+      return UserModel.fromJson(data);
+    } else {
+      return UserModel(
+        schoolID: '', 
+        email: '', 
+        firstName: 'N/A', 
+        middleName: '', 
+        lastName: '', 
+        profilePicture: '', 
+        role: '', 
+        gender: '', 
+        contact: '', 
+        address: '', 
+        hkType: '', 
+        status: '', 
+        token: '',
+        
       );
     }
   }

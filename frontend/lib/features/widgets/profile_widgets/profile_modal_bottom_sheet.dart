@@ -7,7 +7,7 @@ class ProfileModalBottomSheet extends StatelessWidget {
   final String address;
   final bool isActive;
 
-  const ProfileModalBottomSheet({
+  const ProfileModalBottomSheet({super.key, 
     required this.name,
     required this.schoolId,
     required this.address,
@@ -16,7 +16,7 @@ class ProfileModalBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 750,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -24,8 +24,8 @@ class ProfileModalBottomSheet extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            SizedBox(height: 30),
-            Center(
+            const SizedBox(height: 30),
+            const Center(
               child: CircleAvatar(
                 radius: 75.0,
                 backgroundColor: Color(0xFFEDEDED),
@@ -36,7 +36,7 @@ class ProfileModalBottomSheet extends StatelessWidget {
             Center(
               child: Text(
                 name,
-                style: TextStyle(
+                style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontFamily: 'Inter',
                   fontSize: 24,
@@ -49,7 +49,7 @@ class ProfileModalBottomSheet extends StatelessWidget {
             Center(
               child: Text(
                 schoolId,
-                style: TextStyle(
+                style: const TextStyle(
                   fontFamily: 'Inter',
                   fontSize: 16,
                   color: Color(0xFF6D7278),
@@ -61,7 +61,7 @@ class ProfileModalBottomSheet extends StatelessWidget {
             Center(
               child: Text(
                 address,
-                style: TextStyle(
+                style: const TextStyle(
                   fontFamily: 'Inter',
                   fontSize: 16,
                   color: Color(0xFF6D7278),
@@ -74,24 +74,24 @@ class ProfileModalBottomSheet extends StatelessWidget {
               child: Chip(
                 label: Text(
                   isActive ? 'Active' : 'Inactive',
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 9,
                     color: Colors.white,
                     letterSpacing: 0.5,
                   ),
                 ),
-                backgroundColor: isActive ? Color(0xFF6DD400) : Colors.red,
-                padding: EdgeInsets.symmetric(horizontal: 15.0),
+                backgroundColor: isActive ? const Color(0xFF6DD400) : Colors.red,
+                padding: const EdgeInsets.symmetric(horizontal: 15.0),
                 shape: RoundedRectangleBorder(
                     side: BorderSide(
-                      color: isActive ? Color(0xFF6DD400) : Colors.red,
+                      color: isActive ? const Color(0xFF6DD400) : Colors.red,
                     ),
                     borderRadius: BorderRadius.circular(99)),
               ),
             ),
             const SizedBox(height: 20),
-            Divider(
+            const Divider(
               thickness: 0.2,
               color: Colors.grey,
             ),

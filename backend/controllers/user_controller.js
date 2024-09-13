@@ -315,6 +315,40 @@ exports.getUserNotifications = (req, res) => {
   });
 };
 
+// Update Notification Status to Read or unread
+exports.updateNotificationStatus = (req, res) => {
+  const notificationId = req.params.id;
+
+  pool.getConnection((error, connection) => {
+    if (error) {
+      console.error('Error getting MySQL connection:', error);
+      return res.status(500).json({ message: 'Server error occurred' });
+    }
+
+    console.log(`Connected as id ${connection.threadId}`);
+
+    connection.query(
+      'UPDATE notifications SET status = ? WHERE id = ?',
+      ['read', notificationId],
+      (error, results) => {
+        connection.release();
+
+        if (error) {
+          console.error('Error executing query:', error);
+          return res.status(500).json({ message: 'Server error occurred' });
+        }
+
+        if (results.affectedRows > 0) {
+          res.status(200).json({ message: 'Notification status updated to read' });
+        } else {
+          res.status(404).json({ message: 'Notification not found' });
+        }
+      }
+    );
+  });
+};
+
+
 
 //-------------------------------------FOR STUDENT PROFILE PAGE-----------------------------------------------------
 //Get specific user

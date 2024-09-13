@@ -234,7 +234,7 @@ class _DtrScreenState extends State<DtrScreen> {
       child: Center(
         child: Text(
           text,
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.black,
             fontFamily: 'Inter',
             fontSize: 12,

@@ -10,7 +10,7 @@ class ProfileCircle extends StatelessWidget {
   Widget build(BuildContext context) {
     return CircleAvatar(
       radius: 85, // Adjust the size as needed
-      backgroundColor: Color(0xFFECECEC),
+      backgroundColor: const Color(0xFFECECEC),
       backgroundImage: NetworkImage(profilePictureUrl),
       child: profilePictureUrl.isEmpty
           ? Icon(Icons.person, size: 80, color: Colors.grey[800])

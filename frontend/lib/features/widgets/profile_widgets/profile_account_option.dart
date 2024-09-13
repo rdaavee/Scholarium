@@ -47,7 +47,7 @@ class AccountOptions extends StatelessWidget {
         Icon(
           icon,
           size: 17,
-          color: Color(0xFF3C3C3C),
+          color: const Color(0xFF3C3C3C),
         ),
         const SizedBox(width: 8),
         Text(

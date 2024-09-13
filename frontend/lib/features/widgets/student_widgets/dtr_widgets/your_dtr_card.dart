@@ -31,11 +31,11 @@ class YourDtrCard extends StatelessWidget {
             color: Colors.white.withOpacity(0.1),
             width: 1,
           ),
-          columnWidths: {
-            0: FixedColumnWidth(100),
-            1: FixedColumnWidth(100),
-            2: FixedColumnWidth(100),
-            3: FixedColumnWidth(120),
+          columnWidths: const {
+            0: const FixedColumnWidth(100),
+            1: const FixedColumnWidth(100),
+            2: const FixedColumnWidth(100),
+            3: const FixedColumnWidth(120),
           },
           children: [
             TableRow(
@@ -58,7 +58,7 @@ class YourDtrCard extends StatelessWidget {
       child: Center(
         child: Text(
           text,
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.black,
             fontFamily: 'Inter',
             fontSize: 12,
@@ -75,7 +75,7 @@ class YourDtrCard extends StatelessWidget {
       child: Center(
         child: Text(
           text,
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.black,
             fontFamily: 'Inter',
             fontSize: 12,

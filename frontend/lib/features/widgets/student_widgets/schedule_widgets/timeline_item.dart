@@ -6,7 +6,7 @@ class TimelineItem extends StatelessWidget {
   final Map<String, dynamic> duty;
   final Color color;
 
-  TimelineItem({
+  const TimelineItem({super.key, 
     required this.duty,
     required this.color,
   });

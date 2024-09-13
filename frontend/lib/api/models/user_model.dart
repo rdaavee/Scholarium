@@ -31,7 +31,7 @@ class UserModel {
     required this.token,
   });
 
-  factory UserModel.fromMap(Map<String, dynamic> map) {
+  factory UserModel.fromJson(Map<String, dynamic> map) {
     return UserModel(
       schoolID: map['school_id'] ?? '',
       email: map['email'] ?? '',

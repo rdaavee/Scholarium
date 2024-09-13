@@ -46,8 +46,8 @@ class _AdminHomePageState extends State<AdminHomePage> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.all(25.0),
+                    const Padding(
+                      padding: EdgeInsets.all(25.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -139,7 +139,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
                                 value: 190,
                                 title: 'Active',
                                 radius: 120,
-                                titleStyle: TextStyle(
+                                titleStyle: const TextStyle(
                                   fontSize: 10,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white,
@@ -151,7 +151,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
                                 value: 30,
                                 title: 'Inactive',
                                 radius: 120,
-                                titleStyle: TextStyle(
+                                titleStyle: const TextStyle(
                                   fontSize: 10,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white,
@@ -166,11 +166,11 @@ class _AdminHomePageState extends State<AdminHomePage> {
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 25.0),
                       child: Align(
                         alignment: Alignment.topLeft,
                         child: Text(
@@ -185,32 +185,32 @@ class _AdminHomePageState extends State<AdminHomePage> {
                         ),
                       ),
                     ),
-                    Container(
+                    SizedBox(
                       height: 225,
                       child: Padding(
                         padding: const EdgeInsets.all(15.0),
                         child: ListView(
                           scrollDirection: Axis.horizontal,
-                          children: [
-                            const DutyCard(
+                          children: const [
+                            DutyCard(
                               cardColor: Color(0xFF549E73),
                               time: '7:30AM-9:00AM',
                               roomName: 'PTC-206',
                             ),
-                            const SizedBox(width: 16),
-                            const DutyCard(
+                            SizedBox(width: 16),
+                            DutyCard(
                               cardColor: Color(0xFF6DD400),
                               time: '7:30AM-9:00AM',
                               roomName: 'PTC-206',
                             ),
-                            const SizedBox(width: 16),
-                            const DutyCard(
+                            SizedBox(width: 16),
+                            DutyCard(
                               cardColor: Color(0xFF549E73),
                               time: '7:30AM-9:00AM',
                               roomName: 'PTC-206',
                             ),
-                            const SizedBox(width: 16),
-                            const DutyCard(
+                            SizedBox(width: 16),
+                            DutyCard(
                               cardColor: Color(0xFF6DD400),
                               time: '7:30AM-9:00AM',
                               roomName: 'PTC-206',

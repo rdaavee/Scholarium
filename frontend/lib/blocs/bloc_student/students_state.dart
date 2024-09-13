@@ -10,9 +10,10 @@ class StudentsInitial extends StudentsState {}
 class StudentsLoadingState extends StudentsState {}
 
 class StudentsLoadedSuccessState extends StudentsState {
+  final List<UserModel> users;
   final List<AnnouncementModel> announcements;
   final List<DtrHoursModel> hours;
-  StudentsLoadedSuccessState({required this.announcements, required this.hours});
+  StudentsLoadedSuccessState({required this.users, required this.announcements, required this.hours});
 }
 
 class StudentsErrorState extends StudentsState {

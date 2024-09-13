@@ -8,13 +8,13 @@ class AnnouncementCard extends StatelessWidget {
   final Color cardColor;
 
   const AnnouncementCard({
-    Key? key,
+    super.key,
     required this.textLabel,
     required this.textBody,
     required this.date,
     required this.time,
     required this.cardColor,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

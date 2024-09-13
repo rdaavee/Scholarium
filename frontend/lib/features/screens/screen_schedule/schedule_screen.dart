@@ -47,10 +47,10 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text(
-                    "Hi, Ranier",
+                    "Schedule",
                     style: TextStyle(
-                      fontSize: 17,
-                      fontFamily: 'Montserrat',
+                      fontSize: 20,
+                      fontFamily: 'Inter',
                       fontWeight: FontWeight.bold,
                       letterSpacing: 1.1,
                       color: ColorPalette.accentWhite,

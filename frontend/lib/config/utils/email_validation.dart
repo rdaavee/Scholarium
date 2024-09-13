@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:isHKolarium/config/constants/strings.dart';
 
 class EmailValidator extends StatelessWidget {
+  const EmailValidator({super.key});
+
   @override
   Widget build(BuildContext context) {
     return TextFormField(

@@ -64,7 +64,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               builder: (context, state) {
                 print('Building UI with state: $state');
                 if (state is ProfileLoadingState) {
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 } else if (state is ProfileLoadedSuccessState) {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -81,11 +81,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               const Text(
                                 "Profile",
                                 style: TextStyle(
-                                  fontSize: 17,
+                                  fontSize: 20,
                                   fontFamily: 'Inter',
                                   fontWeight: FontWeight.bold,
                                   letterSpacing: 1.1,
-                                  color: ColorPalette.accentWhite
+                                  color: ColorPalette.accentWhite,
                                 ),
                               ),
                               IconButton(
