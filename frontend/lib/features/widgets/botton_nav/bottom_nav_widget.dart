@@ -23,6 +23,7 @@ class BottomNavWidget extends StatelessWidget {
           ),
           bottomNavigationBar: BottomNavigationBarTheme(
             data: const BottomNavigationBarThemeData(
+              backgroundColor: Colors.transparent,
               selectedItemColor: ColorPalette.accent,
               unselectedItemColor: Colors.grey,
               selectedLabelStyle: TextStyle(
@@ -37,22 +38,25 @@ class BottomNavWidget extends StatelessWidget {
               onTap: (index) {
                 context.read<BottomNavBloc>().add(BottomNavItemSelected(index));
               },
-              items: const <BottomNavigationBarItem>[
+              items: <BottomNavigationBarItem>[
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.home),
+                  icon: Image.asset('assets/icons/home.png',
+                      width: 24, height: 24),
                   label: 'Home',
-                  backgroundColor: Colors.white,
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.calendar_month),
+                  icon: Image.asset('assets/icons/calendar.png',
+                      width: 24, height: 24),
                   label: 'Schedule',
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.notifications),
+                  icon: Image.asset('assets/icons/bell.png',
+                      width: 24, height: 24),
                   label: 'Notification',
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.account_circle_rounded),
+                  icon: Image.asset('assets/icons/profile.png',
+                      width: 24, height: 24),
                   label: 'Profile',
                 ),
               ],

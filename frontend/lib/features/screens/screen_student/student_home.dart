@@ -10,7 +10,7 @@ import 'package:isHKolarium/features/screens/screen_schedule/schedule_screen.dar
 import 'package:isHKolarium/features/widgets/student_widgets/schedule_widgets/schedule_card.dart';
 import 'package:isHKolarium/blocs/bloc_student/students_bloc.dart';
 import 'package:isHKolarium/features/screens/screen_announcement/announcements_screen.dart';
-import 'package:isHKolarium/features/widgets/student_widgets/annuncement_widgets/announcement_card.dart';
+import 'package:isHKolarium/features/widgets/student_widgets/announcement_widgets/announcement_card.dart';
 
 class StudentHome extends StatefulWidget {
   const StudentHome({super.key});
@@ -68,7 +68,7 @@ class _StudentHomeState extends State<StudentHome> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "Hi, ${state.users[0].firstName}" ,
+                            "Hi, ${state.users[0].firstName}",
                             style: const TextStyle(
                               fontSize: 20,
                               fontFamily: 'Inter',
@@ -78,8 +78,10 @@ class _StudentHomeState extends State<StudentHome> {
                             ),
                           ),
                           IconButton(
-                            icon: const Icon(
-                              Icons.message,
+                            icon: Image.asset(
+                              'assets/icons/message.png',
+                              width: 27,
+                              height: 27,
                               color: ColorPalette.accentWhite,
                             ),
                             onPressed: () {
@@ -133,7 +135,7 @@ class _StudentHomeState extends State<StudentHome> {
                                           scheduleTime: Text(
                                             '10:30AM - 12:00PM',
                                             style: TextStyle(
-                                              fontSize: 12,
+                                              fontSize: 10,
                                               fontFamily: 'Inter',
                                               color: Colors.white,
                                               fontWeight: FontWeight.bold,
@@ -198,7 +200,7 @@ class _StudentHomeState extends State<StudentHome> {
                                           scheduleTime: Text(
                                             '7:30AM - 8:30AM',
                                             style: TextStyle(
-                                              fontSize: 12,
+                                              fontSize: 10,
                                               fontFamily: 'Inter',
                                               color: Colors.white,
                                               fontWeight: FontWeight.bold,

@@ -22,7 +22,7 @@ class AnnouncementCard extends StatelessWidget {
       clipBehavior: Clip.none,
       children: [
         Container(
-          height: 170,
+          height: 150,
           margin: const EdgeInsets.only(
             top: 30,
           ),

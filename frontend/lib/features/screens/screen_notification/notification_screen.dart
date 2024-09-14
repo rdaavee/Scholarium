@@ -67,15 +67,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
                               color: ColorPalette.accentWhite,
                             ),
                           ),
-                          IconButton(
-                            icon: const Icon(
-                              Icons.message,
-                              color: ColorPalette.accentWhite,
-                            ),
-                            onPressed: () {
-                              //logic here
-                            },
-                          ),
                         ],
                       ),
                     ),

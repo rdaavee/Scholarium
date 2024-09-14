@@ -35,9 +35,12 @@ class _DtrScreenState extends State<DtrScreen> {
       pw.MultiPage(
         build: (pw.Context context) => [
           pw.Header(
-              level: 0,
-              child: pw.Text('DTR Report',
-                  style: const pw.TextStyle(fontSize: 24))),
+            level: 0,
+            child: pw.Text(
+              'DTR Report',
+              style: const pw.TextStyle(fontSize: 24),
+            ),
+          ),
           pw.TableHelper.fromTextArray(
             headers: [
               'Date',
@@ -94,11 +97,15 @@ class _DtrScreenState extends State<DtrScreen> {
           return Scaffold(
             backgroundColor: ColorPalette.primary,
             floatingActionButton: FloatingActionButton(
+              backgroundColor: ColorPalette.accent,
               onPressed: () {
                 generatePdf(state.dtr);
               },
               tooltip: 'Generate PDF',
-              child: const Icon(Icons.file_download_outlined),
+              child: Icon(
+                Icons.file_download_outlined,
+                color: Colors.white,
+              ),
             ),
             body: Column(
               children: [

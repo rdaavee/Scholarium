@@ -88,15 +88,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   color: ColorPalette.accentWhite,
                                 ),
                               ),
-                              IconButton(
-                                icon: const Icon(
-                                  Icons.message,
-                                  color: ColorPalette.accentWhite,
-                                ),
-                                onPressed: () {
-                                  //logic here
-                                },
-                              ),
                             ],
                           ),
                         ),

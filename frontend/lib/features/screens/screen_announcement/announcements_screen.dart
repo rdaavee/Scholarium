@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:isHKolarium/api/api_service/api_service.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
 import 'package:isHKolarium/blocs/bloc_student/students_bloc.dart';
-import 'package:isHKolarium/features/widgets/student_widgets/annuncement_widgets/announcement_card.dart';
+import 'package:isHKolarium/features/widgets/student_widgets/announcement_widgets/announcement_card.dart';
 
 class AnnouncementsScreen extends StatefulWidget {
   const AnnouncementsScreen({super.key});
@@ -135,12 +135,12 @@ class _AnnouncementsPageState extends State<AnnouncementsScreen> {
               ),
             );
           } else {
-              return const Scaffold(
-                backgroundColor: Colors.white,
-                body: Center(
-                  child: CircularProgressIndicator(),
-                ),
-              );
+            return const Scaffold(
+              backgroundColor: Colors.white,
+              body: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
           }
         },
       ),

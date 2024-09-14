@@ -186,7 +186,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
                       ),
                     ),
                     SizedBox(
-                      height: 225,
+                      height: 250,
                       child: Padding(
                         padding: const EdgeInsets.all(15.0),
                         child: ListView(

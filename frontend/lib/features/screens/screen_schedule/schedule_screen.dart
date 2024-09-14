@@ -56,15 +56,6 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                       color: ColorPalette.accentWhite,
                     ),
                   ),
-                  IconButton(
-                    icon: const Icon(
-                      Icons.message,
-                      color: ColorPalette.accentWhite,
-                    ),
-                    onPressed: () {
-                      //logic here
-                    },
-                  ),
                 ],
               ),
             ),

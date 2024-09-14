@@ -6,7 +6,8 @@ class ScheduleCard extends StatelessWidget {
   final Text roomName;
   final Color cardColor;
 
-  const ScheduleCard({super.key, 
+  const ScheduleCard({
+    super.key,
     required this.scheduleDate,
     required this.scheduleTime,
     required this.roomName,
@@ -34,7 +35,7 @@ class ScheduleCard extends StatelessWidget {
                   scheduleDate,
                   const SizedBox(height: 5),
                   scheduleTime,
-                  const SizedBox(height: 45),
+                  const SizedBox(height: 40),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [roomName],
