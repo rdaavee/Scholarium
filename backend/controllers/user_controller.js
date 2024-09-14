@@ -122,7 +122,7 @@ exports.getUserSchedule = (req, res) => {
               let updatePromises = [];
               rows.forEach((schedule) => {
                 const scheduleDate = moment(schedule.date).startOf('day');
-                if (schedule.completed === 'pending' && scheduleDate.isBefore(currentDate)) {
+                if (schedule.completed === '' && scheduleDate.isBefore(currentDate)) {
                   const updateQuery = new Promise((resolve, reject) => {
                     connection.query(
                       "UPDATE schedule SET completed = 'false' WHERE id = ?",
