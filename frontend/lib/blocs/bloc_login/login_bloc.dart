@@ -1,14 +1,14 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:isHKolarium/api/api_service/api_service.dart';
+import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 part 'login_event.dart';
 part 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  final ApiService _apiService;
+  final GlobalRepositoryImpl _apiService;
 
   LoginBloc(this._apiService) : super(LoginInitial()) {
     on<LoginInitialEvent>(loginInitialEvent);
@@ -43,7 +43,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       emit(LoginLoadingState());
 
       final result =
-          await _apiService.loginUser(event.schoolID, event.password);
+          await _apiService.loginUser(schoolID: event.schoolID, password: event.password,);
 
       if (result['statusCode'] == 200) {
         final token = result['token'];

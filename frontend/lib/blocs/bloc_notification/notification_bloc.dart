@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:isHKolarium/api/api_service/api_service.dart';
+import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
 import 'package:isHKolarium/api/models/notifications_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -10,7 +10,7 @@ part 'notification_event.dart';
 part 'notification_state.dart';
 
 class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
-  final ApiService _apiService;
+  final GlobalRepositoryImpl _apiService;
   NotificationsBloc(this._apiService) : super(NotificationsInitial()) {
     on<NotificationsInitialEvent>(notificationsInitialEvent);
     on<FetchNotificationsEvent>(fetchNotificationsEvent);

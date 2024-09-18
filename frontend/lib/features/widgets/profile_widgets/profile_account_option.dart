@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
 import 'package:isHKolarium/features/screens/screen_profile/profile_update_password.dart';
 import 'package:isHKolarium/features/widgets/profile_widgets/profile_divider.dart';
-import 'package:isHKolarium/api/api_service/api_service.dart';
+
 
 class AccountOptions extends StatelessWidget {
   final VoidCallback onProfileUpdated;
@@ -36,7 +36,7 @@ class AccountOptions extends StatelessWidget {
         const SizedBox(height: 20),
         GestureDetector(
           onTap: () {
-            final apiService = ApiService();
+            final apiService = GlobalRepositoryImpl();
             apiService.logout(context);
           },
           child: _buildOption(FontAwesomeIcons.rightFromBracket, 'Logout'),

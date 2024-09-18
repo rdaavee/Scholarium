@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:isHKolarium/api/api_service/api_service.dart';
+import 'package:isHKolarium/api/implementations/student_repository_impl.dart';
 import 'package:isHKolarium/blocs/bloc_schedule/schedule_bloc.dart';
 import 'package:isHKolarium/blocs/bloc_schedule/schedule_event.dart';
 import 'package:isHKolarium/blocs/bloc_schedule/schedule_state.dart';
@@ -21,7 +21,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
   @override
   void initState() {
     super.initState();
-    final apiService = ApiService();
+    final apiService = StudentRepositoryImpl();
     scheduleBloc = ScheduleBloc(apiService);
     _initialize();
   }

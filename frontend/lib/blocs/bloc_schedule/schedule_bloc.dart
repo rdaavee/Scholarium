@@ -1,10 +1,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:isHKolarium/api/api_service/api_service.dart';
+import 'package:isHKolarium/api/implementations/student_repository_impl.dart';
 import 'package:isHKolarium/blocs/bloc_schedule/schedule_event.dart';
 import 'package:isHKolarium/blocs/bloc_schedule/schedule_state.dart';
 
 class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
-  final ApiService apiService;
+  final StudentRepositoryImpl apiService;
 
   ScheduleBloc(this.apiService) : super(ScheduleInitialState()) {
     on<LoadScheduleEvent>(_onLoadScheduleEvent);

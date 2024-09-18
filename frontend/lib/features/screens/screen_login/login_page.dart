@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:isHKolarium/api/api_service/api_service.dart';
+import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
 import 'package:isHKolarium/blocs/bloc_login/login_bloc.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
 import 'package:isHKolarium/features/screens/screen_admin/admin_home_page.dart';
@@ -22,7 +22,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
-    final ApiService apiService = ApiService();
+    final apiService = GlobalRepositoryImpl();
     loginBloc = LoginBloc(apiService);
   }
 
@@ -34,6 +34,12 @@ class _LoginPageState extends State<LoginPage> {
       buildWhen: (previous, current) => current is! LoginActionState,
       listener: (context, state) {
         if (state is LoginNavigateToStudentHomePageActionState) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Student Login Successfully'),
+              duration: Duration(milliseconds: 500),
+            ),
+          );
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -41,28 +47,45 @@ class _LoginPageState extends State<LoginPage> {
             ),
           );
         } else if (state is LoginNavigateToProfessorHomePageActionState) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Professor Login Successfully'),
+              duration: Duration(milliseconds: 500),
+            ),
+          );
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => ProfessorScreen(),
+              builder: (context) => const ProfessorScreen(),
             ),
           );
         } else if (state is LoginNavigateToAdminHomePageActionState) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Admin Login Successfully'),
+              duration: Duration(milliseconds: 500),
+            ),
+          );
           Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => const AdminHomePage(),
             ),
           );
+        } else if (state is LoginErrorState) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(state.errorMessage)),
+          );
         }
       },
       builder: (context, state) {
+        if (state is LoginLoadedSuccessState) {}
         return Scaffold(
           body: Stack(
             children: [
               // Background image
               Container(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage('assets/images/image.jpg'),
                     fit: BoxFit.cover,

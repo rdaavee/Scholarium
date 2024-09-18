@@ -1,3 +1,5 @@
+import 'package:isHKolarium/api/models/user_model.dart';
+
 abstract class ProfileState {}
 
 class ProfileInitial extends ProfileState {}
@@ -5,27 +7,9 @@ class ProfileInitial extends ProfileState {}
 class ProfileLoadingState extends ProfileState {}
 
 class ProfileLoadedSuccessState extends ProfileState {
-  final String name;
-  final String email;
-  final String studentId;
-  final String gender;
-  final String contact;
-  final String address;
-  final String hkType;
-  final String status;
-  final String profilePicture;
+  final List<UserModel> users;
 
-  ProfileLoadedSuccessState({
-    required this.name,
-    required this.email,
-    required this.studentId,
-    required this.gender,
-    required this.contact,
-    required this.address,
-    required this.hkType,
-    required this.status,
-    required this.profilePicture,
-  });
+  ProfileLoadedSuccessState({required this.users});
 }
 
 class ProfileErrorState extends ProfileState {
