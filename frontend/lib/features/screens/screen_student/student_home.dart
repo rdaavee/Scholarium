@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:isHKolarium/api/api_service/api_service.dart';
+import 'package:isHKolarium/api/implementations/student_repository_impl.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
 import 'package:isHKolarium/features/screens/screen_dtr/dtr_screen.dart';
 import 'package:isHKolarium/features/widgets/student_widgets/dtr_widgets/dtr_hours_card.dart';
@@ -25,8 +26,8 @@ class _StudentHomeState extends State<StudentHome> {
   @override
   void initState() {
     super.initState();
-    final apiService = ApiService();
-    studentBloc = StudentsBloc(apiService);
+    final studentRepositoryImpl = StudentRepositoryImpl();
+    studentBloc = StudentsBloc(studentRepositoryImpl);
     studentBloc.add(FetchLatestEvent());
   }
 
@@ -196,7 +197,7 @@ class _StudentHomeState extends State<StudentHome> {
                                             ),
                                           );
                                         },
-                                        child: Stack(
+                                        child: const Stack(
                                           clipBehavior: Clip.none,
                                           children: [
                                             ScheduleCard(

@@ -2,18 +2,19 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:isHKolarium/api/api_service/api_service.dart';
+import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
+import 'package:isHKolarium/api/implementations/student_repository_impl.dart';
 import 'package:isHKolarium/api/models/announcement_model.dart';
 import 'package:isHKolarium/api/models/dtr_total_hours_model.dart';
 import 'package:isHKolarium/api/models/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 part 'students_event.dart';
 part 'students_state.dart';
 
 class StudentsBloc extends Bloc<StudentsEvent, StudentsState> {
-  final ApiService _apiService;
+  final StudentRepositoryImpl _studentRepositoryImpl;
 
-  StudentsBloc(this._apiService) : super(StudentsInitial()) {
+  StudentsBloc(this._studentRepositoryImpl) : super(StudentsInitial()) {
     on<StudentsInitialEvent>(studentInitialEvents);
     on<FetchUserEvent>(fetchUserEvent);
     on<FetchAnnouncementEvent>(fetchAnnoucementEvent);
@@ -30,17 +31,16 @@ class StudentsBloc extends Bloc<StudentsEvent, StudentsState> {
   }
 
   FutureOr<void> fetchUserEvent(
-    FetchUserEvent event, Emitter<StudentsState> emit) async {
-      try {
+      FetchUserEvent event, Emitter<StudentsState> emit) async {
+    try {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       final token = prefs.getString('token');
       print(token);
-      UserModel user =
-          await _apiService.fetchStudentData(token: token);
+      UserModel user = await _studentRepositoryImpl.fetchUserData(token: token);
       AnnouncementModel latestAnnouncement =
-          await _apiService.fetchLatestAnnoucementData();
+          await _studentRepositoryImpl.fetchLatestAnnouncementData();
       DtrHoursModel totalhours =
-          await _apiService.fetchDtrTotalHoursData(token: token);
+          await _studentRepositoryImpl.fetchDtrTotalHoursData(token: token);
       emit(StudentsLoadedSuccessState(
         users: [user],
         announcements: [latestAnnouncement],
@@ -58,12 +58,11 @@ class StudentsBloc extends Bloc<StudentsEvent, StudentsState> {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       final token = prefs.getString('token');
 
-      UserModel user =
-          await _apiService.fetchStudentData(token: token);
+      UserModel user = await _studentRepositoryImpl.fetchUserData(token: token);
       List<AnnouncementModel> announcements =
-          await _apiService.fetchAnnoucementData();
+          await _studentRepositoryImpl.fetchAnnoucementData();
       DtrHoursModel totalhours =
-          await _apiService.fetchDtrTotalHoursData(token: token);
+          await _studentRepositoryImpl.fetchDtrTotalHoursData(token: token);
 
       emit(StudentsLoadedSuccessState(
         users: [user],
@@ -82,12 +81,11 @@ class StudentsBloc extends Bloc<StudentsEvent, StudentsState> {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       final token = prefs.getString('token');
       print(token);
-      UserModel user =
-          await _apiService.fetchStudentData(token: token);
+      UserModel user = await _studentRepositoryImpl.fetchUserData(token: token);
       AnnouncementModel latestAnnouncement =
-          await _apiService.fetchLatestAnnoucementData();
+          await _studentRepositoryImpl.fetchLatestAnnouncementData();
       DtrHoursModel totalhours =
-          await _apiService.fetchDtrTotalHoursData(token: token);
+          await _studentRepositoryImpl.fetchDtrTotalHoursData(token: token);
       emit(StudentsLoadedSuccessState(
         users: [user],
         announcements: [latestAnnouncement],
@@ -98,6 +96,4 @@ class StudentsBloc extends Bloc<StudentsEvent, StudentsState> {
       emit(StudentsErrorState(message: error.toString()));
     }
   }
-
-  
 }
