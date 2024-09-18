@@ -92,6 +92,11 @@ flutter:
     - assets/images/img9.png
     - assets/images/img10.png
     - assets/images/card-bg.png
+    - assets/images/bg_img.png
+    - assets/images/login-bg.png
+    - assets/images/student_home_bg.png
+    - assets/images/test-bg.png
+    - assets/images/test2-bg.png
     - assets/icons/profile.png
     - assets/icons/analytics.png
     - assets/icons/home.png
