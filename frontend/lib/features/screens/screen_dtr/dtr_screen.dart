@@ -102,7 +102,7 @@ class _DtrScreenState extends State<DtrScreen> {
                 generatePdf(state.dtr);
               },
               tooltip: 'Generate PDF',
-              child: Icon(
+              child: const Icon(
                 Icons.file_download_outlined,
                 color: Colors.white,
               ),

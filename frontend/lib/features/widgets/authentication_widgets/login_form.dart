@@ -38,7 +38,7 @@ class LoginForm extends StatelessWidget {
               onTap: () {
                 // Handle forgot password action
               },
-              child: Text(
+              child: const Text(
                 'Forgot Password?',
                 style: TextStyle(
                   color: Colors.white60,

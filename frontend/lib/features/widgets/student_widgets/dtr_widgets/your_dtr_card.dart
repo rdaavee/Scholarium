@@ -32,10 +32,10 @@ class YourDtrCard extends StatelessWidget {
             width: 1,
           ),
           columnWidths: const {
-            0: const FixedColumnWidth(100),
-            1: const FixedColumnWidth(100),
-            2: const FixedColumnWidth(100),
-            3: const FixedColumnWidth(120),
+            0: FixedColumnWidth(100),
+            1: FixedColumnWidth(100),
+            2: FixedColumnWidth(100),
+            3: FixedColumnWidth(120),
           },
           children: [
             TableRow(

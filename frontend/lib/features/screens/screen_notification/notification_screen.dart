@@ -39,7 +39,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
         },
         builder: (context, state) {
           if (state is NotificationsLoadingState) {
-            return Scaffold(
+            return const Scaffold(
               body: Center(child: CircularProgressIndicator()),
             );
           } else if (state is NotificationsLoadedSuccessState) {
@@ -48,7 +48,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                 children: [
                   // Background image
                   Container(
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       image: DecorationImage(
                         image: AssetImage('assets/images/image.jpg'),
                         fit: BoxFit.cover,
@@ -67,10 +67,10 @@ class _NotificationScreenState extends State<NotificationScreen> {
                         child: Container(
                           height: 120.0,
                           alignment: Alignment.centerLeft,
-                          child: Row(
+                          child: const Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const Text(
+                              Text(
                                 "Notification",
                                 style: TextStyle(
                                   fontSize: 20,
@@ -122,7 +122,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
               ),
             );
           } else {
-            return Scaffold(
+            return const Scaffold(
               body: Center(child: CircularProgressIndicator()),
             );
           }

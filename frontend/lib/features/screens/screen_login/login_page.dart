@@ -79,7 +79,6 @@ class _LoginPageState extends State<LoginPage> {
         }
       },
       builder: (context, state) {
-        if (state is LoginLoadedSuccessState) {}
         return Scaffold(
           body: Stack(
             children: [
