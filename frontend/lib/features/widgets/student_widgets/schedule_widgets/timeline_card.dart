@@ -9,7 +9,8 @@ class TimelineCard extends StatelessWidget {
   final bool isNotCompleted;
   final Color cardColor;
 
-  const TimelineCard({super.key, 
+  const TimelineCard({
+    super.key,
     required this.dutyTitle,
     required this.professorName,
     required this.roomName,
@@ -35,11 +36,13 @@ class TimelineCard extends StatelessWidget {
         ? completedCardColor
         : (isNotCompleted ? notCompletedCardColor : cardColor);
 
-    final Color currentTextColor =
-        isCompleted ? completedTextColor : Colors.grey[600] ?? Colors.grey.shade600;
+    final Color currentTextColor = isCompleted
+        ? completedTextColor
+        : Colors.grey[600] ?? Colors.grey.shade600;
 
-    final Color currentDetailTextColor =
-        isCompleted ? completedDetailTextColor : Colors.grey[400] ?? Colors.grey.shade400;
+    final Color currentDetailTextColor = isCompleted
+        ? completedDetailTextColor
+        : Colors.grey[400] ?? Colors.grey.shade400;
 
     return SizedBox(
       width: double.infinity,

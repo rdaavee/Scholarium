@@ -143,7 +143,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
                                   fontSize: 10,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white,
-                                  fontFamily: 'Inter',
+                                  fontFamily: 'Manrope',
                                 ),
                               ),
                               PieChartSectionData(
@@ -155,7 +155,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
                                   fontSize: 10,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white,
-                                  fontFamily: 'Inter',
+                                  fontFamily: 'Manrope',
                                 ),
                               ),
                             ],
@@ -177,7 +177,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
                           'Ongoing Duties',
                           style: TextStyle(
                             fontSize: 15,
-                            fontFamily: 'Inter',
+                            fontFamily: 'Manrope',
                             fontWeight: FontWeight.bold,
                             color: Color(0xFF6D7278),
                             letterSpacing: 0.5,

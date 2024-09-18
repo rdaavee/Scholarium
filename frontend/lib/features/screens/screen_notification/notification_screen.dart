@@ -39,79 +39,91 @@ class _NotificationScreenState extends State<NotificationScreen> {
         },
         builder: (context, state) {
           if (state is NotificationsLoadingState) {
-            return const Scaffold(
-              backgroundColor: ColorPalette.accent,
+            return Scaffold(
               body: Center(child: CircularProgressIndicator()),
             );
           } else if (state is NotificationsLoadedSuccessState) {
             return Scaffold(
-              backgroundColor: ColorPalette.primary,
-              body: Column(
+              body: Stack(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 30.0, right: 20.0),
-                    child: Container(
-                      height: 100.0,
-                      color: ColorPalette.primary,
-                      alignment: Alignment.centerLeft,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text(
-                            "Notification",
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontFamily: 'Inter',
-                              fontWeight: FontWeight.bold,
-                              letterSpacing: 1.1,
-                              color: ColorPalette.accentWhite,
-                            ),
-                          ),
-                        ],
+                  // Background image
+                  Container(
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage('assets/images/image.jpg'),
+                        fit: BoxFit.cover,
                       ),
                     ),
                   ),
-                  Expanded(
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        color: Color(0xFFF0F3F4),
-                        borderRadius: BorderRadius.vertical(
-                          top: Radius.circular(20),
+                  // Overlay color
+                  Container(
+                    color: ColorPalette.primary.withOpacity(0.6),
+                  ),
+                  // Main content
+                  Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 30.0, right: 20.0),
+                        child: Container(
+                          height: 120.0,
+                          alignment: Alignment.centerLeft,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text(
+                                "Notification",
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontFamily: 'Manrope',
+                                  fontWeight: FontWeight.bold,
+                                  letterSpacing: 1.1,
+                                  color: ColorPalette.accentWhite,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                      child: ListView.builder(
-                        itemCount: state.notifications.length,
-                        itemBuilder: (context, index) {
-                          final notifications = state.notifications[index];
-                          return GestureDetector(
-                            onTap: () {
-                              
-                            },
-                            onLongPress: () {
-                              print("Long press");
-                            },
-                            child: NotificationCard(
-                              sender: notifications.sender.toString(),
-                              role: notifications.role.toString(),
-                              message: notifications.message.toString(),
-                              status: notifications.status.toString(),
-                              date: notifications.date.toString(),
-                              time: notifications.time.toString(),
+                      Expanded(
+                        child: Container(
+                          decoration: const BoxDecoration(
+                            color: Color(0xFFF0F3F4),
+                            borderRadius: BorderRadius.vertical(
+                              top: Radius.circular(20),
                             ),
-                          );
-                        },
+                          ),
+                          child: ListView.builder(
+                            itemCount: state.notifications.length,
+                            itemBuilder: (context, index) {
+                              final notifications = state.notifications[index];
+                              return GestureDetector(
+                                onTap: () {
+                                  // Add your onTap logic here
+                                },
+                                onLongPress: () {
+                                  print("Long press");
+                                },
+                                child: NotificationCard(
+                                  sender: notifications.sender.toString(),
+                                  role: notifications.role.toString(),
+                                  message: notifications.message.toString(),
+                                  status: notifications.status.toString(),
+                                  date: notifications.date.toString(),
+                                  time: notifications.time.toString(),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
                       ),
-                    ),
+                    ],
                   ),
                 ],
               ),
             );
           } else {
-            return const Scaffold(
-              backgroundColor: Colors.white,
-              body: Center(
-                child: CircularProgressIndicator(),
-              ),
+            return Scaffold(
+              body: Center(child: CircularProgressIndicator()),
             );
           }
         },

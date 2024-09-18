@@ -11,49 +11,45 @@ class LoginForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: Container(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Stack(
+    return Container(
+      child: Stack(
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _schoolIdField(),
-                  const SizedBox(height: 5),
-                  _passwordField(),
-                  const SizedBox(height: 35),
-                  SignInButton(onPressed: () {
-                    loginBloc.add(LoginButtonClickedEvent(
-                      _schoolIdController.text,
-                      _passwordController.text,
-                    ));
-                  })
-                ],
-              ),
-              Positioned(
-                right: 5,
-                top: 110,
-                child: GestureDetector(
-                  onTap: () {
-                    // Handle forgot password action
-                  },
-                  child: const Text(
-                    'Forgot Password?',
-                    style: TextStyle(
-                      color: Color(0xFF6D7278),
-                      fontFamily: 'Inter',
-                      fontSize: 12,
-                      fontWeight: FontWeight.normal,
-                    ),
-                  ),
-                ),
+              _schoolIdField(),
+              const SizedBox(height: 5),
+              _passwordField(),
+              const SizedBox(height: 40),
+              SignInButton(
+                onPressed: () {
+                  loginBloc.add(LoginButtonClickedEvent(
+                    _schoolIdController.text,
+                    _passwordController.text,
+                  ));
+                },
               ),
             ],
           ),
-        ),
+          Positioned(
+            right: 5,
+            top: 115,
+            child: GestureDetector(
+              onTap: () {
+                // Handle forgot password action
+              },
+              child: Text(
+                'Forgot Password?',
+                style: TextStyle(
+                  color: Colors.white60,
+                  fontFamily: 'Manrope',
+                  fontSize: 12,
+                  fontWeight: FontWeight.normal,
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -67,7 +63,7 @@ class LoginForm extends StatelessWidget {
         decoration: InputDecoration(
           hintText: 'School ID',
           filled: true,
-          fillColor: Colors.white,
+          fillColor: Colors.white.withOpacity(0.2),
           contentPadding:
               const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
           border: OutlineInputBorder(
@@ -91,15 +87,15 @@ class LoginForm extends StatelessWidget {
             ),
             borderRadius: BorderRadius.circular(10),
           ),
-          hintStyle: const TextStyle(
-            color: Colors.grey,
+          hintStyle: TextStyle(
+            color: Colors.white.withOpacity(0.8),
             fontSize: 12.0,
           ),
         ),
         style: const TextStyle(
-          color: Colors.black,
+          color: Colors.white,
           fontSize: 12.0,
-          fontFamily: 'Inter',
+          fontFamily: 'Manrope',
           fontWeight: FontWeight.w100,
         ),
       ),
@@ -116,7 +112,7 @@ class LoginForm extends StatelessWidget {
         decoration: InputDecoration(
           hintText: 'Password',
           filled: true,
-          fillColor: Colors.white,
+          fillColor: Colors.white.withOpacity(0.2),
           contentPadding:
               const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
           border: OutlineInputBorder(
@@ -140,15 +136,15 @@ class LoginForm extends StatelessWidget {
             ),
             borderRadius: BorderRadius.circular(10),
           ),
-          hintStyle: const TextStyle(
-            color: Colors.grey,
+          hintStyle: TextStyle(
+            color: Colors.white.withOpacity(0.8),
             fontSize: 12.0,
           ),
         ),
         style: const TextStyle(
-          color: Colors.black,
+          color: Colors.white,
           fontSize: 12.0,
-          fontFamily: 'Inter',
+          fontFamily: 'Manrope',
           fontWeight: FontWeight.w100,
         ),
       ),

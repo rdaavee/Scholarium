@@ -7,7 +7,8 @@ class DutyCard extends StatelessWidget {
   final String time;
   final String roomName;
 
-  const DutyCard({super.key, 
+  const DutyCard({
+    super.key,
     required this.cardColor,
     required this.time,
     required this.roomName,
@@ -30,7 +31,7 @@ class DutyCard extends StatelessWidget {
               style: TextStyle(
                 fontSize: 26,
                 fontWeight: FontWeight.bold,
-                fontFamily: 'Inter',
+                fontFamily: 'Manrope',
                 letterSpacing: 1.1,
                 color: Colors.white,
               ),
@@ -40,7 +41,7 @@ class DutyCard extends StatelessWidget {
               time,
               style: const TextStyle(
                 fontSize: 18,
-                fontFamily: 'Inter',
+                fontFamily: 'Manrope',
                 fontWeight: FontWeight.bold,
                 letterSpacing: 1.1,
                 color: Colors.white,
@@ -51,7 +52,7 @@ class DutyCard extends StatelessWidget {
               roomName,
               style: const TextStyle(
                 fontSize: 18,
-                fontFamily: 'Inter',
+                fontFamily: 'Manrope',
                 fontWeight: FontWeight.bold,
                 letterSpacing: 1.1,
                 color: Colors.white,

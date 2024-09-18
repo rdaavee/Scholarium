@@ -21,7 +21,7 @@ class ProfessorScreen extends StatelessWidget {
                 "Hi, Professor",
                 style: TextStyle(
                   fontSize: 17,
-                  fontFamily: 'Montserrat',
+                  fontFamily: 'Manrope',
                   fontWeight: FontWeight.bold,
                   letterSpacing: 1.1,
                   color: Colors.white,
@@ -77,7 +77,7 @@ class ProfessorScreen extends StatelessWidget {
                                     'Post Something',
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      fontFamily: 'Inter',
+                                      fontFamily: 'Manrope',
                                       fontSize: 18,
                                       color: Color(0xFF6D7278),
                                     ),
@@ -176,7 +176,7 @@ class ProfessorScreen extends StatelessWidget {
                                 'Post something',
                                 style: TextStyle(
                                   fontWeight: FontWeight.normal,
-                                  fontFamily: 'Inter',
+                                  fontFamily: 'Manrope',
                                   fontSize: 15,
                                   color: Color(0xFFC1C1C1),
                                 ),
@@ -195,7 +195,7 @@ class ProfessorScreen extends StatelessWidget {
                       'Ongoing Duties',
                       style: TextStyle(
                         fontSize: 15,
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontWeight: FontWeight.bold,
                         color: Color(0xFF6D7278),
                         letterSpacing: 0.5,

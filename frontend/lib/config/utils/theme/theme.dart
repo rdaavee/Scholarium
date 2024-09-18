@@ -20,6 +20,7 @@ class TAppTheme {
     appBarTheme: TAppBarTheme.lightAppBarTheme,
     elevatedButtonTheme: TElevatedButtonTheme.LightElevatedButtonTheme,
     chipTheme: TChipTheme.lightChipTheme,
+  
     checkboxTheme: TCheckboxTheme.lightCheckboxTheme,
     inputDecorationTheme: TTextFieldTheme.lightInputDecorationTheme,
   );

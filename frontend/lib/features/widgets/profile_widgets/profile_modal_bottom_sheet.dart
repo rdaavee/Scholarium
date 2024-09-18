@@ -7,7 +7,8 @@ class ProfileModalBottomSheet extends StatelessWidget {
   final String address;
   final bool isActive;
 
-  const ProfileModalBottomSheet({super.key, 
+  const ProfileModalBottomSheet({
+    super.key,
     required this.name,
     required this.schoolId,
     required this.address,
@@ -38,7 +39,7 @@ class ProfileModalBottomSheet extends StatelessWidget {
                 name,
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontSize: 24,
                   color: Color(0xFF6D7278),
                 ),
@@ -50,7 +51,7 @@ class ProfileModalBottomSheet extends StatelessWidget {
               child: Text(
                 schoolId,
                 style: const TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontSize: 16,
                   color: Color(0xFF6D7278),
                 ),
@@ -62,7 +63,7 @@ class ProfileModalBottomSheet extends StatelessWidget {
               child: Text(
                 address,
                 style: const TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontSize: 16,
                   color: Color(0xFF6D7278),
                 ),
@@ -75,13 +76,14 @@ class ProfileModalBottomSheet extends StatelessWidget {
                 label: Text(
                   isActive ? 'Active' : 'Inactive',
                   style: const TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 9,
                     color: Colors.white,
                     letterSpacing: 0.5,
                   ),
                 ),
-                backgroundColor: isActive ? const Color(0xFF6DD400) : Colors.red,
+                backgroundColor:
+                    isActive ? const Color(0xFF6DD400) : Colors.red,
                 padding: const EdgeInsets.symmetric(horizontal: 15.0),
                 shape: RoundedRectangleBorder(
                     side: BorderSide(
@@ -117,7 +119,7 @@ class ProfileModalBottomSheet extends StatelessWidget {
                 child: const Text(
                   'Send Message',
                   style: TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontWeight: FontWeight.normal,
                     fontSize: 12,
                   ),

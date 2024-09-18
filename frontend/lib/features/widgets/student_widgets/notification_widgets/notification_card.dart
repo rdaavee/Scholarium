@@ -9,7 +9,7 @@ class NotificationCard extends StatelessWidget {
   final String time;
 
   const NotificationCard({
-    super.key, 
+    super.key,
     required this.sender,
     required this.role,
     required this.message,
@@ -55,7 +55,7 @@ class NotificationCard extends StatelessWidget {
                               sender,
                               style: const TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontFamily: 'Inter',
+                                fontFamily: 'Manrope',
                                 fontSize: 15,
                                 color: Colors.black,
                               ),
@@ -67,7 +67,7 @@ class NotificationCard extends StatelessWidget {
                               date,
                               style: const TextStyle(
                                 color: Colors.grey,
-                                fontFamily: 'Inter',
+                                fontFamily: 'Manrope',
                                 fontSize: 11,
                               ),
                             ),
@@ -76,7 +76,7 @@ class NotificationCard extends StatelessWidget {
                             time,
                             style: const TextStyle(
                               color: Colors.grey,
-                              fontFamily: 'Inter',
+                              fontFamily: 'Manrope',
                               fontSize: 11,
                             ),
                           ),
@@ -89,7 +89,7 @@ class NotificationCard extends StatelessWidget {
                           fontSize: 12,
                           color: Colors.green,
                           fontWeight: FontWeight.w500,
-                          fontFamily: 'Inter',
+                          fontFamily: 'Manrope',
                         ),
                       ),
                       Text(
@@ -97,7 +97,7 @@ class NotificationCard extends StatelessWidget {
                         style: const TextStyle(
                           fontSize: 12,
                           color: Color(0xFFC1C1C1),
-                          fontFamily: 'Inter',
+                          fontFamily: 'Manrope',
                         ),
                       ),
                     ],
@@ -147,7 +147,7 @@ class NotificationCard extends StatelessWidget {
                               sender,
                               style: const TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontFamily: 'Inter',
+                                fontFamily: 'Manrope',
                                 fontSize: 15,
                                 color: Colors.black,
                               ),
@@ -159,7 +159,7 @@ class NotificationCard extends StatelessWidget {
                               date,
                               style: const TextStyle(
                                 color: Colors.grey,
-                                fontFamily: 'Inter',
+                                fontFamily: 'Manrope',
                                 fontSize: 11,
                               ),
                             ),
@@ -168,7 +168,7 @@ class NotificationCard extends StatelessWidget {
                             time,
                             style: const TextStyle(
                               color: Colors.grey,
-                              fontFamily: 'Inter',
+                              fontFamily: 'Manrope',
                               fontSize: 11,
                             ),
                           ),
@@ -181,7 +181,7 @@ class NotificationCard extends StatelessWidget {
                           fontSize: 12,
                           color: Colors.green,
                           fontWeight: FontWeight.w500,
-                          fontFamily: 'Inter',
+                          fontFamily: 'Manrope',
                         ),
                       ),
                       Text(
@@ -189,7 +189,7 @@ class NotificationCard extends StatelessWidget {
                         style: const TextStyle(
                           fontSize: 12,
                           color: Color(0xFFC1C1C1),
-                          fontFamily: 'Inter',
+                          fontFamily: 'Manrope',
                         ),
                       ),
                     ],

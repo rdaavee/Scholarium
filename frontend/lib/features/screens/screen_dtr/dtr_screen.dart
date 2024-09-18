@@ -132,7 +132,7 @@ class _DtrScreenState extends State<DtrScreen> {
                           "DTR",
                           style: TextStyle(
                             fontSize: 17,
-                            fontFamily: 'Montserrat',
+                            fontFamily: 'Manrope',
                             fontWeight: FontWeight.bold,
                             letterSpacing: 1.1,
                             color: ColorPalette.accentWhite,
@@ -243,7 +243,7 @@ class _DtrScreenState extends State<DtrScreen> {
           text,
           style: const TextStyle(
             color: Colors.black,
-            fontFamily: 'Inter',
+            fontFamily: 'Manrope',
             fontSize: 12,
             fontWeight: FontWeight.bold,
           ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:isHKolarium/config/constants/colors.dart';
 
 class InfoHeader extends StatelessWidget {
   final String title;
@@ -12,15 +13,15 @@ class InfoHeader extends StatelessWidget {
       width: double.infinity,
       height: 51,
       decoration: BoxDecoration(
-        color: const Color(0x196DD400),
+        color: ColorPalette.accent.withOpacity(0.4),
         borderRadius: BorderRadius.circular(10),
       ),
       child: Text(
         title,
-        style: const TextStyle(
-          color: Color(0xFF6DD400),
+        style: TextStyle(
+          color: ColorPalette.primary,
           fontSize: 15,
-          fontFamily: 'Inter',
+          fontFamily: 'Manrope',
           fontWeight: FontWeight.w700,
           letterSpacing: 1.2,
         ),

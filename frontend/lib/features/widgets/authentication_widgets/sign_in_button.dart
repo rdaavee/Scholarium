@@ -10,18 +10,19 @@ class SignInButton extends StatelessWidget {
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
-        backgroundColor: ColorPalette.primary,
+        backgroundColor: ColorPalette.btnColor,
         side: const BorderSide(
-          color: ColorPalette.primary,
+          color: ColorPalette.btnColor,
         ),
         minimumSize: const Size(287, 55),
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 25),
       ),
       child: const Text(
         'Sign In',
         style: TextStyle(
           fontFamily: 'Inter',
           fontWeight: FontWeight.normal,
+          color: Colors.white,
           fontSize: 12,
         ),
       ),

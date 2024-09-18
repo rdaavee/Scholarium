@@ -21,7 +21,7 @@ class ProfileChangePassword extends StatelessWidget {
         title: const Text(
           'Change Password',
           style: TextStyle(
-            fontFamily: 'Inter',
+            fontFamily: 'Manrope',
             color: Colors.black,
             letterSpacing: 0.5,
           ),
@@ -41,15 +41,15 @@ class ProfileChangePassword extends StatelessWidget {
                   controller: oldPasswordController,
                   obscureText: true,
                   decoration: InputDecoration(
-                    hintText: 'Please enter your Old Password',
+                    hintText: 'Please enter your old password',
                     hintStyle: const TextStyle(
                       color: Colors.grey,
                       fontSize: 12.0,
                     ),
                     filled: true,
                     fillColor: Colors.white,
-                    contentPadding:
-                        const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+                    contentPadding: const EdgeInsets.symmetric(
+                        vertical: 12.0, horizontal: 16.0),
                     border: OutlineInputBorder(
                       borderSide: BorderSide(
                         width: 1,
@@ -75,12 +75,12 @@ class ProfileChangePassword extends StatelessWidget {
                   style: const TextStyle(
                     color: Colors.black,
                     fontSize: 12.0,
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontWeight: FontWeight.w100,
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter your Old Password';
+                      return 'Please enter your old password';
                     }
                     return null;
                   },
@@ -90,15 +90,15 @@ class ProfileChangePassword extends StatelessWidget {
                   controller: newPasswordController,
                   obscureText: true,
                   decoration: InputDecoration(
-                    hintText: 'Please enter your New Password',
+                    hintText: 'Please enter your new password',
                     hintStyle: const TextStyle(
                       color: Colors.grey,
                       fontSize: 12.0,
                     ),
                     filled: true,
                     fillColor: Colors.white,
-                    contentPadding:
-                        const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+                    contentPadding: const EdgeInsets.symmetric(
+                        vertical: 12.0, horizontal: 16.0),
                     border: OutlineInputBorder(
                       borderSide: BorderSide(
                         width: 1,
@@ -124,12 +124,12 @@ class ProfileChangePassword extends StatelessWidget {
                   style: const TextStyle(
                     color: Colors.black,
                     fontSize: 12.0,
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontWeight: FontWeight.w100,
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter your New Password';
+                      return 'Please enter your new password';
                     }
                     return null;
                   },
@@ -139,15 +139,15 @@ class ProfileChangePassword extends StatelessWidget {
                   controller: confirmPasswordController,
                   obscureText: true,
                   decoration: InputDecoration(
-                    hintText: 'Confirm New Password',
+                    hintText: 'Confirm new password',
                     hintStyle: const TextStyle(
                       color: Colors.grey,
                       fontSize: 12.0,
                     ),
                     filled: true,
                     fillColor: Colors.white,
-                    contentPadding:
-                        const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+                    contentPadding: const EdgeInsets.symmetric(
+                        vertical: 12.0, horizontal: 16.0),
                     border: OutlineInputBorder(
                       borderSide: BorderSide(
                         width: 1,
@@ -173,12 +173,12 @@ class ProfileChangePassword extends StatelessWidget {
                   style: const TextStyle(
                     color: Colors.black,
                     fontSize: 12.0,
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontWeight: FontWeight.w100,
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please confirm your New Password';
+                      return 'Please confirm your new password';
                     }
                     return null;
                   },
@@ -191,12 +191,13 @@ class ProfileChangePassword extends StatelessWidget {
                       color: ColorPalette.primary,
                     ),
                     minimumSize: const Size(287, 55),
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 15),
                   ),
                   child: const Text(
                     'Change Password',
                     style: TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontWeight: FontWeight.normal,
                       fontSize: 12,
                     ),

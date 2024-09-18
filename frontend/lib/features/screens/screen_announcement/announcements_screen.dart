@@ -73,7 +73,7 @@ class _AnnouncementsPageState extends State<AnnouncementsScreen> {
                             "ANNOUNCEMENTS",
                             style: TextStyle(
                               fontSize: 17,
-                              fontFamily: 'Montserrat',
+                              fontFamily: 'Manrope',
                               fontWeight: FontWeight.bold,
                               letterSpacing: 1.1,
                               color: ColorPalette.accentWhite,
@@ -107,7 +107,7 @@ class _AnnouncementsPageState extends State<AnnouncementsScreen> {
                                     textLabel: Text(
                                       announcement.title.toString(),
                                       style: const TextStyle(
-                                        fontFamily: 'Inter',
+                                        fontFamily: 'Manrope',
                                         fontWeight: FontWeight.bold,
                                         color: Color(0xFF6D7278),
                                         letterSpacing: 0.5,
@@ -116,7 +116,7 @@ class _AnnouncementsPageState extends State<AnnouncementsScreen> {
                                     textBody: Text(
                                       announcement.body.toString(),
                                       style: const TextStyle(
-                                        fontFamily: 'Inter',
+                                        fontFamily: 'Manrope',
                                       ),
                                     ),
                                     date: Text(announcement.date.toString()),

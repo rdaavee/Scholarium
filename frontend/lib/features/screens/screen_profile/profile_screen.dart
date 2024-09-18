@@ -45,9 +45,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<ProfileBloc>(
-          create: (context) => profileBloc,
-        ),
+        BlocProvider<ProfileBloc>(create: (context) => profileBloc),
       ],
       child: BlocConsumer<ProfileBloc, ProfileState>(
         listener: (context, state) {
@@ -58,22 +56,35 @@ class _ProfileScreenState extends State<ProfileScreen> {
           }
         },
         builder: (context, state) {
-          return Scaffold(
-            backgroundColor: ColorPalette.primary,
-            body: BlocBuilder<ProfileBloc, ProfileState>(
-              builder: (context, state) {
-                print('Building UI with state: $state');
-                if (state is ProfileLoadingState) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (state is ProfileLoadedSuccessState) {
-                  return Column(
+          if (state is ProfileLoadingState) {
+            return Scaffold(
+              body: Center(child: CircularProgressIndicator()),
+            );
+          } else if (state is ProfileLoadedSuccessState) {
+            return Scaffold(
+              body: Stack(
+                children: [
+                  // Background image
+                  Container(
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage('assets/images/image.jpg'),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  // Optional overlay color
+                  Container(
+                    color: ColorPalette.primary.withOpacity(0.6),
+                  ),
+                  // Main content
+                  Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(left: 30.0, right: 20.0),
                         child: Container(
-                          height: 100.0,
-                          color: ColorPalette.primary,
+                          height: 120.0,
                           alignment: Alignment.centerLeft,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -82,7 +93,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 "Profile",
                                 style: TextStyle(
                                   fontSize: 20,
-                                  fontFamily: 'Inter',
+                                  fontFamily: 'Manrope',
                                   fontWeight: FontWeight.bold,
                                   letterSpacing: 1.1,
                                   color: ColorPalette.accentWhite,
@@ -106,8 +117,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               children: [
                                 const SizedBox(height: 50),
                                 ProfileCircle(
-                                  profilePictureUrl:
-                                      state.profilePicture, // Pass the URL here
+                                  profilePictureUrl: state.profilePicture,
                                 ),
                                 const SizedBox(height: 80),
                                 InfoSection(
@@ -169,26 +179,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                       ),
                     ],
-                  );
-                } else if (state is LogoutLoadedSuccessState) {
-                  Navigator.pushReplacementNamed(context, '/login');
-                  return Container();
-                } else if (state is LogoutErrorState) {
-                  return Center(
-                    child: Text(
-                      state.message,
-                      style: const TextStyle(color: Colors.red),
-                    ),
-                  );
-                } else {
-                  return const Scaffold(
-                    backgroundColor: Colors.white,
-                    body: Center(child: CircularProgressIndicator()),
-                  );
-                }
-              },
-            ),
-          );
+                  ),
+                ],
+              ),
+            );
+          } else if (state is LogoutLoadedSuccessState) {
+            Navigator.pushReplacementNamed(context, '/login');
+            return Container();
+          } else if (state is LogoutErrorState) {
+            return Scaffold(
+              body: Center(
+                child: Text(
+                  state.message,
+                  style: const TextStyle(color: Colors.red),
+                ),
+              ),
+            );
+          } else {
+            return Scaffold(
+              body: Center(child: CircularProgressIndicator()),
+            );
+          }
         },
       ),
     );

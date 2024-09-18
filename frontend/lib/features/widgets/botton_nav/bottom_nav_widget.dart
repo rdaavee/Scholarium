@@ -24,10 +24,10 @@ class BottomNavWidget extends StatelessWidget {
           bottomNavigationBar: BottomNavigationBarTheme(
             data: const BottomNavigationBarThemeData(
               backgroundColor: Colors.transparent,
-              selectedItemColor: ColorPalette.accent,
+              selectedItemColor: ColorPalette.primary,
               unselectedItemColor: Colors.grey,
               selectedLabelStyle: TextStyle(
-                fontFamily: 'Inter',
+                fontFamily: 'Manrope',
                 fontSize: 12,
                 fontWeight: FontWeight.w500,
                 letterSpacing: 0.5,

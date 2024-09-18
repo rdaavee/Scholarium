@@ -16,7 +16,7 @@ class InfoRow extends StatelessWidget {
           style: const TextStyle(
             color: Color(0xFF3C3C3C),
             fontSize: 16.5,
-            fontFamily: 'Inter',
+            fontFamily: 'Manrope',
             fontWeight: FontWeight.w700,
           ),
         ),
@@ -25,7 +25,7 @@ class InfoRow extends StatelessWidget {
           style: const TextStyle(
             color: Color(0xFFC1C1C1),
             fontSize: 16.5,
-            fontFamily: 'Inter',
+            fontFamily: 'Manrope',
             fontWeight: FontWeight.w700,
           ),
         ),

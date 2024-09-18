@@ -6,7 +6,8 @@ class TimelineItem extends StatelessWidget {
   final Map<String, dynamic> duty;
   final Color color;
 
-  const TimelineItem({super.key, 
+  const TimelineItem({
+    super.key,
     required this.duty,
     required this.color,
   });
@@ -27,7 +28,7 @@ class TimelineItem extends StatelessWidget {
               _formatDate(duty['date'].toString()),
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                fontFamily: 'Poppins',
+                fontFamily: 'Manrope',
                 color: Colors.grey[600],
               ),
             ),
@@ -55,7 +56,8 @@ class TimelineItem extends StatelessWidget {
             ),
             endChild: TimelineCard(
               dutyTitle: duty['subject'].toString(), // Ensure it's a string
-              professorName: duty['professor'].toString(), // Ensure it's a string
+              professorName:
+                  duty['professor'].toString(), // Ensure it's a string
               roomName: duty['room'].toString(), // Ensure it's a string
               timeInAndOut: duty['time'].toString(), // Ensure it's a string
               isCompleted: completionStatus == "true",

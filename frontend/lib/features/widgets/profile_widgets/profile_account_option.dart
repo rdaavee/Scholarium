@@ -7,7 +7,11 @@ import 'package:isHKolarium/api/api_service/api_service.dart';
 
 class AccountOptions extends StatelessWidget {
   final VoidCallback onProfileUpdated;
-  const AccountOptions({super.key, required this.onProfileUpdated, required Null Function() onLogout, });
+  const AccountOptions({
+    super.key,
+    required this.onProfileUpdated,
+    required Null Function() onLogout,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +23,9 @@ class AccountOptions extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => ProfileChangePassword(onPasswordChanged: onProfileUpdated,),
+                builder: (context) => ProfileChangePassword(
+                  onPasswordChanged: onProfileUpdated,
+                ),
               ),
             );
           },
@@ -55,7 +61,7 @@ class AccountOptions extends StatelessWidget {
           style: const TextStyle(
             color: Color(0xFF3C3C3C),
             fontSize: 16.5,
-            fontFamily: 'Inter',
+            fontFamily: 'Manrope',
             fontWeight: FontWeight.w700,
             height: 0,
           ),
