@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:isHKolarium/api/api_service/api_service.dart';
+import 'package:isHKolarium/api/implementations/student_repository_impl.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
 import 'package:isHKolarium/blocs/bloc_student/students_bloc.dart';
 import 'package:isHKolarium/features/widgets/student_widgets/announcement_widgets/announcement_card.dart';
@@ -18,8 +18,8 @@ class _AnnouncementsPageState extends State<AnnouncementsScreen> {
   @override
   void initState() {
     super.initState();
-    final apiService = ApiService();
-    studentBloc = StudentsBloc(apiService);
+    final studentRepositoryImpl = StudentRepositoryImpl();
+    studentBloc = StudentsBloc(studentRepositoryImpl);
     studentBloc.add(FetchAnnouncementEvent());
   }
 

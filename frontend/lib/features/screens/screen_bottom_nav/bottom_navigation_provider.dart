@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:isHKolarium/api/implementations/student_repository_impl.dart';
 import 'package:isHKolarium/blocs/bloc_student/students_bloc.dart';
 import 'package:isHKolarium/blocs/bloc_bottom_nav/bottom_nav_bloc.dart';
 import 'package:isHKolarium/features/widgets/botton_nav/bottom_nav_widget.dart';
@@ -20,7 +21,7 @@ class _StudentHomePageState extends State<StudentHomePage> {
   @override
   void initState() {
     super.initState();
-    final apiService = ApiService(); 
+    final apiService = StudentRepositoryImpl();
     studentBloc = StudentsBloc(apiService);
     bottomNavBloc = BottomNavBloc();
     studentBloc.add(StudentsInitialEvent());
@@ -38,8 +39,7 @@ class _StudentHomePageState extends State<StudentHomePage> {
         ),
       ],
       child: BlocConsumer<StudentsBloc, StudentsState>(
-        listener: (context, state) {
-        },
+        listener: (context, state) {},
         builder: (context, studentState) {
           if (studentState is StudentsLoadingState) {
             return LoadingWidget();
@@ -58,4 +58,3 @@ class _StudentHomePageState extends State<StudentHomePage> {
     );
   }
 }
-

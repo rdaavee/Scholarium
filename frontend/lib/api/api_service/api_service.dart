@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:isHKolarium/api/models/announcement_model.dart';
@@ -104,7 +104,7 @@ class ApiService {
   }
 
   //Get Student Data
-  Future<UserModel> fetchStudentData({
+  Future<UserModel> fetchUserData({
     required String? token,
   }) async {
     final response = await http.get(
