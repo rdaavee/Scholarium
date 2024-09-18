@@ -40,7 +40,8 @@ dependencies:
   equatable:
   fl_chart:
   pdf: ^3.7.1 
-  printing: ^5.11.0  
+  printing: ^5.11.0
+  flutter_animate:
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -76,6 +77,10 @@ flutter:
     - assets/images/
     - assets/images/image.jpg
     - assets/images/image2.jpg
+    - assets/images/image3.jpg
+    - assets/images/image4.jpg
+    - assets/images/image5.png
+    - assets/images/image6.jpg
     - assets/images/img1.png
     - assets/images/img2.png
     - assets/images/img3.png
@@ -86,6 +91,7 @@ flutter:
     - assets/images/img8.png
     - assets/images/img9.png
     - assets/images/img10.png
+    - assets/images/card-bg.png
     - assets/icons/profile.png
     - assets/icons/analytics.png
     - assets/icons/home.png
@@ -123,6 +129,22 @@ fonts:
         - asset: assets/fonts/Montserrat-Bold.ttf
           weight: 700
         - asset: assets/fonts/Montserrat-ExtraBold.ttf
+          weight: 800
+    - family: Manrope
+      fonts:
+        - asset: assets/fonts/Manrope-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Manrope-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Manrope-Light.ttf
+          weight: 300
+        - asset: assets/fonts/Manrope-ExtraLight.ttf
+          weight: 200
+        - asset: assets/fonts/Manrope-Thin.ttf
+          weight: 200
+        - asset: assets/fonts/Manrope-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Manrope-ExtraBold.ttf
           weight: 800
 
 flutter_native_splash:
