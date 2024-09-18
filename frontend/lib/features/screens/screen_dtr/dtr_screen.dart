@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:isHKolarium/api/api_service/api_service.dart';
+import 'package:isHKolarium/api/implementations/student_repository_impl.dart';
 import 'package:isHKolarium/api/models/dtr_model.dart';
 import 'package:isHKolarium/blocs/bloc_dtr/dtr_bloc.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
@@ -23,7 +23,7 @@ class _DtrScreenState extends State<DtrScreen> {
   @override
   void initState() {
     super.initState();
-    final apiService = ApiService();
+    final apiService = StudentRepositoryImpl();
     dtrBloc = DtrBloc(apiService);
     dtrBloc.add(FetchDtrEvent());
   }

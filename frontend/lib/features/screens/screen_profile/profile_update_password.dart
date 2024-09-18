@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:isHKolarium/api/api_service/api_service.dart';
+import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -9,7 +9,7 @@ class ProfileChangePassword extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ApiService apiService = ApiService();
+    final apiService = GlobalRepositoryImpl();
     final formKey = GlobalKey<FormState>();
     final TextEditingController oldPasswordController = TextEditingController();
     final TextEditingController newPasswordController = TextEditingController();

@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:isHKolarium/api/api_service/api_service.dart';
+import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
 import 'package:isHKolarium/blocs/bloc_profile/profile_bloc.dart';
 import 'package:isHKolarium/blocs/bloc_profile/profile_event.dart';
 import 'package:isHKolarium/blocs/bloc_profile/profile_state.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../../widgets/profile_widgets/profile_circle.dart';
 import '../../widgets/profile_widgets/profile_account_option.dart';
 import '../../widgets/profile_widgets/profile_account_section.dart';
@@ -26,19 +25,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     super.initState();
-    final apiService = ApiService();
+    final apiService = GlobalRepositoryImpl();
     profileBloc = ProfileBloc(apiService);
-    _initialize();
-  }
-
-  Future<void> _initialize() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final token = prefs.getString('token') ?? '';
-    profileBloc.add(LoadProfileEvent(token: token));
+    profileBloc.add(FetchProfileEvent());
   }
 
   void _onProfileUpdated() {
-    _initialize();
+    profileBloc.add(FetchProfileEvent());
   }
 
   @override
@@ -57,7 +50,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         },
         builder: (context, state) {
           if (state is ProfileLoadingState) {
-            return Scaffold(
+            return const Scaffold(
               body: Center(child: CircularProgressIndicator()),
             );
           } else if (state is ProfileLoadedSuccessState) {
@@ -66,7 +59,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 children: [
                   // Background image
                   Container(
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       image: DecorationImage(
                         image: AssetImage('assets/images/image.jpg'),
                         fit: BoxFit.cover,
@@ -86,10 +79,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         child: Container(
                           height: 120.0,
                           alignment: Alignment.centerLeft,
-                          child: Row(
+                          child: const Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const Text(
+                              Text(
                                 "Profile",
                                 style: TextStyle(
                                   fontSize: 20,
@@ -117,50 +110,60 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               children: [
                                 const SizedBox(height: 50),
                                 ProfileCircle(
-                                  profilePictureUrl: state.profilePicture,
+                                  profilePictureUrl:
+                                      state.users[0].profilePicture,
                                 ),
                                 const SizedBox(height: 80),
                                 InfoSection(
                                   title: 'BASIC INFORMATION',
                                   infoRows: [
                                     const SizedBox(height: 20),
-                                    InfoRow(label: 'Name', value: state.name),
+                                    InfoRow(
+                                        label: 'Name',
+                                        value: state.users[0].firstName +
+                                            state.users[0].lastName),
                                     const SizedBox(height: 15),
                                     const DividerWidget(),
                                     const SizedBox(height: 15),
-                                    InfoRow(label: 'Email', value: state.email),
+                                    InfoRow(
+                                        label: 'Email',
+                                        value: state.users[0].email),
                                     const SizedBox(height: 15),
                                     const DividerWidget(),
                                     const SizedBox(height: 15),
                                     InfoRow(
                                         label: 'Student ID',
-                                        value: state.studentId),
+                                        value: state.users[0].schoolID),
                                     const SizedBox(height: 15),
                                     const DividerWidget(),
                                     const SizedBox(height: 15),
                                     InfoRow(
-                                        label: 'Gender', value: state.gender),
+                                        label: 'Gender',
+                                        value: state.users[0].gender),
                                     const SizedBox(height: 15),
                                     const DividerWidget(),
                                     const SizedBox(height: 15),
                                     InfoRow(
                                         label: 'Contact #',
-                                        value: state.contact),
+                                        value: state.users[0].contact),
                                     const SizedBox(height: 15),
                                     const DividerWidget(),
                                     const SizedBox(height: 15),
                                     InfoRow(
-                                        label: 'Address', value: state.address),
+                                        label: 'Address',
+                                        value: state.users[0].address),
                                     const SizedBox(height: 15),
                                     const DividerWidget(),
                                     const SizedBox(height: 15),
                                     InfoRow(
-                                        label: 'HK Type', value: state.hkType),
+                                        label: 'HK Type',
+                                        value: state.users[0].hkType),
                                     const SizedBox(height: 15),
                                     const DividerWidget(),
                                     const SizedBox(height: 15),
                                     InfoRow(
-                                        label: 'Status', value: state.status),
+                                        label: 'Status',
+                                        value: state.users[0].status),
                                   ],
                                 ),
                                 const SizedBox(height: 30),
@@ -196,7 +199,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             );
           } else {
-            return Scaffold(
+            return const Scaffold(
               body: Center(child: CircularProgressIndicator()),
             );
           }

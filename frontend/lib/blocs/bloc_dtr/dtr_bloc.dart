@@ -1,17 +1,17 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:isHKolarium/api/api_service/api_service.dart';
+import 'package:flutter/material.dart';
+import 'package:isHKolarium/api/implementations/student_repository_impl.dart';
 import 'package:isHKolarium/api/models/dtr_model.dart';
 import 'package:isHKolarium/api/models/dtr_total_hours_model.dart';
-import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 part 'dtr_event.dart';
 part 'dtr_state.dart';
 
 class DtrBloc extends Bloc<DtrEvent, DtrState> {
-  final ApiService _apiService;
+  final StudentRepositoryImpl _apiService;
 
   DtrBloc(this._apiService) : super(DtrInitialState()) {
     on<DtrInitialEvent>(dtrInitialEvent);
