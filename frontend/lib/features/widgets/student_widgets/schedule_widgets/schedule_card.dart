@@ -5,6 +5,7 @@ class ScheduleCard extends StatelessWidget {
   final Text scheduleTime;
   final Text roomName;
   final Color cardColor;
+  final String imageUrl;
 
   const ScheduleCard({
     super.key,
@@ -12,6 +13,7 @@ class ScheduleCard extends StatelessWidget {
     required this.scheduleTime,
     required this.roomName,
     required this.cardColor,
+    required this.imageUrl,
   });
 
   @override
@@ -20,27 +22,33 @@ class ScheduleCard extends StatelessWidget {
       clipBehavior: Clip.none,
       children: [
         Container(
-          height: 220,
-          margin: const EdgeInsets.only(
-            top: 10,
-          ),
+          height: 200,
           child: Card(
             margin: const EdgeInsets.all(10.0),
             color: cardColor,
-            child: Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  scheduleDate,
-                  const SizedBox(height: 5),
-                  scheduleTime,
-                  const SizedBox(height: 40),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [roomName],
-                  ),
-                ],
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10.0),
+                image: DecorationImage(
+                  image: AssetImage(imageUrl),
+                  fit: BoxFit.cover,
+                ),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    scheduleDate,
+                    const SizedBox(height: 5),
+                    scheduleTime,
+                    const SizedBox(height: 40),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [roomName],
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

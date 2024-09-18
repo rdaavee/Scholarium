@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:isHKolarium/api/implementations/student_repository_impl.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
 import 'package:isHKolarium/features/screens/screen_dtr/dtr_screen.dart';
-import 'package:isHKolarium/features/widgets/student_widgets/dtr_widgets/dtr_hours_card.dart';
 import 'package:isHKolarium/features/screens/screen_event/events_screen.dart';
+import 'package:isHKolarium/features/widgets/student_widgets/dtr_widgets/dtr_hours_card.dart';
 import 'package:isHKolarium/features/widgets/student_widgets/event_widgets/events_card.dart';
 import 'package:isHKolarium/features/screens/screen_schedule/schedule_screen.dart';
 import 'package:isHKolarium/features/widgets/student_widgets/schedule_widgets/schedule_card.dart';
@@ -60,20 +60,20 @@ class _StudentHomeState extends State<StudentHome> {
                   Container(
                     decoration: const BoxDecoration(
                       image: DecorationImage(
-                        image: AssetImage('assets/images/image4.jpg'),
+                        image: AssetImage('assets/images/image.jpg'),
                         fit: BoxFit.fill,
                       ),
                     ),
                   ),
                   // Overlay color
                   Container(
-                    color: ColorPalette.primary.withOpacity(0.7),
+                    color: ColorPalette.accentBlack.withOpacity(0.8),
                   ),
                   // Main content
                   Column(
                     children: [
                       Container(
-                        height: 120.0,
+                        height: 70.0,
                         child: Padding(
                           padding:
                               const EdgeInsets.only(left: 30.0, right: 20.0),
@@ -110,163 +110,48 @@ class _StudentHomeState extends State<StudentHome> {
                           decoration: const BoxDecoration(
                             color: Color(0xFFF0F3F4),
                             borderRadius: BorderRadius.vertical(
-                              top: Radius.circular(20),
+                              top: Radius.circular(10),
                             ),
                           ),
                           child: Padding(
                             padding: const EdgeInsets.all(10.0),
                             child: ListView(
                               children: [
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const ScheduleScreen(),
-                                            ),
-                                          );
-                                        },
-                                        child: const Stack(
-                                          clipBehavior: Clip.none,
-                                          children: [
-                                            ScheduleCard(
-                                              scheduleDate: Text(
-                                                '10\nSept',
-                                                style: TextStyle(
-                                                  fontSize: 27,
-                                                  fontFamily: 'Manrope',
-                                                  fontWeight: FontWeight.bold,
-                                                  color:
-                                                      ColorPalette.accentBlack,
-                                                  letterSpacing: 0.5,
-                                                ),
-                                              ),
-                                              scheduleTime: Text(
-                                                '10:30AM - 12:00PM',
-                                                style: TextStyle(
-                                                  fontSize: 10,
-                                                  fontFamily: 'Manrope',
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.bold,
-                                                  letterSpacing: 0.8,
-                                                ),
-                                              ),
-                                              roomName: Text(
-                                                'PTC-303',
-                                                style: TextStyle(
-                                                  fontSize: 17,
-                                                  fontFamily: 'Manrope',
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.bold,
-                                                  letterSpacing: 1.2,
-                                                ),
-                                              ),
-                                              cardColor: Colors.white,
-                                            ),
-                                            Positioned(
-                                              top: -5.0,
-                                              left: 20.0,
-                                              child: Text(
-                                                "Upcoming Duties",
-                                                style: TextStyle(
-                                                  fontSize: 15,
-                                                  fontFamily: 'Manrope',
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Color(0xFF6D7278),
-                                                  letterSpacing: 0.5,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const ScheduleScreen(),
-                                            ),
-                                          );
-                                        },
-                                        child: const Stack(
-                                          clipBehavior: Clip.none,
-                                          children: [
-                                            ScheduleCard(
-                                              scheduleDate: Text(
-                                                '11\nSept',
-                                                style: TextStyle(
-                                                  fontSize: 27,
-                                                  fontFamily: 'Manrope',
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.black,
-                                                  letterSpacing: 0.5,
-                                                ),
-                                              ),
-                                              scheduleTime: Text(
-                                                '7:30AM - 8:30AM',
-                                                style: TextStyle(
-                                                  fontSize: 10,
-                                                  fontFamily: 'Manrope',
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.bold,
-                                                  letterSpacing: 0.8,
-                                                ),
-                                              ),
-                                              roomName: Text(
-                                                'CMA-123',
-                                                style: TextStyle(
-                                                  fontSize: 17,
-                                                  fontFamily: 'Manrope',
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.bold,
-                                                  letterSpacing: 1.2,
-                                                ),
-                                              ),
-                                              cardColor: Colors.white,
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                // Your DTR
-                                GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => const DtrScreen(),
-                                      ),
-                                    );
-                                  },
-                                  child: Stack(
-                                    clipBehavior: Clip.none,
+                                // Upcoming Duties Section
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      right: 15, left: 15),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
-                                      DtrHoursCard(
-                                        progress: (state.hours[0].totalhours /
-                                                state.hours[0].targethours)
-                                            .clamp(0.0, 1.0),
-                                        cardColor: Colors.white,
+                                      const Text(
+                                        "Upcoming Duties",
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                          fontFamily: 'Manrope',
+                                          fontWeight: FontWeight.bold,
+                                          color: Color(0xFF6D7278),
+                                          letterSpacing: 0.5,
+                                        ),
                                       ),
-                                      const Positioned(
-                                        top: 15.0,
-                                        left: 20.0,
-                                        child: Text(
-                                          "Your DTR",
+                                      GestureDetector(
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const ScheduleScreen(),
+                                            ),
+                                          );
+                                        },
+                                        child: const Text(
+                                          "View All",
                                           style: TextStyle(
-                                            fontSize: 15,
+                                            fontSize: 11,
                                             fontFamily: 'Manrope',
                                             fontWeight: FontWeight.bold,
-                                            color: Color(0xFF6D7278),
+                                            color: ColorPalette.viewAllColor,
                                             letterSpacing: 0.5,
                                           ),
                                         ),
@@ -274,70 +159,139 @@ class _StudentHomeState extends State<StudentHome> {
                                     ],
                                   ),
                                 ),
-                                // Announcements
-                                Stack(
-                                  clipBehavior: Clip.none,
+                                Row(
                                   children: [
-                                    GestureDetector(
-                                      onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                const AnnouncementsScreen(),
-                                          ),
-                                        );
-                                      },
-                                      child: AnnouncementCard(
-                                        textLabel: Text(
-                                          state.announcements[0].title
-                                              .toString(),
-                                          style: const TextStyle(
-                                            fontSize: 18,
+                                    Expanded(
+                                      child: ScheduleCard(
+                                        scheduleDate: const Text(
+                                          '10\nSept',
+                                          style: TextStyle(
+                                            fontSize: 27,
                                             fontFamily: 'Manrope',
-                                            fontWeight: FontWeight.bold,
-                                            color: Color(0xFF6DD400),
+                                            fontWeight: FontWeight.w900,
+                                            color: ColorPalette.accentBlack,
                                             letterSpacing: 0.5,
                                           ),
                                         ),
-                                        textBody: Text(
-                                          state.announcements[0].body
-                                              .toString(),
-                                          style: const TextStyle(
-                                            fontSize: 13,
+                                        scheduleTime: const Text(
+                                          '10:30AM - 12:00PM',
+                                          style: TextStyle(
+                                            fontSize: 12,
                                             fontFamily: 'Manrope',
-                                            color: Color(0xFFC1C1C1),
-                                            fontWeight: FontWeight.w400,
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.normal,
                                             letterSpacing: 0.8,
                                           ),
                                         ),
-                                        date: Text(
-                                          state.announcements[0].date
-                                              .toString(),
-                                          style: const TextStyle(
+                                        roomName: const Text(
+                                          'PTC-303',
+                                          style: TextStyle(
+                                            fontSize: 20,
                                             fontFamily: 'Manrope',
-                                            color: Color(0xFFC1C1C1),
-                                            fontWeight: FontWeight.w500,
-                                            letterSpacing: 1.2,
-                                          ),
-                                        ),
-                                        time: Text(
-                                          state.announcements[0].time
-                                              .toString(),
-                                          style: const TextStyle(
-                                            fontFamily: 'Manrope',
-                                            color: Color(0xFFC1C1C1),
-                                            fontWeight: FontWeight.w500,
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.bold,
                                             letterSpacing: 1.2,
                                           ),
                                         ),
                                         cardColor: Colors.white,
+                                        imageUrl: 'assets/images/test-bg.png',
                                       ),
                                     ),
-                                    const Positioned(
-                                      top: 15.0,
-                                      left: 20.0,
-                                      child: Text(
+                                    Expanded(
+                                      child: ScheduleCard(
+                                        scheduleDate: const Text(
+                                          '11\nSept',
+                                          style: TextStyle(
+                                            fontSize: 27,
+                                            fontFamily: 'Manrope',
+                                            fontWeight: FontWeight.w900,
+                                            color: Colors.black,
+                                            letterSpacing: 0.5,
+                                          ),
+                                        ),
+                                        scheduleTime: const Text(
+                                          '7:30AM - 8:30AM',
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            fontFamily: 'Manrope',
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.normal,
+                                            letterSpacing: 0.8,
+                                          ),
+                                        ),
+                                        roomName: const Text(
+                                          'CMA-123',
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            fontFamily: 'Manrope',
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.bold,
+                                            letterSpacing: 1.2,
+                                          ),
+                                        ),
+                                        cardColor: Colors.white,
+                                        imageUrl: 'assets/images/test2-bg.png',
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                // Your DTR Section
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      right: 15, left: 15, top: 15),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      const Text(
+                                        "Your DTR",
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                          fontFamily: 'Manrope',
+                                          fontWeight: FontWeight.bold,
+                                          color: Color(0xFF6D7278),
+                                          letterSpacing: 0.5,
+                                        ),
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const DtrScreen(),
+                                            ),
+                                          );
+                                        },
+                                        child: const Text(
+                                          "View All",
+                                          style: TextStyle(
+                                            fontSize: 11,
+                                            fontFamily: 'Manrope',
+                                            fontWeight: FontWeight.bold,
+                                            color: ColorPalette.viewAllColor,
+                                            letterSpacing: 0.5,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                DtrHoursCard(
+                                  progress: (state.hours[0].totalhours /
+                                          state.hours[0].targethours)
+                                      .clamp(0.0, 1.0),
+                                  cardColor: Colors.white,
+                                ),
+                                // Announcements Section
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      right: 15, left: 15, top: 15),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      const Text(
                                         "Announcements",
                                         style: TextStyle(
                                           fontSize: 15,
@@ -347,42 +301,80 @@ class _StudentHomeState extends State<StudentHome> {
                                           letterSpacing: 0.5,
                                         ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                                // Events
-                                Stack(
-                                  clipBehavior: Clip.none,
-                                  children: [
-                                    GestureDetector(
-                                      onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                const EventsScreen(),
-                                          ),
-                                        );
-                                      },
-                                      child: const EventsCard(
-                                        textLabel: Text(
-                                          'Sunkissed Lola Concert',
+                                      GestureDetector(
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const AnnouncementsScreen(),
+                                            ),
+                                          );
+                                        },
+                                        child: const Text(
+                                          "View All",
                                           style: TextStyle(
-                                            color: Colors.white,
+                                            fontSize: 11,
                                             fontFamily: 'Manrope',
-                                            fontSize: 16,
                                             fontWeight: FontWeight.bold,
+                                            color: ColorPalette.viewAllColor,
+                                            letterSpacing: 0.5,
                                           ),
                                         ),
-                                        cardColor: Colors.white,
-                                        imageAssetPath:
-                                            'assets/images/image_2.jpg',
                                       ),
+                                    ],
+                                  ),
+                                ),
+                                AnnouncementCard(
+                                  textLabel: Text(
+                                    state.announcements[0].title.toString(),
+                                    style: const TextStyle(
+                                      fontSize: 18,
+                                      fontFamily: 'Manrope',
+                                      fontWeight: FontWeight.bold,
+                                      color: Color(0xFF6D7278),
+                                      letterSpacing: 0.5,
                                     ),
-                                    const Positioned(
-                                      top: 15.0,
-                                      left: 20.0,
-                                      child: Text(
+                                  ),
+                                  textBody: Text(
+                                    state.announcements[0].body.toString(),
+                                    style: const TextStyle(
+                                      fontSize: 13,
+                                      fontFamily: 'Manrope',
+                                      color: Color(0xFFC1C1C1),
+                                      fontWeight: FontWeight.w400,
+                                      letterSpacing: 0.8,
+                                    ),
+                                  ),
+                                  date: Text(
+                                    state.announcements[0].date.toString(),
+                                    style: const TextStyle(
+                                      fontFamily: 'Manrope',
+                                      color: Color(0xFFC1C1C1),
+                                      fontWeight: FontWeight.w500,
+                                      letterSpacing: 1.2,
+                                    ),
+                                  ),
+                                  time: Text(
+                                    state.announcements[0].time.toString(),
+                                    style: const TextStyle(
+                                      fontFamily: 'Manrope',
+                                      color: Color(0xFFC1C1C1),
+                                      fontWeight: FontWeight.w500,
+                                      letterSpacing: 1.2,
+                                    ),
+                                  ),
+                                  imageUrl: 'assets/images/card-bg.png',
+                                ),
+                                // Events Section
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      right: 15, left: 15, top: 15),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      const Text(
                                         "Events",
                                         style: TextStyle(
                                           fontSize: 15,
@@ -392,8 +384,42 @@ class _StudentHomeState extends State<StudentHome> {
                                           letterSpacing: 0.5,
                                         ),
                                       ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  EventsScreen(),
+                                            ),
+                                          );
+                                        },
+                                        child: const Text(
+                                          "View All",
+                                          style: TextStyle(
+                                            fontSize: 11,
+                                            fontFamily: 'Manrope',
+                                            fontWeight: FontWeight.bold,
+                                            color: ColorPalette.primary,
+                                            letterSpacing: 0.5,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                const EventsCard(
+                                  textLabel: Text(
+                                    'Sunkissed Lola Concert',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: 'Manrope',
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
                                     ),
-                                  ],
+                                  ),
+                                  cardColor: Colors.white,
+                                  imageAssetPath: 'assets/images/image_2.jpg',
                                 ),
                               ],
                             ),

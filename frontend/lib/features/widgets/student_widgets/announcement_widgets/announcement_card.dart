@@ -5,7 +5,7 @@ class AnnouncementCard extends StatelessWidget {
   final Text textBody;
   final Text date;
   final Text time;
-  final Color cardColor;
+  final String imageUrl;
 
   const AnnouncementCard({
     super.key,
@@ -13,7 +13,7 @@ class AnnouncementCard extends StatelessWidget {
     required this.textBody,
     required this.date,
     required this.time,
-    required this.cardColor,
+    required this.imageUrl,
   });
 
   @override
@@ -23,25 +23,33 @@ class AnnouncementCard extends StatelessWidget {
       children: [
         Container(
           height: 170,
-          margin: const EdgeInsets.only(
-            top: 30,
-          ),
           child: Card(
             margin: const EdgeInsets.all(10.0),
-            color: cardColor,
-            child: Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  textLabel,
-                  textBody,
-                  const SizedBox(height: 16),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [date, time],
-                  ),
-                ],
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10.0),
+                image: DecorationImage(
+                  image: AssetImage(imageUrl),
+                  fit: BoxFit.cover,
+                ),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    textLabel,
+                    textBody,
+                    const SizedBox(height: 16),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [date, time],
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

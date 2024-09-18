@@ -14,7 +14,6 @@ class DtrHoursCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(top: 30),
       child: Card(
         margin: const EdgeInsets.all(10.0),
         color: cardColor,

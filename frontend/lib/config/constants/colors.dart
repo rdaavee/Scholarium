@@ -14,4 +14,5 @@ class ColorPalette {
   static const Color gray = Color(0xffC3C3C3);
   static const Color textAccent = Color(0xFFFFE867);
   static const Color btnColor = Color(0xFF09C053);
+  static const Color viewAllColor = Color(0xFF09C053);
 }

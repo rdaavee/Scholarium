@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:isHKolarium/config/constants/colors.dart';
 
 class EventsCard extends StatelessWidget {
   final Text textLabel;
@@ -15,7 +16,6 @@ class EventsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(top: 30),
       child: Card(
         margin: const EdgeInsets.all(10.0),
         color: cardColor,
@@ -24,11 +24,11 @@ class EventsCard extends StatelessWidget {
         ),
         child: Stack(
           children: [
-            SizedBox(
-              height: 150.0,
-              width: double.infinity,
-              child: ClipRRect(
-                borderRadius: const BorderRadius.all(Radius.circular(10)),
+            ClipRRect(
+              borderRadius: const BorderRadius.all(Radius.circular(10)),
+              child: SizedBox(
+                height: 150.0,
+                width: double.infinity,
                 child: Image.asset(
                   imageAssetPath,
                   fit: BoxFit.cover,
@@ -48,8 +48,8 @@ class EventsCard extends StatelessWidget {
                   ),
                   gradient: LinearGradient(
                     colors: [
-                      const Color.fromARGB(255, 21, 41, 29).withOpacity(1),
-                      const Color(0xFF6DD400).withOpacity(0.3),
+                      ColorPalette.accentBlack.withOpacity(.8),
+                      ColorPalette.accentWhite.withOpacity(.5),
                     ],
                     begin: Alignment.bottomCenter,
                     end: Alignment.topCenter,

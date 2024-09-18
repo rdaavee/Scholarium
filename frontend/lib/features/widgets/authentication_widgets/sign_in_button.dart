@@ -14,8 +14,8 @@ class SignInButton extends StatelessWidget {
         side: const BorderSide(
           color: ColorPalette.btnColor,
         ),
-        minimumSize: const Size(287, 55),
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 25),
+        minimumSize: const Size(287, 45),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
       ),
       child: const Text(
         'Sign In',

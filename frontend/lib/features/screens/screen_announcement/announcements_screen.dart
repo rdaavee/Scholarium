@@ -121,7 +121,7 @@ class _AnnouncementsPageState extends State<AnnouncementsScreen> {
                                     ),
                                     date: Text(announcement.date.toString()),
                                     time: Text(announcement.time.toString()),
-                                    cardColor: Colors.white,
+                                    imageUrl: 'assets/images/card-bg.png',
                                   ),
                                 ),
                               ],

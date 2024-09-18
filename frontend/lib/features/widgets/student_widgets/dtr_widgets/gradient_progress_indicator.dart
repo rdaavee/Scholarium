@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:isHKolarium/config/constants/colors.dart';
 
 class GradientProgressIndicator extends StatelessWidget {
   final double progress;
@@ -24,7 +25,7 @@ class GradientProgressIndicator extends StatelessWidget {
         child: LinearProgressIndicator(
           value: progress,
           backgroundColor: Colors.grey[200],
-          valueColor: const AlwaysStoppedAnimation<Color>(Colors.green),
+          valueColor: AlwaysStoppedAnimation<Color>(ColorPalette.primary),
         ),
       ),
     );
