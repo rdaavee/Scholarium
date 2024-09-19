@@ -5,6 +5,7 @@ import 'package:isHKolarium/api/models/announcement_model.dart';
 import 'package:isHKolarium/api/models/dtr_model.dart';
 import 'package:isHKolarium/api/models/dtr_total_hours_model.dart';
 import 'package:isHKolarium/api/models/notifications_model.dart';
+import 'package:isHKolarium/api/models/schedule_model.dart';
 import 'package:isHKolarium/api/models/update_password_model.dart';
 import 'package:isHKolarium/api/models/user_model.dart';
 import 'package:isHKolarium/api/repositories/global_repository.dart';
@@ -15,6 +16,33 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class StudentRepositoryImpl implements StudentRepository, GlobalRepository {
   final String baseUrl = 'http://localhost:3000/api';
+
+  @override
+  Future<Map<String, dynamic>> fetchUpcomingSchedule(
+      {required String token}) async {
+    final response =
+        await http.get(Uri.parse('$baseUrl/user/getUpcomingSchedule/$token'));
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+
+      // Safely parse 'today' and 'next'
+      final todaySchedules = (data['today'] as List?)
+              ?.map((item) => ScheduleModel.fromJson(item))
+              .toList() ??
+          [];
+
+      final nextSchedule =
+          data['next'] != null ? ScheduleModel.fromJson(data['next']) : null;
+
+      return {
+        'today': todaySchedules,
+        'next': nextSchedule,
+      };
+    } else {
+      throw Exception('Failed to load schedule: ${response.reasonPhrase}');
+    }
+  }
 
   @override
   Future<List<Map<String, dynamic>>> getSchedule(

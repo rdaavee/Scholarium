@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 import 'package:isHKolarium/features/widgets/student_widgets/schedule_widgets/timeline_card.dart';
 
@@ -59,7 +60,8 @@ class TimelineItem extends StatelessWidget {
               professorName:
                   duty['professor'].toString(), // Ensure it's a string
               roomName: duty['room'].toString(), // Ensure it's a string
-              timeInAndOut: duty['time'].toString(), // Ensure it's a string
+              timeInAndOut:
+                  _formatTime(duty['time'].toString()), // Ensure it's a string
               isCompleted: completionStatus == "true",
               isNotCompleted: completionStatus == "false",
               cardColor: Colors.white,
@@ -118,5 +120,10 @@ class TimelineItem extends StatelessWidget {
     final String formattedDate =
         '${months[parsedDate.month - 1]}. ${parsedDate.day}, ${parsedDate.year}';
     return formattedDate;
+  }
+
+  String _formatTime(String time) {
+    final DateTime parsedTime = DateFormat('HH:mm:ss').parse(time);
+    return DateFormat('h:mm a').format(parsedTime);
   }
 }

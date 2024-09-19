@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class NotificationCard extends StatelessWidget {
   final String sender;
@@ -17,6 +18,32 @@ class NotificationCard extends StatelessWidget {
     required this.date,
     required this.time,
   });
+
+  String _formatDate(String date) {
+    final DateTime parsedDate = DateTime.parse(date);
+    final List<String> months = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec'
+    ];
+    final String formattedDate =
+        '${months[parsedDate.month - 1]}. ${parsedDate.day}, ${parsedDate.year}';
+    return formattedDate;
+  }
+
+  String _formatTime(String time) {
+    final DateTime parsedTime = DateFormat('HH:mm:ss').parse(time);
+    return DateFormat('h:mm a').format(parsedTime);
+  }
 
   @override
   Widget build(BuildContext context) {

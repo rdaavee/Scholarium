@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:isHKolarium/api/implementations/student_repository_impl.dart';
 import 'package:isHKolarium/blocs/bloc_bottom_nav/bottom_nav_bloc.dart';
+import 'package:isHKolarium/blocs/bloc_schedule/schedule_bloc.dart';
+import 'package:isHKolarium/blocs/bloc_schedule/schedule_event.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
 import 'package:isHKolarium/features/screens/screen_dtr/dtr_screen.dart';
 import 'package:isHKolarium/features/screens/screen_event/events_screen.dart';
@@ -12,6 +15,7 @@ import 'package:isHKolarium/features/widgets/student_widgets/schedule_widgets/sc
 import 'package:isHKolarium/blocs/bloc_student/students_bloc.dart';
 import 'package:isHKolarium/features/screens/screen_announcement/announcements_screen.dart';
 import 'package:isHKolarium/features/widgets/student_widgets/announcement_widgets/announcement_card.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class StudentHome extends StatefulWidget {
   const StudentHome({super.key});
@@ -23,14 +27,45 @@ class StudentHome extends StatefulWidget {
 class _StudentHomeState extends State<StudentHome> {
   late StudentsBloc studentBloc;
   late BottomNavBloc bottomNavBloc;
+  late ScheduleBloc scheduleBloc;
 
   @override
   void initState() {
     super.initState();
+    _initialize();
+  }
+
+  Future<void> _initialize() async {
     final studentRepositoryImpl = StudentRepositoryImpl();
     studentBloc = StudentsBloc(studentRepositoryImpl);
     studentBloc.add(FetchLatestEvent());
     bottomNavBloc = BottomNavBloc();
+  }
+
+  String _formatDate(String date) {
+    final DateTime parsedDate = DateTime.parse(date);
+    final List<String> months = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec'
+    ];
+    final String formattedDate =
+        '${months[parsedDate.month - 1]}. ${parsedDate.day}, ${parsedDate.year}';
+    return formattedDate;
+  }
+
+  String _formatTime(String time) {
+    final DateTime parsedTime = DateFormat('HH:mm:ss').parse(time);
+    return DateFormat('h:mm a').format(parsedTime);
   }
 
   @override
@@ -60,8 +95,7 @@ class _StudentHomeState extends State<StudentHome> {
           } else if (state is StudentsLoadedSuccessState) {
             return Scaffold(
               appBar: PreferredSize(
-                preferredSize:
-                    const Size.fromHeight(70.0),
+                preferredSize: const Size.fromHeight(70.0),
                 child: Stack(
                   children: [
                     Positioned.fill(
@@ -73,7 +107,8 @@ class _StudentHomeState extends State<StudentHome> {
                     AppBar(
                       leading: null,
                       automaticallyImplyLeading: false,
-                      backgroundColor: ColorPalette.accentBlack.withOpacity(0.8),
+                      backgroundColor:
+                          ColorPalette.accentBlack.withOpacity(0.8),
                       elevation: 0,
                       title: Container(
                         margin: const EdgeInsets.only(top: 8),
@@ -177,13 +212,15 @@ class _StudentHomeState extends State<StudentHome> {
                                     ],
                                   ),
                                 ),
-                                const Row(
+                                Row(
                                   children: [
                                     Expanded(
                                       child: ScheduleCard(
                                         scheduleDate: Text(
-                                          '10\nSept',
-                                          style: TextStyle(
+                                          _formatDate(state
+                                              .todaySchedule[0].date
+                                              .toString()),
+                                          style: const TextStyle(
                                             fontSize: 27,
                                             fontFamily: 'Manrope',
                                             fontWeight: FontWeight.w900,
@@ -192,8 +229,10 @@ class _StudentHomeState extends State<StudentHome> {
                                           ),
                                         ),
                                         scheduleTime: Text(
-                                          '10:30AM - 12:00PM',
-                                          style: TextStyle(
+                                          _formatTime(state
+                                              .todaySchedule[0].time
+                                              .toString()),
+                                          style: const TextStyle(
                                             fontSize: 12,
                                             fontFamily: 'Manrope',
                                             color: Colors.black,
@@ -202,8 +241,9 @@ class _StudentHomeState extends State<StudentHome> {
                                           ),
                                         ),
                                         roomName: Text(
-                                          'PTC-303',
-                                          style: TextStyle(
+                                          state.todaySchedule[0].room
+                                              .toString(),
+                                          style: const TextStyle(
                                             fontSize: 20,
                                             fontFamily: 'Manrope',
                                             color: Colors.black,
@@ -218,8 +258,9 @@ class _StudentHomeState extends State<StudentHome> {
                                     Expanded(
                                       child: ScheduleCard(
                                         scheduleDate: Text(
-                                          '11\nSept',
-                                          style: TextStyle(
+                                          _formatDate(state.nextSchedule[0].date
+                                              .toString()),
+                                          style: const TextStyle(
                                             fontSize: 27,
                                             fontFamily: 'Manrope',
                                             fontWeight: FontWeight.w900,
@@ -228,8 +269,9 @@ class _StudentHomeState extends State<StudentHome> {
                                           ),
                                         ),
                                         scheduleTime: Text(
-                                          '7:30AM - 8:30AM',
-                                          style: TextStyle(
+                                          _formatTime(state.nextSchedule[0].time
+                                              .toString()),
+                                          style: const TextStyle(
                                             fontSize: 12,
                                             fontFamily: 'Manrope',
                                             color: Colors.black,
@@ -238,8 +280,8 @@ class _StudentHomeState extends State<StudentHome> {
                                           ),
                                         ),
                                         roomName: Text(
-                                          'CMA-123',
-                                          style: TextStyle(
+                                          state.nextSchedule[0].room.toString(),
+                                          style: const TextStyle(
                                             fontSize: 20,
                                             fontFamily: 'Manrope',
                                             color: Colors.black,
