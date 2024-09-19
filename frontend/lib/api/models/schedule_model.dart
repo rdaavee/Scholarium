@@ -28,11 +28,11 @@ class ScheduleModel {
   factory ScheduleModel.fromJson(Map<String, dynamic> map) {
     return ScheduleModel(
       id: map['id'] as int?,
-      schoolID: map['id'] as String?,
-      room: map['roo,'] as String?,
+      schoolID: map['school_id'] as String?,
+      room: map['room'] as String?,
       block: map['block'] as String?,
       subject: map['subject'] as String?,
-      profID: map['profID'] as String?,
+      profID: map['prof_id'] as String?,
       professor: map['professor'] as String?,
       department: map['department'] as String?,
       time: map['time'] as String?,

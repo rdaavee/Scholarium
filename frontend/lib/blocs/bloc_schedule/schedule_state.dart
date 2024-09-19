@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:isHKolarium/api/models/schedule_model.dart';
 
 abstract class ScheduleState extends Equatable {
   @override
@@ -9,10 +10,12 @@ class ScheduleInitialState extends ScheduleState {}
 
 class ScheduleLoadingState extends ScheduleState {}
 
-class ScheduleLoadedSuccess extends ScheduleState {
+class ScheduleLoadedSuccessState extends ScheduleState {
+  final List<ScheduleModel> todaySchedule;
+  final List<ScheduleModel> nextSchedule;
   final List<Map<String, dynamic>> schedule;
 
-  ScheduleLoadedSuccess(this.schedule);
+  ScheduleLoadedSuccessState({required this.todaySchedule, required this.nextSchedule, required this.schedule,});
 
   @override
   List<Object> get props => [schedule];

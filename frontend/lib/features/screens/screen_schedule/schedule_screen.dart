@@ -96,7 +96,7 @@ class ScheduleScreenState extends State<ScheduleScreen> {
                             if (state is ScheduleLoadingState) {
                               return const Center(
                                   child: CircularProgressIndicator());
-                            } else if (state is ScheduleLoadedSuccess) {
+                            } else if (state is ScheduleLoadedSuccessState) {
                               final duties = state.schedule;
 
                               if (duties.isEmpty) {

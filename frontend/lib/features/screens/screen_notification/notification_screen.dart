@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
 import 'package:isHKolarium/blocs/bloc_notification/notification_bloc.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
@@ -21,6 +22,32 @@ class _NotificationScreenState extends State<NotificationScreen> {
     final apiService = GlobalRepositoryImpl();
     notificationsBloc = NotificationsBloc(apiService);
     notificationsBloc.add(FetchNotificationsEvent());
+  }
+
+  String _formatDate(String date) {
+    final DateTime parsedDate = DateTime.parse(date);
+    final List<String> months = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec'
+    ];
+    final String formattedDate =
+        '${months[parsedDate.month - 1]}. ${parsedDate.day}, ${parsedDate.year}';
+    return formattedDate;
+  }
+
+  String _formatTime(String time) {
+    final DateTime parsedTime = DateFormat('HH:mm:ss').parse(time);
+    return DateFormat('h:mm a').format(parsedTime);
   }
 
   @override
@@ -108,8 +135,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                   role: notifications.role.toString(),
                                   message: notifications.message.toString(),
                                   status: notifications.status.toString(),
-                                  date: notifications.date.toString(),
-                                  time: notifications.time.toString(),
+                                  date: _formatDate( notifications.date.toString()),
+                                  time: _formatTime(notifications.time.toString()),
                                 ),
                               );
                             },
