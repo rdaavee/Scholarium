@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:isHKolarium/api/implementations/student_repository_impl.dart';
+import 'package:isHKolarium/blocs/bloc_bottom_nav/bottom_nav_bloc.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
 import 'package:isHKolarium/features/screens/screen_dtr/dtr_screen.dart';
 import 'package:isHKolarium/features/screens/screen_event/events_screen.dart';
@@ -21,6 +22,7 @@ class StudentHome extends StatefulWidget {
 
 class _StudentHomeState extends State<StudentHome> {
   late StudentsBloc studentBloc;
+  late BottomNavBloc bottomNavBloc;
 
   @override
   void initState() {
@@ -28,6 +30,7 @@ class _StudentHomeState extends State<StudentHome> {
     final studentRepositoryImpl = StudentRepositoryImpl();
     studentBloc = StudentsBloc(studentRepositoryImpl);
     studentBloc.add(FetchLatestEvent());
+    bottomNavBloc = BottomNavBloc();
   }
 
   @override
@@ -36,6 +39,9 @@ class _StudentHomeState extends State<StudentHome> {
       providers: [
         BlocProvider<StudentsBloc>(
           create: (context) => studentBloc,
+        ),
+        BlocProvider<BottomNavBloc>(
+          create: (context) => bottomNavBloc,
         ),
       ],
       child: BlocConsumer<StudentsBloc, StudentsState>(
@@ -47,13 +53,63 @@ class _StudentHomeState extends State<StudentHome> {
           }
         },
         builder: (context, state) {
-          print('Building UI with state: $state');
           if (state is StudentsLoadingState) {
             return const Scaffold(
               body: Center(child: CircularProgressIndicator()),
             );
           } else if (state is StudentsLoadedSuccessState) {
             return Scaffold(
+              appBar: PreferredSize(
+                preferredSize:
+                    const Size.fromHeight(70.0),
+                child: Stack(
+                  children: [
+                    Positioned.fill(
+                      child: Image.asset(
+                        'assets/images/image.jpg',
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    AppBar(
+                      leading: null,
+                      automaticallyImplyLeading: false,
+                      backgroundColor: ColorPalette.accentBlack.withOpacity(0.8),
+                      elevation: 0,
+                      title: Container(
+                        margin: const EdgeInsets.only(top: 8),
+                        padding: const EdgeInsets.only(left: 5),
+                        child: Text(
+                          "Hi, ${state.users[0].firstName}",
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontFamily: 'Manrope',
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 1.1,
+                            color: ColorPalette.accentWhite,
+                          ),
+                        ),
+                      ),
+                      actions: [
+                        Container(
+                          margin: const EdgeInsets.only(top: 5),
+                          padding: const EdgeInsets.only(right: 20),
+                          child: IconButton(
+                            icon: Image.asset(
+                              'assets/icons/message.png',
+                              width: 27,
+                              height: 27,
+                              color: ColorPalette.accentWhite,
+                            ),
+                            onPressed: () {
+                              // logic here
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
               body: Stack(
                 children: [
                   // Background image
@@ -72,39 +128,6 @@ class _StudentHomeState extends State<StudentHome> {
                   // Main content
                   Column(
                     children: [
-                      Container(
-                        height: 70.0,
-                        child: Padding(
-                          padding:
-                              const EdgeInsets.only(left: 30.0, right: 20.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "Hi, ${state.users[0].firstName}",
-                                style: const TextStyle(
-                                  fontSize: 20,
-                                  fontFamily: 'Manrope',
-                                  fontWeight: FontWeight.bold,
-                                  letterSpacing: 1.1,
-                                  color: ColorPalette.accentWhite,
-                                ),
-                              ),
-                              IconButton(
-                                icon: Image.asset(
-                                  'assets/icons/message.png',
-                                  width: 27,
-                                  height: 27,
-                                  color: ColorPalette.accentWhite,
-                                ),
-                                onPressed: () {
-                                  // logic here
-                                },
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
                       Expanded(
                         child: Container(
                           decoration: const BoxDecoration(
@@ -137,13 +160,8 @@ class _StudentHomeState extends State<StudentHome> {
                                       ),
                                       GestureDetector(
                                         onTap: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const ScheduleScreen(),
-                                            ),
-                                          );
+                                          bottomNavBloc
+                                              .add(BottomNavItemSelected(1));
                                         },
                                         child: const Text(
                                           "View All",
@@ -159,11 +177,11 @@ class _StudentHomeState extends State<StudentHome> {
                                     ],
                                   ),
                                 ),
-                                Row(
+                                const Row(
                                   children: [
                                     Expanded(
                                       child: ScheduleCard(
-                                        scheduleDate: const Text(
+                                        scheduleDate: Text(
                                           '10\nSept',
                                           style: TextStyle(
                                             fontSize: 27,
@@ -173,7 +191,7 @@ class _StudentHomeState extends State<StudentHome> {
                                             letterSpacing: 0.5,
                                           ),
                                         ),
-                                        scheduleTime: const Text(
+                                        scheduleTime: Text(
                                           '10:30AM - 12:00PM',
                                           style: TextStyle(
                                             fontSize: 12,
@@ -183,7 +201,7 @@ class _StudentHomeState extends State<StudentHome> {
                                             letterSpacing: 0.8,
                                           ),
                                         ),
-                                        roomName: const Text(
+                                        roomName: Text(
                                           'PTC-303',
                                           style: TextStyle(
                                             fontSize: 20,
@@ -199,7 +217,7 @@ class _StudentHomeState extends State<StudentHome> {
                                     ),
                                     Expanded(
                                       child: ScheduleCard(
-                                        scheduleDate: const Text(
+                                        scheduleDate: Text(
                                           '11\nSept',
                                           style: TextStyle(
                                             fontSize: 27,
@@ -209,7 +227,7 @@ class _StudentHomeState extends State<StudentHome> {
                                             letterSpacing: 0.5,
                                           ),
                                         ),
-                                        scheduleTime: const Text(
+                                        scheduleTime: Text(
                                           '7:30AM - 8:30AM',
                                           style: TextStyle(
                                             fontSize: 12,
@@ -219,7 +237,7 @@ class _StudentHomeState extends State<StudentHome> {
                                             letterSpacing: 0.8,
                                           ),
                                         ),
-                                        roomName: const Text(
+                                        roomName: Text(
                                           'CMA-123',
                                           style: TextStyle(
                                             fontSize: 20,
@@ -390,7 +408,7 @@ class _StudentHomeState extends State<StudentHome> {
                                             context,
                                             MaterialPageRoute(
                                               builder: (context) =>
-                                                  EventsScreen(),
+                                                  const EventsScreen(),
                                             ),
                                           );
                                         },

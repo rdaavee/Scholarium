@@ -140,6 +140,7 @@ class StudentRepositoryImpl implements StudentRepository, GlobalRepository {
     }
   }
 
+  @override
   Future<void> logout(BuildContext context) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('token');

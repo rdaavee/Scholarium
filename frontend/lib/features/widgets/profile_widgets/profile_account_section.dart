@@ -14,7 +14,7 @@ class AccountSection extends StatelessWidget {
         color: ColorPalette.accent.withOpacity(0.4),
         borderRadius: BorderRadius.circular(10),
       ),
-      child: Text(
+      child: const Text(
         'ACCOUNT',
         style: TextStyle(
           color: ColorPalette.primary,

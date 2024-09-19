@@ -41,7 +41,7 @@ class _StudentHomePageState extends State<StudentHomePage> {
         listener: (context, state) {},
         builder: (context, studentState) {
           if (studentState is StudentsLoadingState) {
-            return LoadingWidget();
+            return const LoadingWidget();
           } else if (studentState is StudentsLoadedSuccessState) {
             return const BottomNavWidget();
           } else if (studentState is StudentsErrorState) {

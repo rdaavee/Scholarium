@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
 import 'package:isHKolarium/blocs/bloc_bottom_nav/bottom_nav_bloc.dart';
-import 'package:isHKolarium/features/widgets/botton_nav/page_provider.dart';
+import 'package:isHKolarium/features/screens/screen_announcement/announcements_screen.dart';
+import 'package:isHKolarium/features/screens/screen_notification/notification_screen.dart';
+import 'package:isHKolarium/features/screens/screen_schedule/schedule_screen.dart';
+import 'package:isHKolarium/features/screens/screen_profile/profile_screen.dart';
+import 'package:isHKolarium/features/screens/screen_student/student_home.dart';
 
 class BottomNavWidget extends StatelessWidget {
   const BottomNavWidget({super.key});
@@ -40,23 +44,19 @@ class BottomNavWidget extends StatelessWidget {
               },
               items: <BottomNavigationBarItem>[
                 BottomNavigationBarItem(
-                  icon: Image.asset('assets/icons/home.png',
-                      width: 24, height: 24),
+                  icon: Image.asset('assets/icons/home.png', width: 24, height: 24),
                   label: 'Home',
                 ),
                 BottomNavigationBarItem(
-                  icon: Image.asset('assets/icons/calendar.png',
-                      width: 24, height: 24),
+                  icon: Image.asset('assets/icons/calendar.png', width: 24, height: 24),
                   label: 'Schedule',
                 ),
                 BottomNavigationBarItem(
-                  icon: Image.asset('assets/icons/bell.png',
-                      width: 24, height: 24),
+                  icon: Image.asset('assets/icons/bell.png', width: 24, height: 24),
                   label: 'Notification',
                 ),
                 BottomNavigationBarItem(
-                  icon: Image.asset('assets/icons/profile.png',
-                      width: 24, height: 24),
+                  icon: Image.asset('assets/icons/profile.png', width: 24, height: 24),
                   label: 'Profile',
                 ),
               ],
@@ -65,5 +65,20 @@ class BottomNavWidget extends StatelessWidget {
         );
       },
     );
+  }
+
+  Widget getPage(int index) {
+    switch (index) {
+      case 0:
+        return const StudentHome();
+      case 1:
+        return const ScheduleScreen();
+      case 2:
+        return const NotificationScreen();
+      case 3:
+        return const ProfileScreen();
+      default:
+        return const StudentHome();
+    }
   }
 }
