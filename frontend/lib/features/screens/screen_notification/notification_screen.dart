@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
 import 'package:isHKolarium/blocs/bloc_notification/notification_bloc.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
+import 'package:isHKolarium/features/widgets/app_bar.dart';
 import 'package:isHKolarium/features/widgets/student_widgets/notification_widgets/notification_card.dart';
 
 class NotificationScreen extends StatefulWidget {
@@ -71,79 +72,46 @@ class _NotificationScreenState extends State<NotificationScreen> {
             );
           } else if (state is NotificationsLoadedSuccessState) {
             return Scaffold(
-              body: Stack(
+              appBar: const AppBarWidget(),
+              body: Column(
                 children: [
-                  // Background image
-                  Container(
-                    decoration: const BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage('assets/images/image.jpg'),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                  // Overlay color
                   Container(
                     color: ColorPalette.primary.withOpacity(0.6),
                   ),
-                  // Main content
-                  Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 30.0, right: 20.0),
-                        child: Container(
-                          height: 120.0,
-                          alignment: Alignment.centerLeft,
-                          child: const Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "Notification",
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontFamily: 'Manrope',
-                                  fontWeight: FontWeight.bold,
-                                  letterSpacing: 1.1,
-                                  color: ColorPalette.accentWhite,
-                                ),
+                  Expanded(
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        color: Color(0xFFF0F3F4),
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(10),
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: ListView.builder(
+                          itemCount: state.notifications.length,
+                          itemBuilder: (context, index) {
+                            final notifications = state.notifications[index];
+                            return GestureDetector(
+                              onTap: () {
+                                // Add your onTap logic here
+                              },
+                              onLongPress: () {
+                                print("Long press");
+                              },
+                              child: NotificationCard(
+                                sender: notifications.sender.toString(),
+                                role: notifications.role.toString(),
+                                message: notifications.message.toString(),
+                                status: notifications.status.toString(),
+                                date: _formatDate(notifications.date.toString()),
+                                time: _formatTime(notifications.time.toString()),
                               ),
-                            ],
-                          ),
+                            );
+                          },
                         ),
                       ),
-                      Expanded(
-                        child: Container(
-                          decoration: const BoxDecoration(
-                            color: Color(0xFFF0F3F4),
-                            borderRadius: BorderRadius.vertical(
-                              top: Radius.circular(20),
-                            ),
-                          ),
-                          child: ListView.builder(
-                            itemCount: state.notifications.length,
-                            itemBuilder: (context, index) {
-                              final notifications = state.notifications[index];
-                              return GestureDetector(
-                                onTap: () {
-                                  // Add your onTap logic here
-                                },
-                                onLongPress: () {
-                                  print("Long press");
-                                },
-                                child: NotificationCard(
-                                  sender: notifications.sender.toString(),
-                                  role: notifications.role.toString(),
-                                  message: notifications.message.toString(),
-                                  status: notifications.status.toString(),
-                                  date: _formatDate( notifications.date.toString()),
-                                  time: _formatTime(notifications.time.toString()),
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
                 ],
               ),

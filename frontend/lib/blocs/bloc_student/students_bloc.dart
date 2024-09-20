@@ -89,7 +89,6 @@ class StudentsBloc extends Bloc<StudentsEvent, StudentsState> {
     try {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       final token = prefs.getString('token');
-      print(token);
       UserModel user = await _studentRepositoryImpl.fetchUserData(token: token);
       final scheduleData = await _studentRepositoryImpl.fetchUpcomingSchedule(token: token.toString());
       AnnouncementModel latestAnnouncement =

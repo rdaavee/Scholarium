@@ -26,19 +26,28 @@ class StudentRepositoryImpl implements StudentRepository, GlobalRepository {
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
-
-      // Safely parse 'today' and 'next'
       final todaySchedules = (data['today'] as List?)
               ?.map((item) => ScheduleModel.fromJson(item))
               .toList() ??
           [];
-
       final nextSchedule =
           data['next'] != null ? ScheduleModel.fromJson(data['next']) : null;
 
+      const emptySchedule = ScheduleModel(
+          schoolID: "",
+          room: "",
+          block: "",
+          subject: "",
+          profID: "",
+          professor: "",
+          department: "",
+          time: "",
+          date: "No Upcoming Schedule",
+          isCompleted: "");
+
       return {
-        'today': todaySchedules,
-        'next': nextSchedule,
+        'today': todaySchedules.isEmpty ? [emptySchedule] : todaySchedules,
+        'next': nextSchedule ?? emptySchedule,
       };
     } else {
       throw Exception('Failed to load schedule: ${response.reasonPhrase}');
