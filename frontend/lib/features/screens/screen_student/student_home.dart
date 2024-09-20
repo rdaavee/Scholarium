@@ -7,6 +7,7 @@ import 'package:isHKolarium/blocs/bloc_schedule/schedule_bloc.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
 import 'package:isHKolarium/features/screens/screen_dtr/dtr_screen.dart';
 import 'package:isHKolarium/features/screens/screen_event/events_screen.dart';
+import 'package:isHKolarium/features/widgets/app_bar.dart';
 import 'package:isHKolarium/features/widgets/student_widgets/dtr_widgets/dtr_hours_card.dart';
 import 'package:isHKolarium/features/widgets/student_widgets/event_widgets/events_card.dart';
 import 'package:isHKolarium/features/widgets/student_widgets/schedule_widgets/schedule_card.dart';
@@ -91,68 +92,9 @@ class _StudentHomeState extends State<StudentHome> {
             );
           } else if (state is StudentsLoadedSuccessState) {
             return Scaffold(
-              appBar: PreferredSize(
-                preferredSize: const Size.fromHeight(70.0),
-                child: Stack(
-                  children: [
-                    Positioned.fill(
-                      child: Image.asset(
-                        'assets/images/image.jpg',
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    AppBar(
-                      leading: null,
-                      automaticallyImplyLeading: false,
-                      backgroundColor:
-                          ColorPalette.accentBlack.withOpacity(0.8),
-                      elevation: 0,
-                      title: Container(
-                        margin: const EdgeInsets.only(top: 8),
-                        padding: const EdgeInsets.only(left: 5),
-                        child: Text(
-                          "Hi, ${state.users[0].firstName}",
-                          style: const TextStyle(
-                            fontSize: 20,
-                            fontFamily: 'Manrope',
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: 1.1,
-                            color: ColorPalette.accentWhite,
-                          ),
-                        ),
-                      ),
-                      actions: [
-                        Container(
-                          margin: const EdgeInsets.only(top: 5),
-                          padding: const EdgeInsets.only(right: 20),
-                          child: IconButton(
-                            icon: Image.asset(
-                              'assets/icons/message.png',
-                              width: 27,
-                              height: 27,
-                              color: ColorPalette.accentWhite,
-                            ),
-                            onPressed: () {
-                              // logic here
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
+              appBar: const AppBarWidget(),
               body: Stack(
                 children: [
-                  // Background image
-                  Container(
-                    decoration: const BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage('assets/images/image.jpg'),
-                        fit: BoxFit.fill,
-                      ),
-                    ),
-                  ),
                   // Overlay color
                   Container(
                     color: ColorPalette.accentBlack.withOpacity(0.8),
@@ -457,7 +399,7 @@ class _StudentHomeState extends State<StudentHome> {
                                             fontSize: 11,
                                             fontFamily: 'Manrope',
                                             fontWeight: FontWeight.bold,
-                                            color: ColorPalette.primary,
+                                            color: ColorPalette.viewAllColor,
                                             letterSpacing: 0.5,
                                           ),
                                         ),

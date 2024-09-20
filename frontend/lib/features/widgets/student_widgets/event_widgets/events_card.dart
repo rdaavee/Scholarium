@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
 
@@ -39,23 +41,20 @@ class EventsCard extends StatelessWidget {
               bottom: 0,
               left: 0,
               right: 0,
-              child: Container(
-                padding: const EdgeInsets.all(15.0),
-                decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.only(
-                    bottomLeft: Radius.circular(10.0),
-                    bottomRight: Radius.circular(10.0),
-                  ),
-                  gradient: LinearGradient(
-                    colors: [
-                      ColorPalette.accentBlack.withOpacity(.8),
-                      ColorPalette.accentWhite.withOpacity(.5),
-                    ],
-                    begin: Alignment.bottomCenter,
-                    end: Alignment.topCenter,
+              child: ClipRRect(
+                borderRadius: const BorderRadius.only(
+                  bottomLeft: Radius.circular(10.0),
+                  bottomRight: Radius.circular(10.0),
+                ),
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
+                  child: Container(
+                    padding: const EdgeInsets.all(15.0),
+                    color: Colors.white
+                        .withOpacity(0.1), // Adjust opacity as needed
+                    child: textLabel,
                   ),
                 ),
-                child: textLabel,
               ),
             ),
           ],
