@@ -19,8 +19,7 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
       ScheduleInitialEvent event, Emitter<ScheduleState> emit) async {
     emit(ScheduleLoadingState());
     emit(
-      ScheduleLoadedSuccessState(
-          todaySchedule: const [], nextSchedule: const [], schedule: const []),
+      ScheduleLoadedSuccessState(schedule: const []),
     );
   }
 
@@ -33,8 +32,8 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
       final scheduleData = await apiService.fetchUpcomingSchedule(token: token);
       final schedule = await apiService.getSchedule(token: event.token);
       emit(ScheduleLoadedSuccessState(
-          todaySchedule: scheduleData['today'],
-          nextSchedule: [scheduleData['next']],
+          // todaySchedule: scheduleData['today'],
+          // nextSchedule: [scheduleData['next']],
           schedule: schedule));
     } catch (e) {
       emit(ScheduleErrorState('Failed to load schedule'));
@@ -52,8 +51,8 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
       final scheduleData = await apiService.fetchUpcomingSchedule(token: token);
       final schedule = await apiService.getSchedule(token: event.token);
       emit(ScheduleLoadedSuccessState(
-          todaySchedule: scheduleData['today'],
-          nextSchedule: [scheduleData['next']],
+          // todaySchedule: scheduleData['today'],
+          // nextSchedule: [scheduleData['next']],
           schedule: schedule));
     } catch (e) {
       emit(ScheduleErrorState(e.toString()));
