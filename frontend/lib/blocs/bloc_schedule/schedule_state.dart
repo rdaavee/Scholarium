@@ -11,11 +11,11 @@ class ScheduleInitialState extends ScheduleState {}
 class ScheduleLoadingState extends ScheduleState {}
 
 class ScheduleLoadedSuccessState extends ScheduleState {
-  final List<ScheduleModel> todaySchedule;
-  final List<ScheduleModel> nextSchedule;
+  // final List<ScheduleModel> todaySchedule;
+  // final List<ScheduleModel> nextSchedule;
   final List<Map<String, dynamic>> schedule;
 
-  ScheduleLoadedSuccessState({required this.todaySchedule, required this.nextSchedule, required this.schedule,});
+  ScheduleLoadedSuccessState({ required this.schedule,});
 
   @override
   List<Object> get props => [schedule];

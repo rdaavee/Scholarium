@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
 import 'package:isHKolarium/blocs/bloc_bottom_nav/bottom_nav_bloc.dart';
-import 'package:isHKolarium/features/screens/screen_announcement/announcements_screen.dart';
 import 'package:isHKolarium/features/screens/screen_notification/notification_screen.dart';
 import 'package:isHKolarium/features/screens/screen_schedule/schedule_screen.dart';
 import 'package:isHKolarium/features/screens/screen_profile/profile_screen.dart';
@@ -44,19 +43,23 @@ class BottomNavWidget extends StatelessWidget {
               },
               items: <BottomNavigationBarItem>[
                 BottomNavigationBarItem(
-                  icon: Image.asset('assets/icons/home.png', width: 24, height: 24),
+                  icon: Image.asset('assets/icons/home.png',
+                      width: 24, height: 24),
                   label: 'Home',
                 ),
                 BottomNavigationBarItem(
-                  icon: Image.asset('assets/icons/calendar.png', width: 24, height: 24),
+                  icon: Image.asset('assets/icons/calendar.png',
+                      width: 24, height: 24),
                   label: 'Schedule',
                 ),
                 BottomNavigationBarItem(
-                  icon: Image.asset('assets/icons/bell.png', width: 24, height: 24),
+                  icon: Image.asset('assets/icons/bell.png',
+                      width: 24, height: 24),
                   label: 'Notification',
                 ),
                 BottomNavigationBarItem(
-                  icon: Image.asset('assets/icons/profile.png', width: 24, height: 24),
+                  icon: Image.asset('assets/icons/profile.png',
+                      width: 24, height: 24),
                   label: 'Profile',
                 ),
               ],
