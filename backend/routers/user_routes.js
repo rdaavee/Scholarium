@@ -15,7 +15,7 @@ router.get("/user/getDTR/:token", userController.getUserDTR);
 
 //--------------------------------FOR SCHEDULE PAGE-----------------------------------------------------------------
 
-router.get("/user/getSchedule/:token", userController.getUserSchedule);
+router.get("/user/getSchedule/:token/:month", userController.getUserSchedule);
 
 //--------------------------------FOR NOTIFICATION PAGE-----------------------------------------------------------------
 router.get("/user/getNotifications/:token", userController.getUserNotifications);

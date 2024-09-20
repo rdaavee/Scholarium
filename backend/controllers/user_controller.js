@@ -258,6 +258,7 @@ exports.getUserTotalHours = (req, res) => {
 //Get User Schedule
 exports.getUserSchedule = (req, res) => {
   const token = req.params.token;
+  const month = req.params.month; // Expecting a month in 'YYYY-MM' format
   pool.getConnection((error, connection) => {
     if (error) {
       console.error("Error getting MySQL connection:", error);
@@ -277,9 +278,14 @@ exports.getUserSchedule = (req, res) => {
           return res.status(404).json({ message: "User not found" });
         }
         const school_id = userResult[0].school_id;
+        
+        // Get the start and end dates for the specified month
+        const startOfMonth = moment(month).startOf('month').toDate();
+        const endOfMonth = moment(month).endOf('month').toDate();
+
         connection.query(
-          "SELECT * FROM schedule WHERE school_id = ? ORDER BY date ASC",
-          [school_id],
+          "SELECT * FROM schedule WHERE school_id = ? AND date BETWEEN ? AND ? ORDER BY date ASC",
+          [school_id, startOfMonth, endOfMonth],
           (error, rows) => {
             if (error) {
               connection.release();
