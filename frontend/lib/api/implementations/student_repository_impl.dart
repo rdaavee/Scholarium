@@ -15,6 +15,7 @@ import 'package:isHKolarium/features/screens/screen_login/login_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class StudentRepositoryImpl implements StudentRepository, GlobalRepository {
+  int currentYear = DateTime.now().year;
   final String baseUrl = 'http://localhost:3000/api';
 
   @override
@@ -45,9 +46,13 @@ class StudentRepositoryImpl implements StudentRepository, GlobalRepository {
   }
 
   @override
-  Future<List<Map<String, dynamic>>> getSchedule(
-      {required String token}) async {
-    final url = Uri.parse('$baseUrl/user/getSchedule/$token');
+  Future<List<Map<String, dynamic>>> getSchedule({
+    required String token,
+    required String selectedMonth,
+  }) async {
+    final url = Uri.parse(
+        '$baseUrl/user/getSchedule/$token/$currentYear-$selectedMonth');
+
     try {
       final response = await http.get(url);
       if (response.statusCode == 200) {

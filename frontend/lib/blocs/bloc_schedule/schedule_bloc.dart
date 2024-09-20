@@ -11,7 +11,6 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
 
   ScheduleBloc(this.apiService) : super(ScheduleInitialState()) {
     on<ScheduleInitialEvent>(scheduleInitialEvent);
-    on<LoadUpcomingScheduleEvent>(_onLoadUpcomingSchedule);
     on<LoadScheduleEvent>(_onLoadScheduleEvent);
   }
 
@@ -23,23 +22,6 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
     );
   }
 
-  FutureOr<void> _onLoadUpcomingSchedule(
-      LoadUpcomingScheduleEvent event, Emitter<ScheduleState> emit) async {
-    emit(ScheduleLoadingState());
-    try {
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      final token = prefs.getString('token').toString();
-      final scheduleData = await apiService.fetchUpcomingSchedule(token: token);
-      final schedule = await apiService.getSchedule(token: event.token);
-      emit(ScheduleLoadedSuccessState(
-          // todaySchedule: scheduleData['today'],
-          // nextSchedule: [scheduleData['next']],
-          schedule: schedule));
-    } catch (e) {
-      emit(ScheduleErrorState('Failed to load schedule'));
-    }
-  }
-
   Future<void> _onLoadScheduleEvent(
     LoadScheduleEvent event,
     Emitter<ScheduleState> emit,
@@ -47,9 +29,9 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
     emit(ScheduleLoadingState());
     try {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
-      final token = prefs.getString('token').toString();
-      final scheduleData = await apiService.fetchUpcomingSchedule(token: token);
-      final schedule = await apiService.getSchedule(token: event.token);
+      prefs.getString('token').toString();
+      final schedule = await apiService.getSchedule(
+          token: event.token, selectedMonth: event.selectedMonth);
       emit(ScheduleLoadedSuccessState(
           // todaySchedule: scheduleData['today'],
           // nextSchedule: [scheduleData['next']],
