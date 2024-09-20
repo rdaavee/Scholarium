@@ -95,11 +95,9 @@ class _StudentHomeState extends State<StudentHome> {
               appBar: const AppBarWidget(),
               body: Stack(
                 children: [
-                  // Overlay color
                   Container(
-                    color: ColorPalette.accentBlack.withOpacity(0.8),
+                    color: ColorPalette.primary.withOpacity(0.6),
                   ),
-                  // Main content
                   Column(
                     children: [
                       Expanded(
@@ -156,9 +154,14 @@ class _StudentHomeState extends State<StudentHome> {
                                     Expanded(
                                       child: ScheduleCard(
                                         scheduleDate: Text(
-                                          _formatDate(state
-                                              .todaySchedule[0].date
-                                              .toString()),
+                                          state.todaySchedule[0].date
+                                                      .toString() ==
+                                                  "No Upcoming Schedule"
+                                              ? state.todaySchedule[0].date
+                                                  .toString()
+                                              : _formatDate(state
+                                                  .todaySchedule[0].date
+                                                  .toString()),
                                           style: const TextStyle(
                                             fontSize: 27,
                                             fontFamily: 'Manrope',
@@ -168,9 +171,14 @@ class _StudentHomeState extends State<StudentHome> {
                                           ),
                                         ),
                                         scheduleTime: Text(
-                                          _formatTime(state
-                                              .todaySchedule[0].time
-                                              .toString()),
+                                          state.todaySchedule[0].time
+                                                      .toString() ==
+                                                  ""
+                                              ? state.todaySchedule[0].time
+                                                  .toString()
+                                              : _formatTime(state
+                                                  .todaySchedule[0].time
+                                                  .toString()),
                                           style: const TextStyle(
                                             fontSize: 12,
                                             fontFamily: 'Manrope',
@@ -197,8 +205,14 @@ class _StudentHomeState extends State<StudentHome> {
                                     Expanded(
                                       child: ScheduleCard(
                                         scheduleDate: Text(
-                                          _formatDate(state.nextSchedule[0].date
-                                              .toString()),
+                                          state.nextSchedule[0].date
+                                                      .toString() ==
+                                                  "No Upcoming Schedule"
+                                              ? state.nextSchedule[0].date
+                                                  .toString()
+                                              : _formatDate(state
+                                                  .nextSchedule[0].date
+                                                  .toString()),
                                           style: const TextStyle(
                                             fontSize: 27,
                                             fontFamily: 'Manrope',
@@ -208,8 +222,14 @@ class _StudentHomeState extends State<StudentHome> {
                                           ),
                                         ),
                                         scheduleTime: Text(
-                                          _formatTime(state.nextSchedule[0].time
-                                              .toString()),
+                                          state.nextSchedule[0].time
+                                                      .toString() ==
+                                                  ""
+                                              ? state.nextSchedule[0].time
+                                                  .toString()
+                                              : _formatTime(state
+                                                  .todaySchedule[0].time
+                                                  .toString()),
                                           style: const TextStyle(
                                             fontSize: 12,
                                             fontFamily: 'Manrope',

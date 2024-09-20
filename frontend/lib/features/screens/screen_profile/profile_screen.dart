@@ -5,6 +5,7 @@ import 'package:isHKolarium/blocs/bloc_profile/profile_bloc.dart';
 import 'package:isHKolarium/blocs/bloc_profile/profile_event.dart';
 import 'package:isHKolarium/blocs/bloc_profile/profile_state.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
+import 'package:isHKolarium/features/widgets/app_bar.dart';
 import '../../widgets/profile_widgets/profile_circle.dart';
 import '../../widgets/profile_widgets/profile_account_option.dart';
 import '../../widgets/profile_widgets/profile_account_section.dart';
@@ -55,133 +56,96 @@ class _ProfileScreenState extends State<ProfileScreen> {
             );
           } else if (state is ProfileLoadedSuccessState) {
             return Scaffold(
-              body: Stack(
+              appBar: const AppBarWidget(),
+              body: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Background image
-                  Container(
-                    decoration: const BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage('assets/images/image.jpg'),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                  // Optional overlay color
                   Container(
                     color: ColorPalette.primary.withOpacity(0.6),
                   ),
-                  // Main content
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 30.0, right: 20.0),
-                        child: Container(
-                          height: 120.0,
-                          alignment: Alignment.centerLeft,
-                          child: const Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "Profile",
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontFamily: 'Manrope',
-                                  fontWeight: FontWeight.bold,
-                                  letterSpacing: 1.1,
-                                  color: ColorPalette.accentWhite,
-                                ),
-                              ),
-                            ],
-                          ),
+                  Expanded(
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        color: Color(0xFFF0F3F4),
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(10),
                         ),
                       ),
-                      Expanded(
-                        child: Container(
-                          decoration: const BoxDecoration(
-                            color: Color(0xFFF0F3F4),
-                            borderRadius: BorderRadius.vertical(
-                              top: Radius.circular(20),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: ListView(
+                          children: [
+                            const SizedBox(height: 50),
+                            ProfileCircle(
+                              profilePictureUrl: state.users[0].profilePicture,
                             ),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: ListView(
-                              children: [
-                                const SizedBox(height: 50),
-                                ProfileCircle(
-                                  profilePictureUrl:
-                                      state.users[0].profilePicture,
-                                ),
-                                const SizedBox(height: 80),
-                                InfoSection(
-                                  title: 'BASIC INFORMATION',
-                                  infoRows: [
-                                    const SizedBox(height: 20),
-                                    InfoRow(
-                                        label: 'Name',
-                                        value: state.users[0].firstName +
-                                            state.users[0].lastName),
-                                    const SizedBox(height: 15),
-                                    const DividerWidget(),
-                                    const SizedBox(height: 15),
-                                    InfoRow(
-                                        label: 'Email',
-                                        value: state.users[0].email),
-                                    const SizedBox(height: 15),
-                                    const DividerWidget(),
-                                    const SizedBox(height: 15),
-                                    InfoRow(
-                                        label: 'Student ID',
-                                        value: state.users[0].schoolID),
-                                    const SizedBox(height: 15),
-                                    const DividerWidget(),
-                                    const SizedBox(height: 15),
-                                    InfoRow(
-                                        label: 'Gender',
-                                        value: state.users[0].gender),
-                                    const SizedBox(height: 15),
-                                    const DividerWidget(),
-                                    const SizedBox(height: 15),
-                                    InfoRow(
-                                        label: 'Contact #',
-                                        value: state.users[0].contact),
-                                    const SizedBox(height: 15),
-                                    const DividerWidget(),
-                                    const SizedBox(height: 15),
-                                    InfoRow(
-                                        label: 'Address',
-                                        value: state.users[0].address),
-                                    const SizedBox(height: 15),
-                                    const DividerWidget(),
-                                    const SizedBox(height: 15),
-                                    InfoRow(
-                                        label: 'HK Type',
-                                        value: state.users[0].hkType),
-                                    const SizedBox(height: 15),
-                                    const DividerWidget(),
-                                    const SizedBox(height: 15),
-                                    InfoRow(
-                                        label: 'Status',
-                                        value: state.users[0].status),
-                                  ],
-                                ),
-                                const SizedBox(height: 30),
-                                const AccountSection(),
+                            const SizedBox(height: 80),
+                            InfoSection(
+                              title: 'BASIC INFORMATION',
+                              infoRows: [
                                 const SizedBox(height: 20),
-                                AccountOptions(
-                                  onProfileUpdated: _onProfileUpdated,
-                                  onLogout: () {
-                                    BlocProvider.of<ProfileBloc>(context)
-                                        .add(LogoutEvent(context: context));
-                                  },
-                                ),
+                                InfoRow(
+                                    label: 'Name',
+                                    value: state.users[0].firstName +
+                                        state.users[0].lastName),
+                                const SizedBox(height: 15),
+                                const DividerWidget(),
+                                const SizedBox(height: 15),
+                                InfoRow(
+                                    label: 'Email',
+                                    value: state.users[0].email),
+                                const SizedBox(height: 15),
+                                const DividerWidget(),
+                                const SizedBox(height: 15),
+                                InfoRow(
+                                    label: 'Student ID',
+                                    value: state.users[0].schoolID),
+                                const SizedBox(height: 15),
+                                const DividerWidget(),
+                                const SizedBox(height: 15),
+                                InfoRow(
+                                    label: 'Gender',
+                                    value: state.users[0].gender),
+                                const SizedBox(height: 15),
+                                const DividerWidget(),
+                                const SizedBox(height: 15),
+                                InfoRow(
+                                    label: 'Contact #',
+                                    value: state.users[0].contact),
+                                const SizedBox(height: 15),
+                                const DividerWidget(),
+                                const SizedBox(height: 15),
+                                InfoRow(
+                                    label: 'Address',
+                                    value: state.users[0].address),
+                                const SizedBox(height: 15),
+                                const DividerWidget(),
+                                const SizedBox(height: 15),
+                                InfoRow(
+                                    label: 'HK Type',
+                                    value: state.users[0].hkType),
+                                const SizedBox(height: 15),
+                                const DividerWidget(),
+                                const SizedBox(height: 15),
+                                InfoRow(
+                                    label: 'Status',
+                                    value: state.users[0].status),
                               ],
                             ),
-                          ),
+                            const SizedBox(height: 30),
+                            const AccountSection(),
+                            const SizedBox(height: 20),
+                            AccountOptions(
+                              onProfileUpdated: _onProfileUpdated,
+                              onLogout: () {
+                                BlocProvider.of<ProfileBloc>(context)
+                                    .add(LogoutEvent(context: context));
+                              },
+                            ),
+                          ],
                         ),
                       ),
-                    ],
+                    ),
                   ),
                 ],
               ),
