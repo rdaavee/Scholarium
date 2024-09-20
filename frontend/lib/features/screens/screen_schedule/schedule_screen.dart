@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:isHKolarium/api/implementations/student_repository_impl.dart';
 import 'package:isHKolarium/blocs/bloc_schedule/schedule_bloc.dart';
 import 'package:isHKolarium/blocs/bloc_schedule/schedule_event.dart';
@@ -17,22 +18,28 @@ class ScheduleScreen extends StatefulWidget {
 
 class ScheduleScreenState extends State<ScheduleScreen> {
   late ScheduleBloc scheduleBloc;
-  String selectedMonth = 'January';
-  final Map<String, int> monthMapping = {
-    'January': 1,
-    'February': 2,
-    'March': 3,
-    'April': 4,
-    'May': 5,
-    'June': 6,
-    'July': 7,
-    'August': 8,
-    'Septemper': 9,
-    'October': 10,
-    'November': 11,
-    'December': 12,
-  };
+  late String currentMonth;
 
+  @override
+  void initState() {
+    super.initState();
+    final apiService = StudentRepositoryImpl();
+    scheduleBloc = ScheduleBloc(apiService);
+    currentMonth = DateFormat('MMMM').format(DateTime.now());
+    setState(() {
+      selectedMonth = currentMonth;
+    });
+    _initialize(currentMonth);
+  }
+
+  Future<void> _initialize(String selectedMonth) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token') ?? '';
+    scheduleBloc
+        .add(LoadScheduleEvent(token: token, selectedMonth: selectedMonth));
+  }
+
+  String selectedMonth = '';
   final List<String> months = [
     'January',
     'February',
@@ -42,25 +49,11 @@ class ScheduleScreenState extends State<ScheduleScreen> {
     'June',
     'July',
     'August',
-    'Septemper',
+    'September',
     'October',
     'November',
     'December',
   ];
-
-  @override
-  void initState() {
-    super.initState();
-    final apiService = StudentRepositoryImpl();
-    scheduleBloc = ScheduleBloc(apiService);
-    _initialize();
-  }
-
-  Future<void> _initialize() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final token = prefs.getString('token') ?? '';
-    scheduleBloc.add(LoadScheduleEvent(token: token));
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -181,6 +174,7 @@ class ScheduleScreenState extends State<ScheduleScreen> {
                                   onChanged: (String? newValue) {
                                     setState(() {
                                       selectedMonth = newValue!;
+                                      _initialize(selectedMonth);
                                     });
                                   },
                                 ),
