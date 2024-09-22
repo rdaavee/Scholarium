@@ -1,12 +1,4 @@
-const mysql = require('mysql');
-const pool = mysql.createPool({
-  connectionLimit: 10,
-  host: 'localhost',
-  user: 'root',
-  password: '',
-  database: 'ishkolarium'
-});
-
+const pool = require('../db');
 //Get Announcement
 exports.getAnnouncements = (req, res) => {
     pool.getConnection((error, connection) => {

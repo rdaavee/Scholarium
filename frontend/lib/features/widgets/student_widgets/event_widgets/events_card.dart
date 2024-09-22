@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:isHKolarium/config/constants/colors.dart';
 
 class EventsCard extends StatelessWidget {
   final Text textLabel;

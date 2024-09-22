@@ -1,620 +1,307 @@
-const mysql = require("mysql");
-const pool = mysql.createPool({
-  connectionLimit: 10,
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "ishkolarium",
-});
+
 const moment = require("moment");
+const User = require('../models/user_model'); 
+const Announcement = require('../models/announcement_model');
+const Post = require('../models/posts_model');
+const Schedule = require('../models/schedule_model'); 
+const DTR = require('../models/dtr_model'); 
+const Notification = require('../models/notifications_model');
 
-//-------------------------------------FOR STUDENT HOME PAGE-------------------------------------------------------
-//Get Announcement
-exports.getAnnouncements = (req, res) => {
-  pool.getConnection((error, connection) => {
-    if (error) throw error;
-    console.log(`connected as id ${connection.threadId}`);
+// Get Announcement
+exports.getAnnouncements = async (req, res) => {
+  try {
+    const announcements = await Announcement.find();
+    res.status(200).json(announcements);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
 
-    connection.query("SELECT * from announcements", (error, rows) => {
-      connection.release();
+// Get Latest Announcement
+exports.getLatestAnnouncement = async (req, res) => {
+  try {
+    const latestAnnouncement = await Announcement.find().sort({ date: -1 }).limit(1);
+    
+    if (latestAnnouncement.length > 0) {
+      const announcementDate = moment(latestAnnouncement[0].date);
+      const currentDate = moment().format("YYYY-MM-DD");
 
-      if (!error) {
-        res.status(200).json(rows);
+      if (announcementDate.isSame(currentDate)) {
+        res.status(200).json(latestAnnouncement[0]);
       } else {
-        console.log(error);
-        res.status(500).json(error);
+        res.status(204).json({ message: "No data today" });
       }
-    });
-  });
-};
-
-//Get Latest Announcement
-exports.getLatestAnnouncement = (req, res) => {
-  pool.getConnection((error, connection) => {
-    if (error) {
-      console.error("Error getting database connection:", error);
-      return res.status(500).json({ error: "Internal Server Error" });
+    } else {
+      res.status(404).json({ message: "No announcements found" });
     }
-    console.log(`Connected as id ${connection.threadId}`);
-
-    connection.query(
-      "SELECT * FROM announcements ORDER BY date DESC, time DESC",
-      (error, result) => {
-        connection.release();
-
-        if (error) {
-          console.error("Error executing query:", error);
-          return res.status(500).json({ error: "Internal Server Error" });
-        }
-
-        if (result.length > 0) {
-          const latestAnnouncement = result[0];
-          const announcementDate = moment(latestAnnouncement.date); // Assuming date is stored in 'YYYY-MM-DD' format
-          const currentDate = moment().format("YYYY-MM-DD"); // Get today's date in 'YYYY-MM-DD' format
-
-          if (announcementDate.isSame(currentDate)) {
-            res.status(200).json(latestAnnouncement);
-          } else {
-            res.status(204).json({ message: "No data today" });
-          }
-        }
-      }
-    );
-  });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
 };
 
-//Get posts
-exports.getPosts = (req, res) => {
-  pool.getConnection((error, connection) => {
-    if (error) throw error;
-    console.log(`connected as id ${connection.threadId}`);
-
-    connection.query(
-      "SELECT * from posts WHERE status = ?",
-      [req.params.status],
-      (error, rows) => {
-        connection.release();
-
-        if (!error) {
-          res.status(200).json(rows);
-        } else {
-          console.log(error);
-          res.status(500).json(error);
-        }
-      }
-    );
-  });
+// Get Posts
+exports.getPosts = async (req, res) => {
+  try {
+    const posts = await Post.find({ status: req.params.status });
+    res.status(200).json(posts);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
 };
 
-//Get User Incoming and outcoming Duties or schedule
-exports.getUserUpcomingSchedule = (req, res) => {
+// Get User Incoming and Outgoing Duties or Schedule
+exports.getUserUpcomingSchedule = async (req, res) => {
   const token = req.params.token;
-  pool.getConnection((error, connection) => {
-    if (error) {
-      console.error("Error getting MySQL connection:", error);
-      return res.status(500).json({ message: "Server error occurred" });
-    }
-    connection.query(
-      "SELECT school_id FROM users WHERE token = ?",
-      [token],
-      (error, userResult) => {
-        if (error) {
-          connection.release();
-          console.error("Error executing query:", error);
-          return res.status(500).json({ message: "Server error occurred" });
-        }
-        if (userResult.length === 0) {
-          connection.release();
-          return res.status(404).json({ message: "User not found" });
-        }
-        const school_id = userResult[0].school_id;
-        const currentDate = moment().format("YYYY-MM-DD");
-
-        // Get today's schedule and the next one after today
-        connection.query(
-          `
-          SELECT * FROM schedule 
-          WHERE school_id = ? 
-          AND (date = ? OR date > ?)
-          ORDER BY date ASC
-          `,
-          [school_id, currentDate, currentDate],
-          (error, rows) => {
-            if (error) {
-              connection.release();
-              console.error("Error executing query:", error);
-              return res.status(500).json({ message: "Server error occurred" });
-            }
-
-            if (rows.length > 0) {
-              const todaySchedule = rows.filter((schedule) =>
-                moment(schedule.date).isSame(currentDate, "day")
-              );
-              const nextSchedule = rows.filter((schedule) =>
-                moment(schedule.date).isAfter(currentDate)
-              )[0]; // Get the next schedule after today
-
-              const schedules = {
-                today: todaySchedule.length ? todaySchedule : null,
-                next: nextSchedule || null,
-              };
-
-              connection.release();
-              return res.status(200).json(schedules);
-            } else {
-              connection.release();
-              return res.status(404).json({ message: "No schedule found" });
-            }
-          }
-        );
-      }
-    );
-  });
-};
-
-//Get User DTR
-exports.getUserDTR = (req, res) => {
-  pool.getConnection((error, connection) => {
-    if (error) {
-      console.error("Error getting MySQL connection:", error);
-      return res.status(500).json({ message: "Server error occurred" });
+  try {
+    const user = await User.findOne({ token: token });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
     }
 
-    console.log(`Connected as id ${connection.threadId}`);
+    const school_id = user.school_id;
+    const currentDate = moment().format("YYYY-MM-DD");
+    const schedules = await Schedule.find({
+      school_id: school_id,
+      $or: [{ date: currentDate }, { date: { $gt: currentDate } }]
+    }).sort({ date: 1 });
 
-    connection.query(
-      "SELECT school_id, password FROM users WHERE token = ?",
-      [req.params.token],
-      (error, userResult) => {
-        if (error) {
-          connection.release();
-          console.error("Error executing query:", error);
-          return res.status(500).json({ message: "Server error occurred" });
-        }
+    if (schedules.length > 0) {
+      const todaySchedule = schedules.filter(schedule => moment(schedule.date).isSame(currentDate, "day"));
+      const nextSchedule = schedules.find(schedule => moment(schedule.date).isAfter(currentDate));
 
-        if (userResult.length === 0) {
-          connection.release();
-          return res.status(404).json({ message: "User not found" });
-        }
-
-        const { school_id } = userResult[0];
-
-        connection.query(
-          "SELECT * FROM dtr WHERE school_id = ?",
-          [school_id],
-          (error, rows) => {
-            connection.release();
-
-            if (error) {
-              console.error("Error executing query:", error);
-              return res.status(500).json({ message: "Server error occurred" });
-            }
-
-            if (rows.length > 0) {
-              res.status(200).json(rows);
-            } else {
-              res.status(404).json({ message: "User dtr not found" });
-            }
-          }
-        );
-      }
-    );
-  });
+      res.status(200).json({
+        today: todaySchedule.length ? todaySchedule : null,
+        next: nextSchedule || null,
+      });
+    } else {
+      res.status(404).json({ message: "No schedule found" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error occurred" });
+  }
 };
 
-exports.getUserTotalHours = (req, res) => {
+// Get User DTR
+exports.getUserDTR = async (req, res) => {
   const token = req.params.token;
-
-  // Step 1: Validate the Token and Get User ID
-  pool.getConnection((error, connection) => {
-    if (error) {
-      console.error("Error getting MySQL connection:", error);
-      return res.status(500).json({ message: "Server error occurred" });
+  try {
+    const user = await User.findOne({ token: token });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
     }
 
-    console.log(`Connected as id ${connection.threadId}`);
+    const dtrRecords = await DTR.find({ school_id: user.school_id });
+    if (dtrRecords.length > 0) {
+      res.status(200).json(dtrRecords);
+    } else {
+      res.status(404).json({ message: "User DTR not found" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error occurred" });
+  }
+};
 
-    connection.query(
-      "SELECT school_id FROM users WHERE token = ?",
-      [token],
-      (error, userResult) => {
-        if (error) {
-          connection.release();
-          console.error("Error executing query:", error);
-          return res.status(500).json({ message: "Server error occurred" });
-        }
+// Get User Total Hours
+exports.getUserTotalHours = async (req, res) => {
+  const token = req.params.token;
+  try {
+    const user = await User.findOne({ token: token });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
 
-        const student_id = userResult[0].school_id;
+    const result = await DTR.aggregate([
+      { $match: { school_id: user.school_id } },
+      { $group: { _id: null, total_hours: { $sum: "$hours_rendered" }, target_hours: { $first: "$hours_to_rendered" } } }
+    ]);
 
-        connection.query(
-          "SELECT SUM(hours_rendered) AS total_hours, hours_to_rendered AS target_hours FROM dtr WHERE school_id = ?",
-          [student_id],
-          (error, result) => {
-            connection.release();
-
-            if (error) {
-              console.error("Error executing query:", error);
-              return res.status(500).json({ message: "Server error occurred" });
-            }
-
-            if (result[0].total_hours != null) {
-              res.status(200).json({
-                totalhours: result[0].total_hours,
-                targethours: result[0].target_hours,
-              });
-            } else {
-              res
-                .status(404)
-                .json({ message: "No hours rendered found for this user" });
-            }
-          }
-        );
-      }
-    );
-  });
+    if (result.length > 0) {
+      res.status(200).json({
+        totalhours: result[0].total_hours,
+        targethours: result[0].target_hours,
+      });
+    } else {
+      res.status(404).json({ message: "No hours rendered found for this user" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error occurred" });
+  }
 };
 
 //-------------------------------------FOR STUDENT SCHEDULE PAGE-----------------------------------------------------
-//Get User Schedule
-exports.getUserSchedule = (req, res) => {
+// Get User Schedule
+exports.getUserSchedule = async (req, res) => {
   const token = req.params.token;
   const month = req.params.month; // Expecting a month in 'YYYY-MM' format
-  pool.getConnection((error, connection) => {
-    if (error) {
-      console.error("Error getting MySQL connection:", error);
-      return res.status(500).json({ message: "Server error occurred" });
-    }
-    connection.query(
-      "SELECT school_id FROM users WHERE token = ?",
-      [token],
-      (error, userResult) => {
-        if (error) {
-          connection.release();
-          console.error("Error executing query:", error);
-          return res.status(500).json({ message: "Server error occurred" });
-        }
-        if (userResult.length === 0) {
-          connection.release();
-          return res.status(404).json({ message: "User not found" });
-        }
-        const school_id = userResult[0].school_id;
-        
-        // Get the start and end dates for the specified month
-        const startOfMonth = moment(month).startOf('month').toDate();
-        const endOfMonth = moment(month).endOf('month').toDate();
 
-        connection.query(
-          "SELECT * FROM schedule WHERE school_id = ? AND date BETWEEN ? AND ? ORDER BY date ASC",
-          [school_id, startOfMonth, endOfMonth],
-          (error, rows) => {
-            if (error) {
-              connection.release();
-              console.error("Error executing query:", error);
-              return res.status(500).json({ message: "Server error occurred" });
-            }
-            if (rows.length > 0) {
-              const currentDate = moment().startOf("day");
-              let updatePromises = [];
-              rows.forEach((schedule) => {
-                const scheduleDate = moment(schedule.date).startOf("day");
-                if (
-                  schedule.completed === "" &&
-                  scheduleDate.isBefore(currentDate)
-                ) {
-                  const updateQuery = new Promise((resolve, reject) => {
-                    connection.query(
-                      "UPDATE schedule SET completed = 'false' WHERE id = ?",
-                      [schedule.id],
-                      (error) => {
-                        if (error) {
-                          reject(error);
-                        } else {
-                          resolve();
-                        }
-                      }
-                    );
-                  });
-                  updatePromises.push(updateQuery);
-                }
-              });
-              Promise.all(updatePromises)
-                .then(() => {
-                  connection.release();
-                  res.status(200).json(rows);
-                })
-                .catch((err) => {
-                  connection.release();
-                  console.error("Error updating schedules:", err);
-                  res.status(500).json({ message: "Error updating schedules" });
-                });
-            } else {
-              connection.release();
-              res.status(404).json({ message: "User schedule not found" });
-            }
-          }
-        );
+  // Log the token and month
+  console.log(`Received token: ${token}, month: ${month}`);
+
+  try {
+    // Find the user based on the token
+    const user = await User.findOne({ token: token });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const school_id = user.school_id;
+    console.log(`User found with school_id: ${school_id}`);
+
+    // Update schedules with past dates to set completed to false
+    await updatePastSchedules(school_id);
+
+    // Construct the date range as strings
+    const startOfMonth = moment(month).startOf('month').format('YYYY-MM-DD');
+    const endOfMonth = moment(month).endOf('month').format('YYYY-MM-DD');
+    console.log(`Start of month: ${startOfMonth}, End of month: ${endOfMonth}`);
+
+    // Fetch the schedules based on the school_id and the date range
+    const schedules = await Schedule.find({
+      school_id: school_id,
+      date: { $gte: startOfMonth, $lte: endOfMonth }
+    }).sort({ date: 1 });
+
+    // Mark past schedules as false if not already true
+    const currentDate = moment().startOf('day');
+    const updatePromises = schedules.map(schedule => {
+      const scheduleDate = moment(schedule.date);
+
+      // Mark as false if the date is in the past and completed is not "true"
+      if (scheduleDate.isBefore(currentDate) && schedule.completed !== "true") {
+        return Schedule.updateOne({ _id: schedule._id }, { completed: 'false' });
       }
-    );
-  });
+      // If the date is today or in the future, do nothing (no action needed)
+    });
+
+    // Execute all update promises
+    await Promise.all(updatePromises);
+
+    if (schedules.length > 0) {
+      res.status(200).json(schedules);
+    } else {
+      console.log('No schedules found for this month');
+      res.status(404).json({ message: "No schedules found for this month" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error occurred" });
+  }
 };
+
+// Helper function to update past schedules
+async function updatePastSchedules(school_id) {
+  const currentDate = moment().startOf('day');
+  const pastSchedules = await Schedule.find({
+    school_id: school_id,
+    date: { $lt: currentDate.format('YYYY-MM-DD') } // Fetch past schedules
+  });
+
+  const updatePromises = pastSchedules.map(schedule => {
+    if (schedule.completed !== "true") {
+      return Schedule.updateOne({ _id: schedule._id }, { completed: 'false' });
+    }
+  });
+
+  await Promise.all(updatePromises);
+}
+
+
 
 //-------------------------------------FOR STUDENT NOTIFICATIONS PAGE-----------------------------------------------------
-//Get Student Notifications
-exports.getUserNotifications = (req, res) => {
-  pool.getConnection((error, connection) => {
-    if (error) {
-      console.error("Error getting MySQL connection:", error);
-      return res.status(500).json({ message: "Server error occurred" });
+// Get Student Notifications
+exports.getUserNotifications = async (req, res) => {
+  const token = req.params.token;
+  try {
+    const user = await User.findOne({ token: token });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
     }
 
-    console.log(`Connected as id ${connection.threadId}`);
-
-    connection.query(
-      "SELECT school_id, password FROM users WHERE token = ?",
-      [req.params.token],
-      (error, userResult) => {
-        if (error) {
-          connection.release();
-          console.error("Error executing query:", error);
-          return res.status(500).json({ message: "Server error occurred" });
-        }
-
-        if (userResult.length === 0) {
-          connection.release();
-          return res.status(404).json({ message: "User not found" });
-        }
-
-        const { school_id } = userResult[0];
-
-        connection.query(
-          "SELECT * FROM notifications WHERE school_id = ?",
-          [school_id],
-          (error, rows) => {
-            connection.release();
-
-            if (error) {
-              console.error("Error executing query:", error);
-              return res.status(500).json({ message: "Server error occurred" });
-            }
-
-            if (rows.length > 0) {
-              res.status(200).json(rows);
-            } else {
-              res.status(404).json({ message: "User dtr not found" });
-            }
-          }
-        );
-      }
-    );
-  });
+    const notifications = await Notification.find({ school_id: user.school_id });
+    if (notifications.length > 0) {
+      res.status(200).json(notifications);
+    } else {
+      res.status(404).json({ message: "No notifications found" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error occurred" });
+  }
 };
 
-// Update Notification Status to Read or unread
-exports.updateNotificationStatus = (req, res) => {
+// Update Notification Status to Read or Unread
+exports.updateNotificationStatus = async (req, res) => {
   const notificationId = req.params.id;
-
-  pool.getConnection((error, connection) => {
-    if (error) {
-      console.error("Error getting MySQL connection:", error);
-      return res.status(500).json({ message: "Server error occurred" });
+  try {
+    const result = await Notification.updateOne({ _id: notificationId }, { status: "read" });
+    if (result.nModified > 0) {
+      res.status(200).json({ message: "Notification status updated to read" });
+    } else {
+      res.status(404).json({ message: "Notification not found" });
     }
-
-    console.log(`Connected as id ${connection.threadId}`);
-
-    connection.query(
-      "UPDATE notifications SET status = ? WHERE id = ?",
-      ["read", notificationId],
-      (error, results) => {
-        connection.release();
-
-        if (error) {
-          console.error("Error executing query:", error);
-          return res.status(500).json({ message: "Server error occurred" });
-        }
-
-        if (results.affectedRows > 0) {
-          res
-            .status(200)
-            .json({ message: "Notification status updated to read" });
-        } else {
-          res.status(404).json({ message: "Notification not found" });
-        }
-      }
-    );
-  });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error occurred" });
+  }
 };
 
 //-------------------------------------FOR STUDENT PROFILE PAGE-----------------------------------------------------
-//Get specific user
-exports.getUserProfile = (req, res) => {
-  pool.getConnection((error, connection) => {
-    if (error) {
-      console.error("Error getting MySQL connection:", error);
-      return res.status(500).json({ message: "Server error occurred" });
+// Get specific user
+exports.getUserProfile = async (req, res) => {
+  const token = req.params.token;
+  try {
+    const user = await User.findOne({ token: token });
+    if (user) {
+      const baseUrl = "http://192.168.42.137:3000"; 
+      res.status(200).json({
+        id: user._id,
+        school_id: user.school_id,
+        email: user.email,
+        first_name: user.first_name,
+        middle_name: user.middle_name,
+        last_name: user.last_name,
+        profile_picture: user.profile_picture
+          ? `${baseUrl}/uploads/profile_pictures/${user.profile_picture}`
+          : null,
+        gender: user.gender,
+        contact: user.contact,
+        address: user.address,
+        role: user.role,
+        hk_type: user.hk_type,
+        status: user.status,
+        token: user.token,
+      });
+    } else {
+      res.status(404).json({ message: "User not found" });
     }
-
-    console.log(`Connected as id ${connection.threadId}`);
-
-    connection.query(
-      "SELECT * FROM users WHERE token = ?",
-      [req.params.token],
-      (error, rows) => {
-        connection.release();
-
-        if (error) {
-          console.error("Error executing query:", error);
-          return res.status(500).json({ message: "Server error occurred" });
-        }
-
-        if (rows.length > 0) {
-          const user = rows[0];
-          const baseUrl = "http://192.168.42.137:3000"; // Update this with your server's base URL
-
-          res.status(200).json({
-            id: user.id,
-            school_id: user.school_id,
-            email: user.email,
-            first_name: user.first_name,
-            middle_name: user.middle_name,
-            last_name: user.last_name,
-            profile_picture: user.profile_picture
-              ? `${baseUrl}/uploads/profile_pictures/${user.profile_picture}`
-              : null, // Include full URL
-            gender: user.gender,
-            contact: user.contact,
-            address: user.address,
-            role: user.role,
-            hk_type: user.hk_type,
-            status: user.status,
-            token: user.token,
-          });
-        } else {
-          res.status(404).json({ message: "User not found" });
-        }
-      }
-    );
-  });
+  } catch (error) {
+    console.error("Error in getUserProfile:", error);
+    res.status(500).json({ message: "Server error occurred" });
+  }
 };
 
 // Change Password
-// exports.changePassword = (req, res) => {
-//   const { oldPassword, newPassword, confirmPassword } = req.body;
-//   const token = req.params.token;
-
-//   if (!oldPassword || !newPassword || !confirmPassword) {
-//     return res.status(400).json({ message: 'Please provide all password fields' });
-//   }
-
-//   if (newPassword !== confirmPassword) {
-//     return res.status(400).json({ message: 'New password and confirm password do not match' });
-//   }
-
-//   pool.getConnection((error, connection) => {
-//     if (error) {
-//       console.error('Error getting MySQL connection:', error);
-//       return res.status(500).json({ message: 'Server error occurred' });
-//     }
-
-//     console.log(`Connected as id ${connection.threadId}`);
-
-//     connection.query('SELECT school_id, password FROM users WHERE token = ?', [token], (error, userResult) => {
-//       if (error) {
-//         connection.release();
-//         console.error('Error executing query:', error);
-//         return res.status(500).json({ message: 'Server error occurred' });
-//       }
-
-//       if (userResult.length === 0) {
-//         connection.release();
-//         return res.status(404).json({ message: 'User not found' });
-//       }
-
-//       const { school_id, password: storedPasswordHash } = userResult[0];
-
-// Compare old password with the stored password hash
-//       bcrypt.compare(oldPassword, storedPasswordHash, (err, isMatch) => {
-//         if (err) {
-//           connection.release();
-//           console.error('Error comparing passwords:', err);
-//           return res.status(500).json({ message: 'Server error occurred' });
-//         }
-
-//         if (!isMatch) {
-//           connection.release();
-//           return res.status(400).json({ message: 'Old password is incorrect' });
-//         }
-
-// Hash the new password before storing
-//         bcrypt.hash(newPassword, 10, (err, newPasswordHash) => {
-//           if (err) {
-//             connection.release();
-//             console.error('Error hashing new password:', err);
-//             return res.status(500).json({ message: 'Server error occurred' });
-//           }
-
-// Update the user's password in the database
-//           connection.query('UPDATE users SET password = ? WHERE school_id = ?', [newPasswordHash, school_id], (error, results) => {
-//             connection.release();
-
-//             if (error) {
-//               console.error('Error updating password:', error);
-//               return res.status(500).json({ message: 'Server error occurred' });
-//             }
-
-//             res.status(200).json({ message: 'Password has been successfully updated' });
-//           });
-//         });
-//       });
-//     });
-//   });
-// };
-
-// Change Password
-exports.updatePassword = (req, res) => {
-  const { oldPassword, newPassword, confirmPassword } = req.body;
+exports.updatePassword = async (req, res) => {
   const token = req.params.token;
+  const { password } = req.body;
 
-  if (!oldPassword || !newPassword || !confirmPassword) {
-    return res
-      .status(400)
-      .json({ message: "Please provide all password fields" });
-  }
-
-  if (newPassword !== confirmPassword) {
-    return res
-      .status(400)
-      .json({ message: "New password and confirm password do not match" });
-  }
-
-  pool.getConnection((error, connection) => {
-    if (error) {
-      console.error("Error getting MySQL connection:", error);
-      return res.status(500).json({ message: "Server error occurred" });
+  try {
+    const user = await User.findOne({ token: token });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
     }
 
-    console.log(`Connected as id ${connection.threadId}`);
-
-    // Fetch user based on token
-    connection.query(
-      "SELECT school_id, password FROM users WHERE token = ?",
-      [token],
-      (error, userResult) => {
-        if (error) {
-          connection.release();
-          console.error("Error executing query:", error);
-          return res.status(500).json({ message: "Server error occurred" });
-        }
-
-        if (userResult.length === 0) {
-          connection.release();
-          return res.status(404).json({ message: "User not found" });
-        }
-
-        const { school_id, password: storedPassword } = userResult[0];
-
-        if (oldPassword !== storedPassword) {
-          connection.release();
-          return res.status(400).json({ message: "Old password is incorrect" });
-        }
-
-        connection.query(
-          "UPDATE users SET password = ? WHERE school_id = ?",
-          [newPassword, school_id],
-          (error, results) => {
-            connection.release();
-
-            if (error) {
-              console.error("Error updating password:", error);
-              return res.status(500).json({ message: "Server error occurred" });
-            }
-
-            res.status(200).json({
-              success: true,
-              message: "Password has been successfully updated",
-            });
-          }
-        );
-      }
-    );
-  });
+    user.password = password; // Assuming you are hashing it before saving
+    await user.save();
+    res.status(200).json({ message: "Password updated successfully" });
+  } catch (error) {
+    console.error("Error in updatePassword:", error);
+    res.status(500).json({ message: "Server error occurred" });
+  }
 };

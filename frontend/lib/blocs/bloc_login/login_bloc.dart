@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
@@ -26,13 +28,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   Future<void> storeToken(String token) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('token', token);
-    getToken();
-  }
-
-  Future<String?> getToken() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? token = prefs.getString('token');
-    return token;
   }
 
   Future<void> loginButtonClickedEvent(
@@ -42,8 +37,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     try {
       emit(LoginLoadingState());
 
-      final result =
-          await _apiService.loginUser(schoolID: event.schoolID, password: event.password,);
+      final result = await _apiService.loginUser(
+        schoolID: event.schoolID,
+        password: event.password,
+      );
 
       if (result['statusCode'] == 200) {
         final token = result['token'];

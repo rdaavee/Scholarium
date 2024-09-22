@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:isHKolarium/api/models/schedule_model.dart';
 
 abstract class ScheduleState extends Equatable {
   @override
