@@ -1,14 +1,7 @@
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
-const mysql = require('mysql');
-const pool = mysql.createPool({
-  connectionLimit: 10,
-  host: 'localhost',
-  user: 'root',
-  password: '',
-  database: 'ishkolarium'
-});
+const pool = require('../db');
 
 // Set up storage engine
 const storage = multer.diskStorage({

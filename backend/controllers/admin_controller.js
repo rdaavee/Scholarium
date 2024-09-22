@@ -1,11 +1,4 @@
-const mysql = require('mysql');
-const pool = mysql.createPool({
-  connectionLimit: 10,
-  host: 'localhost',
-  user: 'root',
-  password: '',
-  database: 'ishkolarium'
-});
+const pool = require('../db');
 
 //Create a user
 exports.createUser = (req, res) => {

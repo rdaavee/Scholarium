@@ -36,9 +36,25 @@ class ScheduleScreenState extends State<ScheduleScreen> {
   Future<void> _initialize(String selectedMonth) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('token') ?? '';
+    String monthNumber = monthMap[selectedMonth] ?? "";
     scheduleBloc
-        .add(LoadScheduleEvent(token: token, selectedMonth: selectedMonth));
+        .add(LoadScheduleEvent(token: token, selectedMonth: monthNumber));
   }
+
+  final Map<String, String> monthMap = {
+    'January': '01',
+    'February': '02',
+    'March': '03',
+    'April': '04',
+    'May': '05',
+    'June': '06',
+    'July': '07',
+    'August': '08',
+    'September': '09',
+    'October': '10',
+    'November': '11',
+    'December': '12',
+  };
 
   String selectedMonth = '';
   final List<String> months = [
@@ -125,12 +141,11 @@ class ScheduleScreenState extends State<ScheduleScreen> {
                                   return ListView.builder(
                                     itemCount: duties.length,
                                     itemBuilder: (context, index) {
-                                      final duty =
-                                          Map<String, dynamic>.from(
-                                              duties[index]);
+                                      final duty = Map<String, dynamic>.from(
+                                          duties[index]);
                                       final isCompleted =
                                           duty['completed'] == 'true';
-                
+
                                       return TimelineItem(
                                         duty: duty,
                                         color: isCompleted
