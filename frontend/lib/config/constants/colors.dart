@@ -13,6 +13,6 @@ class ColorPalette {
   static const Color errorColor = Color(0xffDC2E2E);
   static const Color gray = Color(0xffC3C3C3);
   static const Color textAccent = Color(0xFFFFE867);
-  static const Color btnColor = Color(0xFF09C053);
+  static const Color btnColor = Color(0xFF92E3A9);
   static const Color viewAllColor = Color(0xFF0C7FD0);
 }
