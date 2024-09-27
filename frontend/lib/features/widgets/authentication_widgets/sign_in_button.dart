@@ -7,23 +7,30 @@ class SignInButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: onPressed,
-      style: ElevatedButton.styleFrom(
-        backgroundColor: ColorPalette.btnColor,
-        side: const BorderSide(
-          color: ColorPalette.btnColor,
+    return SizedBox(
+      height: 50,
+      width: 287,
+      child: ElevatedButton(
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: ColorPalette.btnColor,
+          side: const BorderSide(
+            color: ColorPalette.btnColor,
+          ),
+          minimumSize: const Size(287, 45),
+          padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
         ),
-        minimumSize: const Size(287, 45),
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-      ),
-      child: const Text(
-        'Sign In',
-        style: TextStyle(
-          fontFamily: 'Inter',
-          fontWeight: FontWeight.normal,
-          color: Colors.white,
-          fontSize: 12,
+        child: const Text(
+          'Sign In',
+          style: TextStyle(
+            fontFamily: 'Inter',
+            fontWeight: FontWeight.normal,
+            color: Colors.white,
+            fontSize: 12,
+          ),
         ),
       ),
     );

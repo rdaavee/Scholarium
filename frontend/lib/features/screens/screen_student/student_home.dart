@@ -112,6 +112,9 @@ class _StudentHomeState extends State<StudentHome> {
                             padding: const EdgeInsets.all(10.0),
                             child: ListView(
                               children: [
+                                SizedBox(
+                                  height: 30,
+                                ),
                                 // Upcoming Duties Section
                                 Padding(
                                   padding: const EdgeInsets.only(
@@ -149,10 +152,11 @@ class _StudentHomeState extends State<StudentHome> {
                                     ],
                                   ),
                                 ),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: ScheduleCard(
+                                SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: Row(
+                                    children: [
+                                      ScheduleCard(
                                         scheduleDate: Text(
                                           state.todaySchedule[0].date
                                                       .toString() ==
@@ -163,7 +167,7 @@ class _StudentHomeState extends State<StudentHome> {
                                                   .todaySchedule[0].date
                                                   .toString()),
                                           style: const TextStyle(
-                                            fontSize: 27,
+                                            fontSize: 20,
                                             fontFamily: 'Manrope',
                                             fontWeight: FontWeight.w900,
                                             color: ColorPalette.accentBlack,
@@ -180,7 +184,7 @@ class _StudentHomeState extends State<StudentHome> {
                                                   .todaySchedule[0].time
                                                   .toString()),
                                           style: const TextStyle(
-                                            fontSize: 12,
+                                            fontSize: 11,
                                             fontFamily: 'Manrope',
                                             color: Colors.black,
                                             fontWeight: FontWeight.normal,
@@ -191,7 +195,7 @@ class _StudentHomeState extends State<StudentHome> {
                                           state.todaySchedule[0].room
                                               .toString(),
                                           style: const TextStyle(
-                                            fontSize: 20,
+                                            fontSize: 18,
                                             fontFamily: 'Manrope',
                                             color: Colors.black,
                                             fontWeight: FontWeight.bold,
@@ -199,11 +203,10 @@ class _StudentHomeState extends State<StudentHome> {
                                           ),
                                         ),
                                         cardColor: Colors.white,
-                                        imageUrl: 'assets/images/test-bg.png',
+                                        imageUrl: 'assets/images/test-img.png',
                                       ),
-                                    ),
-                                    Expanded(
-                                      child: ScheduleCard(
+                                      SizedBox(width: 5),
+                                      ScheduleCard(
                                         scheduleDate: Text(
                                           state.nextSchedule[0].date
                                                       .toString() ==
@@ -214,7 +217,7 @@ class _StudentHomeState extends State<StudentHome> {
                                                   .nextSchedule[0].date
                                                   .toString()),
                                           style: const TextStyle(
-                                            fontSize: 27,
+                                            fontSize: 20,
                                             fontFamily: 'Manrope',
                                             fontWeight: FontWeight.w900,
                                             color: Colors.black,
@@ -228,10 +231,10 @@ class _StudentHomeState extends State<StudentHome> {
                                               ? state.nextSchedule[0].time
                                                   .toString()
                                               : _formatTime(state
-                                                  .todaySchedule[0].time
+                                                  .nextSchedule[0].time
                                                   .toString()),
                                           style: const TextStyle(
-                                            fontSize: 12,
+                                            fontSize: 11,
                                             fontFamily: 'Manrope',
                                             color: Colors.black,
                                             fontWeight: FontWeight.normal,
@@ -241,7 +244,7 @@ class _StudentHomeState extends State<StudentHome> {
                                         roomName: Text(
                                           state.nextSchedule[0].room.toString(),
                                           style: const TextStyle(
-                                            fontSize: 20,
+                                            fontSize: 17,
                                             fontFamily: 'Manrope',
                                             color: Colors.black,
                                             fontWeight: FontWeight.bold,
@@ -249,10 +252,59 @@ class _StudentHomeState extends State<StudentHome> {
                                           ),
                                         ),
                                         cardColor: Colors.white,
-                                        imageUrl: 'assets/images/test2-bg.png',
+                                        imageUrl: 'assets/images/test-img.png',
                                       ),
-                                    ),
-                                  ],
+                                      SizedBox(width: 5),
+                                      ScheduleCard(
+                                        scheduleDate: Text(
+                                          state.nextSchedule[0].date
+                                                      .toString() ==
+                                                  "No Upcoming Schedule"
+                                              ? state.nextSchedule[0].date
+                                                  .toString()
+                                              : _formatDate(state
+                                                  .nextSchedule[0].date
+                                                  .toString()),
+                                          style: const TextStyle(
+                                            fontSize: 20,
+                                            fontFamily: 'Manrope',
+                                            fontWeight: FontWeight.w900,
+                                            color: Colors.black,
+                                            letterSpacing: 0.5,
+                                          ),
+                                        ),
+                                        scheduleTime: Text(
+                                          state.nextSchedule[0].time
+                                                      .toString() ==
+                                                  ""
+                                              ? state.nextSchedule[0].time
+                                                  .toString()
+                                              : _formatTime(state
+                                                  .nextSchedule[0].time
+                                                  .toString()),
+                                          style: const TextStyle(
+                                            fontSize: 11,
+                                            fontFamily: 'Manrope',
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.normal,
+                                            letterSpacing: 0.8,
+                                          ),
+                                        ),
+                                        roomName: Text(
+                                          state.nextSchedule[0].room.toString(),
+                                          style: const TextStyle(
+                                            fontSize: 17,
+                                            fontFamily: 'Manrope',
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.bold,
+                                            letterSpacing: 1.2,
+                                          ),
+                                        ),
+                                        cardColor: Colors.white,
+                                        imageUrl: 'assets/images/test-img.png',
+                                      ),
+                                    ],
+                                  ),
                                 ),
                                 // Your DTR Section
                                 Padding(

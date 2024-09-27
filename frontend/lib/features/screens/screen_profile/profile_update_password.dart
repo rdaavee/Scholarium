@@ -24,6 +24,7 @@ class ProfileChangePassword extends StatelessWidget {
             fontFamily: 'Manrope',
             color: Colors.black,
             letterSpacing: 0.5,
+            fontSize: 15,
           ),
         ),
       ),
@@ -37,6 +38,11 @@ class ProfileChangePassword extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
+                Image.asset(
+                  'assets/images/change-pass-img.png',
+                  width: 250,
+                  height: 250,
+                ),
                 TextFormField(
                   controller: oldPasswordController,
                   obscureText: true,
@@ -186,9 +192,9 @@ class ProfileChangePassword extends StatelessWidget {
                 const SizedBox(height: 20),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: ColorPalette.primary,
+                    backgroundColor: ColorPalette.btnColor,
                     side: const BorderSide(
-                      color: ColorPalette.primary,
+                      color: ColorPalette.btnColor,
                     ),
                     minimumSize: const Size(287, 55),
                     padding: const EdgeInsets.symmetric(
@@ -197,6 +203,7 @@ class ProfileChangePassword extends StatelessWidget {
                   child: const Text(
                     'Change Password',
                     style: TextStyle(
+                      color: Colors.white,
                       fontFamily: 'Manrope',
                       fontWeight: FontWeight.normal,
                       fontSize: 12,

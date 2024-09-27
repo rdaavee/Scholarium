@@ -104,8 +104,10 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                 role: notifications.role.toString(),
                                 message: notifications.message.toString(),
                                 status: notifications.status.toString(),
-                                date: _formatDate(notifications.date.toString()),
-                                time: _formatTime(notifications.time.toString()),
+                                date:
+                                    _formatDate(notifications.date.toString()),
+                                time:
+                                    _formatTime(notifications.time.toString()),
                               ),
                             );
                           },

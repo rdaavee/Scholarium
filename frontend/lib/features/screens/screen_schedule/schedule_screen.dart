@@ -155,9 +155,23 @@ class ScheduleScreenState extends State<ScheduleScreen> {
                                     },
                                   );
                                 } else if (state is ScheduleErrorState) {
-                                  return Center(
-                                    child: Text(
-                                        'Failed to load schedule: ${state.message}'),
+                                  return Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Center(
+                                        child: Image.asset(
+                                          'assets/images/no-data-img.png',
+                                          height: 230,
+                                          width: 230,
+                                        ),
+                                      ),
+                                      Text(
+                                        'No schedules available',
+                                        style: TextStyle(
+                                            fontFamily: 'Manrope',
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ],
                                   );
                                 } else {
                                   return const Center(

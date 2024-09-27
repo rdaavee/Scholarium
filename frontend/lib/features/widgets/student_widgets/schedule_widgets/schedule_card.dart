@@ -18,42 +18,49 @@ class ScheduleCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      clipBehavior: Clip.none,
-      children: [
-        Container(
-          height: 200,
-          child: Card(
-            margin: const EdgeInsets.all(10.0),
-            color: cardColor,
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10.0),
-                image: DecorationImage(
-                  image: AssetImage(imageUrl),
-                  fit: BoxFit.cover,
-                ),
-              ),
+    return Container(
+      height: 150.0, // Consistent height for the card
+      width: 300.0, // Set a fixed width for uniformity
+      child: Card(
+        margin: const EdgeInsets.all(10.0),
+        color: cardColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
               child: Padding(
-                padding: const EdgeInsets.all(10.0),
+                padding: const EdgeInsets.all(15.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     scheduleDate,
-                    const SizedBox(height: 5),
+                    const SizedBox(height: 8),
                     scheduleTime,
-                    const SizedBox(height: 40),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [roomName],
-                    ),
+                    const SizedBox(height: 8),
+                    roomName,
                   ],
                 ),
               ),
             ),
-          ),
+            ClipRRect(
+              borderRadius: const BorderRadius.only(
+                topRight: Radius.circular(10.0),
+                bottomRight: Radius.circular(10.0),
+              ),
+              child: Image.asset(
+                imageUrl,
+                fit: BoxFit.cover,
+                height: 150.0, // Match card height
+                width: 80.0, // Adjust width for a good fit
+              ),
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 }
