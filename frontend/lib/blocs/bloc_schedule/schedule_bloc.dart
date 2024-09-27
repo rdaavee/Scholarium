@@ -33,8 +33,6 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
       final schedule = await apiService.getSchedule(
           token: event.token, selectedMonth: event.selectedMonth);
       emit(ScheduleLoadedSuccessState(
-          // todaySchedule: scheduleData['today'],
-          // nextSchedule: [scheduleData['next']],
           schedule: schedule));
     } catch (e) {
       emit(ScheduleErrorState(e.toString()));

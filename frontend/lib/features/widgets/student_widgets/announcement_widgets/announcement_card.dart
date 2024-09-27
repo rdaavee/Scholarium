@@ -21,7 +21,7 @@ class AnnouncementCard extends StatelessWidget {
     return Stack(
       clipBehavior: Clip.none,
       children: [
-        Container(
+        SizedBox(
           height: 170,
           child: Card(
             margin: const EdgeInsets.all(10.0),

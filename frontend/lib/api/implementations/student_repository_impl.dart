@@ -19,49 +19,49 @@ class StudentRepositoryImpl implements StudentRepository, GlobalRepository {
   final String baseUrl = 'http://localhost:3000/api'; //localhost
   // final String baseUrl = 'http://192.168.4.181:3000/api'; //usb tethering
 
- @override
-Future<Map<String, dynamic>> fetchUpcomingSchedule(
-    {required String token}) async {
-  final response =
-      await http.get(Uri.parse('$baseUrl/user/getUpcomingSchedule/$token'));
+  @override
+  Future<Map<String, dynamic>> fetchUpcomingSchedule(
+      {required String token}) async {
+    final response =
+        await http.get(Uri.parse('$baseUrl/user/getUpcomingSchedule/$token'));
 
-  if (response.statusCode == 200) {
-    final data = jsonDecode(response.body);
-    final todaySchedules = (data['today'] as List?)
-            ?.map((item) => ScheduleModel.fromJson(item))
-            .toList() ?? [];
-    final nextSchedule =
-        data['next'] != null ? ScheduleModel.fromJson(data['next']) : null;
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      final todaySchedules = (data['today'] as List?)
+              ?.map((item) => ScheduleModel.fromJson(item))
+              .toList() ??
+          [];
+      final nextSchedule =
+          data['next'] != null ? ScheduleModel.fromJson(data['next']) : null;
 
-    const emptySchedule = ScheduleModel(
-        schoolID: "",
-        room: "",
-        block: "",
-        subject: "",
-        profID: "",
-        professor: "",
-        department: "",
-        time: "",
-        date: "No Upcoming Schedule",
-        isCompleted: "");
+      const emptySchedule = ScheduleModel(
+          schoolID: "",
+          room: "",
+          block: "",
+          subject: "",
+          profID: "",
+          professor: "",
+          department: "",
+          time: "",
+          date: "No Upcoming Schedule",
+          isCompleted: "");
 
-    // Check if both todaySchedules and nextSchedule are empty
-    if (todaySchedules.isEmpty && nextSchedule == null) {
+      // Check if both todaySchedules and nextSchedule are empty
+      if (todaySchedules.isEmpty && nextSchedule == null) {
+        return {
+          'today': [emptySchedule],
+          'next': emptySchedule,
+        };
+      }
+
       return {
-        'today': [emptySchedule],
-        'next': emptySchedule,
+        'today': todaySchedules.isEmpty ? [emptySchedule] : todaySchedules,
+        'next': nextSchedule ?? emptySchedule,
       };
+    } else {
+      throw Exception('Failed to load schedule: ${response.reasonPhrase}');
     }
-
-    return {
-      'today': todaySchedules.isEmpty ? [emptySchedule] : todaySchedules,
-      'next': nextSchedule ?? emptySchedule,
-    };
-  } else {
-    throw Exception('Failed to load schedule: ${response.reasonPhrase}');
   }
-}
-
 
   @override
   Future<List<Map<String, dynamic>>> getSchedule({
@@ -304,11 +304,29 @@ Future<Map<String, dynamic>> fetchUpcomingSchedule(
         final List<dynamic> data = jsonDecode(response.body);
         return data.map((json) => NotificationsModel.fromJson(json)).toList();
       } else {
-        throw Exception('Failed to load Notifications data');
+        return [
+          const NotificationsModel(
+              schoolID: "N/A",
+              sender: "N/A",
+              role: "N/A",
+              message: "N/A",
+              status: "N/A",
+              date: "N/A",
+              time: "N/A")
+        ];
       }
     } catch (error) {
       print('Error fetching notification: $error'); // Debug print
-      throw Exception('Error fetching notification: $error');
+      return [
+        const NotificationsModel(
+            schoolID: "N/A",
+            sender: "N/A",
+            role: "N/A",
+            message: "N/A",
+            status: "N/A",
+            date: "N/A",
+            time: "N/A")
+      ];
     }
   }
 }

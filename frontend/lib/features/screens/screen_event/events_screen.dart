@@ -14,48 +14,48 @@ class _EventsScreenState extends State<EventsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ColorPalette.primary,
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(70.0),
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child: Image.asset(
+                'assets/images/image.jpg',
+                fit: BoxFit.cover,
+              ),
+            ),
+            AppBar(
+              backgroundColor: ColorPalette.primary.withOpacity(0.6),
+              iconTheme: const IconThemeData(
+                color: Colors.white,
+              ),
+              elevation: 0,
+              title: Container(
+                margin: const EdgeInsets.only(top: 8),
+                padding: const EdgeInsets.only(left: 5),
+                child: const Text(
+                  "DTR",
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontFamily: 'Manrope',
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 1.1,
+                    color: ColorPalette.accentWhite,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
       body: Column(
         children: [
-          Row(
-            children: [
-              Container(
-                margin: const EdgeInsets.only(left: 16),
-                child: IconButton(
-                  icon: const Icon(
-                    Icons.arrow_back_sharp,
-                    color: Colors.white,
-                  ),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 30.0),
-                child: Container(
-                  height: 100.0,
-                  alignment: Alignment.centerLeft,
-                  child: const Text(
-                    "Events",
-                    style: TextStyle(
-                      fontSize: 17,
-                      fontFamily: 'Inter',
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 1.1,
-                      color: ColorPalette.accentWhite,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
           Expanded(
             child: Container(
-              height: MediaQuery.of(context).size.height - 100.0,
               decoration: const BoxDecoration(
                 color: Color(0xFFF0F3F4),
                 borderRadius: BorderRadius.vertical(
-                  top: Radius.circular(20),
+                  top: Radius.circular(10),
                 ),
               ),
               child: Padding(

@@ -165,7 +165,7 @@ class ScheduleScreenState extends State<ScheduleScreen> {
                                           width: 230,
                                         ),
                                       ),
-                                      Text(
+                                      const Text(
                                         'No schedules available',
                                         style: TextStyle(
                                             fontFamily: 'Manrope',

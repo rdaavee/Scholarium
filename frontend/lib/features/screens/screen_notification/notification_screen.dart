@@ -58,13 +58,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
         BlocProvider<NotificationsBloc>(create: (context) => notificationsBloc)
       ],
       child: BlocConsumer<NotificationsBloc, NotificationsState>(
-        listener: (context, state) {
-          if (state is NotificationsErrorState) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.message)),
-            );
-          }
-        },
+        listener: (context, state) {},
         builder: (context, state) {
           if (state is NotificationsLoadingState) {
             return const Scaffold(
@@ -118,9 +112,29 @@ class _NotificationScreenState extends State<NotificationScreen> {
                 ],
               ),
             );
+          } else if (state is NotificationsErrorState) {
+            return Scaffold(
+                appBar: const AppBarWidget(),
+                body: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Center(
+                      child: Image.asset(
+                        'assets/images/no-data-img.png',
+                        height: 230,
+                        width: 230,
+                      ),
+                    ),
+                    const Text(
+                      'No notification available',
+                      style: TextStyle(
+                          fontFamily: 'Manrope', fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ));
           } else {
             return const Scaffold(
-              body: Center(child: CircularProgressIndicator()),
+              body: CircularProgressIndicator(),
             );
           }
         },

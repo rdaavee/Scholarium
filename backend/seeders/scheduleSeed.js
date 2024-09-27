@@ -154,7 +154,7 @@ const seedClassSchedules = async () => {
         professor: 'Prof. Bob Johnson',
         department: 'CITE',
         time: '10:00:00',
-        date: '2024-09-28',
+        date: '2024-09-27',
         completed: 'pending',
       },
     ];

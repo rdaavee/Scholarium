@@ -59,12 +59,12 @@ class AccountOptions extends StatelessWidget {
         onPressed: () {
           Navigator.of(context).pop();
         },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.red,
+        ),
         child: Text(
           'Cancel',
           style: TextStyle(fontFamily: 'Manrope', color: Colors.white),
-        ),
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.red,
         ),
       ),
       btnOk: ElevatedButton(
@@ -72,12 +72,12 @@ class AccountOptions extends StatelessWidget {
           onLogout();
           Navigator.of(context).pop();
         },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.green,
+        ),
         child: Text(
           'Confirm',
           style: TextStyle(fontFamily: 'Manrope', color: Colors.white),
-        ),
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.green,
         ),
       ),
     ).show();
