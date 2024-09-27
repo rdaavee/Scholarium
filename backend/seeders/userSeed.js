@@ -40,9 +40,9 @@ const seedUsers = async () => {
         gender: 'Female',
         contact: '0900-000-0002',
         address: '456 Oak St',
-        role: 'Professor',
+        role: 'Student',
         hk_type: 'HK 50',
-        status: 'Inactive',
+        status: 'Active',
         token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzUsI...',
       },
       {
