@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:isHKolarium/features/screens/screen_profile/profile_update_password.dart';
 import 'package:isHKolarium/features/widgets/profile_widgets/profile_divider.dart';
 
-
 class AccountOptions extends StatelessWidget {
   final VoidCallback onProfileUpdated;
+  final VoidCallback onLogout;
+
   const AccountOptions({
     super.key,
     required this.onProfileUpdated,
-    required Null Function() onLogout,
+    required this.onLogout,
   });
 
   @override
@@ -36,8 +37,7 @@ class AccountOptions extends StatelessWidget {
         const SizedBox(height: 20),
         GestureDetector(
           onTap: () {
-            final apiService = GlobalRepositoryImpl();
-            apiService.logout(context);
+            _showLogoutConfirmation(context);
           },
           child: _buildOption(FontAwesomeIcons.rightFromBracket, 'Logout'),
         ),
@@ -45,6 +45,42 @@ class AccountOptions extends StatelessWidget {
         const DividerWidget(),
       ],
     );
+  }
+
+  void _showLogoutConfirmation(BuildContext context) {
+    print('Showing logout confirmation dialog...');
+    AwesomeDialog(
+      context: context,
+      dialogType: DialogType.warning,
+      animType: AnimType.bottomSlide,
+      title: 'Confirm Logout',
+      desc: 'Are you sure you want to logout?',
+      btnCancel: ElevatedButton(
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
+        child: Text(
+          'Cancel',
+          style: TextStyle(fontFamily: 'Manrope', color: Colors.white),
+        ),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.red,
+        ),
+      ),
+      btnOk: ElevatedButton(
+        onPressed: () {
+          onLogout();
+          Navigator.of(context).pop();
+        },
+        child: Text(
+          'Confirm',
+          style: TextStyle(fontFamily: 'Manrope', color: Colors.white),
+        ),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.green,
+        ),
+      ),
+    ).show();
   }
 
   Widget _buildOption(IconData icon, String text) {

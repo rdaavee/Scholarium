@@ -42,6 +42,8 @@ dependencies:
   pdf: ^3.7.1 
   printing: ^5.11.0
   flutter_animate:
+  awesome_snackbar_content:
+  awesome_dialog:
 
 
   # The following adds the Cupertino Icons font to your application.
