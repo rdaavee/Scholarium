@@ -7,6 +7,7 @@ import 'package:isHKolarium/features/screens/screen_admin/admin_home_page.dart';
 import 'package:isHKolarium/features/widgets/authentication_widgets/login_form.dart';
 import 'package:isHKolarium/features/screens/screen_bottom_nav/bottom_navigation_provider.dart';
 import 'package:isHKolarium/features/screens/screen_professor/professor_screen.dart';
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 
 class LoginPage extends StatefulWidget {
   static String routeName = 'LoginPage';
@@ -26,6 +27,24 @@ class _LoginPageState extends State<LoginPage> {
     loginBloc = LoginBloc(apiService);
   }
 
+  void _showAwesomeSnackBar(
+      String title, String message, ContentType contentType) {
+    final snackBar = SnackBar(
+      elevation: 0,
+      behavior: SnackBarBehavior.floating,
+      backgroundColor: Colors.transparent,
+      content: AwesomeSnackbarContent(
+        title: title,
+        message: message,
+        contentType: contentType,
+      ),
+    );
+
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(snackBar);
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<LoginBloc, LoginState>(
@@ -34,12 +53,8 @@ class _LoginPageState extends State<LoginPage> {
       buildWhen: (previous, current) => current is! LoginActionState,
       listener: (context, state) {
         if (state is LoginNavigateToStudentHomePageActionState) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Student Login Successfully'),
-              duration: Duration(milliseconds: 500),
-            ),
-          );
+          _showAwesomeSnackBar(
+              'Success', 'Student Login Successfully', ContentType.success);
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -47,12 +62,8 @@ class _LoginPageState extends State<LoginPage> {
             ),
           );
         } else if (state is LoginNavigateToProfessorHomePageActionState) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Professor Login Successfully'),
-              duration: Duration(milliseconds: 500),
-            ),
-          );
+          _showAwesomeSnackBar(
+              'Success', 'Professor Login Successfully', ContentType.success);
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -60,12 +71,8 @@ class _LoginPageState extends State<LoginPage> {
             ),
           );
         } else if (state is LoginNavigateToAdminHomePageActionState) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Admin Login Successfully'),
-              duration: Duration(milliseconds: 500),
-            ),
-          );
+          _showAwesomeSnackBar(
+              'Success', 'Admin Login Successfully', ContentType.success);
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -73,9 +80,8 @@ class _LoginPageState extends State<LoginPage> {
             ),
           );
         } else if (state is LoginErrorState) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.errorMessage)),
-          );
+          _showAwesomeSnackBar(
+              'Error', state.errorMessage, ContentType.failure);
         }
       },
       builder: (context, state) {
@@ -97,7 +103,7 @@ class _LoginPageState extends State<LoginPage> {
                   gradient: LinearGradient(
                     colors: [
                       ColorPalette.primary.withOpacity(0.8),
-                      Colors.black.withOpacity(.9)
+                      Colors.black.withOpacity(.9),
                     ],
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
