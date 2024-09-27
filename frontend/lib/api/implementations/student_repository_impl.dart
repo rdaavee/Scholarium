@@ -16,44 +16,52 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class StudentRepositoryImpl implements StudentRepository, GlobalRepository {
   int currentYear = DateTime.now().year;
-  // final String baseUrl = 'http://localhost:3000/api'; //localhost
-  final String baseUrl = 'http://192.168.4.181:3000/api'; //usb tethering
+  final String baseUrl = 'http://localhost:3000/api'; //localhost
+  // final String baseUrl = 'http://192.168.4.181:3000/api'; //usb tethering
 
-  @override
-  Future<Map<String, dynamic>> fetchUpcomingSchedule(
-      {required String token}) async {
-    final response =
-        await http.get(Uri.parse('$baseUrl/user/getUpcomingSchedule/$token'));
+ @override
+Future<Map<String, dynamic>> fetchUpcomingSchedule(
+    {required String token}) async {
+  final response =
+      await http.get(Uri.parse('$baseUrl/user/getUpcomingSchedule/$token'));
 
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      final todaySchedules = (data['today'] as List?)
-              ?.map((item) => ScheduleModel.fromJson(item))
-              .toList() ??
-          [];
-      final nextSchedule =
-          data['next'] != null ? ScheduleModel.fromJson(data['next']) : null;
+  if (response.statusCode == 200) {
+    final data = jsonDecode(response.body);
+    final todaySchedules = (data['today'] as List?)
+            ?.map((item) => ScheduleModel.fromJson(item))
+            .toList() ?? [];
+    final nextSchedule =
+        data['next'] != null ? ScheduleModel.fromJson(data['next']) : null;
 
-      const emptySchedule = ScheduleModel(
-          schoolID: "",
-          room: "",
-          block: "",
-          subject: "",
-          profID: "",
-          professor: "",
-          department: "",
-          time: "",
-          date: "No Upcoming Schedule",
-          isCompleted: "");
+    const emptySchedule = ScheduleModel(
+        schoolID: "",
+        room: "",
+        block: "",
+        subject: "",
+        profID: "",
+        professor: "",
+        department: "",
+        time: "",
+        date: "No Upcoming Schedule",
+        isCompleted: "");
 
+    // Check if both todaySchedules and nextSchedule are empty
+    if (todaySchedules.isEmpty && nextSchedule == null) {
       return {
-        'today': todaySchedules.isEmpty ? [emptySchedule] : todaySchedules,
-        'next': nextSchedule ?? emptySchedule,
+        'today': [emptySchedule],
+        'next': emptySchedule,
       };
-    } else {
-      throw Exception('Failed to load schedule: ${response.reasonPhrase}');
     }
+
+    return {
+      'today': todaySchedules.isEmpty ? [emptySchedule] : todaySchedules,
+      'next': nextSchedule ?? emptySchedule,
+    };
+  } else {
+    throw Exception('Failed to load schedule: ${response.reasonPhrase}');
   }
+}
+
 
   @override
   Future<List<Map<String, dynamic>>> getSchedule({
