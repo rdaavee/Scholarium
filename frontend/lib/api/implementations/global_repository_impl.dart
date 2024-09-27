@@ -11,7 +11,8 @@ import 'package:isHKolarium/features/screens/screen_login/login_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class GlobalRepositoryImpl implements GlobalRepository {
-  final String baseUrl = 'http://localhost:3000/api';
+  // final String baseUrl = 'http://localhost:3000/api'; //localhost
+  final String baseUrl = 'http://192.168.4.181:3000/api'; //usb tethering
 
   @override
   Future<Map<String, dynamic>> loginUser({

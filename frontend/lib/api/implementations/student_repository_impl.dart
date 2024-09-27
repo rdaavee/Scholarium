@@ -16,7 +16,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class StudentRepositoryImpl implements StudentRepository, GlobalRepository {
   int currentYear = DateTime.now().year;
-  final String baseUrl = 'http://localhost:3000/api';
+  // final String baseUrl = 'http://localhost:3000/api'; //localhost
+  final String baseUrl = 'http://192.168.4.181:3000/api'; //usb tethering
 
   @override
   Future<Map<String, dynamic>> fetchUpcomingSchedule(
