@@ -25,9 +25,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     );
   }
 
-  Future<void> storeToken(String token) async {
+  Future<void> storeToken(String token, String role) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('token', token);
+    await prefs.setString('role', role);
+    await prefs.setString('login', "true");
   }
 
   Future<void> loginButtonClickedEvent(
@@ -43,7 +45,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       if (result['statusCode'] == 200) {
         final token = result['token'];
         final role = result['role'];
-        storeToken(token);
+        storeToken(token, role);
 
         if (token != null && role != null) {
           switch (role) {
