@@ -77,7 +77,7 @@ exports.getUserUpcomingSchedule = async (req, res) => {
         next: nextSchedule || null,
       });
     } else {
-      res.status(404).json({ today: "", next: null});
+      res.status(404).json({ message: "No schedule found"});
     }
   } catch (error) {
     console.error(error);

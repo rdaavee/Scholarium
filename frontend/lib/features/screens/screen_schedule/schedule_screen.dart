@@ -165,7 +165,7 @@ class ScheduleScreenState extends State<ScheduleScreen> {
                                           width: 230,
                                         ),
                                       ),
-                                      Text(
+                                      const Text(
                                         'No schedules available',
                                         style: TextStyle(
                                             fontFamily: 'Manrope',
@@ -174,8 +174,9 @@ class ScheduleScreenState extends State<ScheduleScreen> {
                                     ],
                                   );
                                 } else {
-                                  return const Center(
-                                    child: Text('Unexpected state!'),
+                                  return const Scaffold(
+                                    body: Center(
+                                        child: CircularProgressIndicator()),
                                   );
                                 }
                               },

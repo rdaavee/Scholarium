@@ -18,7 +18,7 @@ class ScheduleCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 150.0, // Consistent height for the card
       width: 300.0, // Set a fixed width for uniformity
       child: Card(
