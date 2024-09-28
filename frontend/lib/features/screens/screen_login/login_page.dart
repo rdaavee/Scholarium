@@ -14,7 +14,7 @@ import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 class LoginPage extends StatefulWidget {
   static const String routeName = 'LoginPage';
 
-  const LoginPage({Key? key}) : super(key: key);
+  const LoginPage({super.key});
 
   @override
   _LoginPageState createState() => _LoginPageState();

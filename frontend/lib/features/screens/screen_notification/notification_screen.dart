@@ -66,19 +66,24 @@ class _NotificationScreenState extends State<NotificationScreen> {
             );
           } else if (state is NotificationsLoadedSuccessState) {
             return Scaffold(
-              appBar: const AppBarWidget(),
+              appBar: const AppBarWidget(title: "Notifications", isBackButton: false),
+              backgroundColor: ColorPalette.primary.withOpacity(0.6),
               body: Column(
                 children: [
                   Container(
-                    color: ColorPalette.primary.withOpacity(0.6),
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage('assets/images/image.jpg'),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
                   ),
                   Expanded(
                     child: Container(
                       decoration: const BoxDecoration(
                         color: Color(0xFFF0F3F4),
-                        borderRadius: BorderRadius.vertical(
-                          top: Radius.circular(10),
-                        ),
+                        borderRadius:
+                            BorderRadius.vertical(top: Radius.circular(10)),
                       ),
                       child: Padding(
                         padding: const EdgeInsets.all(10.0),
@@ -114,7 +119,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
             );
           } else if (state is NotificationsErrorState) {
             return Scaffold(
-                appBar: const AppBarWidget(),
+                appBar: const AppBarWidget(title: "Notifications", isBackButton: false),
                 body: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

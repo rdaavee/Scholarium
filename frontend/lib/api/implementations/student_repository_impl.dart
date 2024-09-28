@@ -39,14 +39,6 @@ class StudentRepositoryImpl implements StudentRepository, GlobalRepository {
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
-
-      if (data['message'] == "No schedule found") {
-        return {
-          'today': [emptySchedule],
-          'next': emptySchedule,
-        };
-      }
-
       final todaySchedules = (data['today'] as List?)
               ?.map((item) => ScheduleModel.fromJson(item))
               .toList() ??

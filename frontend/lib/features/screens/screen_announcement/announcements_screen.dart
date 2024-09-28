@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:isHKolarium/api/implementations/student_repository_impl.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
 import 'package:isHKolarium/blocs/bloc_student/students_bloc.dart';
+import 'package:isHKolarium/features/widgets/app_bar.dart';
 import 'package:isHKolarium/features/widgets/student_widgets/announcement_widgets/announcement_card.dart';
 
 class AnnouncementsScreen extends StatefulWidget {
@@ -47,49 +48,17 @@ class _AnnouncementsPageState extends State<AnnouncementsScreen> {
             );
           } else if (state is StudentsLoadedSuccessState) {
             return Scaffold(
-              backgroundColor: ColorPalette.primary,
+              appBar: const AppBarWidget(title: "Announcements", isBackButton: true),
+              backgroundColor: ColorPalette.primary.withOpacity(0.9),
               body: Column(
                 children: [
-                  Row(
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.only(left: 16),
-                        child: IconButton(
-                          icon: const Icon(
-                            Icons.arrow_back_sharp,
-                            color: Colors.white,
-                          ),
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 30.0),
-                        child: Container(
-                          height: 100.0,
-                          alignment: Alignment.centerLeft,
-                          child: const Text(
-                            "ANNOUNCEMENTS",
-                            style: TextStyle(
-                              fontSize: 17,
-                              fontFamily: 'Manrope',
-                              fontWeight: FontWeight.bold,
-                              letterSpacing: 1.1,
-                              color: ColorPalette.accentWhite,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
                   Expanded(
                     child: Container(
                       height: MediaQuery.of(context).size.height - 100.0,
                       decoration: const BoxDecoration(
                         color: Color(0xFFF0F3F4),
                         borderRadius: BorderRadius.vertical(
-                          top: Radius.circular(20),
+                          top: Radius.circular(10),
                         ),
                       ),
                       child: Padding(
