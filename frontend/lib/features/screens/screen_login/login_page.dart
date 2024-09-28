@@ -10,6 +10,7 @@ import 'package:isHKolarium/features/screens/screen_bottom_nav/bottom_navigation
 import 'package:isHKolarium/features/widgets/authentication_widgets/login_form.dart';
 import 'package:isHKolarium/features/screens/screen_professor/professor_screen.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   static const String routeName = 'LoginPage';
@@ -27,6 +28,45 @@ class _LoginPageState extends State<LoginPage> {
   void initState() {
     super.initState();
     _loginBloc = LoginBloc(GlobalRepositoryImpl());
+    _initialize();
+  }
+
+  void _initialize() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final isLogin = prefs.getString('login');
+    final role = prefs.getString('role');
+    if (isLogin == "true") {
+      switch (role) {
+        case "Student":
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const StudentHomePage(),
+            ),
+          );
+          break;
+
+        case "Professor":
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const ProfessorScreen(),
+            ),
+          );
+          break;
+
+        case "Admin":
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const AdminHomePage(),
+            ),
+          );
+          break;
+        default:
+          break;
+      }
+    }
   }
 
   @override
