@@ -25,7 +25,7 @@ class GradientProgressIndicator extends StatelessWidget {
         child: LinearProgressIndicator(
           value: progress,
           backgroundColor: Colors.grey[200],
-          valueColor: AlwaysStoppedAnimation<Color>(ColorPalette.primary),
+          valueColor: const AlwaysStoppedAnimation<Color>(ColorPalette.primary),
         ),
       ),
     );

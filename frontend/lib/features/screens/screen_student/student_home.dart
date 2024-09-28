@@ -112,7 +112,7 @@ class _StudentHomeState extends State<StudentHome> {
                             padding: const EdgeInsets.all(10.0),
                             child: ListView(
                               children: [
-                                SizedBox(
+                                const SizedBox(
                                   height: 30,
                                 ),
                                 // Upcoming Duties Section
@@ -205,7 +205,7 @@ class _StudentHomeState extends State<StudentHome> {
                                         cardColor: Colors.white,
                                         imageUrl: 'assets/images/test-img.png',
                                       ),
-                                      SizedBox(width: 5),
+                                      const SizedBox(width: 5),
                                       ScheduleCard(
                                         scheduleDate: Text(
                                           state.nextSchedule[0].date
@@ -254,7 +254,7 @@ class _StudentHomeState extends State<StudentHome> {
                                         cardColor: Colors.white,
                                         imageUrl: 'assets/images/test-img.png',
                                       ),
-                                      SizedBox(width: 5),
+                                      const SizedBox(width: 5),
                                       ScheduleCard(
                                         scheduleDate: Text(
                                           state.nextSchedule[0].date
