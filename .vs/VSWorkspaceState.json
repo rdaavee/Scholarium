@@ -1,0 +1,11 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\frontend",
+    "\\frontend\\lib",
+    "\\frontend\\lib\\api",
+    "\\frontend\\lib\\api\\implementations"
+  ],
+  "SelectedNode": "\\frontend\\lib\\api\\implementations\\professor_repository_impl.dart",
+  "PreviewInSolutionExplorer": false
+}
