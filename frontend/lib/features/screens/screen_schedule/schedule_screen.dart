@@ -84,10 +84,9 @@ class ScheduleScreenState extends State<ScheduleScreen> {
         listener: (context, state) {},
         builder: (context, state) {
           return Scaffold(
-            appBar: const AppBarWidget(),
+            appBar: const AppBarWidget(title: "Schedule", isBackButton: false),
             body: Stack(
               children: [
-                // Background image
                 Container(
                   decoration: const BoxDecoration(
                     image: DecorationImage(
@@ -96,11 +95,9 @@ class ScheduleScreenState extends State<ScheduleScreen> {
                     ),
                   ),
                 ),
-                // Overlay color
                 Container(
                   color: ColorPalette.primary.withOpacity(0.6),
                 ),
-                // Main content
                 Expanded(
                   child: Container(
                       decoration: const BoxDecoration(

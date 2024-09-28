@@ -92,7 +92,7 @@ class _StudentHomeState extends State<StudentHome> {
             );
           } else if (state is StudentsLoadedSuccessState) {
             return Scaffold(
-              appBar: const AppBarWidget(),
+              appBar: AppBarWidget(title: "Hello ${state.users[0].firstName}", isBackButton: false),
               body: Stack(
                 children: [
                   Container(
