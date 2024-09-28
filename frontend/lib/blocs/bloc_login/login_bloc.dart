@@ -33,10 +33,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   Future<void> loginButtonClickedEvent(
       LoginButtonClickedEvent event, Emitter<LoginState> emit) async {
     print("Login btn clicked!");
-
+    emit(LoginLoadingState());
     try {
-      emit(LoginLoadingState());
-
       final result = await _apiService.loginUser(
         schoolID: event.schoolID,
         password: event.password,
