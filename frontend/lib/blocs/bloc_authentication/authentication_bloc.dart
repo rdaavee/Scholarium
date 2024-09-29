@@ -6,20 +6,41 @@ import 'package:flutter/material.dart';
 import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-part 'login_event.dart';
-part 'login_state.dart';
+part 'authentication_event.dart';
+part 'authentication_state.dart';
 
-class LoginBloc extends Bloc<LoginEvent, LoginState> {
+class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> {
   final GlobalRepositoryImpl _apiService;
 
-  LoginBloc(this._apiService) : super(LoginInitial()) {
+  AuthenticationBloc(this._apiService) : super(LoginInitial()) {
     on<LoginInitialEvent>(loginInitialEvent);
     on<LoginButtonClickedEvent>(loginButtonClickedEvent);
     on<LoginAutomaticEvent>(automaticLogin);
   }
 
-  Future<void> automaticLogin(
-      LoginAutomaticEvent event, Emitter<LoginState> emit) async {
+  Future<void> loginInitialEvent(
+      LoginInitialEvent event, Emitter<AuthenticationState> emit) async {
+    emit(LoginLoadingState());
+    await Future.delayed(
+      const Duration(seconds: 3),
+    );
+  }
+
+  Future<void> storeToken(
+      String token, String schoolID, String password) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+    await prefs.setString('token', token);
+    print(token);
+    await prefs.setString('schoolID', schoolID);
+    await prefs.setString('password', password);
+    await prefs.setString('login', "true");
+  }
+
+  Future<void> loginButtonClickedEvent(
+      LoginButtonClickedEvent event, Emitter<AuthenticationState> emit) async {
+    print("Login btn clicked!");
+    emit(LoginLoadingState());
     try {
       final result = await _apiService.loginUser(
         schoolID: event.schoolID,
@@ -66,29 +87,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     }
   }
 
-  Future<void> loginInitialEvent(
-      LoginInitialEvent event, Emitter<LoginState> emit) async {
-    emit(LoginLoadingState());
-    await Future.delayed(
-      const Duration(seconds: 3),
-    );
-  }
-
-  Future<void> storeToken(
-      String token, String schoolID, String password) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.clear();
-    await prefs.setString('token', token);
-    print(token);
-    await prefs.setString('schoolID', schoolID);
-    await prefs.setString('password', password);
-    await prefs.setString('login', "true");
-  }
-
-  Future<void> loginButtonClickedEvent(
-      LoginButtonClickedEvent event, Emitter<LoginState> emit) async {
-    print("Login btn clicked!");
-    emit(LoginLoadingState());
+  Future<void> automaticLogin(
+      LoginAutomaticEvent event, Emitter<AuthenticationState> emit) async {
     try {
       final result = await _apiService.loginUser(
         schoolID: event.schoolID,

@@ -15,14 +15,14 @@ import 'package:isHKolarium/blocs/bloc_student/students_bloc.dart';
 import 'package:isHKolarium/features/screens/screen_announcement/announcements_screen.dart';
 import 'package:isHKolarium/features/widgets/student_widgets/announcement_widgets/announcement_card.dart';
 
-class StudentHome extends StatefulWidget {
-  const StudentHome({super.key});
+class StudentHomeScreen extends StatefulWidget {
+  const StudentHomeScreen({super.key});
 
   @override
-  State<StudentHome> createState() => _StudentHomeState();
+  State<StudentHomeScreen> createState() => _StudentHomeScreenState();
 }
 
-class _StudentHomeState extends State<StudentHome> {
+class _StudentHomeScreenState extends State<StudentHomeScreen> {
   late StudentsBloc studentBloc;
   late BottomNavBloc bottomNavBloc;
   late ScheduleBloc scheduleBloc;

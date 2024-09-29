@@ -5,7 +5,7 @@ part 'bottom_nav_event.dart';
 part 'bottom_nav_state.dart';
 
 class BottomNavBloc extends Bloc<BottomNavEvent, BottomNavState> {
-  BottomNavBloc() : super(BottomNavInitial()) {
+  BottomNavBloc() : super(BottomNavInitialState()) {
     on<BottomNavItemSelected>(_onItemTapped);
   }
 

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:isHKolarium/api/implementations/admin_repository_impl.dart';
@@ -8,8 +10,16 @@ part 'admin_state.dart';
 
 class AdminBloc extends Bloc<AdminEvent, AdminState> {
   final AdminRepositoryImpl _adminRepositoryImpl;
-  AdminBloc(this._adminRepositoryImpl) : super(AdminInitial()) {
+  AdminBloc(this._adminRepositoryImpl) : super(AdminInitialState()) {
+    on<AdminInitialEvent>(adminInitialEvent);
     on<FetchDataEvent>(_onFetchDataEvent);
+  }
+
+  FutureOr<void> adminInitialEvent(
+      AdminInitialEvent event, Emitter<AdminState> emit) async {
+    emit(AdminInitialState());
+    emit(AdminLoadingState());
+    emit(AdminLoadedSuccessState(users: const [], activeCount: 0, inactiveCount: 0));
   }
 
   Future<void> _onFetchDataEvent(
@@ -21,7 +31,7 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
       int inactiveCount =
           users.where((user) => user.status == 'Inactive').length;
 
-      emit(AdminLoadedState(
+      emit(AdminLoadedSuccessState(
           users: users,
           activeCount: activeCount,
           inactiveCount: inactiveCount));

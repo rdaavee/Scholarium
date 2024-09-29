@@ -1,6 +1,16 @@
 part of 'professors_bloc.dart';
 
 @immutable
-sealed class ProfessorsState {}
+abstract class ProfessorsState {}
 
-final class ProfessorsInitial extends ProfessorsState {}
+final class ProfessorsInitialState extends ProfessorsState {}
+
+final class ProfessorsLoadingState extends ProfessorsState {}
+
+final class ProfessorsLoadedSuccessState extends ProfessorsState {}
+
+final class ProfessorsErrorState extends ProfessorsState {
+  final String message;
+
+  ProfessorsErrorState({ required this.message});
+}
