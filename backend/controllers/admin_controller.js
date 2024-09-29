@@ -1,4 +1,5 @@
 const pool = require('../db');
+const User = require('../models/user_model');
 
 //Create a user
 exports.createUser = (req, res) => {
@@ -86,24 +87,19 @@ exports.deleteUser = (req, res) => {
     });
 };
 
-//List all users
-exports.getAllUsers = (req, res) => {
-    pool.getConnection((error, connection) => {
-        if (error) throw error;
-        console.log(`connected as id ${connection.threadId}`);
-  
-        connection.query('SELECT * from users', (error, rows) => {
-            connection.release();
-  
-            if (!error) {
-                res.status(200).json(rows);
-            } else {
-                console.log(error)
-                res.status(500).json(error);
-            };
-        });
-    });
+
+exports.getAllUsers = async (req, res) => {
+    try {
+        const users = await User.find();
+        res.status(200).json(users);
+    } catch (error) {
+        console.error('Error fetching users:', error);
+        res.status(500).json({ message: 'Error fetching users' });
+    }
 };
+
+
+
 
 //Create announcement
 exports.createAnnounce = (req, res) => {

@@ -48,7 +48,8 @@ class _AnnouncementsPageState extends State<AnnouncementsScreen> {
             );
           } else if (state is StudentsLoadedSuccessState) {
             return Scaffold(
-              appBar: const AppBarWidget(title: "Announcements", isBackButton: true),
+              appBar: const AppBarWidget(
+                  title: "Announcements", isBackButton: true),
               backgroundColor: ColorPalette.primary.withOpacity(0.9),
               body: Column(
                 children: [
@@ -105,6 +106,8 @@ class _AnnouncementsPageState extends State<AnnouncementsScreen> {
             );
           } else {
             return const Scaffold(
+              appBar: const AppBarWidget(
+                  title: "Announcements", isBackButton: true),
               backgroundColor: Colors.white,
               body: Center(
                 child: CircularProgressIndicator(),

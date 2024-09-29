@@ -19,23 +19,31 @@ class StudentRepositoryImpl implements StudentRepository, GlobalRepository {
   final String baseUrl = 'http://localhost:3000/api'; //localhost
   // final String baseUrl = 'http://192.168.4.181:3000/api'; //usb tethering
 
+  Future<String?> _getToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('token');
+  }
+
   @override
-  Future<Map<String, dynamic>> fetchUpcomingSchedule(
-      {required String token}) async {
-    final response =
-        await http.get(Uri.parse('$baseUrl/user/getUpcomingSchedule/$token'));
+  Future<Map<String, dynamic>> fetchUpcomingSchedule() async {
+    final token = await _getToken();
+    final response = await http.get(
+      Uri.parse('$baseUrl/user/getUpcomingSchedule'),
+      headers: {'Authorization': 'Bearer $token'},
+    );
 
     const emptySchedule = ScheduleModel(
-        schoolID: "",
-        room: "",
-        block: "",
-        subject: "",
-        profID: "",
-        professor: "",
-        department: "",
-        time: "",
-        date: "No Upcoming Schedule",
-        isCompleted: "");
+      schoolID: "",
+      room: "",
+      block: "",
+      subject: "",
+      profID: "",
+      professor: "",
+      department: "",
+      time: "",
+      date: "No Upcoming Schedule",
+      isCompleted: "",
+    );
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
@@ -60,14 +68,17 @@ class StudentRepositoryImpl implements StudentRepository, GlobalRepository {
 
   @override
   Future<List<Map<String, dynamic>>> getSchedule({
-    required String token,
     required String selectedMonth,
   }) async {
-    final url = Uri.parse(
-        '$baseUrl/user/getSchedule/$token/$currentYear-$selectedMonth');
+    final token = await _getToken();
+    final url =
+        Uri.parse('$baseUrl/user/getSchedule/$currentYear-$selectedMonth');
 
     try {
-      final response = await http.get(url);
+      final response = await http.get(
+        url,
+        headers: {'Authorization': 'Bearer $token'},
+      );
       if (response.statusCode == 200) {
         final List<dynamic> data = jsonDecode(response.body);
         return data.map((item) => item as Map<String, dynamic>).toList();
@@ -81,10 +92,12 @@ class StudentRepositoryImpl implements StudentRepository, GlobalRepository {
   }
 
   @override
-  Future<List<DtrModel>> fetchDtrData({
-    required String? token,
-  }) async {
-    final response = await http.get(Uri.parse('$baseUrl/user/getDTR/$token'));
+  Future<List<DtrModel>> fetchDtrData() async {
+    final token = await _getToken();
+    final response = await http.get(
+      Uri.parse('$baseUrl/user/getDTR'),
+      headers: {'Authorization': 'Bearer $token'},
+    );
     if (response.statusCode == 200) {
       final List<dynamic> data = jsonDecode(response.body);
       return data.map((json) => DtrModel.fromJson(json)).toList();
@@ -94,12 +107,12 @@ class StudentRepositoryImpl implements StudentRepository, GlobalRepository {
   }
 
   @override
-  Future<DtrHoursModel> fetchDtrTotalHoursData({
-    required String? token,
-  }) async {
+  Future<DtrHoursModel> fetchDtrTotalHoursData() async {
+    final token = await _getToken();
     final response = await http.get(
-      Uri.parse('$baseUrl/user/getTotalHours/$token'),
-      headers: <String, String>{
+      Uri.parse('$baseUrl/user/getTotalHours'),
+      headers: {
+        'Authorization': 'Bearer $token',
         'Content-Type': 'application/json',
       },
     );
@@ -116,77 +129,6 @@ class StudentRepositoryImpl implements StudentRepository, GlobalRepository {
   }
 
   @override
-  Future<UserModel> fetchStudentData({
-    required String? token,
-  }) async {
-    final response = await http.get(
-      Uri.parse('$baseUrl/user/profile/$token'),
-      headers: <String, String>{
-        'Content-Type': 'application/json',
-      },
-    );
-    if (response.statusCode == 200) {
-      final Map<String, dynamic> data = jsonDecode(response.body);
-      return UserModel.fromJson(data);
-    } else {
-      return UserModel(
-        schoolID: '',
-        email: '',
-        firstName: 'N/A',
-        middleName: '',
-        lastName: '',
-        profilePicture: '',
-        role: '',
-        gender: '',
-        contact: '',
-        address: '',
-        hkType: '',
-        status: '',
-        token: '',
-      );
-    }
-  }
-
-  @override
-  Future<Map<String, dynamic>> loginUser({
-    required String schoolID,
-    required String password,
-  }) async {
-    final url = Uri.parse('$baseUrl/login');
-
-    try {
-      final response = await http.post(
-        url,
-        headers: {'Content-Type': 'application/json'},
-        body: json.encode({
-          'school_id': schoolID,
-          'password': password,
-        }),
-      );
-
-      print('Response status code: ${response.statusCode}');
-
-      if (response.statusCode == 200) {
-        final Map<String, dynamic> responseData = json.decode(response.body);
-        return {
-          'statusCode': response.statusCode,
-          'token': responseData['token'],
-          'role': responseData['role'],
-        };
-      } else {
-        final Map<String, dynamic> errorResponse = json.decode(response.body);
-        return {
-          'statusCode': response.statusCode,
-          'error': errorResponse['message'] ?? 'Unknown error occurred',
-        };
-      }
-    } catch (e) {
-      print('Error logging in: $e');
-      return {'statusCode': 500, 'error': 'Error: $e'};
-    }
-  }
-
-  @override
   Future<void> logout(BuildContext context) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('token');
@@ -195,14 +137,15 @@ class StudentRepositoryImpl implements StudentRepository, GlobalRepository {
   }
 
   Future<UpdatePasswordModel> updatePassword({
-    required String token,
     required String oldPassword,
     required String newPassword,
     required String confirmPassword,
   }) async {
+    final token = await _getToken();
     final response = await http.put(
-      Uri.parse('$baseUrl/user/updatePassword/$token'),
-      headers: <String, String>{
+      Uri.parse('$baseUrl/user/updatePassword'),
+      headers: {
+        'Authorization': 'Bearer $token',
         'Content-Type': 'application/json',
       },
       body: jsonEncode(<String, dynamic>{
@@ -223,12 +166,12 @@ class StudentRepositoryImpl implements StudentRepository, GlobalRepository {
   }
 
   @override
-  Future<UserModel> fetchUserData({
-    required String? token,
-  }) async {
+  Future<UserModel> fetchUserData() async {
+    final token = await _getToken();
     final response = await http.get(
-      Uri.parse('$baseUrl/user/profile/$token'),
-      headers: <String, String>{
+      Uri.parse('$baseUrl/user/profile'),
+      headers: {
+        'Authorization': 'Bearer $token',
         'Content-Type': 'application/json',
       },
     );
@@ -257,21 +200,28 @@ class StudentRepositoryImpl implements StudentRepository, GlobalRepository {
 
   @override
   Future<List<AnnouncementModel>> fetchAnnoucementData() async {
-    final response =
-        await http.get(Uri.parse('$baseUrl/user/getAnnouncements'));
+    final token = await _getToken();
+    final response = await http.get(
+      Uri.parse('$baseUrl/user/getAnnouncements'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
 
     if (response.statusCode == 200) {
       final List<dynamic> data = jsonDecode(response.body);
       return data.map((json) => AnnouncementModel.fromJson(json)).toList();
     } else {
-      throw Exception('Failed to load annoucement data');
+      throw Exception('Failed to load announcement data');
     }
   }
 
   @override
   Future<AnnouncementModel> fetchLatestAnnouncementData() async {
-    final response =
-        await http.get(Uri.parse('$baseUrl/user/getLatestAnnouncement'));
+    final response = await http.get(
+      Uri.parse('$baseUrl/user/getLatestAnnouncement'),
+    );
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> data = jsonDecode(response.body);
@@ -288,12 +238,13 @@ class StudentRepositoryImpl implements StudentRepository, GlobalRepository {
   }
 
   @override
-  Future<List<NotificationsModel>> fetchNotificationsData({
-    required String? token,
-  }) async {
+  Future<List<NotificationsModel>> fetchNotificationsData() async {
+    final token = await _getToken();
     try {
-      final response =
-          await http.get(Uri.parse('$baseUrl/user/getNotifications/$token'));
+      final response = await http.get(
+        Uri.parse('$baseUrl/user/getNotifications'),
+        headers: {'Authorization': 'Bearer $token'},
+      );
 
       if (response.statusCode == 200) {
         final List<dynamic> data = jsonDecode(response.body);
@@ -305,5 +256,11 @@ class StudentRepositoryImpl implements StudentRepository, GlobalRepository {
       print('Error fetching notification: $error'); // Debug print
       throw Exception('Error fetching notification: $error');
     }
+  }
+
+  @override
+  Future<Map<String, dynamic>> loginUser(
+      {required String schoolID, required String password}) {
+    throw UnimplementedError();
   }
 }

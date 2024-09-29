@@ -27,9 +27,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   Future<void> fetchProfile(
       FetchProfileEvent event, Emitter<ProfileState> emit) async {
     try {
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      final token = prefs.getString('token');
-      UserModel user = await _apiService.fetchUserData(token: token);
+      UserModel user = await _apiService.fetchUserData();
       emit(ProfileLoadedSuccessState(users: [user]));
     } catch (e) {
       emit(ProfileErrorState(message: 'Failed to load profile data: $e'));
