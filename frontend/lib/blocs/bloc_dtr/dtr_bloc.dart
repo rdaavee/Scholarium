@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:isHKolarium/api/implementations/student_repository_impl.dart';
 import 'package:isHKolarium/api/models/dtr_model.dart';
 import 'package:isHKolarium/api/models/dtr_total_hours_model.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 part 'dtr_event.dart';
 part 'dtr_state.dart';
@@ -27,14 +26,12 @@ class DtrBloc extends Bloc<DtrEvent, DtrState> {
   FutureOr<void> fetchDtrEvent(
       FetchDtrEvent event, Emitter<DtrState> emit) async {
     try {
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      final token = prefs.getString('token');
-      DtrHoursModel totalhours = await _apiService.fetchDtrTotalHoursData(token: token);
-      List<DtrModel> dtr = await _apiService.fetchDtrData(token: token);
+      DtrHoursModel totalhours = await _apiService.fetchDtrTotalHoursData();
+      List<DtrModel> dtr = await _apiService.fetchDtrData();
       emit(DtrLoadedSuccessState(hours: [totalhours], dtr: dtr));
     } catch (error) {
-        print('Error fetching dtr: $error');
-        emit(DtrErrorState(message: error.toString()));
+      print('Error fetching DTR: $error');
+      emit(DtrErrorState(message: error.toString()));
     }
   }
 }

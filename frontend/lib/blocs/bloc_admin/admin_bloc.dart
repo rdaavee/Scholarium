@@ -1,13 +1,32 @@
 import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
-
+import 'package:flutter/material.dart';
+import 'package:isHKolarium/api/implementations/admin_repository_impl.dart';
+import 'package:isHKolarium/api/models/user_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 part 'admin_event.dart';
 part 'admin_state.dart';
 
 class AdminBloc extends Bloc<AdminEvent, AdminState> {
-  AdminBloc() : super(AdminInitial()) {
-    on<AdminEvent>((event, emit) {
-      // TODO: implement event handler
-    });
+  final AdminRepositoryImpl _adminRepositoryImpl;
+  AdminBloc(this._adminRepositoryImpl) : super(AdminInitial()) {
+    on<FetchDataEvent>(_onFetchDataEvent);
+  }
+
+  Future<void> _onFetchDataEvent(
+      FetchDataEvent event, Emitter<AdminState> emit) async {
+    emit(AdminLoadingState()); // Emit loading state before fetching data
+    try {
+      final users = await _adminRepositoryImpl.fetchAllUsers();
+      int activeCount = users.where((user) => user.status == 'Active').length;
+      int inactiveCount =
+          users.where((user) => user.status == 'Inactive').length;
+
+      emit(AdminLoadedState(
+          users: users,
+          activeCount: activeCount,
+          inactiveCount: inactiveCount));
+    } catch (e) {
+      emit(AdminErrorState(message: 'Failed to load data: $e'));
+    }
   }
 }

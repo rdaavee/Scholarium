@@ -14,6 +14,11 @@ class GlobalRepositoryImpl implements GlobalRepository {
   final String baseUrl = 'http://localhost:3000/api'; //localhost
   // final String baseUrl = 'http://192.168.4.181:3000/api'; //usb tethering
 
+  Future<String?> _getToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('token');
+  }
+
   @override
   Future<Map<String, dynamic>> loginUser({
     required String schoolID,
@@ -90,48 +95,44 @@ class GlobalRepositoryImpl implements GlobalRepository {
   }
 
   @override
-  Future<UserModel> fetchUserData({
-    required String? token,
-  }) async {
-    final response = await http.get(
-      Uri.parse('$baseUrl/user/profile/$token'),
-      headers: <String, String>{
-        'Content-Type': 'application/json',
-      },
-    );
+  Future<UserModel> fetchUserData() async {
+    try {
+      final token = await _getToken();
+      if (token == null) {
+        throw Exception('Token not found');
+      }
 
-    if (response.statusCode == 200) {
-      final Map<String, dynamic> data = jsonDecode(response.body);
-      return UserModel.fromJson(data);
-    } else {
-      return UserModel(
-        schoolID: '',
-        email: '',
-        firstName: 'N/A',
-        middleName: '',
-        lastName: '',
-        profilePicture: '',
-        role: '',
-        gender: '',
-        contact: '',
-        address: '',
-        hkType: '',
-        status: '',
-        token: '',
+      final response = await http.get(
+        Uri.parse('$baseUrl/user/profile'),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
       );
-    }
-  }
 
-  @override
-  Future<List<AnnouncementModel>> fetchAnnoucementData() async {
-    final response =
-        await http.get(Uri.parse('$baseUrl/user/getAnnouncements'));
-
-    if (response.statusCode == 200) {
-      final List<dynamic> data = jsonDecode(response.body);
-      return data.map((json) => AnnouncementModel.fromJson(json)).toList();
-    } else {
-      throw Exception('Failed to load annoucement data');
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> data = jsonDecode(response.body);
+        return UserModel.fromJson(data);
+      } else {
+        return UserModel(
+          schoolID: '',
+          email: '',
+          firstName: 'N/A',
+          middleName: '',
+          lastName: '',
+          profilePicture: '',
+          role: '',
+          gender: '',
+          contact: '',
+          address: '',
+          hkType: '',
+          status: '',
+          token: '',
+        );
+      }
+    } catch (error) {
+      print('Error fetching user data: $error'); // Debug print
+      throw Exception('Error fetching user data: $error');
     }
   }
 
@@ -155,12 +156,22 @@ class GlobalRepositoryImpl implements GlobalRepository {
   }
 
   @override
-  Future<List<NotificationsModel>> fetchNotificationsData({
-    required String? token,
-  }) async {
+  Future<List<NotificationsModel>> fetchNotificationsData() async {
     try {
-      final response =
-          await http.get(Uri.parse('$baseUrl/user/getNotifications/$token'));
+      final token =
+          await _getToken(); // Retrieve token using the _getToken method
+      if (token == null) {
+        throw Exception('Token not found');
+      }
+
+      final response = await http.get(
+        Uri.parse('$baseUrl/user/getNotifications'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization':
+              'Bearer $token', // Add the token in the Authorization header
+        },
+      );
 
       if (response.statusCode == 200) {
         final List<dynamic> data = jsonDecode(response.body);
@@ -172,5 +183,10 @@ class GlobalRepositoryImpl implements GlobalRepository {
       print('Error fetching notification: $error'); // Debug print
       throw Exception('Error fetching notification: $error');
     }
+  }
+
+  @override
+  Future<List<AnnouncementModel>> fetchAnnoucementData() {
+    throw UnimplementedError();
   }
 }

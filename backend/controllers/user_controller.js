@@ -1,4 +1,3 @@
-
 const moment = require("moment");
 const User = require('../models/user_model'); 
 const Announcement = require('../models/announcement_model');
@@ -6,6 +5,11 @@ const Post = require('../models/posts_model');
 const Schedule = require('../models/schedule_model'); 
 const DTR = require('../models/dtr_model'); 
 const Notification = require('../models/notifications_model');
+
+// Middleware to validate token and extract user ID
+const validateToken = async (req, res, next) => {
+  // Implement your token validation logic here to set req.userId
+};
 
 // Get Announcement
 exports.getAnnouncements = async (req, res) => {
@@ -52,11 +56,10 @@ exports.getPosts = async (req, res) => {
   }
 };
 
-// Get User Incoming and Outgoing Duties or Schedule
+// Get User Upcoming Schedule
 exports.getUserUpcomingSchedule = async (req, res) => {
-  const token = req.params.token;
   try {
-    const user = await User.findOne({ token: token });
+    const user = await User.findById(req.userId); // Get user ID from middleware
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -77,7 +80,7 @@ exports.getUserUpcomingSchedule = async (req, res) => {
         next: nextSchedule || null,
       });
     } else {
-      res.status(404).json({ message: "No schedule found"});
+      res.status(404).json({ message: "No schedule found" });
     }
   } catch (error) {
     console.error(error);
@@ -87,9 +90,8 @@ exports.getUserUpcomingSchedule = async (req, res) => {
 
 // Get User DTR
 exports.getUserDTR = async (req, res) => {
-  const token = req.params.token;
   try {
-    const user = await User.findOne({ token: token });
+    const user = await User.findById(req.userId); // Get user ID from middleware
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -108,9 +110,8 @@ exports.getUserDTR = async (req, res) => {
 
 // Get User Total Hours
 exports.getUserTotalHours = async (req, res) => {
-  const token = req.params.token;
   try {
-    const user = await User.findOne({ token: token });
+    const user = await User.findById(req.userId); // Get user ID from middleware
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -134,24 +135,17 @@ exports.getUserTotalHours = async (req, res) => {
   }
 };
 
-//-------------------------------------FOR STUDENT SCHEDULE PAGE-----------------------------------------------------
 // Get User Schedule
 exports.getUserSchedule = async (req, res) => {
-  const token = req.params.token;
   const month = req.params.month; // Expecting a month in 'YYYY-MM' format
 
-  // Log the token and month
-  console.log(`Received token: ${token}, month: ${month}`);
-
   try {
-    // Find the user based on the token
-    const user = await User.findOne({ token: token });
+    const user = await User.findById(req.userId); // Get user ID from middleware
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
     const school_id = user.school_id;
-    console.log(`User found with school_id: ${school_id}`);
 
     // Update schedules with past dates to set completed to false
     await updatePastSchedules(school_id);
@@ -159,7 +153,6 @@ exports.getUserSchedule = async (req, res) => {
     // Construct the date range as strings
     const startOfMonth = moment(month).startOf('month').format('YYYY-MM-DD');
     const endOfMonth = moment(month).endOf('month').format('YYYY-MM-DD');
-    console.log(`Start of month: ${startOfMonth}, End of month: ${endOfMonth}`);
 
     // Fetch the schedules based on the school_id and the date range
     const schedules = await Schedule.find({
@@ -176,7 +169,6 @@ exports.getUserSchedule = async (req, res) => {
       if (scheduleDate.isBefore(currentDate) && schedule.completed !== "true") {
         return Schedule.updateOne({ _id: schedule._id }, { completed: 'false' });
       }
-      // If the date is today or in the future, do nothing (no action needed)
     });
 
     // Execute all update promises
@@ -185,7 +177,6 @@ exports.getUserSchedule = async (req, res) => {
     if (schedules.length > 0) {
       res.status(200).json(schedules);
     } else {
-      console.log('No schedules found for this month');
       res.status(404).json({ message: "No schedules found for this month" });
     }
   } catch (error) {
@@ -211,14 +202,10 @@ async function updatePastSchedules(school_id) {
   await Promise.all(updatePromises);
 }
 
-
-
-//-------------------------------------FOR STUDENT NOTIFICATIONS PAGE-----------------------------------------------------
-// Get Student Notifications
 exports.getUserNotifications = async (req, res) => {
-  const token = req.params.token;
   try {
-    const user = await User.findOne({ token: token });
+    const user = await User.findById(req.userId);
+    console.log("User ID:", req.userId);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -251,12 +238,10 @@ exports.updateNotificationStatus = async (req, res) => {
   }
 };
 
-//-------------------------------------FOR STUDENT PROFILE PAGE-----------------------------------------------------
 // Get specific user
 exports.getUserProfile = async (req, res) => {
-  const token = req.params.token;
   try {
-    const user = await User.findOne({ token: token });
+    const user = await User.findById(req.userId);
     if (user) {
       const baseUrl = "http://192.168.42.137:3000"; 
       res.status(200).json({
@@ -288,11 +273,10 @@ exports.getUserProfile = async (req, res) => {
 
 // Change Password
 exports.updatePassword = async (req, res) => {
-  const token = req.params.token;
   const { password } = req.body;
 
   try {
-    const user = await User.findOne({ token: token });
+    const user = await User.findById(req.userId); // Get user ID from middleware
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }

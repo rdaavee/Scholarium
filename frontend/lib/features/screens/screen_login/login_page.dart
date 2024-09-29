@@ -34,39 +34,11 @@ class _LoginPageState extends State<LoginPage> {
   void _initialize() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final isLogin = prefs.getString('login');
-    final role = prefs.getString('role');
+    final schoolID = prefs.getString('schoolID').toString();
+    final password = prefs.getString('password').toString();
     if (isLogin == "true") {
-      switch (role) {
-        case "Student":
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const StudentHomePage(),
-            ),
-          );
-          break;
-
-        case "Professor":
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const ProfessorScreen(),
-            ),
-          );
-          break;
-
-        case "Admin":
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const AdminHomePage(),
-            ),
-          );
-          break;
-        default:
-          break;
-      }
-    }
+      _loginBloc.add(LoginAutomaticEvent(schoolID, password));
+    } else {}
   }
 
   @override

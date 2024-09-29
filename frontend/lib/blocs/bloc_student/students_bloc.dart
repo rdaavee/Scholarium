@@ -6,7 +6,6 @@ import 'package:isHKolarium/api/models/announcement_model.dart';
 import 'package:isHKolarium/api/models/dtr_total_hours_model.dart';
 import 'package:isHKolarium/api/models/schedule_model.dart';
 import 'package:isHKolarium/api/models/user_model.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 part 'students_event.dart';
 part 'students_state.dart';
 
@@ -36,15 +35,13 @@ class StudentsBloc extends Bloc<StudentsEvent, StudentsState> {
   FutureOr<void> fetchUserEvent(
       FetchUserEvent event, Emitter<StudentsState> emit) async {
     try {
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      final token = prefs.getString('token');
-      print(token);
-      UserModel user = await _studentRepositoryImpl.fetchUserData(token: token);
-      final scheduleData = await _studentRepositoryImpl.fetchUpcomingSchedule(token: token.toString());
+      UserModel user = await _studentRepositoryImpl.fetchUserData();
+      final scheduleData = await _studentRepositoryImpl.fetchUpcomingSchedule();
       AnnouncementModel latestAnnouncement =
           await _studentRepositoryImpl.fetchLatestAnnouncementData();
       DtrHoursModel totalhours =
-          await _studentRepositoryImpl.fetchDtrTotalHoursData(token: token);
+          await _studentRepositoryImpl.fetchDtrTotalHoursData();
+
       emit(StudentsLoadedSuccessState(
         users: [user],
         todaySchedule: scheduleData['today'],
@@ -53,7 +50,7 @@ class StudentsBloc extends Bloc<StudentsEvent, StudentsState> {
         hours: [totalhours],
       ));
     } catch (error) {
-      print('Error fetching latest announcement: $error');
+      print('Error fetching user data: $error');
       emit(StudentsErrorState(message: error.toString()));
     }
   }
@@ -61,15 +58,12 @@ class StudentsBloc extends Bloc<StudentsEvent, StudentsState> {
   Future<void> fetchAnnoucementEvent(
       FetchAnnouncementEvent event, Emitter<StudentsState> emit) async {
     try {
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      final token = prefs.getString('token');
-
-      UserModel user = await _studentRepositoryImpl.fetchUserData(token: token);
-      final scheduleData = await _studentRepositoryImpl.fetchUpcomingSchedule(token: token.toString());
+      UserModel user = await _studentRepositoryImpl.fetchUserData();
+      final scheduleData = await _studentRepositoryImpl.fetchUpcomingSchedule();
       List<AnnouncementModel> announcements =
           await _studentRepositoryImpl.fetchAnnoucementData();
       DtrHoursModel totalhours =
-          await _studentRepositoryImpl.fetchDtrTotalHoursData(token: token);
+          await _studentRepositoryImpl.fetchDtrTotalHoursData();
 
       emit(StudentsLoadedSuccessState(
         users: [user],
@@ -87,14 +81,12 @@ class StudentsBloc extends Bloc<StudentsEvent, StudentsState> {
   Future<void> fetchLatestEvent(
       FetchLatestEvent event, Emitter<StudentsState> emit) async {
     try {
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      final token = prefs.getString('token');
-      UserModel user = await _studentRepositoryImpl.fetchUserData(token: token);
-      final scheduleData = await _studentRepositoryImpl.fetchUpcomingSchedule(token: token.toString());
+      UserModel user = await _studentRepositoryImpl.fetchUserData();
+      final scheduleData = await _studentRepositoryImpl.fetchUpcomingSchedule();
       AnnouncementModel latestAnnouncement =
           await _studentRepositoryImpl.fetchLatestAnnouncementData();
       DtrHoursModel totalhours =
-          await _studentRepositoryImpl.fetchDtrTotalHoursData(token: token);
+          await _studentRepositoryImpl.fetchDtrTotalHoursData();
       emit(StudentsLoadedSuccessState(
         users: [user],
         todaySchedule: scheduleData['today'],
