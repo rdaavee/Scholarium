@@ -1,4 +1,6 @@
 part of 'professors_bloc.dart';
 
 @immutable
-sealed class ProfessorsEvent {}
+abstract class ProfessorsEvent {}
+
+final class ProfessorsInitialEvent extends ProfessorsEvent {}

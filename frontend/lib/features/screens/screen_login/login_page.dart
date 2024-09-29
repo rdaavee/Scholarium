@@ -3,10 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
-import 'package:isHKolarium/blocs/bloc_login/login_bloc.dart';
+import 'package:isHKolarium/blocs/bloc_authentication/authentication_bloc.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
-import 'package:isHKolarium/features/screens/screen_admin/admin_home_page.dart';
-import 'package:isHKolarium/features/screens/screen_bottom_nav/bottom_navigation_provider.dart';
+import 'package:isHKolarium/features/screens/screen_bottom_nav/bottom_navigation_page.dart';
 import 'package:isHKolarium/features/widgets/authentication_widgets/login_form.dart';
 import 'package:isHKolarium/features/screens/screen_professor/professor_screen.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
@@ -22,12 +21,12 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  late final LoginBloc _loginBloc;
+  late final AuthenticationBloc _loginBloc;
 
   @override
   void initState() {
     super.initState();
-    _loginBloc = LoginBloc(GlobalRepositoryImpl());
+    _loginBloc = AuthenticationBloc(GlobalRepositoryImpl());
     _initialize();
   }
 
@@ -65,7 +64,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<LoginBloc, LoginState>(
+    return BlocConsumer<AuthenticationBloc, AuthenticationState>(
       bloc: _loginBloc,
       listener: (context, state) {
         if (state is LoginLoadingState) {
@@ -76,7 +75,8 @@ class _LoginPageState extends State<LoginPage> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const StudentHomePage(),
+              builder: (context) =>
+                  const BottomNavigationPage(isRole: "Student"),
             ),
           );
         } else if (state is LoginNavigateToProfessorHomePageActionState) {
@@ -85,7 +85,8 @@ class _LoginPageState extends State<LoginPage> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const ProfessorScreen(),
+              builder: (context) =>
+                  const BottomNavigationPage(isRole: "Professor"),
             ),
           );
         } else if (state is LoginNavigateToAdminHomePageActionState) {
@@ -94,7 +95,7 @@ class _LoginPageState extends State<LoginPage> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const AdminHomePage(),
+              builder: (context) => const BottomNavigationPage(isRole: "Admin"),
             ),
           );
         } else if (state is LoginErrorState) {

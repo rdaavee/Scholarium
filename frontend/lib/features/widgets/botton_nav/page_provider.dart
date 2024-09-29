@@ -13,6 +13,6 @@ Widget getPage(int index) {
     case 3:
       return const ProfileScreen();
     default:
-      return const StudentHome();
+      return const StudentHomeScreen();
   }
 }

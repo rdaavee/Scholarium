@@ -7,7 +7,7 @@ const bodyParser = require("body-parser");
 const userRoutes = require("./routers/user_routes");
 const professorRoutes = require("./routers/professor_routes");
 const adminRoutes = require("./routers/admin_routes");
-const loginRoutes = require("./routers/login_routes");
+const authRoutes = require("./routers/authentication_routes");
 const path = require("path");
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -21,7 +21,7 @@ app.use(bodyParser.json());
 app.use("/api", userRoutes);
 app.use("/api", professorRoutes);
 app.use("/api", adminRoutes);
-app.use("/api", loginRoutes);
+app.use("/api", authRoutes);
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 

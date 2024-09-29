@@ -96,8 +96,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 const SizedBox(height: 20),
                                 InfoRow(
                                     label: 'Name',
-                                    value: state.users[0].firstName +
-                                        state.users[0].lastName),
+                                    value: "${state.users[0].firstName} ${state.users[0].middleName} ${state.users[0].lastName}"),
                                 const SizedBox(height: 15),
                                 const DividerWidget(),
                                 const SizedBox(height: 15),

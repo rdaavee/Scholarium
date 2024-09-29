@@ -14,6 +14,22 @@ const seedUsers = async () => {
     // Sample user data
     const users = [
       {
+        school_id: '03-0000-00019',
+        email: 'benedictabalos30@gmail.com',
+        password: '1',
+        first_name: 'Mark Benedict',
+        middle_name: 'C.',
+        last_name: 'Abalos',
+        profile_picture: null,
+        gender: 'Male',
+        contact: '09516185235',
+        address: 'Baybay Polong',
+        role: 'Student',
+        hk_type: 'HK 25',
+        status: 'Active',
+        token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzQsI...',
+      },
+      {
         school_id: '03-0000-00001',
         email: 'dummy1@phinmaed.com',
         password: '1',
