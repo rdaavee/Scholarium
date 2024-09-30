@@ -108,7 +108,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 const SizedBox(height: 15),
                                 InfoRow(
                                     label: 'Student ID',
-                                    value: state.users[0].schoolID),
+                                    value: state.users[0].schoolID.toString()),
                                 const SizedBox(height: 15),
                                 const DividerWidget(),
                                 const SizedBox(height: 15),

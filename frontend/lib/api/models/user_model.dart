@@ -1,22 +1,23 @@
 class UserModel {
   final int? id;
-  final String schoolID;
+  final String? schoolID;
   final String email;
   final String firstName;
   final String middleName;
   final String lastName;
   final String profilePicture;
   final String gender;
+  final String? password;
   final String contact;
   final String address;
   final String role;
   final String hkType;
   final String status;
-  final String token;
+  final String? token;
 
   UserModel({
     this.id,
-    required this.schoolID,
+    this.schoolID,
     required this.email,
     required this.firstName,
     required this.middleName,
@@ -24,11 +25,12 @@ class UserModel {
     required this.profilePicture,
     required this.role,
     required this.gender,
+    this.password,
     required this.contact,
     required this.address,
     required this.hkType,
     required this.status,
-    required this.token,
+    this.token,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> map) {
@@ -40,6 +42,7 @@ class UserModel {
       lastName: map['last_name'] ?? '',
       profilePicture: map['profile_picture'] ?? '',
       gender: map['gender'] ?? '',
+      password: map['password'] ?? '',
       contact: map['contact'] ?? '',
       address: map['address'] ?? '',
       role: map['role'] ?? '',
@@ -59,6 +62,7 @@ class UserModel {
       'last_name': lastName,
       'profile_picture': profilePicture,
       'gender': gender,
+      'password': password,
       'contact': contact,
       'address': address,
       'role': role,

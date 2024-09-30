@@ -1,54 +1,163 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:isHKolarium/blocs/bloc_admin/admin_bloc.dart';
+import 'package:isHKolarium/features/widgets/app_bar.dart';
+import 'package:isHKolarium/api/models/user_model.dart';
+import 'package:isHKolarium/api/implementations/admin_repository_impl.dart';
 
-class UpdateFormScreen extends StatelessWidget {
-  static String routeName = 'UpdateFormScreen';
-
+class UpdateFormScreen extends StatefulWidget {
   const UpdateFormScreen({super.key});
+
+  @override
+  UpdateFormScreenState createState() => UpdateFormScreenState();
+}
+
+class UpdateFormScreenState extends State<UpdateFormScreen> {
+  final TextEditingController schoolIdController = TextEditingController();
+  final TextEditingController firstNameController = TextEditingController();
+  final TextEditingController middleNameController = TextEditingController();
+  final TextEditingController lastNameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController genderController = TextEditingController();
+  final TextEditingController addressController = TextEditingController();
+  final TextEditingController contactController = TextEditingController();
+  final TextEditingController roleController = TextEditingController();
+  String? selectedHkType;
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('UPDATE'),
-        centerTitle: true,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: ListView(
-          children: [
-            _buildTextField('First Name', 'Ranier'),
-            _buildTextField('Middle Name', 'Tan'),
-            _buildTextField('Last Name', 'Arcega'),
-            _buildTextField('Email', 'rata.arcega.up@phinmaed.com'),
-            _buildTextField('School ID', '03-0000-00001'),
-            _buildTextField('Address', 'Pantal, Dagupan City'),
-            _buildTextField('Contact No.', '0988 8888 888'),
-            _buildTextField('HK Type', ''),
-          ],
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => AdminBloc(AdminRepositoryImpl()),
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.schedule), label: 'Schedule'),
-          BottomNavigationBarItem(icon: Icon(Icons.notifications), label: 'Notification'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
-        ],
+      ],
+      child: Scaffold(
+        appBar: const AppBarWidget(
+            title: "Update Student or Professor", isBackButton: false),
+        body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: ListView(
+            children: [
+              _buildTextField('School ID', schoolIdController),
+              _buildTextField('First Name', firstNameController),
+              _buildTextField('Middle Name', middleNameController),
+              _buildTextField('Last Name', lastNameController),
+              _buildEmailField('Email', emailController),
+              _buildTextField('Password', passwordController),
+              _buildTextField('Gender', genderController),
+              _buildTextField('Address', addressController),
+              _buildContactField('Contact No.', contactController),
+              _buildDropdown('HK Type'),
+              _buildTextField('Role', roleController),
+              _buildSubmitButton(context),
+            ],
+          ),
+        ),
       ),
     );
   }
 
-  Widget _buildTextField(String labelText, String initialValue) {
+  Widget _buildTextField(String labelText, TextEditingController controller) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: TextField(
+        controller: controller,
         decoration: InputDecoration(
           labelText: labelText,
           border: const OutlineInputBorder(),
         ),
-        controller: TextEditingController(text: initialValue),
       ),
+    );
+  }
+
+  Widget _buildEmailField(String labelText, TextEditingController controller) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: TextField(
+        controller: controller,
+        keyboardType: TextInputType.emailAddress,
+        decoration: InputDecoration(
+          labelText: labelText,
+          border: const OutlineInputBorder(),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildContactField(
+      String labelText, TextEditingController controller) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: TextField(
+        controller: controller,
+        keyboardType: const TextInputType.numberWithOptions(),
+        decoration: InputDecoration(
+          labelText: labelText,
+          border: const OutlineInputBorder(),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDropdown(String labelText) {
+    List<String> hkTypes = ['HK 25', 'HK 50', 'HK 75'];
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: DropdownButtonFormField<String>(
+        decoration: InputDecoration(
+          labelText: labelText,
+          border: const OutlineInputBorder(),
+        ),
+        value: selectedHkType,
+        items: hkTypes.map((String type) {
+          return DropdownMenuItem<String>(
+            value: type,
+            child: Text(type),
+          );
+        }).toList(),
+        onChanged: (String? newValue) {
+          setState(() {
+            selectedHkType = newValue;
+          });
+        },
+        hint: const Text('Select HK Type'),
+      ),
+    );
+  }
+
+  Widget _buildSubmitButton(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () {
+        // Validate and collect the data
+        final updateUser = UserModel(
+          email: emailController.text,
+          firstName: firstNameController.text,
+          middleName: middleNameController.text,
+          lastName: lastNameController.text,
+          profilePicture: '', 
+          gender: genderController.text,
+          password: passwordController.text,
+          contact: contactController.text,
+          address: addressController.text,
+          role: roleController.text,
+          hkType: selectedHkType ?? '', 
+          status: 'Active', 
+        );
+
+    
+        context.read<AdminBloc>().add(UpdateUserEvent(schoolIdController.text.toString(), updateUser));
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('User updated successfully!')),
+        );
+      },
+      style: ElevatedButton.styleFrom(
+        padding: const EdgeInsets.symmetric(vertical: 16.0),
+      ),
+      child: const Text('Submit'),
     );
   }
 }

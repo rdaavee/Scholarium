@@ -1,5 +1,4 @@
 {
-  "cSpell.words": [
-    "uploadcontroller"
-  ]
+  "cSpell.words": ["uploadcontroller"],
+  "cmake.ignoreCMakeListsMissing": true
 }
