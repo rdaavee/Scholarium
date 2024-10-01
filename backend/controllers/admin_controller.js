@@ -1,93 +1,92 @@
-const pool = require('../db');
-const User = require('../models/user_model');
+const mongoose = require('mongoose');
+const User = require('../models/user_model'); 
+const Announcement = require('../models/announcement_model');
 
-//Create a user
-exports.createUser = (req, res) => {
-    pool.getConnection((error, connection) => {
-        if (error) throw error;
-        console.log(`connected as id ${connection.threadId}`);
-
+// Create a user
+exports.createUser = async (req, res) => {
+    try {
         const params = req.body;
 
-        connection.query('INSERT INTO users SET ?', params, (error, rows) => {
-            connection.release();
-
-            if (!error) {
-                res.status(200).json({ message: `Record of ${[params.last_name, params.first_name, params.middle_name]} has been added.`});
-            } else {
-                console.log(error);
-                res.status(500).json({ message: error});
-            };
+        const user = new User({
+            school_id: params.school_id,
+            email: params.email,
+            password: params.password,
+            first_name: params.first_name,
+            middle_name: params.middle_name,
+            last_name: params.last_name,
+            profile_picture: params.profile_picture,
+            gender: params.gender,
+            contact: params.contact,
+            address: params.address,
+            role: params.role,
+            hk_type: params.hk_type,
+            status: params.status,
+            token: params.token,
         });
-    });
+
+        await user.save();
+        res.status(200).json({ message: `Record of ${user.last_name}, ${user.first_name} has been added.` });
+    } catch (error) {
+        console.error('Error creating user:', error);
+        res.status(500).json({ message: error.message });
+    }
 };
 
-//Update user
-exports.updateUser = (req, res) => {
-    pool.getConnection((error, connection) => {
-        if (error) {
-            console.error('Error getting connection:', error);
-            return res.status(500).json({ message: 'Error connecting to the database' });
+// Update user
+exports.updateUser = async (req, res) => {
+    const school_id = req.params.school_id;
+    const params = req.body;
+
+    try {
+        const user = await User.findOneAndUpdate(
+            { school_id: school_id },
+            { 
+                email: params.email,
+                password: params.password, 
+                first_name: params.first_name,
+                middle_name: params.middle_name,
+                last_name: params.last_name,
+                profile_picture: params.profile_picture,
+                gender: params.gender,
+                contact: params.contact,
+                address: params.address,
+                role: params.role,
+                hk_type: params.hk_type,
+                status: params.status,
+                token: params.token,
+            },
+            { new: true }
+        );
+
+        if (!user) {
+            return res.status(404).json({ message: `No record found with school ID ${school_id}.` });
         }
-        
-        console.log(`Connected as id ${connection.threadId}`);
-
-        const school_id = req.params.school_id;
-        const params = req.body;  
-
-        console.log('ID from params:', school_id);
-        console.log('Params from body:', params);
-
-        if (!school_id) {
-            connection.release();
-            return res.status(400).json({ message: 'School ID is required as a URL parameter' });
-        }
-        connection.query('UPDATE users SET ? WHERE school_id = ?', [params, school_id], (error, results) => {
-            connection.release();
-            if (error) {
-                console.error('Error executing query:', error);
-                return res.status(500).json({ message: 'Database query error' });
-            }
-            console.log('Query Results:', results);
-            if (results.affectedRows === 0) {
-                return res.status(404).json({ message: `No record found with ID ${school_id}.` });
-            }
-            res.status(200).json({ 
-                message: `Record of ${[params.last_name, params.first_name, params.middle_name]} has been updated.` 
-            });
-        });
-    });
+        res.status(200).json({ message: `Record of ${user.last_name}, ${user.first_name} has been updated.` });
+    } catch (error) {
+        console.error('Error updating user:', error);
+        res.status(500).json({ message: 'Database query error' });
+    }
 };
 
+// Delete a user
+exports.deleteUser = async (req, res) => {
+    const school_id = req.params.school_id;
 
+    try {
+        const result = await User.deleteOne({ school_id: school_id });
 
-//Delete a user
-exports.deleteUser = (req, res) => {
-    pool.getConnection((error, connection) => {
-        if (error) {
-            console.error('Error getting MySQL connection:', error);
-            return res.status(500).json({ message: 'Server error occurred' });
+        if (result.deletedCount > 0) {
+            res.status(200).json({ message: `Record with school ID #${school_id} has been deleted.` });
+        } else {
+            res.status(404).json({ message: 'User not found' });
         }
-        console.log(`Connected as id ${connection.threadId}`);
-
-        connection.query('DELETE FROM users WHERE school_id = ?', [req.params.school_id], (error, result) => {
-            connection.release(); 
-
-            if (error) {
-                console.error('Error executing query:', error);
-                return res.status(500).json({ message: 'Server error occurred' });
-            }
-
-            if (result.affectedRows > 0) {
-                res.status(200).json({ message: `Record with ID # ${req.params.school_id} has been deleted.` });
-            } else {
-                res.status(404).json({ message: 'User not found' });
-            }
-        });
-    });
+    } catch (error) {
+        console.error('Error deleting user:', error);
+        res.status(500).json({ message: 'Server error occurred' });
+    }
 };
 
-
+// Get all users
 exports.getAllUsers = async (req, res) => {
     try {
         const users = await User.find();
@@ -98,78 +97,68 @@ exports.getAllUsers = async (req, res) => {
     }
 };
 
-
-
-
-//Create announcement
-exports.createAnnounce = (req, res) => {
-    pool.getConnection((error, connection) => {
-        if (error) throw error;
-        console.log(`connected as id ${connection.threadId}`);
-
+// Create announcement
+exports.createAnnounce = async (req, res) => {
+    try {
         const params = req.body;
-
-        connection.query('INSERT INTO announcements SET ?', params, (error, rows) => {
-            connection.release();
-
-            if (!error) {
-                res.status(200).json({ message: `Record of "${params.title}" has been added.` });
-            } else {
-                console.log(error);
-                res.status(500).json({ message: error});
-            };
+        const announcement = new Announcement({
+            admin_id: params.admin_id,
+            title: params.title,
+            body: params.body,
+            time: params.time,
+            date: params.date,
         });
-    });
+
+        await announcement.save();
+        res.status(200).json({ message: `Announcement "${announcement.title}" has been added.` });
+    } catch (error) {
+        console.error('Error creating announcement:', error);
+        res.status(500).json({ message: error.message });
+    }
 };
 
-//Update announcement
-exports.updateAnnounce = (req, res) => {
-    pool.getConnection((error, connection) => {
-        if (error) throw error;
-        console.log(`connected as id ${connection.threadId}`);
+// Update announcement
+exports.updateAnnounce = async (req, res) => {
+    const id = req.params.id;
+    const params = req.body;
 
-        const { id, ...params } = req.body;
+    try {
+        const announcement = await Announcement.findByIdAndUpdate(
+            id,
+            {
+                admin_id: params.admin_id,
+                title: params.title,
+                body: params.body,
+                time: params.time,
+                date: params.date,
+            },
+            { new: true }
+        );
 
-        connection.query('UPDATE announcements SET ? WHERE id = ?', [params, id], (error, results) => {
-            connection.release();
-
-            if (!error) {
-                if (results.affectedRows === 0) {
-                    res.status(404).json({ message: `No record found with ID ${id}.` });
-                } else {
-                    res.status(200).json({ message: `Announcement with ID ${id} has been updated.` });
-                }
-            } else {
-                console.log(error);
-                res.status(500).json({ message: error });
-            }
-        });
-    });
-};
-
-
-//Delete announcement
-exports.deleteAnnounce = (req, res) => {
-    pool.getConnection((error, connection) => {
-        if (error) {
-            console.error('Error getting MySQL connection:', error);
-            return res.status(500).json({ message: 'Server error occurred' });
+        if (!announcement) {
+            return res.status(404).json({ message: `No record found with ID ${id}.` });
         }
-        console.log(`Connected as id ${connection.threadId}`);
+        res.status(200).json({ message: `Announcement with ID ${id} has been updated.` });
+    } catch (error) {
+        console.error('Error updating announcement:', error);
+        res.status(500).json({ message: error.message });
+    }
+};
 
-        connection.query('DELETE FROM announcements WHERE id = ?', [req.params.id], (error, result) => {
-            connection.release(); 
+// Delete announcement
+exports.deleteAnnounce = async (req, res) => {
+    const id = req.params.id;
 
-            if (error) {
-                console.error('Error executing query:', error);
-                return res.status(500).json({ message: 'Server error occurred' });
-            }
+    try {
+        const result = await Announcement.deleteOne({ _id: id });
 
-            if (result.affectedRows > 0) {
-                res.status(200).json({ message: `Announcement with ID # ${req.params.id} has been deleted.` });
-            } else {
-                res.status(404).json({ message: "Announcement doesn't Exist" });
-            }
-        });
-    });
+        if (result.deletedCount > 0) {
+            res.status(200).json({ message: `Announcement with ID #${id} has been deleted.` });
+        } else {
+            res.status(404).json({ message: "Announcement doesn't exist" });
+        }
+    } catch (error) {
+        console.error('Error deleting announcement:', error);
+        res.status(500).json({ message: 'Server error occurred' });
+    }
 };
