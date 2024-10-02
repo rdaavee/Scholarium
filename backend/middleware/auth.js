@@ -14,6 +14,7 @@ if (!token) {
         return res.status(401).json({ message: 'Unauthorized!' });
     }
     req.userId = decoded.id;
+    req.userSchoolId = decoded.school_id;
     next();
     });
 };

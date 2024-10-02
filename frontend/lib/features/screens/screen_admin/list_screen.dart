@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:isHKolarium/blocs/bloc_admin/admin_bloc.dart';
+import 'package:isHKolarium/config/constants/colors.dart';
 import 'package:isHKolarium/features/screens/screen_admin/create_screen.dart';
+import 'package:isHKolarium/features/screens/screen_admin/update_screen.dart';
 import 'package:isHKolarium/features/widgets/app_bar.dart';
 import 'package:isHKolarium/api/models/user_model.dart';
 import 'package:isHKolarium/api/implementations/admin_repository_impl.dart';
@@ -35,6 +37,24 @@ class ListScreenState extends State<ListScreen> {
         appBar: const AppBarWidget(
           title: "User List",
           isBackButton: false,
+        ),
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: ColorPalette.primary.withOpacity(0.6),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => BlocProvider.value(
+                  value: adminBloc,
+                  child: const CreateFormScreen(),
+                ),
+              ),
+            );
+          },
+          child: const Icon(
+            Icons.add_circle,
+            color: Colors.white,
+          ),
         ),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -162,10 +182,23 @@ class ListScreenState extends State<ListScreen> {
             itemCount: filteredUsers.length,
             itemBuilder: (context, index) {
               UserModel user = filteredUsers[index];
-              return ListTile(
-                title: Text('${user.firstName} ${user.lastName}'),
-                subtitle: Text('Role: ${user.role}'),
-                trailing: Text('Status: ${user.status}'),
+              return GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => BlocProvider.value(
+                        value: adminBloc,
+                        child: UpdateFormScreen(schoolId: user.schoolID.toString(),),
+                      ),
+                    ),
+                  );
+                },
+                child: ListTile(
+                  title: Text('${user.firstName} ${user.lastName}'),
+                  subtitle: Text('Role: ${user.role}'),
+                  trailing: Text('Status: ${user.status}'),
+                ),
               );
             },
           );

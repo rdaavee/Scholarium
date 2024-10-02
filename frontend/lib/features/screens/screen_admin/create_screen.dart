@@ -35,7 +35,7 @@ class CreateFormScreenState extends State<CreateFormScreen> {
       ],
       child: Scaffold(
         appBar: const AppBarWidget(
-            title: "Create Student or Professor", isBackButton: false),
+            title: "Create Student or Professor", isBackButton: true),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
           child: ListView(

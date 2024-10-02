@@ -9,8 +9,8 @@ class AnnouncementModel {
     this.adminID,
     required this.title,
     required this.body,
-    required this.time,
-    required this.date,
+    this.time,
+    this.date,
   });
 
   factory AnnouncementModel.fromJson(Map<String, dynamic> map) {
