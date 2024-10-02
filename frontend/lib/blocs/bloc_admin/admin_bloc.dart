@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:isHKolarium/api/implementations/admin_repository_impl.dart';
 import 'package:isHKolarium/api/models/user_model.dart';
 import 'package:isHKolarium/api/models/announcement_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'admin_event.dart';
 part 'admin_state.dart';
@@ -134,7 +135,11 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
       CreateAnnouncementEvent event, Emitter<AdminState> emit) async {
     emit(AdminLoadingState());
     try {
-      await _adminRepositoryImpl.createAnnouncement(event.announcement);
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('token').toString();
+
+      await _adminRepositoryImpl.createAnnouncement(token, event.announcement);
+      add(FetchDataEvent());
     } catch (e) {
       emit(AdminErrorState(message: 'Failed to create announcement: $e'));
     }
@@ -144,8 +149,9 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
       UpdateAnnouncementEvent event, Emitter<AdminState> emit) async {
     emit(AdminLoadingState());
     try {
-      await _adminRepositoryImpl.updateAnnouncement(
-          event.id, event.announcement);
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('token').toString();
+      await _adminRepositoryImpl.updateAnnouncement(token, event.announcement);
     } catch (e) {
       emit(AdminErrorState(message: 'Failed to update announcement: $e'));
     }

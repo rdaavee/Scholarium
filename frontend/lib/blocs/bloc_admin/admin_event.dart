@@ -42,10 +42,9 @@ class CreateAnnouncementEvent extends AdminEvent {
 }
 
 class UpdateAnnouncementEvent extends AdminEvent {
-  final String id;
   final AnnouncementModel announcement;
 
-  UpdateAnnouncementEvent(this.id, this.announcement);
+  UpdateAnnouncementEvent(this.announcement);
 }
 
 class DeleteAnnouncementEvent extends AdminEvent {

@@ -6,7 +6,8 @@ import 'package:isHKolarium/api/models/user_model.dart';
 import 'package:isHKolarium/api/implementations/admin_repository_impl.dart';
 
 class UpdateFormScreen extends StatefulWidget {
-  const UpdateFormScreen({super.key});
+  final String schoolId;
+  const UpdateFormScreen({super.key, required this.schoolId});
 
   @override
   UpdateFormScreenState createState() => UpdateFormScreenState();
@@ -35,12 +36,11 @@ class UpdateFormScreenState extends State<UpdateFormScreen> {
       ],
       child: Scaffold(
         appBar: const AppBarWidget(
-            title: "Update Student or Professor", isBackButton: false),
+            title: "Update Student or Professor", isBackButton: true),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
           child: ListView(
             children: [
-              _buildTextField('School ID', schoolIdController),
               _buildTextField('First Name', firstNameController),
               _buildTextField('Middle Name', middleNameController),
               _buildTextField('Last Name', lastNameController),
@@ -137,18 +137,18 @@ class UpdateFormScreenState extends State<UpdateFormScreen> {
           firstName: firstNameController.text,
           middleName: middleNameController.text,
           lastName: lastNameController.text,
-          profilePicture: '', 
+          profilePicture: '',
           gender: genderController.text,
           password: passwordController.text,
           contact: contactController.text,
           address: addressController.text,
           role: roleController.text,
-          hkType: selectedHkType ?? '', 
-          status: 'Active', 
+          hkType: selectedHkType ?? '',
+          status: 'Active',
         );
 
-    
-        context.read<AdminBloc>().add(UpdateUserEvent(schoolIdController.text.toString(), updateUser));
+        context.read<AdminBloc>().add(
+            UpdateUserEvent(widget.schoolId, updateUser));
 
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('User updated successfully!')),

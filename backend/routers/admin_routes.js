@@ -11,9 +11,10 @@ router.put('/admin/updateUser/:school_id',verifyToken, adminController.updateUse
 router.delete('/admin/deleteUser/:school_id',verifyToken, adminController.deleteUser);
 
 //Announcements controls
-router.post('/admin/announce', verifyToken, adminController.createAnnounce);
-router.post('/admin/updateAnnounce/:id',verifyToken, adminController.updateAnnounce);
-router.post('/admin/deleteAnnounce/:id',verifyToken, adminController.deleteAnnounce);
+router.get('/admin/getAllAnnouncements', verifyToken, adminController.getAllAnnouncements);
+router.post('/admin/createAnnouncement', verifyToken, adminController.createAnnouncement);
+router.put('/admin/updateAnnouncement',verifyToken, adminController.updateAnnouncement);
+router.delete('/admin/deleteAnnouncement',verifyToken, adminController.deleteAnnouncement);
 
 
 module.exports = router;

@@ -6,6 +6,7 @@ import 'package:isHKolarium/features/screens/screen_admin/admin_home_page.dart';
 import 'package:isHKolarium/features/screens/screen_admin/create_screen.dart';
 import 'package:isHKolarium/features/screens/screen_admin/list_screen.dart';
 import 'package:isHKolarium/features/screens/screen_admin/update_screen.dart';
+import 'package:isHKolarium/features/screens/screen_announcement/create_announcement.dart';
 import 'package:isHKolarium/features/screens/screen_notification/notification_screen.dart';
 import 'package:isHKolarium/features/screens/screen_professor/professor_screen.dart';
 import 'package:isHKolarium/features/screens/screen_schedule/schedule_screen.dart';
@@ -128,7 +129,7 @@ class BottomNavWidget extends StatelessWidget {
       case 1:
         return const ListScreen();
       case 2:
-        return const UpdateFormScreen();
+        return const CreateAnnouncementScreen();
       case 3:
         return const ProfileScreen();
       default:

@@ -7,8 +7,10 @@ abstract class AdminRepository {
   Future<List<ScheduleModel>> fetchYearSchedule();
   Future<void> createUser(UserModel user);
   Future<void> updateUser(String schoolId, UserModel user);
-  Future<void> deleteUser(String schoolId);
-  Future<void> createAnnouncement(AnnouncementModel announcement);
-  Future<void> updateAnnouncement(String id, AnnouncementModel announcement);
+  Future<void> deleteUser(String id);
+  Future<List<AnnouncementModel>> getAllAnnouncements();
+  Future<void> createAnnouncement(String token, AnnouncementModel announcement);
+  Future<void> updateAnnouncement(String token, AnnouncementModel announcement);
   Future<void> deleteAnnouncement(String id);
+
 }

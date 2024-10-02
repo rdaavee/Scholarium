@@ -128,73 +128,50 @@ class AdminRepositoryImpl extends AdminRepository {
   }
 
   @override
-  Future<void> createAnnouncement(AnnouncementModel announcement) async {
-    final String? token = await _getToken();
-    final url = Uri.parse('$baseUrl/admin/announce');
+  Future<List<AnnouncementModel>> getAllAnnouncements() async {
+    final response = await http.get(Uri.parse('$baseUrl/admin/getAllAnnouncements'));
 
-    try {
-      final response = await http.post(
-        url,
-        headers: {
-          'Authorization': 'Bearer $token',
-          'Content-Type': 'application/json',
-        },
-        body: json.encode(announcement.toJson()),
-      );
-
-      if (response.statusCode != 200) {
-        throw Exception(
-            'Failed to create announcement: ${response.statusCode}');
-      }
-    } catch (e) {
-      throw Exception('Error: $e');
+    if (response.statusCode == 200) {
+      final List<dynamic> data = json.decode(response.body);
+      return data.map((json) => AnnouncementModel.fromJson(json)).toList();
+    } else {
+      throw Exception('Failed to load announcements');
     }
   }
 
   @override
-  Future<void> updateAnnouncement(
-      String id, AnnouncementModel announcement) async {
-    final String? token = await _getToken();
-    final url = Uri.parse('$baseUrl/admin/updateAnnounce/$id');
+  Future<void> createAnnouncement(String token, AnnouncementModel announcement) async {
+    final response = await http.post(
+      Uri.parse('$baseUrl/admin/createAnnouncement'),
+      headers: {'Content-Type': 'application/json', 
+      'Authorization': 'Bearer $token'},
+      body: json.encode(announcement.toJson()),
+    );
 
-    try {
-      final response = await http.put(
-        url,
-        headers: {
-          'Authorization': 'Bearer $token',
-          'Content-Type': 'application/json',
-        },
-        body: json.encode(announcement.toJson()), // Adjusted to call toJson
-      );
+    if (response.statusCode != 200) {
+      throw Exception('Failed to create announcement');
+    }
+  }
 
-      if (response.statusCode != 200) {
-        throw Exception(
-            'Failed to update announcement: ${response.statusCode}');
-      }
-    } catch (e) {
-      throw Exception('Error: $e');
+  @override
+  Future<void> updateAnnouncement(String token, AnnouncementModel announcement) async {
+    final response = await http.put(
+      Uri.parse('$baseUrl/admin./updateAnnouncement'),
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode(announcement.toJson()),
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception('Failed to update announcement');
     }
   }
 
   @override
   Future<void> deleteAnnouncement(String id) async {
-    final String? token = await _getToken();
-    final url = Uri.parse('$baseUrl/admin/deleteAnnounce/$id');
+    final response = await http.delete(Uri.parse('$baseUrl/admin/deleteAnnouncement'));
 
-    try {
-      final response = await http.delete(
-        url,
-        headers: {
-          'Authorization': 'Bearer $token',
-        },
-      );
-
-      if (response.statusCode != 200) {
-        throw Exception(
-            'Failed to delete announcement: ${response.statusCode}');
-      }
-    } catch (e) {
-      throw Exception('Error: $e');
+    if (response.statusCode != 200) {
+      throw Exception('Failed to delete announcement');
     }
   }
 }
