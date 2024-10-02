@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
+const moment = require('moment');
 const User = require('../models/user_model'); 
+const Schedule = require('../models/schedule_model');
 const Announcement = require('../models/announcement_model');
 
 // Create a user
@@ -29,6 +31,20 @@ exports.createUser = async (req, res) => {
     } catch (error) {
         console.error('Error creating user:', error);
         res.status(500).json({ message: error.message });
+    }
+};
+
+exports.getCurrentYearSchedules = async (req, res) => {
+    try {
+        const currentYear = moment().year().toString();
+        const schedules = await Schedule.find({
+            date: { $regex: `^${currentYear}` } 
+        });
+
+        res.status(200).json(schedules);
+    } catch (error) {
+        console.error('Error fetching schedules:', error);
+        res.status(500).json({ message: 'Error fetching schedules' });
     }
 };
 

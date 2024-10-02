@@ -30,10 +30,22 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
 
   // Dummy duties for the ListView
   List<Duty> dummyDuties = [
-    Duty(color: const Color(0xFF549E73), time: '7:30AM-9:00AM', roomName: 'PTC-206'),
-    Duty(color: const Color(0xFF6DD400), time: '9:00AM-10:30AM', roomName: 'PTC-207'),
-    Duty(color: const Color(0xFF549E73), time: '10:30AM-12:00PM', roomName: 'PTC-208'),
-    Duty(color: const Color(0xFF6DD400), time: '12:00PM-1:30PM', roomName: 'PTC-209'),
+    Duty(
+        color: const Color(0xFF549E73),
+        time: '7:30AM-9:00AM',
+        roomName: 'PTC-206'),
+    Duty(
+        color: const Color(0xFF6DD400),
+        time: '9:00AM-10:30AM',
+        roomName: 'PTC-207'),
+    Duty(
+        color: const Color(0xFF549E73),
+        time: '10:30AM-12:00PM',
+        roomName: 'PTC-208'),
+    Duty(
+        color: const Color(0xFF6DD400),
+        time: '12:00PM-1:30PM',
+        roomName: 'PTC-209'),
   ];
 
   @override
@@ -61,29 +73,32 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                     child: Container(
                       decoration: const BoxDecoration(
                         color: Color(0xFFF0F3F4),
-                        borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
+                        borderRadius:
+                            BorderRadius.vertical(top: Radius.circular(10)),
                       ),
                       child: SingleChildScrollView(
                         child: Column(
                           children: [
-                            const Padding(
+                            Padding(
                               padding: EdgeInsets.all(25.0),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Column(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       Text(
-                                        "60", // Completed count from state
-                                        style: TextStyle(
+                                        state.completedSchedulesCount
+                                            .toString(), // Completed count from state
+                                        style: const TextStyle(
                                           color: Colors.black,
                                           fontFamily: 'Inter',
                                           fontSize: 42,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
-                                      Text(
+                                      const Text(
                                         'Completed',
                                         style: TextStyle(
                                           color: Color(0xFFC1C1C1),
@@ -98,15 +113,16 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       Text(
-                                        "60", // Ongoing count from state
-                                        style: TextStyle(
+                                        state.todaySchedulesCount
+                                            .toString(), // Ongoing count from state
+                                        style: const TextStyle(
                                           color: Colors.black,
                                           fontFamily: 'Inter',
                                           fontSize: 42,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
-                                      Text(
+                                      const Text(
                                         'Ongoing',
                                         style: TextStyle(
                                           color: Color(0xFFC1C1C1),
@@ -117,7 +133,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                                       ),
                                     ],
                                   ),
-                                  Column(
+                                  const Column(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       Text(
@@ -144,7 +160,8 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 16.0),
                               child: Container(
                                 decoration: BoxDecoration(
                                   color: Colors.white,
@@ -156,7 +173,8 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                                     sections: [
                                       PieChartSectionData(
                                         color: Colors.green,
-                                        value: state.activeCount.toDouble(), // Active count from state
+                                        value: state.activeCount
+                                            .toDouble(), // Active count from state
                                         title: 'Active',
                                         radius: 120,
                                         titleStyle: const TextStyle(
@@ -168,7 +186,8 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                                       ),
                                       PieChartSectionData(
                                         color: Colors.grey[350],
-                                        value: state.inactiveCount.toDouble(), // Inactive count from state
+                                        value: state.inactiveCount
+                                            .toDouble(), // Inactive count from state
                                         title: 'Inactive',
                                         radius: 120,
                                         titleStyle: const TextStyle(
