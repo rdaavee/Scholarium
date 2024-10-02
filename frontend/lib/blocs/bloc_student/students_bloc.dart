@@ -14,9 +14,9 @@ class StudentsBloc extends Bloc<StudentsEvent, StudentsState> {
 
   StudentsBloc(this._studentRepositoryImpl) : super(StudentsInitial()) {
     on<StudentsInitialEvent>(studentInitialEvents);
-    on<FetchUserEvent>(fetchUserEvent);
-    on<FetchAnnouncementEvent>(fetchAnnoucementEvent);
-    on<FetchLatestEvent>(fetchLatestEvent);
+    on<FetchUserEvent>(_onFetchUserEvent);
+    on<FetchAnnouncementEvent>(_onFetchAnnoucementEvent);
+    on<FetchLatestEvent>(_onFetchLatestEvent);
   }
 
   Future<void> studentInitialEvents(
@@ -32,7 +32,7 @@ class StudentsBloc extends Bloc<StudentsEvent, StudentsState> {
     );
   }
 
-  FutureOr<void> fetchUserEvent(
+  FutureOr<void> _onFetchUserEvent(
       FetchUserEvent event, Emitter<StudentsState> emit) async {
     try {
       UserModel user = await _studentRepositoryImpl.fetchUserData();
@@ -55,7 +55,7 @@ class StudentsBloc extends Bloc<StudentsEvent, StudentsState> {
     }
   }
 
-  Future<void> fetchAnnoucementEvent(
+  Future<void> _onFetchAnnoucementEvent(
       FetchAnnouncementEvent event, Emitter<StudentsState> emit) async {
     try {
       UserModel user = await _studentRepositoryImpl.fetchUserData();
@@ -78,7 +78,7 @@ class StudentsBloc extends Bloc<StudentsEvent, StudentsState> {
     }
   }
 
-  Future<void> fetchLatestEvent(
+  Future<void> _onFetchLatestEvent(
       FetchLatestEvent event, Emitter<StudentsState> emit) async {
     try {
       UserModel user = await _studentRepositoryImpl.fetchUserData();

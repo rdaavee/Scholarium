@@ -14,6 +14,7 @@ class AdminRepositoryImpl extends AdminRepository {
     return prefs.getString('token');
   }
 
+//-----------------------------------------USER FUNCTION----------------------------------------------------------
   @override
   Future<List<UserModel>> fetchAllUsers() async {
     final String? token = await _getToken();
@@ -95,7 +96,7 @@ class AdminRepositoryImpl extends AdminRepository {
           'Authorization': 'Bearer $token',
           'Content-Type': 'application/json',
         },
-        body: json.encode(user.toMap()), // Use toMap to convert to JSON
+        body: json.encode(user.toMap()),
       );
 
       if (response.statusCode != 200) {
@@ -127,9 +128,17 @@ class AdminRepositoryImpl extends AdminRepository {
     }
   }
 
+//-------------------------------------------ANNOUNCEMENT FUNCTION----------------------------------------------
   @override
-  Future<List<AnnouncementModel>> getAllAnnouncements() async {
-    final response = await http.get(Uri.parse('$baseUrl/admin/getAllAnnouncements'));
+  Future<List<AnnouncementModel>> fetchAllAnnouncements() async {
+    final token = await _getToken();
+    final response = await http.get(
+      Uri.parse('$baseUrl/admin/getAllAnnouncements'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
 
     if (response.statusCode == 200) {
       final List<dynamic> data = json.decode(response.body);
@@ -140,11 +149,14 @@ class AdminRepositoryImpl extends AdminRepository {
   }
 
   @override
-  Future<void> createAnnouncement(String token, AnnouncementModel announcement) async {
+  Future<void> createAnnouncement(
+      String token, AnnouncementModel announcement) async {
     final response = await http.post(
       Uri.parse('$baseUrl/admin/createAnnouncement'),
-      headers: {'Content-Type': 'application/json', 
-      'Authorization': 'Bearer $token'},
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token'
+      },
       body: json.encode(announcement.toJson()),
     );
 
@@ -154,7 +166,8 @@ class AdminRepositoryImpl extends AdminRepository {
   }
 
   @override
-  Future<void> updateAnnouncement(String token, AnnouncementModel announcement) async {
+  Future<void> updateAnnouncement(
+      String token, AnnouncementModel announcement) async {
     final response = await http.put(
       Uri.parse('$baseUrl/admin./updateAnnouncement'),
       headers: {'Content-Type': 'application/json'},
@@ -168,7 +181,8 @@ class AdminRepositoryImpl extends AdminRepository {
 
   @override
   Future<void> deleteAnnouncement(String id) async {
-    final response = await http.delete(Uri.parse('$baseUrl/admin/deleteAnnouncement'));
+    final response =
+        await http.delete(Uri.parse('$baseUrl/admin/deleteAnnouncement'));
 
     if (response.statusCode != 200) {
       throw Exception('Failed to delete announcement');
