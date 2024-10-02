@@ -71,4 +71,9 @@ class UserModel {
       'token': token,
     };
   }
+
+  @override
+  String toString() {
+    return 'UserModel(id: $id, schoolID: $schoolID, email: $email, firstName: $firstName, middleName: $middleName, lastName: $lastName, role: $role, status: $status)';
+  }
 }

@@ -7,6 +7,15 @@ class AdminInitialEvent extends AdminEvent {}
 
 class FetchDataEvent extends AdminEvent {}
 
+class FetchUsersEvent extends AdminEvent {
+  final String? selectedRole;
+  final String? statusFilter;
+
+  FetchUsersEvent(this.selectedRole, this.statusFilter);
+}
+
+class FetchUsersRoleEvent extends AdminEvent {}
+
 class CreateUserEvent extends AdminEvent {
   final UserModel user;
 

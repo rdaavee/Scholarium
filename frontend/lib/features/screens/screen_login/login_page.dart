@@ -7,7 +7,6 @@ import 'package:isHKolarium/blocs/bloc_authentication/authentication_bloc.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
 import 'package:isHKolarium/features/screens/screen_bottom_nav/bottom_navigation_page.dart';
 import 'package:isHKolarium/features/widgets/authentication_widgets/login_form.dart';
-import 'package:isHKolarium/features/screens/screen_professor/professor_screen.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
