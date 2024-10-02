@@ -3,6 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:isHKolarium/blocs/bloc_admin/admin_bloc.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
 import 'package:isHKolarium/features/screens/screen_admin/user_form_screen.dart';
+import 'package:isHKolarium/features/widgets/admin_widgets/role_dropdown.dart';
+import 'package:isHKolarium/features/widgets/admin_widgets/status_dropdown.dart';
+import 'package:isHKolarium/features/widgets/admin_widgets/user_data_table.dart';
 import 'package:isHKolarium/features/widgets/app_bar.dart';
 import 'package:isHKolarium/api/models/user_model.dart';
 import 'package:isHKolarium/api/implementations/admin_repository_impl.dart';
@@ -54,157 +57,77 @@ class UserDataScreenState extends State<UserDataScreen> {
             color: Colors.white,
           ),
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              _buildRoleDropdown(),
-              _buildStatusRadioButtons(),
-              Expanded(
-                child: _buildUserListView(),
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(
+                left: 15,
+                right: 15,
+                top: 30,
               ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildRoleDropdown() {
-    List<String> roles = [
-      'All Users',
-      'Student',
-      'Professor',
-      'Admin',
-    ];
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: DropdownButtonFormField<String>(
-        decoration: const InputDecoration(
-          labelText: 'Select Role',
-          border: OutlineInputBorder(),
-        ),
-        value: selectedRole,
-        items: roles.map((String role) {
-          return DropdownMenuItem<String>(
-            value: role,
-            child: Text(role),
-          );
-        }).toList(),
-        onChanged: (String? newValue) {
-          setState(() {
-            selectedRole = newValue;
-          });
-          adminBloc.add(FetchUsersEvent(selectedRole, statusFilter));
-        },
-        hint: const Text('Select Role'),
-      ),
-    );
-  }
-
-  Widget _buildStatusRadioButtons() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            Radio<String>(
-              value: 'Any',
-              groupValue: statusFilter,
-              onChanged: (value) {
-                setState(() {
-                  statusFilter = value!;
-                });
-                adminBloc.add(FetchUsersEvent(selectedRole, statusFilter));
-              },
-            ),
-            const Text('Any'),
-          ],
-        ),
-        Row(
-          children: [
-            Radio<String>(
-              value: 'Active',
-              groupValue: statusFilter,
-              onChanged: (value) {
-                setState(() {
-                  statusFilter = value!;
-                });
-                adminBloc.add(FetchUsersEvent(selectedRole, statusFilter));
-              },
-            ),
-            const Text('Active'),
-          ],
-        ),
-        Row(
-          children: [
-            Radio<String>(
-              value: 'Inactive',
-              groupValue: statusFilter,
-              onChanged: (value) {
-                setState(() {
-                  statusFilter = value!;
-                });
-                adminBloc.add(FetchUsersEvent(selectedRole, statusFilter));
-              },
-            ),
-            const Text('Inactive'),
-          ],
-        ),
-      ],
-    );
-  }
-
-  Widget _buildUserListView() {
-    return BlocBuilder<AdminBloc, AdminState>(
-      builder: (context, state) {
-        if (state is AdminLoadingState) {
-          return const Center(child: CircularProgressIndicator());
-        } else if (state is AdminListScreenSuccessState) {
-          List<UserModel> allUsers = state.filteredUsers;
-          List<UserModel> filteredUsers = allUsers.where((user) {
-            bool matchesRole = (selectedRole == null ||
-                selectedRole == 'All Users' ||
-                user.role == selectedRole);
-            bool matchesStatus =
-                (statusFilter == 'Any' || user.status == statusFilter);
-            return matchesRole && matchesStatus;
-          }).toList();
-
-          if (filteredUsers.isEmpty) {
-            return const Center(child: Text('No users found.'));
-          }
-
-          return ListView.builder(
-            itemCount: filteredUsers.length,
-            itemBuilder: (context, index) {
-              UserModel user = filteredUsers[index];
-              return GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => BlocProvider.value(
-                        value: adminBloc,
-                        child: UserFormScreen(schoolId: user.schoolID.toString()),
-                      ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: RoleDropdown(
+                      selectedRole: selectedRole,
+                      onChanged: (newValue) {
+                        setState(() {
+                          selectedRole = newValue;
+                        });
+                        adminBloc
+                            .add(FetchUsersEvent(selectedRole, statusFilter));
+                      },
                     ),
-                  );
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: StatusDropdown(
+                      statusFilter: statusFilter,
+                      onChanged: (newValue) {
+                        setState(() {
+                          statusFilter = newValue!;
+                        });
+                        adminBloc
+                            .add(FetchUsersEvent(selectedRole, statusFilter));
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 16),
+            Expanded(
+              child: BlocBuilder<AdminBloc, AdminState>(
+                builder: (context, state) {
+                  if (state is AdminLoadingState) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (state is AdminListScreenSuccessState) {
+                    List<UserModel> allUsers = state.filteredUsers;
+                    List<UserModel> filteredUsers = allUsers.where((user) {
+                      bool matchesRole = (selectedRole == null ||
+                          selectedRole == 'All Users' ||
+                          user.role == selectedRole);
+                      bool matchesStatus = (statusFilter == 'Any' ||
+                          user.status == statusFilter);
+                      return matchesRole && matchesStatus;
+                    }).toList();
+
+                    return UserDataTable(
+                      filteredUsers: filteredUsers,
+                      adminBloc: adminBloc,
+                    );
+                  } else if (state is AdminErrorState) {
+                    return Center(child: Text('Error: ${state.message}'));
+                  }
+                  return const Center(child: Text('No users found.'));
                 },
-                child: ListTile(
-                  title: Text('${user.firstName} ${user.lastName}'),
-                  subtitle: Text('Role: ${user.role}'),
-                  trailing: Text('Status: ${user.status}'),
-                ),
-              );
-            },
-          );
-        } else if (state is AdminErrorState) {
-          return Center(child: Text('Error: ${state.message}'));
-        }
-        return const Center(child: Text('No users found.'));
-      },
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
