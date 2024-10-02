@@ -20,6 +20,7 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
     on<CreateUserEvent>(_onCreateUserEvent);
     on<UpdateUserEvent>(_onUpdateUserEvent);
     on<DeleteUserEvent>(_onDeleteUserEvent);
+    on<FetchAnnouncementsEvent>(_onFetchAnnouncementEvent);
     on<CreateAnnouncementEvent>(_onCreateAnnouncementEvent);
     on<UpdateAnnouncementEvent>(_onUpdateAnnouncementEvent);
     on<DeleteAnnouncementEvent>(_onDeleteAnnouncementEvent);
@@ -31,6 +32,7 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
     emit(AdminLoadingState());
     emit(AdminLoadedSuccessState(
         users: const [],
+        announcements: const [],
         activeCount: 0,
         inactiveCount: 0,
         completedSchedulesCount: 0,
@@ -61,6 +63,7 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
 
       emit(AdminLoadedSuccessState(
           users: users,
+          announcements: const [],
           activeCount: activeCount,
           inactiveCount: inactiveCount,
           completedSchedulesCount: completedSchedulesCount,
@@ -70,6 +73,7 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
     }
   }
 
+//--------------------------------------USER FUNCTION----------------------------------------------------------------
   Future<void> _onFetchUsersEvent(
       FetchUsersEvent event, Emitter<AdminState> emit) async {
     emit(AdminLoadingState());
@@ -128,6 +132,25 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
       add(FetchDataEvent());
     } catch (e) {
       emit(AdminErrorState(message: 'Failed to delete user: $e'));
+    }
+  }
+
+//-------------------------------ANNOUNCEMENT FUNCTION---------------------------------------------------------------
+  FutureOr<void> _onFetchAnnouncementEvent(
+      FetchAnnouncementsEvent event, Emitter<AdminState> emit) async {
+    emit(AdminLoadingState());
+    try {
+      List<AnnouncementModel> allAnnouncement =
+          await _adminRepositoryImpl.fetchAllAnnouncements();
+      emit(AdminLoadedSuccessState(
+          users: const [],
+          announcements: allAnnouncement,
+          activeCount: 0,
+          inactiveCount: 0,
+          completedSchedulesCount: 0,
+          todaySchedulesCount: 0));
+    } catch (e) {
+      emit(AdminErrorState(message: 'Failed to load announcement: $e'));
     }
   }
 

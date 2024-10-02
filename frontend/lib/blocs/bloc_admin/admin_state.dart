@@ -9,6 +9,7 @@ class AdminLoadingState extends AdminState {}
 
 class AdminLoadedSuccessState extends AdminState {
   final List<UserModel> users;
+  final List<AnnouncementModel> announcements;
   final int activeCount;
   final int inactiveCount;
   final int completedSchedulesCount;
@@ -16,6 +17,7 @@ class AdminLoadedSuccessState extends AdminState {
 
   AdminLoadedSuccessState({
     required this.users,
+    required this.announcements,
     required this.activeCount,
     required this.inactiveCount,
     required this.completedSchedulesCount,

@@ -3,9 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
 import 'package:isHKolarium/blocs/bloc_bottom_nav/bottom_nav_bloc.dart';
 import 'package:isHKolarium/features/screens/screen_admin/admin_home_page.dart';
-import 'package:isHKolarium/features/screens/screen_admin/create_screen.dart';
-import 'package:isHKolarium/features/screens/screen_admin/list_screen.dart';
-import 'package:isHKolarium/features/screens/screen_admin/update_screen.dart';
+import 'package:isHKolarium/features/screens/screen_admin/read_screen.dart';
+import 'package:isHKolarium/features/screens/screen_announcement/announcement.dart';
 import 'package:isHKolarium/features/screens/screen_announcement/create_announcement.dart';
 import 'package:isHKolarium/features/screens/screen_notification/notification_screen.dart';
 import 'package:isHKolarium/features/screens/screen_professor/professor_screen.dart';
@@ -127,9 +126,9 @@ class BottomNavWidget extends StatelessWidget {
       case 0:
         return const AdminHomeScreen();
       case 1:
-        return const ListScreen();
+        return const UserDataScreen();
       case 2:
-        return const CreateAnnouncementScreen();
+        return const AnnouncementsScreen(role: "Admin");
       case 3:
         return const ProfileScreen();
       default:

@@ -35,16 +35,20 @@ class DeleteUserEvent extends AdminEvent {
   DeleteUserEvent(this.schoolId);
 }
 
+class FetchAnnouncementsEvent extends AdminEvent {}
+
 class CreateAnnouncementEvent extends AdminEvent {
   final AnnouncementModel announcement;
 
+  // Add a constructor to initialize 'announcement'
   CreateAnnouncementEvent(this.announcement);
 }
 
 class UpdateAnnouncementEvent extends AdminEvent {
+  final String schoolID;
   final AnnouncementModel announcement;
 
-  UpdateAnnouncementEvent(this.announcement);
+  UpdateAnnouncementEvent(this.schoolID, this.announcement);
 }
 
 class DeleteAnnouncementEvent extends AdminEvent {

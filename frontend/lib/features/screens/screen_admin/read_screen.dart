@@ -2,21 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:isHKolarium/blocs/bloc_admin/admin_bloc.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
-import 'package:isHKolarium/features/screens/screen_admin/create_screen.dart';
-import 'package:isHKolarium/features/screens/screen_admin/update_screen.dart';
+import 'package:isHKolarium/features/screens/screen_admin/user_form_screen.dart';
 import 'package:isHKolarium/features/widgets/app_bar.dart';
 import 'package:isHKolarium/api/models/user_model.dart';
 import 'package:isHKolarium/api/implementations/admin_repository_impl.dart';
-import 'package:isHKolarium/features/widgets/custom_floating_button.dart';
 
-class ListScreen extends StatefulWidget {
-  const ListScreen({super.key});
+class UserDataScreen extends StatefulWidget {
+  const UserDataScreen({super.key});
 
   @override
-  ListScreenState createState() => ListScreenState();
+  UserDataScreenState createState() => UserDataScreenState();
 }
 
-class ListScreenState extends State<ListScreen> {
+class UserDataScreenState extends State<UserDataScreen> {
   String? selectedRole = 'All Users';
   String statusFilter = 'Any';
   late AdminBloc adminBloc;
@@ -46,7 +44,7 @@ class ListScreenState extends State<ListScreen> {
               MaterialPageRoute(
                 builder: (context) => BlocProvider.value(
                   value: adminBloc,
-                  child: const CreateFormScreen(),
+                  child: const UserFormScreen(),
                 ),
               ),
             );
@@ -189,7 +187,7 @@ class ListScreenState extends State<ListScreen> {
                     MaterialPageRoute(
                       builder: (context) => BlocProvider.value(
                         value: adminBloc,
-                        child: UpdateFormScreen(schoolId: user.schoolID.toString(),),
+                        child: UserFormScreen(schoolId: user.schoolID.toString()),
                       ),
                     ),
                   );

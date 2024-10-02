@@ -1,5 +1,5 @@
 class AnnouncementModel {
-  final int? adminID;
+  final String? adminID;
   final String? title;
   final String? body;
   final String? time;
@@ -15,7 +15,7 @@ class AnnouncementModel {
 
   factory AnnouncementModel.fromJson(Map<String, dynamic> map) {
     return AnnouncementModel(
-      adminID: map['admin_id'] as int?,
+      adminID: map['admin_id'] as String?,
       title: map['title'] as String?,
       body: map['body'] as String?,
       time: map['time'] as String?,
