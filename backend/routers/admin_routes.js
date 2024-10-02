@@ -5,6 +5,7 @@ const { verifyToken }  = require('../middleware/auth');
 
 //User control
 router.get('/admin/listUsers', verifyToken, adminController.getAllUsers);
+router.get('/admin/getYearSched', verifyToken, adminController.getCurrentYearSchedules);
 router.post('/admin/insertUser', verifyToken, adminController.createUser);
 router.put('/admin/updateUser/:school_id',verifyToken, adminController.updateUser);
 router.delete('/admin/deleteUser/:school_id',verifyToken, adminController.deleteUser);
