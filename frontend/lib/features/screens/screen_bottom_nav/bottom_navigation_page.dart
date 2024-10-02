@@ -32,7 +32,6 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
       studentBloc = StudentsBloc(studentService);
       studentBloc.add(StudentsInitialEvent());
     } else if (widget.isRole == "Professor") {
-      // final professorService = ProfessorsBloc();
       professorBloc = ProfessorsBloc();
       professorBloc.add(ProfessorsInitialEvent());
     } else {

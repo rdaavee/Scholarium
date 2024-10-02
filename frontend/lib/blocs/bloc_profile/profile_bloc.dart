@@ -5,8 +5,6 @@ import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
 import 'package:isHKolarium/api/models/user_model.dart';
 import 'profile_event.dart';
 import 'profile_state.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   final GlobalRepositoryImpl _apiService;
 

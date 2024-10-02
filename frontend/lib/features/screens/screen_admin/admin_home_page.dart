@@ -18,13 +18,15 @@ class AdminHomeScreen extends StatefulWidget {
 class _AdminHomeScreenState extends State<AdminHomeScreen> {
   late AdminBloc adminBloc;
   late BottomNavBloc bottomNavBloc;
+  String? selectedRole;
+  String statusFilter = 'Active';
 
   @override
   void initState() {
     super.initState();
     final adminRepository = AdminRepositoryImpl();
     adminBloc = AdminBloc(adminRepository);
-    adminBloc.add(FetchDataEvent()); // Add event to fetch data
+    adminBloc.add(FetchDataEvent());
     bottomNavBloc = BottomNavBloc();
   }
 

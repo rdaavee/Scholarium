@@ -15,6 +15,7 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
   AdminBloc(this._adminRepositoryImpl) : super(AdminInitialState()) {
     on<AdminInitialEvent>(adminInitialEvent);
     on<FetchDataEvent>(_onFetchDataEvent);
+    on<FetchUsersEvent>(_onFetchUsersEvent);
     on<CreateUserEvent>(_onCreateUserEvent);
     on<UpdateUserEvent>(_onUpdateUserEvent);
     on<DeleteUserEvent>(_onDeleteUserEvent);
@@ -65,6 +66,34 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
           todaySchedulesCount: todaySchedulesCount));
     } catch (e) {
       emit(AdminErrorState(message: 'Failed to load users: $e'));
+    }
+  }
+
+  Future<void> _onFetchUsersEvent(
+      FetchUsersEvent event, Emitter<AdminState> emit) async {
+    emit(AdminLoadingState());
+
+    try {
+      List<UserModel> allUsers = await _adminRepositoryImpl.fetchAllUsers();
+
+      List<UserModel> filteredUsers = allUsers.where((user) {
+        bool matchesRole = true;
+        bool matchesStatus = true;
+
+        if (event.selectedRole != 'All Users') {
+          matchesRole = user.role == event.selectedRole;
+        }
+
+        if (event.statusFilter != 'Any') {
+          matchesStatus = user.status == event.statusFilter;
+        }
+
+        return matchesRole && matchesStatus;
+      }).toList();
+
+      emit(AdminListScreenSuccessState(filteredUsers: filteredUsers));
+    } catch (e) {
+      emit(AdminErrorState(message: 'Failed to fetch users: $e'));
     }
   }
 

@@ -23,6 +23,12 @@ class AdminLoadedSuccessState extends AdminState {
   });
 }
 
+class AdminListScreenSuccessState extends AdminState {
+  final List<UserModel> filteredUsers;
+
+  AdminListScreenSuccessState({required this.filteredUsers});
+}
+
 class AdminErrorState extends AdminState {
   final String message;
 
