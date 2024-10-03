@@ -77,6 +77,9 @@ flutter:
   assets:
     - assets/
     - assets/images/
+    - assets/gif/onboarding-img-1.gif
+    - assets/gif/onboarding-img-2.gif
+    - assets/gif/onboarding-img-3.gif
     - assets/images/image.jpg
     - assets/images/image2.jpg
     - assets/images/image3.jpg
