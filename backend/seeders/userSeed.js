@@ -14,7 +14,7 @@ const seedUsers = async () => {
     // Sample user data
     const users = [
       {
-        school_id: '03-0000-00019',
+        school_id: '03-0000-00001',
         email: 'benedictabalos30@gmail.com',
         password: '1',
         first_name: 'Mark Benedict',
