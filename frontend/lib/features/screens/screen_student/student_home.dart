@@ -92,7 +92,9 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
             );
           } else if (state is StudentsLoadedSuccessState) {
             return Scaffold(
-              appBar: AppBarWidget(title: "Hello ${state.users[0].firstName}", isBackButton: false),
+              appBar: AppBarWidget(
+                  title: "Hello ${state.users[0].firstName}",
+                  isBackButton: false),
               body: Stack(
                 children: [
                   Container(
@@ -254,55 +256,6 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                                         cardColor: Colors.white,
                                         imageUrl: 'assets/images/test-img.png',
                                       ),
-                                      const SizedBox(width: 5),
-                                      ScheduleCard(
-                                        scheduleDate: Text(
-                                          state.nextSchedule[0].date
-                                                      .toString() ==
-                                                  "No Upcoming Schedule"
-                                              ? state.nextSchedule[0].date
-                                                  .toString()
-                                              : _formatDate(state
-                                                  .nextSchedule[0].date
-                                                  .toString()),
-                                          style: const TextStyle(
-                                            fontSize: 20,
-                                            fontFamily: 'Manrope',
-                                            fontWeight: FontWeight.w900,
-                                            color: Colors.black,
-                                            letterSpacing: 0.5,
-                                          ),
-                                        ),
-                                        scheduleTime: Text(
-                                          state.nextSchedule[0].time
-                                                      .toString() ==
-                                                  ""
-                                              ? state.nextSchedule[0].time
-                                                  .toString()
-                                              : _formatTime(state
-                                                  .nextSchedule[0].time
-                                                  .toString()),
-                                          style: const TextStyle(
-                                            fontSize: 11,
-                                            fontFamily: 'Manrope',
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.normal,
-                                            letterSpacing: 0.8,
-                                          ),
-                                        ),
-                                        roomName: Text(
-                                          state.nextSchedule[0].room.toString(),
-                                          style: const TextStyle(
-                                            fontSize: 17,
-                                            fontFamily: 'Manrope',
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.bold,
-                                            letterSpacing: 1.2,
-                                          ),
-                                        ),
-                                        cardColor: Colors.white,
-                                        imageUrl: 'assets/images/test-img.png',
-                                      ),
                                     ],
                                   ),
                                 ),
@@ -378,7 +331,8 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                                             context,
                                             MaterialPageRoute(
                                               builder: (context) =>
-                                                const AnnouncementsScreen(role: "Student"),
+                                                  const AnnouncementsScreen(
+                                                      role: "Student"),
                                             ),
                                           );
                                         },
