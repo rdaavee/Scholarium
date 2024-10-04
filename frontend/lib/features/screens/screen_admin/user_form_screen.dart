@@ -23,6 +23,7 @@ class UserFormScreenState extends State<UserFormScreen> {
   final TextEditingController genderController = TextEditingController();
   final TextEditingController addressController = TextEditingController();
   final TextEditingController contactController = TextEditingController();
+  final TextEditingController professorController = TextEditingController();
   final TextEditingController roleController = TextEditingController();
   String? selectedHkType;
 
@@ -55,6 +56,7 @@ class UserFormScreenState extends State<UserFormScreen> {
               _buildTextField('Address', addressController),
               _buildContactField('Contact No.', contactController),
               _buildDropdown('HK Type'),
+              _buildTextField('Professor', professorController),
               _buildTextField('Role', roleController),
               _buildSubmitButton(context),
             ],
@@ -148,6 +150,7 @@ class UserFormScreenState extends State<UserFormScreen> {
           contact: contactController.text,
           address: addressController.text,
           role: roleController.text,
+          professor: professorController.text,
           hkType: selectedHkType ?? '',
           status: 'Active',
         );

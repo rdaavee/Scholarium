@@ -7,23 +7,23 @@ const { verifyToken }  = require('../middleware/auth');
 //user routes
 //--------------------------------FOR HOME PAGE------------------------------------------------------------------
 
-router.get("/user/getUpcomingSchedule",verifyToken, userController.getUserUpcomingSchedule);
-router.get("/user/getAnnouncements",verifyToken, userController.getAnnouncements);
-router.get("/user/getLatestAnnouncement",verifyToken, userController.getLatestAnnouncement);
-router.get("/user/getPosts/:status",verifyToken, userController.getPosts);
-router.get("/user/getTotalHours",verifyToken, userController.getUserTotalHours);
-router.get("/user/getDTR",verifyToken, userController.getUserDTR);
+router.get("/getUpcomingSchedule",verifyToken, userController.getUserUpcomingSchedule);
+router.get("/getAnnouncements",verifyToken, userController.getAnnouncements);
+router.get("/getLatestAnnouncement",verifyToken, userController.getLatestAnnouncement);
+router.get("/getPosts/:status",verifyToken, userController.getPosts);
+router.get("/getTotalHours",verifyToken, userController.getUserTotalHours);
+router.get("/getDTR",verifyToken, userController.getUserDTR);
 
 //--------------------------------FOR SCHEDULE PAGE--------------------------------------------------------------
 
-router.get("/user/getSchedule/:month", verifyToken, userController.getUserSchedule);
+router.get("/getSchedule/:month", verifyToken, userController.getUserSchedule);
 
 //--------------------------------FOR NOTIFICATION PAGE----------------------------------------------------------
-router.get("/user/getNotifications", verifyToken, userController.getUserNotifications);
+router.get("/getNotifications", verifyToken, userController.getUserNotifications);
 
 //--------------------------------FOR PROFILE PAGE---------------------------------------------------------------
-router.get("/user/profile",verifyToken, userController.getUserProfile);
-router.put("/user/updatePassword",verifyToken, userController.updatePassword);
-router.post("/user/profile/upload",verifyToken, uploadcontroller.uploadImage);
+router.get("/profile",verifyToken, userController.getUserProfile);
+router.put("/updatePassword",verifyToken, userController.updatePassword);
+router.post("/profile/upload",verifyToken, uploadcontroller.uploadImage);
 
 module.exports = router;

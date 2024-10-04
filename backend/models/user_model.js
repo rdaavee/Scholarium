@@ -12,6 +12,7 @@ const userSchema = new mongoose.Schema({
   contact: { type: String, required: true },
   address: { type: String, required: true },
   role: { type: String, required: true },
+  professor: { type: String, required: false, default: null},
   hk_type: { type: String, required: false },
   status: { type: String, required: true },
   token: { type: String, required: false }
