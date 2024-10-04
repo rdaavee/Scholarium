@@ -7,7 +7,7 @@ import 'package:isHKolarium/api/models/update_password_model.dart';
 import 'package:isHKolarium/api/repositories/global_repository.dart';
 import 'package:isHKolarium/api/models/user_model.dart';
 import 'package:http/http.dart' as http;
-import 'package:isHKolarium/features/screens/screen_login/login_page.dart';
+import 'package:isHKolarium/features/screens/screen_onboard/onboard_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class GlobalRepositoryImpl implements GlobalRepository {
@@ -67,7 +67,7 @@ class GlobalRepositoryImpl implements GlobalRepository {
     await prefs.remove('schooldId');
     await prefs.remove('password');
 
-    Navigator.of(context).pushReplacementNamed(LoginPage.routeName);
+    Navigator.of(context).pushReplacementNamed(OnboardScreen.routeName);
   }
 
   @override
