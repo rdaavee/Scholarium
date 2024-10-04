@@ -8,7 +8,6 @@ import 'package:isHKolarium/api/repositories/global_repository.dart';
 import 'package:isHKolarium/api/models/user_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:isHKolarium/features/screens/screen_login/login_page.dart';
-import 'package:isHKolarium/features/screens/screen_onboard/onboard_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class GlobalRepositoryImpl implements GlobalRepository {
@@ -20,6 +19,7 @@ class GlobalRepositoryImpl implements GlobalRepository {
     return prefs.getString('token');
   }
 
+//-----------------------------------FOR USER AUTHENTICATION ----------------------------------------------------
   @override
   Future<Map<String, dynamic>> loginUser({
     required String schoolID,
@@ -70,26 +70,29 @@ class GlobalRepositoryImpl implements GlobalRepository {
     Navigator.of(context).pushReplacementNamed(LoginPage.routeName);
   }
 
+  @override
   Future<UpdatePasswordModel> updatePassword({
-    required String token,
     required String oldPassword,
     required String newPassword,
-    required String confirmPassword,
   }) async {
+    final token = await _getToken();
     final response = await http.put(
-      Uri.parse('$baseUrl/user/updatePassword/$token'),
+      Uri.parse('$baseUrl/user/updatePassword'),
       headers: <String, String>{
         'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
       },
       body: jsonEncode(<String, dynamic>{
         'oldPassword': oldPassword,
         'newPassword': newPassword,
-        'confirmPassword': confirmPassword,
       }),
     );
 
     if (response.statusCode == 200) {
-      return UpdatePasswordModel.fromJson(jsonDecode(response.body));
+      return UpdatePasswordModel(
+        success: true,
+        message: 'Successfully updated password',
+      );
     } else {
       return UpdatePasswordModel(
         success: false,
@@ -98,6 +101,7 @@ class GlobalRepositoryImpl implements GlobalRepository {
     }
   }
 
+//-------------------------------------FOR FETCHING------------------------------------------------------------
   @override
   Future<UserModel> fetchUserData() async {
     try {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:isHKolarium/api/implementations/admin_repository_impl.dart';
+import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
 import 'package:isHKolarium/api/implementations/student_repository_impl.dart';
 import 'package:isHKolarium/blocs/bloc_admin/admin_bloc.dart';
 import 'package:isHKolarium/blocs/bloc_professor/professors_bloc.dart';
@@ -28,8 +29,9 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
   void initState() {
     super.initState();
     if (widget.isRole == "Student") {
-      final studentService = StudentRepositoryImpl();
-      studentBloc = StudentsBloc(studentService);
+      final studentRepositoryImpl = StudentRepositoryImpl();
+    final globalRepositoryImpl = GlobalRepositoryImpl();
+    studentBloc = StudentsBloc(studentRepositoryImpl, globalRepositoryImpl);
       studentBloc.add(StudentsInitialEvent());
     } else if (widget.isRole == "Professor") {
       professorBloc = ProfessorsBloc();

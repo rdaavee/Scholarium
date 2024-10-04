@@ -1,21 +1,14 @@
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
-import 'package:isHKolarium/api/models/announcement_model.dart';
+import 'package:http/http.dart' as http;
 import 'package:isHKolarium/api/models/dtr_model.dart';
 import 'package:isHKolarium/api/models/dtr_total_hours_model.dart';
-import 'package:isHKolarium/api/models/notifications_model.dart';
 import 'package:isHKolarium/api/models/schedule_model.dart';
-import 'package:isHKolarium/api/models/update_password_model.dart';
 import 'package:isHKolarium/api/models/user_model.dart';
-import 'package:isHKolarium/api/repositories/global_repository.dart';
 import 'package:isHKolarium/api/repositories/student_repository.dart';
-import 'package:http/http.dart' as http;
-import 'package:isHKolarium/features/screens/screen_login/login_page.dart';
-import 'package:isHKolarium/features/screens/screen_onboard/onboard_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class StudentRepositoryImpl implements StudentRepository, GlobalRepository {
+class StudentRepositoryImpl implements StudentRepository{
   int currentYear = DateTime.now().year;
   final String baseUrl = 'http://localhost:3000/api'; //localhost
   // final String baseUrl = 'http://192.168.4.181:3000/api'; //usb tethering
@@ -130,46 +123,6 @@ class StudentRepositoryImpl implements StudentRepository, GlobalRepository {
   }
 
   @override
-  Future<void> logout(BuildContext context) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.remove('token');
-    await prefs.remove('login');
-    await prefs.remove('schooldId');
-    await prefs.remove('password');
-
-    Navigator.of(context).pushReplacementNamed(LoginPage.routeName);
-  }
-
-  Future<UpdatePasswordModel> updatePassword({
-    required String oldPassword,
-    required String newPassword,
-    required String confirmPassword,
-  }) async {
-    final token = await _getToken();
-    final response = await http.put(
-      Uri.parse('$baseUrl/user/updatePassword'),
-      headers: {
-        'Authorization': 'Bearer $token',
-        'Content-Type': 'application/json',
-      },
-      body: jsonEncode(<String, dynamic>{
-        'oldPassword': oldPassword,
-        'newPassword': newPassword,
-        'confirmPassword': confirmPassword,
-      }),
-    );
-
-    if (response.statusCode == 200) {
-      return UpdatePasswordModel.fromJson(jsonDecode(response.body));
-    } else {
-      return UpdatePasswordModel(
-        success: false,
-        message: 'Failed to update password',
-      );
-    }
-  }
-
-  @override
   Future<UserModel> fetchUserData() async {
     final token = await _getToken();
     final response = await http.get(
@@ -202,69 +155,4 @@ class StudentRepositoryImpl implements StudentRepository, GlobalRepository {
     }
   }
 
-  @override
-  Future<List<AnnouncementModel>> fetchAnnoucementData() async {
-    final token = await _getToken();
-    final response = await http.get(
-      Uri.parse('$baseUrl/user/getAnnouncements'),
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer $token',
-      },
-    );
-
-    if (response.statusCode == 200) {
-      final List<dynamic> data = jsonDecode(response.body);
-      return data.map((json) => AnnouncementModel.fromJson(json)).toList();
-    } else {
-      throw Exception('Failed to load announcement data');
-    }
-  }
-
-  @override
-  Future<AnnouncementModel> fetchLatestAnnouncementData() async {
-    final response = await http.get(
-      Uri.parse('$baseUrl/user/getLatestAnnouncement'),
-    );
-
-    if (response.statusCode == 200) {
-      final Map<String, dynamic> data = jsonDecode(response.body);
-      return AnnouncementModel.fromJson(data);
-    } else {
-      return const AnnouncementModel(
-        title: "No Announcements Today",
-        body:
-            "Your future is created by what you do today, not tomorrow.\n — Robert Kiyosaki",
-        time: "",
-        date: "",
-      );
-    }
-  }
-
-  @override
-  Future<List<NotificationsModel>> fetchNotificationsData() async {
-    final token = await _getToken();
-    try {
-      final response = await http.get(
-        Uri.parse('$baseUrl/user/getNotifications'),
-        headers: {'Authorization': 'Bearer $token'},
-      );
-
-      if (response.statusCode == 200) {
-        final List<dynamic> data = jsonDecode(response.body);
-        return data.map((json) => NotificationsModel.fromJson(json)).toList();
-      } else {
-        throw Exception('Failed to load Notifications data');
-      }
-    } catch (error) {
-      print('Error fetching notification: $error'); // Debug print
-      throw Exception('Error fetching notification: $error');
-    }
-  }
-
-  @override
-  Future<Map<String, dynamic>> loginUser(
-      {required String schoolID, required String password}) {
-    throw UnimplementedError();
-  }
 }

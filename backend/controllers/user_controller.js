@@ -273,19 +273,24 @@ exports.getUserProfile = async (req, res) => {
 
 // Change Password
 exports.updatePassword = async (req, res) => {
-  const { password } = req.body;
+  const { oldPassword, newPassword } = req.body; 
 
   try {
-    const user = await User.findById(req.userId); // Get user ID from middleware
+    const user = await User.findById(req.userId);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    user.password = password; // Assuming you are hashing it before saving
+    if (user.password !== oldPassword) {
+      return res.status(400).json({ message: "Old password is incorrect" });
+    }
+    user.password = newPassword; 
     await user.save();
-    res.status(200).json({ message: "Password updated successfully" });
+
+    res.status(200).json({ message: "Password updated successfully", success: true });
   } catch (error) {
     console.error("Error in updatePassword:", error);
     res.status(500).json({ message: "Server error occurred" });
   }
 };
+
