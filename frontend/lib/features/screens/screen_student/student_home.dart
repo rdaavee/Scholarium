@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
 import 'package:isHKolarium/api/implementations/student_repository_impl.dart';
 import 'package:isHKolarium/blocs/bloc_bottom_nav/bottom_nav_bloc.dart';
 import 'package:isHKolarium/blocs/bloc_schedule/schedule_bloc.dart';
@@ -35,7 +36,8 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
 
   Future<void> _initialize() async {
     final studentRepositoryImpl = StudentRepositoryImpl();
-    studentBloc = StudentsBloc(studentRepositoryImpl);
+    final globalRepositoryImpl = GlobalRepositoryImpl();
+    studentBloc = StudentsBloc(studentRepositoryImpl, globalRepositoryImpl);
     studentBloc.add(FetchLatestEvent());
     bottomNavBloc = BottomNavBloc();
   }

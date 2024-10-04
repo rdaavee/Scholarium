@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
+import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
 import 'package:isHKolarium/api/implementations/student_repository_impl.dart';
 import 'package:isHKolarium/api/models/announcement_model.dart';
 import 'package:isHKolarium/api/models/dtr_total_hours_model.dart';
@@ -11,8 +12,9 @@ part 'students_state.dart';
 
 class StudentsBloc extends Bloc<StudentsEvent, StudentsState> {
   final StudentRepositoryImpl _studentRepositoryImpl;
+  final GlobalRepositoryImpl _globalRepositoryImpl;
 
-  StudentsBloc(this._studentRepositoryImpl) : super(StudentsInitial()) {
+  StudentsBloc(this._studentRepositoryImpl, this._globalRepositoryImpl) : super(StudentsInitial()) {
     on<StudentsInitialEvent>(studentInitialEvents);
     on<FetchUserEvent>(_onFetchUserEvent);
     on<FetchAnnouncementEvent>(_onFetchAnnoucementEvent);
@@ -38,7 +40,7 @@ class StudentsBloc extends Bloc<StudentsEvent, StudentsState> {
       UserModel user = await _studentRepositoryImpl.fetchUserData();
       final scheduleData = await _studentRepositoryImpl.fetchUpcomingSchedule();
       AnnouncementModel latestAnnouncement =
-          await _studentRepositoryImpl.fetchLatestAnnouncementData();
+          await _globalRepositoryImpl.fetchLatestAnnouncementData();
       DtrHoursModel totalhours =
           await _studentRepositoryImpl.fetchDtrTotalHoursData();
 
@@ -61,7 +63,7 @@ class StudentsBloc extends Bloc<StudentsEvent, StudentsState> {
       UserModel user = await _studentRepositoryImpl.fetchUserData();
       final scheduleData = await _studentRepositoryImpl.fetchUpcomingSchedule();
       List<AnnouncementModel> announcements =
-          await _studentRepositoryImpl.fetchAnnoucementData();
+          await _globalRepositoryImpl.fetchAnnoucementData();
       DtrHoursModel totalhours =
           await _studentRepositoryImpl.fetchDtrTotalHoursData();
 
@@ -84,7 +86,7 @@ class StudentsBloc extends Bloc<StudentsEvent, StudentsState> {
       UserModel user = await _studentRepositoryImpl.fetchUserData();
       final scheduleData = await _studentRepositoryImpl.fetchUpcomingSchedule();
       AnnouncementModel latestAnnouncement =
-          await _studentRepositoryImpl.fetchLatestAnnouncementData();
+          await _globalRepositoryImpl.fetchLatestAnnouncementData();
       DtrHoursModel totalhours =
           await _studentRepositoryImpl.fetchDtrTotalHoursData();
       emit(StudentsLoadedSuccessState(

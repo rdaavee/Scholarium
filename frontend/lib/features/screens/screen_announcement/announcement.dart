@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:isHKolarium/api/implementations/admin_repository_impl.dart';
+import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
 import 'package:isHKolarium/api/implementations/student_repository_impl.dart';
 import 'package:isHKolarium/api/models/announcement_model.dart';
 import 'package:isHKolarium/blocs/bloc_admin/admin_bloc.dart';
@@ -32,7 +33,8 @@ class _AnnouncementsScreenState extends State<AnnouncementsScreen> {
       adminBloc.add(FetchAnnouncementsEvent());
     } else if (widget.role == "Student") {
       final studentRepositoryImpl = StudentRepositoryImpl();
-      studentsBloc = StudentsBloc(studentRepositoryImpl);
+      final globalRepositoryImpl = GlobalRepositoryImpl();
+      studentsBloc = StudentsBloc(studentRepositoryImpl, globalRepositoryImpl);
       studentsBloc.add(FetchAnnouncementEvent());
     }
   }
