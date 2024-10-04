@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:isHKolarium/api/models/announcement_model.dart';
+import 'package:isHKolarium/api/models/message_model.dart';
 import 'package:isHKolarium/api/models/notifications_model.dart';
 import 'package:isHKolarium/api/models/update_password_model.dart';
 import 'package:isHKolarium/api/repositories/global_repository.dart';
@@ -25,7 +26,7 @@ class GlobalRepositoryImpl implements GlobalRepository {
     required String schoolID,
     required String password,
   }) async {
-    final url = Uri.parse('$baseUrl/login');
+    final url = Uri.parse('$baseUrl/auth/login');
 
     try {
       final response = await http.post(
@@ -129,10 +130,11 @@ class GlobalRepositoryImpl implements GlobalRepository {
           middleName: '',
           lastName: '',
           profilePicture: '',
-          role: '',
           gender: '',
           contact: '',
           address: '',
+          role: '',
+          professor: '',
           hkType: '',
           status: '',
           token: '',
@@ -196,5 +198,48 @@ class GlobalRepositoryImpl implements GlobalRepository {
   @override
   Future<List<AnnouncementModel>> fetchAnnoucementData() {
     throw UnimplementedError();
+  }
+
+  //-------------------------------------FOR MESSAGING SYSTEM------------------------------------------------------------
+
+  Future<void> postMessage(MessageModel message) async {
+    final response = await http.post(
+      Uri.parse('$baseUrl/auth/postMessage'),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: json.encode(message.toJson()),
+    );
+
+    if (response.statusCode == 200) {
+      print('Message sent successfully!');
+    } else {
+      print('Failed to send message: ${response.body}');
+      throw Exception('Failed to send message');
+    }
+  }
+
+  Future<List<MessageModel>> getMessages(
+      String senderId, String receiverId) async {
+    final response = await http.get(
+      Uri.parse('$baseUrl/auth/getMessages/$senderId/$receiverId'),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final List<dynamic> jsonResponse = json.decode(response.body);
+      return jsonResponse
+          .map((message) => MessageModel(
+                sender: message['sender']['school_id'],
+                receiver: message['receiver']['school_id'],
+                content: message['content'],
+              ))
+          .toList();
+    } else {
+      print('Failed to fetch messages: ${response.body}');
+      throw Exception('Failed to fetch messages');
+    }
   }
 }

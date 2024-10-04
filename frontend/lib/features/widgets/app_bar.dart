@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
+import 'package:isHKolarium/features/screens/screen_message/message_page.dart';
+import 'package:isHKolarium/features/screens/screen_message/search_user_page.dart';
 
 class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   final String title;
@@ -53,7 +55,11 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
                       color: ColorPalette.accentWhite,
                     ),
                     onPressed: () {
-                      // logic here
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              // builder: (context) => MessageScreen(senderId: '03-0000-00001', receiverId: '03-0000-00002',)));
+                              builder: (context) => SearchUserScreen()));
                     },
                   ),
                 ),

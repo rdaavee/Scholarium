@@ -18,10 +18,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // Use routes
-app.use("/api", userRoutes);
-app.use("/api", professorRoutes);
-app.use("/api", adminRoutes);
-app.use("/api", authRoutes);
+app.use("/api/user", userRoutes);
+app.use("/api/prof", professorRoutes);
+app.use("/api/admin", adminRoutes);
+app.use("/api/auth", authRoutes);
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 

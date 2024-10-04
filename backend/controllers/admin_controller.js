@@ -33,6 +33,7 @@ exports.createUser = async (req, res) => {
       contact: params.contact,
       address: params.address,
       role: params.role,
+      professor: params.professor,
       hk_type: params.hk_type,
       status: params.status,
       token: params.token,

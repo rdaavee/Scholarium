@@ -11,7 +11,7 @@ const seedUsers = async () => {
     // Clear existing users
     await User.deleteMany({});
 
-    // Sample user data
+    // Sample user data with professor field for Student role
     const users = [
       {
         school_id: '03-0000-00001',
@@ -28,6 +28,7 @@ const seedUsers = async () => {
         hk_type: 'HK 25',
         status: 'Active',
         token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzQsI...',
+        professor: '03-0000-00002', // Add professor field here
       },
       {
         school_id: '03-0000-00002',
@@ -76,6 +77,7 @@ const seedUsers = async () => {
         hk_type: 'HK 50',
         status: 'Active',
         token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzcsI...',
+        professor: '03-0000-00002', // Add professor field here
       },
       {
         school_id: '03-0000-00005',
@@ -108,6 +110,7 @@ const seedUsers = async () => {
         hk_type: 'HK 25',
         status: 'Active',
         token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzksI...',
+        professor: '03-0000-00002', // Add professor field here
       },
       {
         school_id: '03-0000-00007',
@@ -156,6 +159,7 @@ const seedUsers = async () => {
         hk_type: 'HK 25',
         status: 'Active',
         token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDIsI...',
+        professor: '03-0000-00002', // Add professor field here
       },
       {
         school_id: '03-0000-00010',
