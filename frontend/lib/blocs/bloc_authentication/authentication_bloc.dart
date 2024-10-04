@@ -35,6 +35,7 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
     await prefs.setString('schoolID', schoolID);
     await prefs.setString('password', password);
     await prefs.setString('login', "true");
+    await prefs.setBool('tutorial', true);
   }
 
   Future<void> loginButtonClickedEvent(
