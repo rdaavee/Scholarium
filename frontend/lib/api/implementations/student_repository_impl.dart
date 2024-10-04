@@ -11,6 +11,7 @@ import 'package:isHKolarium/api/models/user_model.dart';
 import 'package:isHKolarium/api/repositories/global_repository.dart';
 import 'package:isHKolarium/api/repositories/student_repository.dart';
 import 'package:http/http.dart' as http;
+import 'package:isHKolarium/features/screens/screen_login/login_page.dart';
 import 'package:isHKolarium/features/screens/screen_onboard/onboard_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -132,8 +133,11 @@ class StudentRepositoryImpl implements StudentRepository, GlobalRepository {
   Future<void> logout(BuildContext context) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('token');
+    await prefs.remove('login');
+    await prefs.remove('schooldId');
+    await prefs.remove('password');
 
-    Navigator.of(context).pushReplacementNamed(OnboardScreen.routeName);
+    Navigator.of(context).pushReplacementNamed(LoginPage.routeName);
   }
 
   Future<UpdatePasswordModel> updatePassword({
