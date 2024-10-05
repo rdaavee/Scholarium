@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:isHKolarium/api/models/user_model.dart';
 import 'package:isHKolarium/blocs/bloc_admin/admin_bloc.dart';
-import 'package:isHKolarium/features/screens/screen_admin/user_form_screen.dart';
+import 'package:isHKolarium/features/widgets/admin_widgets/user_form_modal.dart';
 import 'package:isHKolarium/features/widgets/admin_widgets/delete_confirmation_dialog.dart';
+import 'package:isHKolarium/features/widgets/admin_widgets/profile_modal_bottom_sheet.dart';
 
 class UserDataTable extends StatelessWidget {
   final List<UserModel> filteredUsers;
@@ -24,7 +25,7 @@ class UserDataTable extends StatelessWidget {
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
       child: DataTable(
-        dataTextStyle: TextStyle(fontFamily: 'Manrope', fontSize: 11),
+        dataTextStyle: const TextStyle(fontFamily: 'Manrope', fontSize: 11),
         columns: const <DataColumn>[
           DataColumn(
             label: Text(
@@ -36,42 +37,41 @@ class UserDataTable extends StatelessWidget {
             ),
           ),
           DataColumn(
-              label: Text(
-            'Role',
-            style: TextStyle(
-                fontFamily: 'Manrope',
-                fontSize: 13,
-                fontWeight: FontWeight.bold),
-          )),
+            label: Text(
+              'Role',
+              style: TextStyle(
+                  fontFamily: 'Manrope',
+                  fontSize: 13,
+                  fontWeight: FontWeight.bold),
+            ),
+          ),
           DataColumn(
-              label: Text(
-            'Status',
-            style: TextStyle(
-                fontFamily: 'Manrope',
-                fontSize: 13,
-                fontWeight: FontWeight.bold),
-          )),
+            label: Text(
+              'Status',
+              style: TextStyle(
+                  fontFamily: 'Manrope',
+                  fontSize: 13,
+                  fontWeight: FontWeight.bold),
+            ),
+          ),
           DataColumn(
-              label: Text(
-            'Actions',
-            style: TextStyle(
-                fontFamily: 'Manrope',
-                fontSize: 13,
-                fontWeight: FontWeight.bold),
-          )),
+            label: Text(
+              'Actions',
+              style: TextStyle(
+                  fontFamily: 'Manrope',
+                  fontSize: 13,
+                  fontWeight: FontWeight.bold),
+            ),
+          ),
         ],
         rows: filteredUsers.map((user) {
           return DataRow(
             cells: [
               DataCell(
-                Text(
-                  '${user.firstName} ${user.lastName}',
-                ),
+                Text('${user.firstName} ${user.lastName}'),
               ),
               DataCell(
-                Text(
-                  user.role,
-                ),
+                Text(user.role),
               ),
               DataCell(
                 Text(
@@ -90,24 +90,51 @@ class UserDataTable extends StatelessWidget {
                     children: [
                       PopupMenuButton<String>(
                         onSelected: (String result) {
-                          if (result == 'Edit') {
+                          if (result == 'Profile') {
+                            showModalBottomSheet(
+                              context: context,
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(20),
+                                ),
+                              ),
+                              isScrollControlled: true,
+                              backgroundColor: Colors.white,
+                              builder: (BuildContext context) {
+                                return ProfileModalBottomSheet(
+                                  name: '${user.firstName} ${user.lastName}',
+                                  schoolId: user.schoolID.toString(),
+                                  role: user.role,
+                                  isActive: user.status == 'Active',
+                                );
+                              },
+                            );
+                          } else if (result == 'Edit') {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => BlocProvider.value(
                                   value: adminBloc,
-                                  child: UserFormScreen(
-                                      schoolId: user.schoolID.toString()),
+                                  child: UserFormWidget(
+                                    schoolId: user.schoolID.toString(),
+                                  ),
                                 ),
                               ),
                             );
                           } else if (result == 'Delete') {
                             DeleteConfirmationDialog.show(
-                                context, adminBloc, user.schoolID.toString());
+                              context,
+                              adminBloc,
+                              user.schoolID.toString(),
+                            );
                           }
                         },
                         itemBuilder: (BuildContext context) =>
                             <PopupMenuEntry<String>>[
+                          const PopupMenuItem<String>(
+                            value: 'Profile',
+                            child: Text('Profile'),
+                          ),
                           const PopupMenuItem<String>(
                             value: 'Edit',
                             child: Text('Edit'),

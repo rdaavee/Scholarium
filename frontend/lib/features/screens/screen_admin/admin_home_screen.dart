@@ -174,7 +174,8 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                                   PieChartData(
                                     sections: [
                                       PieChartSectionData(
-                                        color: Colors.green,
+                                        color: Color.fromARGB(255, 0, 212, 46)
+                                            .withOpacity(0.85),
                                         value: state.activeCount
                                             .toDouble(), // Active count from state
                                         title: 'Active',
@@ -187,7 +188,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                                         ),
                                       ),
                                       PieChartSectionData(
-                                        color: Colors.grey[350],
+                                        color: Colors.red.withOpacity(0.85),
                                         value: state.inactiveCount
                                             .toDouble(), // Inactive count from state
                                         title: 'Inactive',

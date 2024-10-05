@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:isHKolarium/blocs/bloc_admin/admin_bloc.dart';
-import 'package:isHKolarium/features/widgets/app_bar.dart';
 import 'package:isHKolarium/api/models/user_model.dart';
 import 'package:isHKolarium/api/implementations/admin_repository_impl.dart';
+import 'package:isHKolarium/config/constants/colors.dart';
 
-class UserFormScreen extends StatefulWidget {
-  final String? schoolId; 
-  const UserFormScreen({super.key, this.schoolId});
+class UserFormWidget extends StatefulWidget {
+  final String? schoolId;
+  const UserFormWidget({super.key, this.schoolId});
 
   @override
-  UserFormScreenState createState() => UserFormScreenState();
+  UserFormWidgetState createState() => UserFormWidgetState();
 }
 
-class UserFormScreenState extends State<UserFormScreen> {
+class UserFormWidgetState extends State<UserFormWidget> {
   final TextEditingController schoolIdController = TextEditingController();
   final TextEditingController firstNameController = TextEditingController();
   final TextEditingController middleNameController = TextEditingController();
@@ -35,32 +35,28 @@ class UserFormScreenState extends State<UserFormScreen> {
           create: (context) => AdminBloc(AdminRepositoryImpl()),
         ),
       ],
-      child: Scaffold(
-        appBar: AppBarWidget(
-          title: widget.schoolId == null
-              ? "Create Student or Professor"
-              : "Update Student or Professor",
-          isBackButton: true,
-        ),
-        body: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: ListView(
-            children: [
-              if (widget.schoolId == null) _buildTextField('School ID', schoolIdController),
-              _buildTextField('First Name', firstNameController),
-              _buildTextField('Middle Name', middleNameController),
-              _buildTextField('Last Name', lastNameController),
-              _buildEmailField('Email', emailController),
-              _buildTextField('Password', passwordController),
-              _buildTextField('Gender', genderController),
-              _buildTextField('Address', addressController),
-              _buildContactField('Contact No.', contactController),
-              _buildDropdown('HK Type'),
-              _buildTextField('Professor', professorController),
-              _buildTextField('Role', roleController),
-              _buildSubmitButton(context),
-            ],
-          ),
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: ListView(
+          children: [
+            if (widget.schoolId == null)
+              _buildTextField('School ID', schoolIdController),
+            _buildTextField('First Name', firstNameController),
+            _buildTextField('Middle Name', middleNameController),
+            _buildTextField('Last Name', lastNameController),
+            _buildEmailField('Email', emailController),
+            _buildTextField('Password', passwordController),
+            _buildTextField('Gender', genderController),
+            _buildTextField('Address', addressController),
+            _buildContactField('Contact No.', contactController),
+            _buildDropdown('HK Type'),
+            _buildTextField('Professor', professorController),
+            _buildTextField('Role', roleController),
+            SizedBox(
+              height: 10,
+            ),
+            _buildSubmitButton(context),
+          ],
         ),
       ),
     );
@@ -68,8 +64,12 @@ class UserFormScreenState extends State<UserFormScreen> {
 
   Widget _buildTextField(String labelText, TextEditingController controller) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: TextField(
+        style: TextStyle(
+          fontFamily: 'Manrope',
+          fontSize: 13,
+        ),
         controller: controller,
         decoration: InputDecoration(
           labelText: labelText,
@@ -81,8 +81,12 @@ class UserFormScreenState extends State<UserFormScreen> {
 
   Widget _buildEmailField(String labelText, TextEditingController controller) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: TextField(
+        style: TextStyle(
+          fontFamily: 'Manrope',
+          fontSize: 13,
+        ),
         controller: controller,
         keyboardType: TextInputType.emailAddress,
         decoration: InputDecoration(
@@ -96,8 +100,12 @@ class UserFormScreenState extends State<UserFormScreen> {
   Widget _buildContactField(
       String labelText, TextEditingController controller) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: TextField(
+        style: TextStyle(
+          fontFamily: 'Manrope',
+          fontSize: 13,
+        ),
         controller: controller,
         keyboardType: const TextInputType.numberWithOptions(),
         decoration: InputDecoration(
@@ -112,7 +120,7 @@ class UserFormScreenState extends State<UserFormScreen> {
     List<String> hkTypes = ['HK 25', 'HK 50', 'HK 75'];
 
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: DropdownButtonFormField<String>(
         decoration: InputDecoration(
           labelText: labelText,
@@ -161,16 +169,27 @@ class UserFormScreenState extends State<UserFormScreen> {
             const SnackBar(content: Text('User created successfully!')),
           );
         } else {
-          context.read<AdminBloc>().add(UpdateUserEvent(widget.schoolId!, newUser));
+          context
+              .read<AdminBloc>()
+              .add(UpdateUserEvent(widget.schoolId!, newUser));
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('User updated successfully!')),
           );
         }
       },
       style: ElevatedButton.styleFrom(
-        padding: const EdgeInsets.symmetric(vertical: 16.0),
+        backgroundColor: ColorPalette.btnColor,
+        minimumSize: const Size(287, 55),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
       ),
-      child: const Text('Submit'),
+      child: const Text(
+        'Submit',
+        style: TextStyle(
+          color: ColorPalette.accentBlack,
+          fontFamily: 'Manrope',
+          fontSize: 12,
+        ),
+      ),
     );
   }
 }
