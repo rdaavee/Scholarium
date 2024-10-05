@@ -141,7 +141,6 @@ exports.getMessages = async (req, res) => {
   try {
     const { sender, receiver } = req.params;
 
-    // Find the sender and receiver by their school_id
     const senderUser = await User.findOne({ school_id: sender });
     const receiverUser = await User.findOne({ school_id: receiver });
 
@@ -149,7 +148,6 @@ exports.getMessages = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    // Query messages using the _id of the found users
     const messages = await Message.find({
       $or: [
         { sender: senderUser._id, receiver: receiverUser._id },
@@ -165,3 +163,36 @@ exports.getMessages = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
+// Fetch all unique receivers the sender has communicated with
+exports.getReceiversBySender = async (req, res) => {
+  try {
+    const loggedInProfId = req.userSchoolId; // Assuming req.userSchoolId is the logged-in user's ID
+
+    // Find all messages where the logged-in professor is the sender and get unique receivers
+    const uniqueReceivers = await Message.find({ sender: loggedInProfId })
+      .distinct('receiver');
+
+    if (uniqueReceivers.length === 0) {
+      return res.status(404).json({ message: 'No receivers found for this professor.' });
+    }
+
+    // Optionally, you can populate the receiver's user information if needed
+    // const receiversWithDetails = await User.find({ _id: { $in: uniqueReceivers } });
+
+    res.status(200).json({ receivers: uniqueReceivers });
+  } catch (error) {
+    console.error('Error fetching receivers:', error);
+    res.status(500).json({ message: 'Server error. Unable to fetch receivers.' });
+  }
+};
+
+
+
+
+
+
+
+
+
+

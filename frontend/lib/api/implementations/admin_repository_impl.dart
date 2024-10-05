@@ -7,10 +7,10 @@ import 'package:isHKolarium/api/repositories/admin_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AdminRepositoryImpl extends AdminRepository {
-  // final String baseUrl = 'http://localhost:3000/api';
+  final String baseUrl = 'http://localhost:3000/api';
   // final String baseUrl = 'https://scholarium-app.vercel.app/api'; //host
-  final String baseUrl =
-      'https://ishkolarium-ju4i141ge-ranjsxs-projects.vercel.app/api'; //host
+  // final String baseUrl =
+  //     'https://ishkolarium-ju4i141ge-ranjsxs-projects.vercel.app/api'; //host
 
   Future<String?> _getToken() async {
     final prefs = await SharedPreferences.getInstance();

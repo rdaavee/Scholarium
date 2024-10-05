@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
-import 'package:isHKolarium/features/screens/screen_message/message_page.dart';
 import 'package:isHKolarium/features/screens/screen_message/search_user_page.dart';
 
 class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
