@@ -147,6 +147,12 @@ class LoginForm extends StatelessWidget {
           fontFamily: 'Manrope',
           fontWeight: FontWeight.w100,
         ),
+        onSubmitted: (value) {
+          loginBloc.add(LoginButtonClickedEvent(
+            _schoolIdController.text,
+            _passwordController.text,
+          ));
+        },
       ),
     );
   }

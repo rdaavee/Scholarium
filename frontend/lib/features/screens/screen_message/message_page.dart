@@ -6,8 +6,13 @@ import 'dart:async'; // Import the async library
 class MessageScreen extends StatefulWidget {
   final String senderId;
   final String receiverId;
+  final String receiverName;
 
-  const MessageScreen({super.key, required this.senderId, required this.receiverId});
+  const MessageScreen(
+      {super.key,
+      required this.senderId,
+      required this.receiverId,
+      required this.receiverName});
 
   @override
   MessageScreenState createState() => MessageScreenState();
@@ -17,30 +22,41 @@ class MessageScreenState extends State<MessageScreen> {
   final GlobalRepositoryImpl messageService = GlobalRepositoryImpl();
   final TextEditingController _contentController = TextEditingController();
   List<MessageModel> messages = [];
-  Timer? _timer; 
+  Timer? _timer;
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
     _fetchMessages();
-    _startMessageFetchTimer(); 
+    _startMessageFetchTimer();
   }
 
-  // Fetch messages method
   Future<void> _fetchMessages() async {
     try {
-      final fetchedMessages = await messageService.getMessages(widget.senderId, widget.receiverId);
-      setState(() {
-        messages = fetchedMessages;
-      });
+      final fetchedMessages =
+          await messageService.getMessages(widget.senderId, widget.receiverId);
+      if (mounted) {
+        setState(() {
+          messages = fetchedMessages;
+        });
+        // Scroll to the bottom after fetching messages
+        _scrollToBottom();
+      }
     } catch (e) {
       print('Error fetching messages: $e');
     }
   }
 
+  void _scrollToBottom() {
+    if (_scrollController.hasClients) {
+      _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+    }
+  }
+
   void _startMessageFetchTimer() {
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      _fetchMessages(); 
+      _fetchMessages();
     });
   }
 
@@ -55,11 +71,11 @@ class MessageScreenState extends State<MessageScreen> {
       );
       await messageService.postMessage(message);
 
-      // Clear the text field
       _contentController.clear();
 
-      // Fetch messages again to include the newly sent message
-      _fetchMessages();
+      // Fetch messages after sending and scroll to the bottom
+      await _fetchMessages();
+      _scrollToBottom();
     } else {
       print('Message content cannot be empty');
     }
@@ -67,8 +83,9 @@ class MessageScreenState extends State<MessageScreen> {
 
   @override
   void dispose() {
-    _timer?.cancel(); // Cancel the timer when the screen is disposed
-    _contentController.dispose(); // Dispose the text controller
+    _timer?.cancel();
+    _contentController.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -76,18 +93,54 @@ class MessageScreenState extends State<MessageScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Chat with ${widget.receiverId}'),
+        title: Text('Chat with ${widget.receiverName}'),
       ),
       body: Column(
         children: [
           Expanded(
             child: ListView.builder(
+              controller: _scrollController,
               itemCount: messages.length,
               itemBuilder: (context, index) {
                 final message = messages[index];
-                return ListTile(
-                  title: Text('${message.sender} to ${message.receiver}'),
-                  subtitle: Text(message.content),
+                return Align(
+                  alignment: message.sender == widget.senderId
+                      ? Alignment.centerRight
+                      : Alignment.centerLeft,
+                  child: Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    child: Column(
+                      crossAxisAlignment: message.sender == widget.senderId
+                          ? CrossAxisAlignment.end
+                          : CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          message.sender == widget.senderId
+                              ? 'You'
+                              : widget.receiverName,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 10,
+                            color: message.sender == widget.senderId
+                                ? Colors.blue
+                                : Colors.black,
+                          ),
+                        ),
+                        Container(
+                          margin: const EdgeInsets.only(top: 5),
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: message.sender == widget.senderId
+                                ? Colors.blue[100] // Background color for "You"
+                                : Colors.grey[300], // Background color for receiver
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Text(message.content),
+                        ),
+                      ],
+                    ),
+                  ),
                 );
               },
             ),
@@ -99,14 +152,17 @@ class MessageScreenState extends State<MessageScreen> {
                 Expanded(
                   child: TextField(
                     controller: _contentController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Type your message...',
                       border: OutlineInputBorder(),
                     ),
+                    onSubmitted: (value) {
+                      _sendMessage();
+                    },
                   ),
                 ),
                 IconButton(
-                  icon: Icon(Icons.send),
+                  icon: const Icon(Icons.send),
                   onPressed: _sendMessage,
                 ),
               ],

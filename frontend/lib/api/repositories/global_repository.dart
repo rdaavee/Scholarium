@@ -11,7 +11,8 @@ abstract class GlobalRepository {
   Future<UpdatePasswordModel> updatePassword(
       {required String oldPassword, required String newPassword});
   Future<UserModel> fetchUserData();
+  Future<List<NotificationsModel>> fetchNotificationsData();
+  Future<void> updateNotificationStatus(String notificationId);
   Future<List<AnnouncementModel>> fetchAnnoucementData();
   Future<AnnouncementModel> fetchLatestAnnouncementData();
-  Future<List<NotificationsModel>> fetchNotificationsData();
 }

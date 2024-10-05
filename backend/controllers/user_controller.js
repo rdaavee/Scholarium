@@ -226,15 +226,23 @@ exports.getUserNotifications = async (req, res) => {
 exports.updateNotificationStatus = async (req, res) => {
   const notificationId = req.params.id;
   try {
-    const result = await Notification.updateOne({ _id: notificationId }, { status: "read" });
-    if (result.nModified > 0) {
-      res.status(200).json({ message: "Notification status updated to read" });
+    const result = await Notification.findByIdAndUpdate(
+      notificationId,
+      { status: "read" }, 
+      { new: true, runValidators: true } 
+    );
+
+    if (result) {
+      res.status(200).json({ 
+        message: "Notification status updated to read", 
+        notification: result 
+      });
     } else {
-      res.status(404).json({ message: "Notification not found" });
+      res.status(404).json({ message: "Notification not found" }); 
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Server error occurred" });
+    res.status(500).json({ message: "Server error occurred" }); 
   }
 };
 
