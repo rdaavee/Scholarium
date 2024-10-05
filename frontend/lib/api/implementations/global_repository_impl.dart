@@ -12,10 +12,10 @@ import 'package:isHKolarium/features/screens/screen_login/login_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class GlobalRepositoryImpl implements GlobalRepository {
-  // final String baseUrl = 'http://localhost:3000/api'; //localhost
-  final String baseUrl =
-      'https://ishkolarium-ju4i141ge-ranjsxs-projects.vercel.app/api'; //host
-  // final String baseUrl = 'http://192.168.4.181:3000/api'; //usb tethering
+  final String baseUrl = 'http://localhost:3000/api'; //localhost
+  // final String baseUrl =
+  //     'https://ishkolarium-ju4i141ge-ranjsxs-projects.vercel.app/api'; //host
+  // // final String baseUrl = 'http://192.168.4.181:3000/api'; //usb tethering
 
   Future<String?> _getToken() async {
     final prefs = await SharedPreferences.getInstance();

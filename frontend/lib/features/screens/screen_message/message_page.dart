@@ -1,13 +1,13 @@
-// lib/screens/combined_message_screen.dart
 import 'package:flutter/material.dart';
 import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
 import 'package:isHKolarium/api/models/message_model.dart';
+import 'dart:async'; // Import the async library
 
 class MessageScreen extends StatefulWidget {
   final String senderId;
   final String receiverId;
 
-  MessageScreen({required this.senderId, required this.receiverId});
+  const MessageScreen({super.key, required this.senderId, required this.receiverId});
 
   @override
   MessageScreenState createState() => MessageScreenState();
@@ -17,17 +17,19 @@ class MessageScreenState extends State<MessageScreen> {
   final GlobalRepositoryImpl messageService = GlobalRepositoryImpl();
   final TextEditingController _contentController = TextEditingController();
   List<MessageModel> messages = [];
+  Timer? _timer; 
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     _fetchMessages();
+    _startMessageFetchTimer(); 
   }
 
+  // Fetch messages method
   Future<void> _fetchMessages() async {
     try {
-      final fetchedMessages =
-          await messageService.getMessages(widget.senderId, widget.receiverId);
+      final fetchedMessages = await messageService.getMessages(widget.senderId, widget.receiverId);
       setState(() {
         messages = fetchedMessages;
       });
@@ -36,14 +38,21 @@ class MessageScreenState extends State<MessageScreen> {
     }
   }
 
+  void _startMessageFetchTimer() {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      _fetchMessages(); 
+    });
+  }
+
   Future<void> _sendMessage() async {
     final String content = _contentController.text;
 
     if (content.isNotEmpty) {
       final message = MessageModel(
-          sender: widget.senderId,
-          receiver: widget.receiverId,
-          content: content);
+        sender: widget.senderId,
+        receiver: widget.receiverId,
+        content: content,
+      );
       await messageService.postMessage(message);
 
       // Clear the text field
@@ -54,6 +63,13 @@ class MessageScreenState extends State<MessageScreen> {
     } else {
       print('Message content cannot be empty');
     }
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel(); // Cancel the timer when the screen is disposed
+    _contentController.dispose(); // Dispose the text controller
+    super.dispose();
   }
 
   @override
