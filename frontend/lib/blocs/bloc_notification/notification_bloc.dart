@@ -1,17 +1,20 @@
 import 'dart:async';
-
 import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
 import 'package:isHKolarium/api/models/notifications_model.dart';
+
 part 'notification_event.dart';
 part 'notification_state.dart';
 
 class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
-  final GlobalRepositoryImpl _apiService;
-  NotificationsBloc(this._apiService) : super(NotificationsInitial()) {
+  final GlobalRepositoryImpl _globalService;
+
+  NotificationsBloc(this._globalService) : super(NotificationsInitial()) {
     on<NotificationsInitialEvent>(notificationsInitialEvent);
-    on<FetchNotificationsEvent>(fetchNotificationsEvent);
+    on<FetchNotificationsEvent>(onFetchNotificationsEvent);
+    on<UpdateNotificationStatusEvent>(onUpdateNotificationsEvent);
   }
 
   FutureOr<void> notificationsInitialEvent(
@@ -20,19 +23,26 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
     emit(NotificationsLoadedSuccessState(notifications: const []));
   }
 
-  FutureOr<void> fetchNotificationsEvent(
+  FutureOr<void> onFetchNotificationsEvent(
       FetchNotificationsEvent event, Emitter<NotificationsState> emit) async {
     try {
-
+      emit(NotificationsLoadingState());
       List<NotificationsModel> notifications =
-          await _apiService.fetchNotificationsData();
-
-      emit(NotificationsLoadedSuccessState(
-        notifications: notifications,
-      ));
+          await _globalService.fetchNotificationsData();
+      emit(NotificationsLoadedSuccessState(notifications: notifications));
     } catch (e) {
-      print('Error fetching notifications: $e');
       emit(NotificationsErrorState(message: e.toString()));
+    }
+  }
+
+  FutureOr<void> onUpdateNotificationsEvent(UpdateNotificationStatusEvent event,
+      Emitter<NotificationsState> emit) async {
+    try {
+      await _globalService.updateNotificationStatus(event.notificationId);
+      // Optionally re-fetch notifications after an update
+      add(FetchNotificationsEvent());
+    } catch (e) {
+      emit(NotificationsErrorState(message: 'Failed to update notification status: $e'));
     }
   }
 }

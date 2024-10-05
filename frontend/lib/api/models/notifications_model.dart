@@ -1,5 +1,5 @@
 class NotificationsModel {
-  final int? id;
+  final String? id;
   final String? schoolID;
   final String? sender;
   final String? role;
@@ -21,7 +21,7 @@ class NotificationsModel {
 
   factory NotificationsModel.fromJson(Map<String, dynamic> map) {
     return NotificationsModel(
-      id: map['id'] as int?,
+      id: map['_id'] as String?,
       schoolID: map['school_id'] as String?,
       sender: map['sender'] as String?,
       role: map['role'] as String?,

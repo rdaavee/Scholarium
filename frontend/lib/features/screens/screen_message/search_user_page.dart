@@ -24,7 +24,6 @@ class SearchUserScreenState extends State<SearchUserScreen> {
   }
 
   Future<void> _fetchUsers() async {
-    
     try {
       // Fetch users from the repository
       final fetchedUsers = await messageService
@@ -79,14 +78,18 @@ class SearchUserScreenState extends State<SearchUserScreen> {
                       final user = _filteredUsers[index];
                       return GestureDetector(
                         onTap: () async {
-                          final SharedPreferences prefs = await SharedPreferences.getInstance();
-                          final schoolId = prefs.getString("schoolID").toString();
+                          final SharedPreferences prefs =
+                              await SharedPreferences.getInstance();
+                          final schoolId =
+                              prefs.getString("schoolID").toString();
                           Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => MessageScreen(
-                                      senderId: schoolId,
-                                      receiverId: user.schoolID.toString())));
+                                        senderId: schoolId,
+                                        receiverId: user.schoolID.toString(),
+                                        receiverName: user.firstName.toString(),
+                                      )));
                         },
                         child: ListTile(
                           title: Text(

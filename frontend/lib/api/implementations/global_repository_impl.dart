@@ -170,8 +170,7 @@ class GlobalRepositoryImpl implements GlobalRepository {
   @override
   Future<List<NotificationsModel>> fetchNotificationsData() async {
     try {
-      final token =
-          await _getToken(); // Retrieve token using the _getToken method
+      final token = await _getToken();
       if (token == null) {
         throw Exception('Token not found');
       }
@@ -180,8 +179,7 @@ class GlobalRepositoryImpl implements GlobalRepository {
         Uri.parse('$baseUrl/user/getNotifications'),
         headers: {
           'Content-Type': 'application/json',
-          'Authorization':
-              'Bearer $token', // Add the token in the Authorization header
+          'Authorization': 'Bearer $token',
         },
       );
 
@@ -194,6 +192,40 @@ class GlobalRepositoryImpl implements GlobalRepository {
     } catch (error) {
       print('Error fetching notification: $error'); // Debug print
       throw Exception('Error fetching notification: $error');
+    }
+  }
+
+  @override
+  Future<void> updateNotificationStatus(String notificationId) async {
+    final url =
+        Uri.parse('$baseUrl/user/updateNotificationsStatus/$notificationId');
+
+    try {
+      final token = await _getToken();
+      if (token == null) {
+        throw Exception('Token not found');
+      }
+      final response = await http.put(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+        body: json.encode({
+          'status': 'read',
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        final responseData = json.decode(response.body);
+        print('Notification updated: ${responseData['notification']}');
+      } else if (response.statusCode == 404) {
+        print('Notification not found');
+      } else {
+        print('Failed to update notification: ${response.body}');
+      }
+    } catch (error) {
+      print('Error occurred: $error');
     }
   }
 
@@ -232,13 +264,24 @@ class GlobalRepositoryImpl implements GlobalRepository {
 
     if (response.statusCode == 200) {
       final List<dynamic> jsonResponse = json.decode(response.body);
-      return jsonResponse
-          .map((message) => MessageModel(
-                sender: message['sender']['school_id'],
-                receiver: message['receiver']['school_id'],
-                content: message['content'],
-              ))
-          .toList();
+
+      final messages = jsonResponse.map((message) {
+        return MessageModel(
+          sender: message['sender']['school_id'],
+          receiver: message['receiver']['school_id'],
+          content: message['content'],
+          createdAt: message['createdAt'] != null
+              ? DateTime.parse(message['createdAt'])
+              : null,
+          updatedAt: message['updatedAt'] != null
+              ? DateTime.parse(message['updatedAt'])
+              : null,
+        );
+      }).toList();
+
+      messages.sort((a, b) => a.createdAt!.compareTo(b.createdAt!));
+
+      return messages;
     } else {
       print('Failed to fetch messages: ${response.body}');
       throw Exception('Failed to fetch messages');

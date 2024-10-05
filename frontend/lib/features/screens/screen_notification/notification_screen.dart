@@ -28,22 +28,10 @@ class _NotificationScreenState extends State<NotificationScreen> {
   String _formatDate(String date) {
     final DateTime parsedDate = DateTime.parse(date);
     final List<String> months = [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec'
+      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
     ];
-    final String formattedDate =
-        '${months[parsedDate.month - 1]}. ${parsedDate.day}, ${parsedDate.year}';
-    return formattedDate;
+    return '${months[parsedDate.month - 1]}. ${parsedDate.day}, ${parsedDate.year}';
   }
 
   String _formatTime(String time) {
@@ -53,12 +41,17 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<NotificationsBloc>(create: (context) => notificationsBloc)
-      ],
+    return BlocProvider<NotificationsBloc>(
+      create: (context) => notificationsBloc,
       child: BlocConsumer<NotificationsBloc, NotificationsState>(
-        listener: (context, state) {},
+        listener: (context, state) {
+          if (state is NotificationsErrorState) {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text(state.message),
+              backgroundColor: Colors.red,
+            ));
+          }
+        },
         builder: (context, state) {
           if (state is NotificationsLoadingState) {
             return const Scaffold(
@@ -82,8 +75,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                     child: Container(
                       decoration: const BoxDecoration(
                         color: Color(0xFFF0F3F4),
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(10)),
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
                       ),
                       child: Padding(
                         padding: const EdgeInsets.all(10.0),
@@ -93,20 +85,16 @@ class _NotificationScreenState extends State<NotificationScreen> {
                             final notifications = state.notifications[index];
                             return GestureDetector(
                               onTap: () {
-                                // Add your onTap logic here
-                              },
-                              onLongPress: () {
-                                print("Long press");
+                                // Update notification status when tapped
+                                notificationsBloc.add(UpdateNotificationStatusEvent(notifications.id.toString()));
                               },
                               child: NotificationCard(
                                 sender: notifications.sender.toString(),
                                 role: notifications.role.toString(),
                                 message: notifications.message.toString(),
                                 status: notifications.status.toString(),
-                                date:
-                                    _formatDate(notifications.date.toString()),
-                                time:
-                                    _formatTime(notifications.time.toString()),
+                                date: _formatDate(notifications.date.toString()),
+                                time: _formatTime(notifications.time.toString()),
                               ),
                             );
                           },
@@ -119,24 +107,20 @@ class _NotificationScreenState extends State<NotificationScreen> {
             );
           } else if (state is NotificationsErrorState) {
             return Scaffold(
-                appBar: const AppBarWidget(title: "Notifications", isBackButton: false),
-                body: Column(
+              appBar: const AppBarWidget(title: "Notifications", isBackButton: false),
+              body: Center(
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Center(
-                      child: Image.asset(
-                        'assets/images/no-data-img.png',
-                        height: 230,
-                        width: 230,
-                      ),
-                    ),
+                    Image.asset('assets/images/no-data-img.png', height: 230, width: 230),
                     const Text(
-                      'No notification available',
-                      style: TextStyle(
-                          fontFamily: 'Manrope', fontWeight: FontWeight.bold),
+                      'No notifications available',
+                      style: TextStyle(fontFamily: 'Manrope', fontWeight: FontWeight.bold),
                     ),
                   ],
-                ));
+                ),
+              ),
+            );
           } else {
             return const Scaffold(
               body: Center(child: CircularProgressIndicator()),
