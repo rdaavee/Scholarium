@@ -1,0 +1,59 @@
+import 'dart:convert';
+
+import 'package:isHKolarium/api/models/post_model.dart';
+import 'package:isHKolarium/api/repositories/professor_repository.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+
+class ProfessorRepositoryImpl extends ProfessorRepository {
+  final String baseUrl = 'http://localhost:3000/api'; //localhost
+
+  Future<String?> _getToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('token');
+  }
+
+  @override
+  Future<void> createPost(PostModel post) async {
+    final String? token = await _getToken();
+    final url = Uri.parse('$baseUrl/prof/createPost');
+
+    print("running");
+
+    if (post.title.isEmpty || post.body.isEmpty) {
+      throw Exception('Title and body cannot be empty.');
+    }
+
+    try {
+      final response = await http.post(
+        url,
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+        },
+        body: json.encode(post.toJson()),
+      );
+      print("running");
+      if (response.statusCode == 200) {
+        return;
+      } else {
+        switch (response.statusCode) {
+          case 400:
+            throw Exception('Bad request: ${response.body}');
+          case 401:
+            throw Exception('Unauthorized: Please log in again.');
+          case 403:
+            throw Exception(
+                'Forbidden: You do not have permission to create this post.');
+          case 404:
+            throw Exception('Not found: The endpoint does not exist.');
+          default:
+            throw Exception(
+                'Failed to create post: ${response.statusCode} - ${response.body}');
+        }
+      }
+    } catch (e) {
+      throw Exception('Error: $e');
+    }
+  }
+}

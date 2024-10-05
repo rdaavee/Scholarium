@@ -10,7 +10,8 @@ const postsSchema = new mongoose.Schema({
     enum: ['Active', 'Inactive'], 
     default: 'Inactive'
   },
-  school_id: { type: String, index: true, default: null } 
+  school_id: { type: String, index: true, default: null } ,
+  prof_id: { type: String, index: true, default: null } ,
 }, { timestamps: true }); 
 
 const Posts = mongoose.model('Post', postsSchema);

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:isHKolarium/api/implementations/admin_repository_impl.dart';
 import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
+import 'package:isHKolarium/api/implementations/professor_repository_impl.dart';
 import 'package:isHKolarium/api/implementations/student_repository_impl.dart';
 import 'package:isHKolarium/blocs/bloc_admin/admin_bloc.dart';
 import 'package:isHKolarium/blocs/bloc_professor/professors_bloc.dart';
@@ -30,11 +31,12 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
     super.initState();
     if (widget.isRole == "Student") {
       final studentRepositoryImpl = StudentRepositoryImpl();
-    final globalRepositoryImpl = GlobalRepositoryImpl();
-    studentBloc = StudentsBloc(studentRepositoryImpl, globalRepositoryImpl);
+      final globalRepositoryImpl = GlobalRepositoryImpl();
+      studentBloc = StudentsBloc(studentRepositoryImpl, globalRepositoryImpl);
       studentBloc.add(StudentsInitialEvent());
     } else if (widget.isRole == "Professor") {
-      professorBloc = ProfessorsBloc();
+      final professorsRepository = ProfessorRepositoryImpl();
+      professorBloc = ProfessorsBloc(professorsRepository);
       professorBloc.add(ProfessorsInitialEvent());
     } else {
       final adminService = AdminRepositoryImpl();
@@ -92,7 +94,8 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
                       return const BottomNavWidget(isRole: "Professor");
                     } else if (professorState is ProfessorsErrorState) {
                       return Scaffold(
-                        body: Center(child: Text('Error: ${professorState.message}')),
+                        body: Center(
+                            child: Text('Error: ${professorState.message}')),
                       );
                     }
                     return const Scaffold(
@@ -100,23 +103,24 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
                     );
                   },
                 )
-          : BlocConsumer<AdminBloc, AdminState>(
-              listener: (context, state) {},
-              builder: (context, adminState) {
-                if (adminState is AdminLoadingState) {
-                  return const LoadingWidget();
-                } else if (adminState is AdminLoadedSuccessState) {
-                  return const BottomNavWidget(isRole: "Admin");
-                } else if (adminState is AdminErrorState) {
-                  return Scaffold(
-                    body: Center(child: Text('Error: ${adminState.message}')),
-                  );
-                }
-                return const Scaffold(
-                  body: Center(child: Text('No Data Available')),
-                );
-              },
-            ),
+              : BlocConsumer<AdminBloc, AdminState>(
+                  listener: (context, state) {},
+                  builder: (context, adminState) {
+                    if (adminState is AdminLoadingState) {
+                      return const LoadingWidget();
+                    } else if (adminState is AdminLoadedSuccessState) {
+                      return const BottomNavWidget(isRole: "Admin");
+                    } else if (adminState is AdminErrorState) {
+                      return Scaffold(
+                        body:
+                            Center(child: Text('Error: ${adminState.message}')),
+                      );
+                    }
+                    return const Scaffold(
+                      body: Center(child: Text('No Data Available')),
+                    );
+                  },
+                ),
     );
   }
 }

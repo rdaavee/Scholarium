@@ -1,4 +1,6 @@
 const pool = require('../db');
+const Schedule = require('../models/schedule_model');
+const Post = require('../models/posts_model');
 //Get Announcement
 exports.getAnnouncements = (req, res) => {
     pool.getConnection((error, connection) => {
@@ -18,26 +20,57 @@ exports.getAnnouncements = (req, res) => {
     });
   };
 
-//Create post
-exports.createPost = (req, res) => {
-    pool.getConnection((error, connection) => {
-        if (error) throw error;
-        console.log(`connected as id ${connection.threadId}`);
-
-        const params = req.body;
-
-        connection.query('INSERT INTO posts SET ?', params, (error, rows) => {
-            connection.release();
-
-            if (!error) {
-                res.status(200).json({ message: `Record of "${params.title}" has been added.` });
-            } else {
-                console.log(error);
-                res.status(500).json({ message: error});
-            };
-        });
-    });
-};
+  exports.createPost = async (req, res) => {
+    console.log("createPost HIT");
+    try {
+      const loggedInProfId = req.userSchoolId; 
+      console.log('Logged In Prof ID:', loggedInProfId);
+  
+      const schedules = await Schedule.find({ prof_id: loggedInProfId }).select('school_id');
+  
+      if (schedules.length === 0) {
+        return res.status(404).json({ message: 'No schedules found for this professor.' });
+      }
+  
+      // Fetch existing posts for the logged-in professor to prevent duplicates
+      const existingPosts = await Post.find({
+        prof_id: loggedInProfId,
+        title: req.body.title,
+        body: req.body.body,
+        school_id: { $in: schedules.map(schedule => schedule.school_id) } // Match against all relevant school_ids
+      });
+  
+      // Map over schedules and filter out any duplicates based on existing posts
+      const postsData = schedules.reduce((acc, schedule) => {
+        const schoolId = schedule.school_id;
+        const alreadyExists = existingPosts.some(post => post.school_id === schoolId);
+  
+        if (!alreadyExists) {
+          acc.push({
+            title: req.body.title,  
+            body: req.body.body, 
+            status: req.body.status || 'Active', 
+            school_id: schoolId, 
+            prof_id: loggedInProfId,   
+          });
+        }
+  
+        return acc;
+      }, []);
+  
+      // Only insert if there are new posts to add
+      if (postsData.length > 0) {
+        await Post.insertMany(postsData);
+        res.status(200).json({ message: `Posts created successfully for all school_ids.` });
+      } else {
+        res.status(200).json({ message: `No new posts to create. Duplicate messages detected.` });
+      }
+    } catch (error) {
+      console.error('Error creating posts:', error);
+      res.status(500).json({ message: 'Server error. Unable to create posts.' });
+    }
+  };
+  
 
 //Get user posts
 exports.getUserPosts = (req, res) => {
