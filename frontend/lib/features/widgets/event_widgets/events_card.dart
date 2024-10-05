@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 class EventsCard extends StatelessWidget {
   final String imagePath;
   final String eventName;
+  final String description; // New parameter for event description
   final Color cardColor;
 
   const EventsCard({
     super.key,
     required this.imagePath,
     required this.eventName,
+    required this.description, // Accepting description
     required this.cardColor,
   });
 
@@ -32,9 +34,29 @@ class EventsCard extends StatelessWidget {
                 width: double.infinity,
                 child: ClipRRect(
                   borderRadius: const BorderRadius.all(Radius.circular(5)),
-                  child: Image.asset(
-                    imagePath,
-                    fit: BoxFit.cover,
+                  child: Stack(
+                    children: [
+                      Image.asset(
+                        imagePath,
+                        fit: BoxFit.cover,
+                        width: double.infinity,
+                        height: double.infinity,
+                      ),
+                      // Vignette effect with increased darkness
+                      Container(
+                        decoration: BoxDecoration(
+                          gradient: RadialGradient(
+                            colors: [
+                              Colors.transparent,
+                              Colors.black.withOpacity(0.85), // Darker for better visibility
+                            ],
+                            radius: 0.75, // Slightly larger radius for effect
+                            center: Alignment.center,
+                            stops: [0.5, 1.0], // Smooth transition
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -49,14 +71,7 @@ class EventsCard extends StatelessWidget {
                       bottomLeft: Radius.circular(10.0),
                       bottomRight: Radius.circular(10.0),
                     ),
-                    gradient: LinearGradient(
-                      colors: [
-                        const Color.fromARGB(255, 21, 41, 29).withOpacity(1),
-                        const Color(0xFF6DD400).withOpacity(0.3),
-                      ],
-                      begin: Alignment.bottomCenter,
-                      end: Alignment.topCenter,
-                    ),
+                    color: Colors.black.withOpacity(0.6), // Softer black background
                   ),
                   child: Text(
                     eventName,
@@ -91,22 +106,43 @@ class EventsCard extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(10.0),
-                child: Image.asset(
-                  imagePath,
-                  fit: BoxFit.cover,
+          content: SingleChildScrollView( // Wrap the content with SingleChildScrollView
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(10.0),
+                  child: Stack(
+                    children: [
+                      Image.asset(
+                        imagePath,
+                        fit: BoxFit.cover,
+                        width: MediaQuery.of(context).size.width * 0.8,
+                      ),
+                      // Vignette effect in event details dialog
+                      Container(
+                        decoration: BoxDecoration(
+                          gradient: RadialGradient(
+                            colors: [
+                              Colors.transparent,
+                              Colors.black.withOpacity(0.6),  // Darker for visibility
+                            ],
+                            radius: 0.75,  // Larger radius to cover less of the image
+                            center: Alignment.center,
+                            stops: [0.5, 1.0],  // Smooth fade out
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              const SizedBox(height: 10),
-              const Text(
-                "Details about the event will go here.",
-                style: TextStyle(fontSize: 16),
-              ),
-            ],
+                const SizedBox(height: 10),
+                Text(
+                  description,
+                  style: const TextStyle(fontSize: 16),
+                ),
+              ],
+            ),
           ),
           actions: <Widget>[
             TextButton(
