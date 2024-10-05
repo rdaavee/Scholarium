@@ -10,7 +10,7 @@ class AdminRepositoryImpl extends AdminRepository {
   // final String baseUrl = 'http://localhost:3000/api';
   // final String baseUrl = 'https://scholarium-app.vercel.app/api'; //host
   final String baseUrl =
-      'https://vercel.com/ranjsxs-projects/scholarium-app/9EcrigEq9aWt2pcxz8g9cVCwPcuD/api'; //host
+      'https://ishkolarium-ju4i141ge-ranjsxs-projects.vercel.app/api'; //host
 
   Future<String?> _getToken() async {
     final prefs = await SharedPreferences.getInstance();
