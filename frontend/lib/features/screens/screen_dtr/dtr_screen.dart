@@ -99,7 +99,7 @@ class _DtrScreenState extends State<DtrScreen> {
             backgroundColor: ColorPalette.primary.withOpacity(0.9),
             appBar: const AppBarWidget(title: "DTR", isBackButton: true),
             floatingActionButton: FloatingActionButton(
-              backgroundColor: ColorPalette.accent,
+              backgroundColor: ColorPalette.primary,
               onPressed: () {
                 generatePdf(state.dtr);
               },

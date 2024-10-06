@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
 import 'package:isHKolarium/features/screens/screen_message/search_user_page.dart';
@@ -5,8 +6,12 @@ import 'package:isHKolarium/features/screens/screen_message/search_user_page.dar
 class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final bool isBackButton;
-  const AppBarWidget(
-      {super.key, required this.title, required this.isBackButton});
+
+  const AppBarWidget({
+    super.key,
+    required this.title,
+    required this.isBackButton,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,8 +28,19 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
           Align(
             alignment: Alignment.center,
             child: AppBar(
-              leading: null,
-              automaticallyImplyLeading: isBackButton,
+              leading: isBackButton
+                  ? IconButton(
+                      icon: Icon(
+                        Icons.arrow_back,
+                        color: ColorPalette.accentWhite,
+                        size: 24.0,
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    )
+                  : null,
+              automaticallyImplyLeading: false,
               iconTheme: const IconThemeData(color: ColorPalette.accentWhite),
               backgroundColor: ColorPalette.primary.withOpacity(0.5),
               toolbarHeight: 130,
@@ -34,7 +50,7 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
                 child: Text(
                   title,
                   style: const TextStyle(
-                    fontSize: 20,
+                    fontSize: 17,
                     fontFamily: 'Manrope',
                     fontWeight: FontWeight.bold,
                     letterSpacing: 1.1,
@@ -44,22 +60,27 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
               ),
               actions: [
                 Container(
-                  margin: const EdgeInsets.only(top: 5),
-                  padding: const EdgeInsets.only(right: 20),
-                  child: IconButton(
-                    icon: Image.asset(
-                      'assets/icons/message.png',
-                      width: 27,
-                      height: 27,
-                      color: ColorPalette.accentWhite,
+                  margin: const EdgeInsets.only(top: 1, right: 20),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: ColorPalette.accentWhite.withOpacity(0.2),
+                      shape: BoxShape.circle,
                     ),
-                    onPressed: () {
-                      Navigator.push(
+                    child: IconButton(
+                      icon: Icon(
+                        CupertinoIcons.chat_bubble_fill,
+                        color: ColorPalette.accentWhite,
+                        size: 20,
+                      ),
+                      onPressed: () {
+                        Navigator.push(
                           context,
                           MaterialPageRoute(
-                              // builder: (context) => MessageScreen(senderId: '03-0000-00001', receiverId: '03-0000-00002',)));
-                              builder: (context) => SearchUserScreen()));
-                    },
+                            builder: (context) => SearchUserScreen(),
+                          ),
+                        );
+                      },
+                    ),
                   ),
                 ),
               ],

@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
 import 'package:isHKolarium/api/models/message_model.dart';
-import 'dart:async'; // Import the async library
+import 'dart:async';
+
+import 'package:isHKolarium/config/constants/colors.dart';
 
 class MessageScreen extends StatefulWidget {
   final String senderId;
   final String receiverId;
   final String receiverName;
 
-  const MessageScreen(
-      {super.key,
-      required this.senderId,
-      required this.receiverId,
-      required this.receiverName});
+  const MessageScreen({
+    super.key,
+    required this.senderId,
+    required this.receiverId,
+    required this.receiverName,
+  });
 
   @override
   MessageScreenState createState() => MessageScreenState();
@@ -40,7 +43,6 @@ class MessageScreenState extends State<MessageScreen> {
         setState(() {
           messages = fetchedMessages;
         });
-        // Scroll to the bottom after fetching messages
         _scrollToBottom();
       }
     } catch (e) {
@@ -70,10 +72,7 @@ class MessageScreenState extends State<MessageScreen> {
         content: content,
       );
       await messageService.postMessage(message);
-
       _contentController.clear();
-
-      // Fetch messages after sending and scroll to the bottom
       await _fetchMessages();
       _scrollToBottom();
     } else {
@@ -93,7 +92,27 @@ class MessageScreenState extends State<MessageScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Chat with ${widget.receiverName}'),
+        backgroundColor: ColorPalette.primary,
+        title: Text(
+          'Chat with ${widget.receiverName}',
+          style: TextStyle(
+            fontFamily: 'Manrope',
+            fontSize: 15,
+            letterSpacing: 0.5,
+            color: ColorPalette.accentWhite,
+          ),
+        ),
+        automaticallyImplyLeading: false,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios_new_rounded,
+            color: ColorPalette.accentWhite,
+            size: 13.0,
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
       ),
       body: Column(
         children: [
@@ -103,71 +122,107 @@ class MessageScreenState extends State<MessageScreen> {
               itemCount: messages.length,
               itemBuilder: (context, index) {
                 final message = messages[index];
-                return Align(
-                  alignment: message.sender == widget.senderId
-                      ? Alignment.centerRight
-                      : Alignment.centerLeft,
-                  child: Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                    child: Column(
-                      crossAxisAlignment: message.sender == widget.senderId
-                          ? CrossAxisAlignment.end
-                          : CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          message.sender == widget.senderId
-                              ? 'You'
-                              : widget.receiverName,
+                final isSender = message.sender == widget.senderId;
+                return Container(
+                  margin:
+                      const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                  alignment:
+                      isSender ? Alignment.centerRight : Alignment.centerLeft,
+                  child: Column(
+                    crossAxisAlignment: isSender
+                        ? CrossAxisAlignment.end
+                        : CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        isSender ? 'You' : widget.receiverName,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontFamily: 'Manrope',
+                          fontSize: 10,
+                          color: isSender ? Colors.blueAccent : Colors.black,
+                        ),
+                      ),
+                      Container(
+                        margin: const EdgeInsets.only(top: 5),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 15, vertical: 10),
+                        decoration: BoxDecoration(
+                          color:
+                              isSender ? Colors.blueAccent : Colors.grey[200],
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black12,
+                              blurRadius: 4,
+                              offset: Offset(
+                                1,
+                                1,
+                              ),
+                            ),
+                          ],
+                        ),
+                        child: Text(
+                          message.content,
                           style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 10,
-                            color: message.sender == widget.senderId
-                                ? Colors.blue
-                                : Colors.black,
-                          ),
+                              color: isSender ? Colors.white : Colors.black87,
+                              fontFamily: 'Manrope',
+                              fontSize: 12),
                         ),
-                        Container(
-                          margin: const EdgeInsets.only(top: 5),
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: message.sender == widget.senderId
-                                ? Colors.blue[100] // Background color for "You"
-                                : Colors.grey[300], // Background color for receiver
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Text(message.content),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 );
               },
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(10.0),
             child: Row(
               children: [
                 Expanded(
-                  child: TextField(
-                    controller: _contentController,
-                    decoration: const InputDecoration(
-                      labelText: 'Type your message...',
-                      border: OutlineInputBorder(),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    decoration: BoxDecoration(
+                      color: Colors.grey[200],
+                      borderRadius: BorderRadius.circular(10),
                     ),
-                    onSubmitted: (value) {
-                      _sendMessage();
-                    },
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: TextField(
+                              controller: _contentController,
+                              decoration: const InputDecoration(
+                                hintText: 'Type your message...',
+                                hintStyle: TextStyle(
+                                    fontFamily: 'Manrope',
+                                    fontSize: 12,
+                                    color: Colors.grey),
+                                border: InputBorder.none,
+                              ),
+                              style: TextStyle(
+                                fontFamily: 'Manrope',
+                                fontSize: 12,
+                              ),
+                              onSubmitted: (value) {
+                                _sendMessage();
+                              },
+                            ),
+                          ),
+                        ),
+                        IconButton(
+                          icon:
+                              const Icon(Icons.send, color: Colors.blueAccent),
+                          onPressed: _sendMessage,
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                IconButton(
-                  icon: const Icon(Icons.send),
-                  onPressed: _sendMessage,
                 ),
               ],
             ),
-          ),
+          )
         ],
       ),
     );

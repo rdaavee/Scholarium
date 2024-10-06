@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 class EventsCard extends StatelessWidget {
   final String imagePath;
   final String eventName;
-  final String description; // New parameter for event description
+  final String description;
   final Color cardColor;
 
   const EventsCard({
     super.key,
     required this.imagePath,
     required this.eventName,
-    required this.description, // Accepting description
+    required this.description,
     required this.cardColor,
   });
 
@@ -42,17 +42,16 @@ class EventsCard extends StatelessWidget {
                         width: double.infinity,
                         height: double.infinity,
                       ),
-                      // Vignette effect with increased darkness
                       Container(
                         decoration: BoxDecoration(
                           gradient: RadialGradient(
                             colors: [
                               Colors.transparent,
-                              Colors.black.withOpacity(0.85), // Darker for better visibility
+                              Colors.black.withOpacity(0.85),
                             ],
-                            radius: 0.75, // Slightly larger radius for effect
+                            radius: 0.75,
                             center: Alignment.center,
-                            stops: [0.5, 1.0], // Smooth transition
+                            stops: [0.5, 1.0],
                           ),
                         ),
                       ),
@@ -71,7 +70,7 @@ class EventsCard extends StatelessWidget {
                       bottomLeft: Radius.circular(10.0),
                       bottomRight: Radius.circular(10.0),
                     ),
-                    color: Colors.black.withOpacity(0.6), // Softer black background
+                    color: Colors.black.withOpacity(0.6),
                   ),
                   child: Text(
                     eventName,
@@ -106,7 +105,7 @@ class EventsCard extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
-          content: SingleChildScrollView( // Wrap the content with SingleChildScrollView
+          content: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -119,17 +118,16 @@ class EventsCard extends StatelessWidget {
                         fit: BoxFit.cover,
                         width: MediaQuery.of(context).size.width * 0.8,
                       ),
-                      // Vignette effect in event details dialog
                       Container(
                         decoration: BoxDecoration(
                           gradient: RadialGradient(
                             colors: [
                               Colors.transparent,
-                              Colors.black.withOpacity(0.6),  // Darker for visibility
+                              Colors.black.withOpacity(0.6),
                             ],
-                            radius: 0.75,  // Larger radius to cover less of the image
+                            radius: 0.75,
                             center: Alignment.center,
-                            stops: [0.5, 1.0],  // Smooth fade out
+                            stops: [0.5, 1.0],
                           ),
                         ),
                       ),
