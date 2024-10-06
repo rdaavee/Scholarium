@@ -17,6 +17,18 @@ class LoginErrorState extends AuthenticationState {
   LoginErrorState({required this.errorMessage});
 }
 
+final class PasswordInitial extends AuthenticationState {}
+
+class PasswordLoadingState extends AuthenticationState {}
+
+class PasswordLoadedSuccessState extends AuthenticationState {}
+
+class PasswordErrorState extends AuthenticationState {
+  final String message;
+
+  PasswordErrorState({required this.message});
+}
+
 class LoginNavigateToStudentHomePageActionState extends AuthenticationActionState {}
 
 class LoginNavigateToProfessorHomePageActionState extends AuthenticationActionState {}

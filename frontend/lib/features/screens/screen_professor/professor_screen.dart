@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:isHKolarium/api/implementations/professor_repository_impl.dart';
-import 'package:isHKolarium/api/models/post_model.dart';
 import 'package:isHKolarium/blocs/bloc_bottom_nav/bottom_nav_bloc.dart';
 import 'package:isHKolarium/blocs/bloc_professor/professors_bloc.dart';
 import 'package:isHKolarium/config/constants/colors.dart';

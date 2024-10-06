@@ -11,12 +11,15 @@ part 'authentication_state.dart';
 
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
-  final GlobalRepositoryImpl _apiService;
+  final GlobalRepositoryImpl _globalService;
 
-  AuthenticationBloc(this._apiService) : super(LoginInitial()) {
+  AuthenticationBloc(this._globalService) : super(LoginInitial()) {
     on<LoginInitialEvent>(loginInitialEvent);
+    on<PasswordInitialEvent>(passwordInitialEvent);
     on<LoginButtonClickedEvent>(loginButtonClickedEvent);
     on<LoginAutomaticEvent>(automaticLogin);
+    on<GetOTPEvent>(getOTPEvent);
+    on<ResetPasswordEvent>(resetPasswordEvent);
   }
 
   Future<void> loginInitialEvent(
@@ -25,6 +28,12 @@ class AuthenticationBloc
     await Future.delayed(
       const Duration(seconds: 3),
     );
+  }
+
+  FutureOr<void> passwordInitialEvent(
+      PasswordInitialEvent event, Emitter<AuthenticationState> emit) async {
+    emit(PasswordLoadingState());
+    emit(PasswordLoadedSuccessState());
   }
 
   Future<void> storeToken(
@@ -45,7 +54,7 @@ class AuthenticationBloc
     print("Login btn clicked!");
     emit(LoginLoadingState());
     try {
-      final result = await _apiService.loginUser(
+      final result = await _globalService.loginUser(
         schoolID: event.schoolID,
         password: event.password,
         role: '',
@@ -94,7 +103,7 @@ class AuthenticationBloc
   Future<void> automaticLogin(
       LoginAutomaticEvent event, Emitter<AuthenticationState> emit) async {
     try {
-      final result = await _apiService.loginUser(
+      final result = await _globalService.loginUser(
           schoolID: event.schoolID, password: event.password, role: '');
 
       if (result['statusCode'] == 200) {
@@ -133,6 +142,28 @@ class AuthenticationBloc
     } catch (e) {
       print('Unexpected error: $e');
       emit(LoginErrorState(errorMessage: 'Unexpected error: $e'));
+    }
+  }
+
+  FutureOr<void> getOTPEvent(
+      GetOTPEvent event, Emitter<AuthenticationState> emit) async {
+    emit(PasswordLoadingState());
+    try {
+      await _globalService.forgotPassword(email: event.email);
+    } catch (e) {
+      emit(PasswordErrorState(message: 'Failed to get OTP: $e'));
+    }
+  }
+
+  FutureOr<void> resetPasswordEvent(
+      ResetPasswordEvent event, Emitter<AuthenticationState> emit) async {
+    emit(PasswordLoadingState());
+    try {
+      await _globalService.resetPassword(
+          email: event.email, code: event.code, newPassword: event.newPassword);
+      emit(PasswordLoadedSuccessState());
+    } catch (e) {
+      emit(PasswordErrorState(message: 'Failed to update password: $e'));
     }
   }
 }

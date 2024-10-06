@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:isHKolarium/api/models/announcement_model.dart';
 import 'package:isHKolarium/api/models/notifications_model.dart';
+import 'package:isHKolarium/api/models/password.dart';
 import 'package:isHKolarium/api/models/update_password_model.dart';
 import 'package:isHKolarium/api/models/user_model.dart';
 
@@ -12,6 +13,14 @@ abstract class GlobalRepository {
   Future<void> logout(BuildContext context);
   Future<UpdatePasswordModel> updatePassword(
       {required String oldPassword, required String newPassword});
+  Future<PasswordModel> resetPassword({
+    required String email,
+    required String code,
+    required String newPassword,
+  });
+  Future<PasswordModel> forgotPassword({
+    required String email,
+  });
   Future<UserModel> fetchUserData();
   Future<List<NotificationsModel>> fetchNotificationsData();
   Future<void> updateNotificationStatus(String notificationId);

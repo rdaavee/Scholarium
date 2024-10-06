@@ -177,6 +177,23 @@ const seedUsers = async () => {
         status: 'Inactive',
         token: 'eyJhbGciOiJIUzI1NiIsInR...',
       },
+      {
+        school_id: '03-0000-00019',
+        email: 'benedictabalos30@gmail.com',
+        password: '19',
+        first_name: 'Mark Benedict',
+        middle_name: 'C.',
+        last_name: 'Abalos',
+        profile_picture: null,
+        gender: 'Male',
+        contact: '09516185235',
+        address: 'Baybay Polong',
+        role: 'Student',
+        hk_type: 'HK 25',
+        status: 'Active',
+        token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzQsI...',
+        professor: '03-0000-00002', // Add professor field here
+      },
     ];
 
     // Insert the sample data

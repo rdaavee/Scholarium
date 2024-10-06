@@ -1,4 +1,6 @@
 part of 'announcements_bloc.dart';
 
 @immutable
-sealed class AnnouncementsEvent {}
+abstract class AnnouncementsEvent {}
+class AnnouncementInitialEvent extends AnnouncementsEvent {}
+class FetchAllAnnouncementEvent extends AnnouncementsEvent {}
