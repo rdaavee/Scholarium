@@ -9,7 +9,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 part 'authentication_event.dart';
 part 'authentication_state.dart';
 
-class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> {
+class AuthenticationBloc
+    extends Bloc<AuthenticationEvent, AuthenticationState> {
   final GlobalRepositoryImpl _apiService;
 
   AuthenticationBloc(this._apiService) : super(LoginInitial()) {
@@ -27,7 +28,7 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
   }
 
   Future<void> storeToken(
-      String token, String schoolID, String password) async {
+      String token, String schoolID, String password, String role) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.clear();
     await prefs.setString('token', token);
@@ -35,6 +36,7 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
     await prefs.setString('schoolID', schoolID);
     await prefs.setString('password', password);
     await prefs.setString('login', "true");
+    await prefs.setString('role', role);
     await prefs.setBool('onboard', true);
   }
 
@@ -46,6 +48,7 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
       final result = await _apiService.loginUser(
         schoolID: event.schoolID,
         password: event.password,
+        role: '',
       );
 
       if (result['statusCode'] == 200) {
@@ -53,7 +56,7 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
         final role = result['role'];
         final schoolID = event.schoolID;
         final password = event.password;
-        storeToken(token, schoolID, password);
+        storeToken(token, schoolID, password, role);
         print(schoolID + password);
 
         if (token != null && role != null) {
@@ -92,17 +95,14 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
       LoginAutomaticEvent event, Emitter<AuthenticationState> emit) async {
     try {
       final result = await _apiService.loginUser(
-        schoolID: event.schoolID,
-        password: event.password,
-      );
+          schoolID: event.schoolID, password: event.password, role: '');
 
       if (result['statusCode'] == 200) {
         final token = result['token'];
         final role = result['role'];
         final schoolID = event.schoolID;
         final password = event.password;
-        storeToken(token, schoolID, password);
-        print(schoolID + password);
+        storeToken(token, schoolID, password, role);
 
         if (token != null && role != null) {
           switch (role) {

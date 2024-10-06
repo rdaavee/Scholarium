@@ -56,19 +56,19 @@ class BottomNavWidget extends StatelessWidget {
         },
         items: [
           BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.home),
+            icon: _getIconForRole(isRole, 'home'),
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.calendar_today),
+            icon: _getIconForRole(isRole, 'schedule'),
             label: 'Schedule',
           ),
           BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.bell),
+            icon: _getIconForRole(isRole, 'notification'),
             label: 'Notification',
           ),
           BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.profile_circled),
+            icon: _getIconForRole(isRole, 'profile'),
             label: 'Profile',
           ),
         ],
@@ -131,6 +131,37 @@ class BottomNavWidget extends StatelessWidget {
         return const ProfileScreen();
       default:
         return const AdminHomeScreen();
+    }
+  }
+
+  Icon _getIconForRole(String role, String itemType) {
+    switch (itemType) {
+      case 'home':
+        return Icon(role == 'Student'
+            ? Icons.home
+            : role == 'Professor'
+                ? Icons.home_work
+                : Icons.admin_panel_settings);
+      case 'schedule':
+        return Icon(role == 'Student'
+            ? Icons.calendar_today
+            : role == 'Professor'
+                ? Icons.book
+                : Icons.schedule);
+      case 'notification':
+        return Icon(role == 'Student'
+            ? Icons.notifications
+            : role == 'Professor'
+                ? Icons.notifications_active
+                : Icons.notification_important);
+      case 'profile':
+        return Icon(role == 'Student'
+            ? Icons.person
+            : role == 'Professor'
+                ? Icons.person_outline
+                : Icons.admin_panel_settings_outlined);
+      default:
+        return const Icon(CupertinoIcons.question);
     }
   }
 }

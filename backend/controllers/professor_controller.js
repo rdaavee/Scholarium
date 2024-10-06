@@ -1,6 +1,8 @@
 const pool = require('../db');
 const Schedule = require('../models/schedule_model');
 const Post = require('../models/posts_model');
+const User = require('../models/user_model');
+const moment = require("moment");
 //Get Announcement
 exports.getAnnouncements = (req, res) => {
     pool.getConnection((error, connection) => {
@@ -91,6 +93,105 @@ exports.getUserPosts = (req, res) => {
   });
 };
 
+// Get User Schedule
+exports.getProfSchedule = async (req, res) => {
+  const month = req.params.month; 
+
+  try {
+    const user = await User.findById(req.userId); 
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const prof_id = user.school_id; 
+    await updatePastSchedules(prof_id);
+
+    
+    const startOfMonth = moment(month).startOf('month').format('YYYY-MM-DD');
+    const endOfMonth = moment(month).endOf('month').format('YYYY-MM-DD');
+
+    
+    const schedules = await Schedule.aggregate([
+      {
+        $match: {
+          prof_id: prof_id,
+          date: { $gte: startOfMonth, $lte: endOfMonth }
+        }
+      },
+      {
+        $lookup: {
+          from: "users",       
+          localField: "school_id", 
+          foreignField: "school_id",
+          as: "user_info"   
+        }
+      },
+      {
+        $unwind: "$user_info"    
+      },
+      {
+        $project: {
+          _id: 1,
+          room: 1,
+          block: 1,
+          subject: 1,
+          professor: 1,
+          department: 1,
+          time: 1,
+          date: 1,
+          completed: 1,
+          "user_info.first_name": 1, 
+          "user_info.last_name": 1  
+        }
+      },
+      { 
+        $sort: { date: 1 } 
+      }
+    ]);
+
+    const currentDate = moment().startOf('day');
+    const updatePromises = schedules.map(schedule => {
+      const scheduleDate = moment(schedule.date);
+      if (scheduleDate.isBefore(currentDate) && schedule.completed !== "true") {
+        return Schedule.updateOne({ _id: schedule._id }, { completed: 'false' });
+      }
+    });
+
+    await Promise.all(updatePromises);
+
+    if (schedules.length > 0) {
+      res.status(200).json(schedules);
+    } else {
+      res.status(404).json({ message: "No schedules found for this month" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error occurred" });
+  }
+};
+
+const updatePastSchedules = async (prof_id) => {
+  try {
+    const currentDate = moment().startOf('day').format('YYYY-MM-DD'); // Get the current date
+
+    // Find schedules where the date is in the past and completed is not "true"
+    await Schedule.updateMany(
+      {
+        prof_id: prof_id,
+        date: { $lt: currentDate },  // Dates in the past
+        completed: { $ne: "true" }   // Only update if not already "true"
+      },
+      { $set: { completed: 'false' } } // Set 'completed' to 'false'
+    );
+    
+    console.log('Past schedules updated successfully.');
+  } catch (error) {
+    console.error('Error updating past schedules:', error);
+    throw new Error('Error updating past schedules'); // Handle this error in the calling function
+  }
+};
+
+
 //Update post
 exports.updatePost = (req, res) => {
   pool.getConnection((error, connection) => {
@@ -159,32 +260,6 @@ exports.getUserProfile = (req, res) => {
   });
 };
 
-//Get Profs Schedule
-exports.getProfSchedule = (req, res) => {
-  pool.getConnection((error, connection) => {
-    if (error) {
-      console.error('Error getting MySQL connection:', error);
-      return res.status(500).json({ message: 'Server error occurred' });
-    }
-
-    console.log(`Connected as id ${connection.threadId}`);
-
-    connection.query('SELECT * FROM schedule WHERE prof_id = ?', [req.params.prof_id], (error, rows) => {
-      connection.release();
-
-      if (error) {
-        console.error('Error executing query:', error);
-        return res.status(500).json({ message: 'Server error occurred' });
-      }
-
-      if (rows.length > 0) {
-        res.status(200).json(rows);
-      } else {
-        res.status(404).json({ message: 'User schedule not found' });
-      }
-    });
-  });
-};
 
 
 
