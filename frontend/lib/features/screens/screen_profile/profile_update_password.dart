@@ -31,7 +31,7 @@ class ProfileChangePassword extends StatelessWidget {
         ),
         automaticallyImplyLeading: false,
         leading: IconButton(
-          icon: Icon(
+          icon: const Icon(
             Icons.arrow_back_ios_new_rounded,
             color: ColorPalette.accentWhite,
             size: 13.0,
@@ -44,7 +44,6 @@ class ProfileChangePassword extends StatelessWidget {
       backgroundColor: const Color(0xFFF0F3F4),
       body: SingleChildScrollView(
         child: Container(
-          margin: const EdgeInsets.all(20),
           padding: const EdgeInsets.all(20),
           child: Form(
             key: formKey,
@@ -70,7 +69,10 @@ class ProfileChangePassword extends StatelessWidget {
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: ColorPalette.btnColor,
-                    minimumSize: const Size(287, 55),
+                    minimumSize: const Size(360, 55),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
                     padding: const EdgeInsets.symmetric(
                         horizontal: 20, vertical: 15),
                   ),
@@ -126,26 +128,29 @@ class ProfileChangePassword extends StatelessWidget {
       obscureText: true,
       decoration: InputDecoration(
         hintText: hint,
-        hintStyle: const TextStyle(color: Colors.grey, fontSize: 12.0),
-        filled: true,
-        fillColor: Colors.white,
-        contentPadding:
-            const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
-        border: OutlineInputBorder(
-          borderSide:
-              BorderSide(width: 1, color: Colors.black.withOpacity(0.1)),
-          borderRadius: BorderRadius.circular(10),
+        labelStyle: const TextStyle(
+          color: Colors.grey,
+          fontFamily: 'Manrope',
+          fontSize: 13,
         ),
-        enabledBorder: OutlineInputBorder(
-          borderSide:
-              BorderSide(width: 1, color: Colors.black.withOpacity(0.1)),
-          borderRadius: BorderRadius.circular(10),
+        floatingLabelStyle: const TextStyle(
+            fontFamily: 'Manrope',
+            fontSize: 13,
+            fontWeight: FontWeight.bold,
+            color: ColorPalette.primary),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8.0),
+          borderSide: const BorderSide(color: Colors.grey),
         ),
         focusedBorder: OutlineInputBorder(
-          borderSide:
-              BorderSide(width: 1, color: Colors.black.withOpacity(0.1)),
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(12.0),
+          borderSide: const BorderSide(color: ColorPalette.primary, width: 2),
         ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8.0),
+          borderSide: const BorderSide(color: Colors.grey),
+        ),
+        hoverColor: ColorPalette.primary,
       ),
       style: const TextStyle(
         color: Colors.black,
