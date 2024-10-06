@@ -95,7 +95,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
           } else if (state is StudentsLoadedSuccessState) {
             return Scaffold(
               appBar: AppBarWidget(
-                  title: "Hello ${state.users[0].firstName}",
+                  title: "Hello, ${state.users[0].firstName}!",
                   isBackButton: false),
               body: Stack(
                 children: [
@@ -117,7 +117,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                             child: ListView(
                               children: [
                                 const SizedBox(
-                                  height: 30,
+                                  height: 45,
                                 ),
                                 // Upcoming Duties Section
                                 Padding(
@@ -141,7 +141,6 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                                         onTap: () {
                                           bottomNavBloc
                                               .add(BottomNavItemSelected(1));
-                                          
                                         },
                                         child: const Text(
                                           "View All",
@@ -208,7 +207,8 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                                           ),
                                         ),
                                         cardColor: Colors.white,
-                                        imageUrl: 'assets/images/test-img.png',
+                                        imageUrl:
+                                            'assets/images/boy-duty-img.png',
                                       ),
                                       const SizedBox(width: 5),
                                       ScheduleCard(
@@ -257,7 +257,8 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                                           ),
                                         ),
                                         cardColor: Colors.white,
-                                        imageUrl: 'assets/images/test-img.png',
+                                        imageUrl:
+                                            'assets/images/boy-duty-img.png',
                                       ),
                                     ],
                                   ),
@@ -438,7 +439,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                                 ),
                                 const EventsCard(
                                   textLabel: Text(
-                                    'Sunkissed Lola Concert',
+                                    'Leadership Camp',
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontFamily: 'Manrope',
@@ -447,7 +448,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                                     ),
                                   ),
                                   cardColor: Colors.white,
-                                  imageAssetPath: 'assets/images/image_2.jpg',
+                                  imageAssetPath: 'assets/images/img1.png',
                                 ),
                               ],
                             ),

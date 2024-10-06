@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:isHKolarium/blocs/bloc_bottom_nav/bottom_nav_bloc.dart';
@@ -55,19 +56,19 @@ class BottomNavWidget extends StatelessWidget {
         },
         items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home_outlined),
+            icon: Icon(CupertinoIcons.home),
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_month_outlined),
+            icon: Icon(CupertinoIcons.calendar_today),
             label: 'Schedule',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.notifications_outlined),
+            icon: Icon(CupertinoIcons.bell),
             label: 'Notification',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person_outline_sharp),
+            icon: Icon(CupertinoIcons.profile_circled),
             label: 'Profile',
           ),
         ],

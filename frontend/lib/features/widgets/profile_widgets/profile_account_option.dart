@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
@@ -30,7 +31,7 @@ class AccountOptions extends StatelessWidget {
               ),
             );
           },
-          child: _buildOption(FontAwesomeIcons.lock, 'Change Password'),
+          child: _buildOption(CupertinoIcons.lock_fill, 'Change Password'),
         ),
         const SizedBox(height: 16),
         const DividerWidget(),
@@ -39,7 +40,7 @@ class AccountOptions extends StatelessWidget {
           onTap: () {
             _showLogoutConfirmation(context);
           },
-          child: _buildOption(FontAwesomeIcons.rightFromBracket, 'Logout'),
+          child: _buildOption(FontAwesomeIcons.arrowRightFromBracket, 'Logout'),
         ),
         const SizedBox(height: 16),
         const DividerWidget(),

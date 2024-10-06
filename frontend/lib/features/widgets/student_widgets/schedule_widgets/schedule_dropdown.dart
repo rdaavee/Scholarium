@@ -17,7 +17,7 @@ class ScheduleDropdown extends StatelessWidget {
     return DropdownButtonFormField<String>(
       value: selectedMonth,
       padding: const EdgeInsets.only(right: 16.0),
-      icon: const Icon(Icons.arrow_downward),
+      icon: const Icon(Icons.arrow_drop_down_rounded),
       style: const TextStyle(
         color: Colors.black,
         fontFamily: 'Manrope',

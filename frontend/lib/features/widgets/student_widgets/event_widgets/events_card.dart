@@ -1,6 +1,6 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
+import 'package:isHKolarium/config/constants/colors.dart';
 
 class EventsCard extends StatelessWidget {
   final Text textLabel;
@@ -27,13 +27,24 @@ class EventsCard extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: const BorderRadius.all(Radius.circular(10)),
-              child: SizedBox(
-                height: 150.0,
-                width: double.infinity,
-                child: Image.asset(
-                  imageAssetPath,
-                  fit: BoxFit.cover,
-                ),
+              child: Stack(
+                children: [
+                  SizedBox(
+                    height: 150.0,
+                    width: double.infinity,
+                    child: Image.asset(
+                      imageAssetPath,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  Container(
+                    height: 150.0,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: ColorPalette.primary.withOpacity(.5),
+                    ),
+                  ),
+                ],
               ),
             ),
             Positioned(
@@ -46,11 +57,10 @@ class EventsCard extends StatelessWidget {
                   bottomRight: Radius.circular(10.0),
                 ),
                 child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
+                  filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
                   child: Container(
                     padding: const EdgeInsets.all(15.0),
-                    color: Colors.white
-                        .withOpacity(0.1), // Adjust opacity as needed
+                    color: Colors.grey.withOpacity(0.1),
                     child: textLabel,
                   ),
                 ),
