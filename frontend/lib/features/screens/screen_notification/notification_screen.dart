@@ -55,12 +55,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
       create: (context) => notificationsBloc,
       child: BlocConsumer<NotificationsBloc, NotificationsState>(
         listener: (context, state) {
-          if (state is NotificationsErrorState) {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text(state.message),
-              backgroundColor: Colors.red,
-            ));
-          }
         },
         builder: (context, state) {
           if (state is NotificationsLoadingState) {

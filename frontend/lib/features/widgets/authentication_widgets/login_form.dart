@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:isHKolarium/blocs/bloc_authentication/authentication_bloc.dart';
 import 'package:isHKolarium/features/widgets/authentication_widgets/sign_in_button.dart';
+import 'package:isHKolarium/features/widgets/password/forgot_password.dart';
 
 class LoginForm extends StatelessWidget {
   final AuthenticationBloc loginBloc;
@@ -36,7 +37,10 @@ class LoginForm extends StatelessWidget {
             top: 115,
             child: GestureDetector(
               onTap: () {
-                // Handle forgot password action
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const ForgotPasswordScreen()));
               },
               child: const Text(
                 'Forgot Password?',

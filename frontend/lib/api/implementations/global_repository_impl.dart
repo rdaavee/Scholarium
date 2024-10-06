@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:isHKolarium/api/models/announcement_model.dart';
 import 'package:isHKolarium/api/models/message_model.dart';
 import 'package:isHKolarium/api/models/notifications_model.dart';
+import 'package:isHKolarium/api/models/password.dart';
 import 'package:isHKolarium/api/models/update_password_model.dart';
 import 'package:isHKolarium/api/repositories/global_repository.dart';
 import 'package:isHKolarium/api/models/user_model.dart';
@@ -103,6 +104,56 @@ class GlobalRepositoryImpl implements GlobalRepository {
         success: false,
         message: 'Failed to update password',
       );
+    }
+  }
+
+  @override
+  Future<PasswordModel> forgotPassword({
+    required String email,
+  }) async {
+    final response = await http.post(
+      Uri.parse('$baseUrl/auth/forgotPassword'),
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(<String, dynamic>{
+        'email': email,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> responseBody = jsonDecode(response.body);
+      return PasswordModel.fromJson(responseBody);
+    } else {
+      final Map<String, dynamic> errorBody = jsonDecode(response.body);
+      throw Exception('Failed to reset password: ${errorBody['message']}');
+    }
+  }
+
+  @override
+  Future<PasswordModel> resetPassword({
+    required String email,
+    required String code,
+    required String newPassword,
+  }) async {
+    final response = await http.post(
+      Uri.parse('$baseUrl/auth/resetPassword'),
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(<String, dynamic>{
+        'email': email,
+        'code': code,
+        'newPassword': newPassword,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> responseBody = jsonDecode(response.body);
+      return PasswordModel.fromJson(responseBody);
+    } else {
+      final Map<String, dynamic> errorBody = jsonDecode(response.body);
+      throw Exception('Failed to reset password: ${errorBody['message']}');
     }
   }
 

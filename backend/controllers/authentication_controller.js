@@ -6,7 +6,7 @@ const crypto = require("crypto");
 const { sendVerificationCode } = require("../services/mailService");
 const secretKey = process.env.SECRET_KEY;
 
-const verificationCodes = {}; // Temporary storage for verification codes
+const verificationCodes = {};
 
 // Forgot Password - Request Code
 exports.forgotPassword = async (req, res) => {
@@ -16,7 +16,6 @@ exports.forgotPassword = async (req, res) => {
     return res.status(400).json({ message: "Email is required." });
   }
 
-  // Check if user exists
   const user = await User.findOne({ email });
   if (!user) {
     return res.status(404).json({ message: "User not found." });
@@ -26,7 +25,6 @@ exports.forgotPassword = async (req, res) => {
   const code = crypto.randomInt(100000, 999999).toString();
   verificationCodes[email] = code;
 
-  // Send code via email
   await sendVerificationCode(email, code);
 
   res.status(200).json({ message: "Verification code sent to your email." });
@@ -36,11 +34,7 @@ exports.forgotPassword = async (req, res) => {
 exports.resetPassword = async (req, res) => {
   const { email, code, newPassword } = req.body;
 
-  if (!email || !code || !newPassword) {
-    return res.status(400).json({ message: "All fields are required." });
-  }
-
-  // Check if the code is correct
+  
   if (verificationCodes[email] !== code) {
     return res.status(400).json({ message: "Invalid or expired code." });
   }
@@ -52,8 +46,8 @@ exports.resetPassword = async (req, res) => {
   }
 
   // Hash new password and update user
-  const hashedPassword = await bcrypt.hash(newPassword, 10);
-  user.password = hashedPassword;
+  // const hashedPassword = await bcrypt.hash(newPassword, 10);
+  user.password = newPassword;
   await user.save();
 
   // Delete the used verification code
