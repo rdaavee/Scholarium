@@ -96,6 +96,9 @@ flutter:
     - assets/images/card-bg.png
     - assets/images/no-data-img.png
     - assets/images/change-pass-img.png
+    - assets/images/enter-email-img.png
+    - assets/images/enter-otp-img.png
+    - assets/images/enter-password-img.png
     - assets/images/bg_img.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
