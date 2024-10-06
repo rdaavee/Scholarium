@@ -57,23 +57,54 @@ class BottomNavWidget extends StatelessWidget {
         items: [
           BottomNavigationBarItem(
             icon: _getIconForRole(isRole, 'home'),
-            label: 'Home',
+            label: _getLabelForRole(isRole, 'home'),
           ),
           BottomNavigationBarItem(
             icon: _getIconForRole(isRole, 'schedule'),
-            label: 'Schedule',
+            label: _getLabelForRole(isRole, 'schedule'),
           ),
           BottomNavigationBarItem(
             icon: _getIconForRole(isRole, 'notification'),
-            label: 'Notification',
+            label: _getLabelForRole(isRole, 'notification'),
           ),
           BottomNavigationBarItem(
             icon: _getIconForRole(isRole, 'profile'),
-            label: 'Profile',
+            label: _getLabelForRole(isRole, 'profile'),
           ),
         ],
       ),
     );
+  }
+
+  String _getLabelForRole(String role, String itemType) {
+    switch (itemType) {
+      case 'home':
+        return role == 'Student'
+            ? 'Home'
+            : role == 'Professor'
+                ? 'Home'
+                : 'Home';
+      case 'schedule':
+        return role == 'Student'
+            ? 'Schedule'
+            : role == 'Professor'
+                ? 'Schedule'
+                : 'Users';
+      case 'notification':
+        return role == 'Student'
+            ? 'Notifications'
+            : role == 'Professor'
+                ? 'Notifications'
+                : 'Announcements';
+      case 'profile':
+        return role == 'Student'
+            ? 'Profile'
+            : role == 'Professor'
+                ? 'Profile'
+                : 'Profile';
+      default:
+        return 'Item';
+    }
   }
 
   Widget _getRoleSpecificPage(int index) {
@@ -138,28 +169,28 @@ class BottomNavWidget extends StatelessWidget {
     switch (itemType) {
       case 'home':
         return Icon(role == 'Student'
-            ? Icons.home
+            ? CupertinoIcons.home
             : role == 'Professor'
-                ? Icons.home_work
-                : Icons.admin_panel_settings);
+                ? CupertinoIcons.home
+                : CupertinoIcons.home);
       case 'schedule':
         return Icon(role == 'Student'
-            ? Icons.calendar_today
+            ? CupertinoIcons.calendar
             : role == 'Professor'
-                ? Icons.book
-                : Icons.schedule);
+                ? CupertinoIcons.calendar
+                : CupertinoIcons.person_2_square_stack);
       case 'notification':
         return Icon(role == 'Student'
-            ? Icons.notifications
+            ? CupertinoIcons.bell
             : role == 'Professor'
-                ? Icons.notifications_active
-                : Icons.notification_important);
+                ? CupertinoIcons.bell
+                : CupertinoIcons.bell);
       case 'profile':
         return Icon(role == 'Student'
-            ? Icons.person
+            ? CupertinoIcons.profile_circled
             : role == 'Professor'
-                ? Icons.person_outline
-                : Icons.admin_panel_settings_outlined);
+                ? CupertinoIcons.profile_circled
+                : CupertinoIcons.profile_circled);
       default:
         return const Icon(CupertinoIcons.question);
     }
