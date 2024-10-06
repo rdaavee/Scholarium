@@ -22,6 +22,10 @@ class RoleDropdown extends StatelessWidget {
     return DropdownButtonFormField<String>(
       decoration: const InputDecoration(
         labelText: 'Select Role',
+        labelStyle: TextStyle(
+          fontFamily: 'Manrope',
+          fontSize: 11,
+        ),
         border: OutlineInputBorder(),
       ),
       value: selectedRole,

@@ -133,15 +133,33 @@ class UserDataTable extends StatelessWidget {
                             <PopupMenuEntry<String>>[
                           const PopupMenuItem<String>(
                             value: 'Profile',
-                            child: Text('Profile'),
+                            child: Text(
+                              'Profile',
+                              style: TextStyle(
+                                fontFamily: 'Manrope',
+                                fontSize: 11,
+                              ),
+                            ),
                           ),
                           const PopupMenuItem<String>(
                             value: 'Edit',
-                            child: Text('Edit'),
+                            child: Text(
+                              'Edit',
+                              style: TextStyle(
+                                fontFamily: 'Manrope',
+                                fontSize: 11,
+                              ),
+                            ),
                           ),
                           const PopupMenuItem<String>(
                             value: 'Delete',
-                            child: Text('Delete'),
+                            child: Text(
+                              'Delete',
+                              style: TextStyle(
+                                fontFamily: 'Manrope',
+                                fontSize: 11,
+                              ),
+                            ),
                           ),
                         ],
                       ),
