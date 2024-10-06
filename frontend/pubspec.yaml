@@ -36,6 +36,8 @@ dependencies:
   timeline_tile:
   http: ^1.2.2
   font_awesome_flutter:
+  flutter_material_design_icons:
+  ionicons:
   intl:
   equatable:
   fl_chart:
@@ -80,6 +82,9 @@ flutter:
     - assets/gif/onboarding-img-1.gif
     - assets/gif/onboarding-img-2.gif
     - assets/gif/onboarding-img-3.gif
+    - assets/images/onboarding-img-1.png
+    - assets/images/onboarding-img-2.png
+    - assets/images/onboarding-img-3.png
     - assets/images/image.jpg
     - assets/images/image2.jpg
     - assets/images/image3.jpg
