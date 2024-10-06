@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:isHKolarium/api/implementations/professor_repository_impl.dart';
 import 'package:isHKolarium/api/implementations/student_repository_impl.dart';
 import 'package:isHKolarium/blocs/bloc_schedule/schedule_bloc.dart';
 import 'package:isHKolarium/blocs/bloc_schedule/schedule_event.dart';
@@ -25,7 +26,8 @@ class ScheduleScreenState extends State<ScheduleScreen> {
   void initState() {
     super.initState();
     final apiService = StudentRepositoryImpl();
-    scheduleBloc = ScheduleBloc(apiService);
+    final profService = ProfessorRepositoryImpl();
+    scheduleBloc = ScheduleBloc(apiService, profService);
     currentMonth = DateFormat('MMMM').format(DateTime.now());
     setState(() {
       selectedMonth = currentMonth;
@@ -34,11 +36,15 @@ class ScheduleScreenState extends State<ScheduleScreen> {
   }
 
   Future<void> _initialize(String selectedMonth) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final token = prefs.getString('token') ?? '';
+    final role = await _getRole();
     String monthNumber = monthMap[selectedMonth] ?? "";
-    scheduleBloc
-        .add(LoadScheduleEvent(token: token, selectedMonth: monthNumber));
+    scheduleBloc.add(
+        LoadScheduleEvent(selectedMonth: monthNumber, role: role.toString()));
+  }
+
+  Future<String?> _getRole() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('role');
   }
 
   final Map<String, String> monthMap = {
@@ -145,6 +151,7 @@ class ScheduleScreenState extends State<ScheduleScreen> {
 
                                       return TimelineItem(
                                         duty: duty,
+                                        roleFuture: _getRole(),
                                         color: isCompleted
                                             ? Colors.green
                                             : Colors.grey,

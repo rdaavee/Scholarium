@@ -6,7 +6,9 @@ import 'package:isHKolarium/api/models/user_model.dart';
 
 abstract class GlobalRepository {
   Future<Map<String, dynamic>> loginUser(
-      {required String schoolID, required String password});
+      {required String schoolID,
+      required String password,
+      required String role});
   Future<void> logout(BuildContext context);
   Future<UpdatePasswordModel> updatePassword(
       {required String oldPassword, required String newPassword});

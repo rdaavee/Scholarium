@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfessorRepositoryImpl extends ProfessorRepository {
   final String baseUrl = 'http://localhost:3000/api'; //localhost
+  int currentYear = DateTime.now().year;
 
   Future<String?> _getToken() async {
     final prefs = await SharedPreferences.getInstance();
@@ -54,6 +55,32 @@ class ProfessorRepositoryImpl extends ProfessorRepository {
       }
     } catch (e) {
       throw Exception('Error: $e');
+    }
+  }
+
+  @override
+  Future<List<Map<String, dynamic>>> getSchedule({
+    required String selectedMonth,
+  }) async {
+    final token = await _getToken();
+    final url =
+        Uri.parse('$baseUrl/prof/getSchedule/$currentYear-$selectedMonth');
+
+    try {
+      final response = await http.get(
+        url,
+        headers: {'Authorization': 'Bearer $token'},
+      );
+      if (response.statusCode == 200) {
+        final List<dynamic> data = jsonDecode(response.body);
+        print(data);
+        return data.map((item) => item as Map<String, dynamic>).toList();
+      } else {
+        throw Exception('Failed to load schedule: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error fetching schedule: $e');
+      throw Exception('Error fetching schedule: $e');
     }
   }
 }

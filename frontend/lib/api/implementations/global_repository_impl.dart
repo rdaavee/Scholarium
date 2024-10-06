@@ -27,6 +27,7 @@ class GlobalRepositoryImpl implements GlobalRepository {
   Future<Map<String, dynamic>> loginUser({
     required String schoolID,
     required String password,
+    required String role,
   }) async {
     final url = Uri.parse('$baseUrl/auth/login');
 
@@ -37,6 +38,7 @@ class GlobalRepositoryImpl implements GlobalRepository {
         body: json.encode({
           'school_id': schoolID,
           'password': password,
+          'role': role,
         }),
       );
 

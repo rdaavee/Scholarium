@@ -18,11 +18,11 @@ class LoadUpcomingScheduleEvent extends ScheduleEvent {
 }
 
 class LoadScheduleEvent extends ScheduleEvent {
-  final String token;
   final String selectedMonth;
+  final String role;
 
-  LoadScheduleEvent({required this.token, required this.selectedMonth});
+  LoadScheduleEvent({required this.selectedMonth, required this.role});
 
   @override
-  List<Object> get props => [token, selectedMonth];
+  List<Object> get props => [selectedMonth];
 }

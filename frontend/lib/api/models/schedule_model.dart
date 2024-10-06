@@ -1,3 +1,20 @@
+class UserInfo {
+  final String? firstName;
+  final String? lastName;
+
+  const UserInfo({
+    required this.firstName,
+    required this.lastName,
+  });
+
+  factory UserInfo.fromJson(Map<String, dynamic> map) {
+    return UserInfo(
+      firstName: map['first_name'] as String?,
+      lastName: map['last_name'] as String?,
+    );
+  }
+}
+
 class ScheduleModel {
   final int? id;
   final String? schoolID;
@@ -10,20 +27,21 @@ class ScheduleModel {
   final String? time;
   final String? date;
   final String? isCompleted;
+  final UserInfo? userInfo; // Include UserInfo object
 
-  const ScheduleModel({
-    this.id,
-    required this.schoolID,
-    required this.room,
-    required this.block,
-    required this.subject,
-    required this.profID,
-    required this.professor,
-    required this.department,
-    required this.time,
-    required this.date,
-    required this.isCompleted,
-  });
+  const ScheduleModel(
+      {this.id,
+      required this.schoolID,
+      required this.room,
+      required this.block,
+      required this.subject,
+      required this.profID,
+      required this.professor,
+      required this.department,
+      required this.time,
+      required this.date,
+      required this.isCompleted,
+      this.userInfo});
 
   factory ScheduleModel.fromJson(Map<String, dynamic> map) {
     return ScheduleModel(
@@ -38,6 +56,9 @@ class ScheduleModel {
       time: map['time'] as String?,
       date: map['date'] as String?,
       isCompleted: map['completed'] as String?,
+      userInfo: map['user_info'] != null
+          ? UserInfo.fromJson(map['user_info'] as Map<String, dynamic>)
+          : null,
     );
   }
 }

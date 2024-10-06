@@ -137,41 +137,35 @@ exports.getUserTotalHours = async (req, res) => {
 
 // Get User Schedule
 exports.getUserSchedule = async (req, res) => {
-  const month = req.params.month; // Expecting a month in 'YYYY-MM' format
+  const month = req.params.month; 
 
   try {
-    const user = await User.findById(req.userId); // Get user ID from middleware
+    const user = await User.findById(req.userId);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
     const school_id = user.school_id;
 
-    // Update schedules with past dates to set completed to false
     await updatePastSchedules(school_id);
 
-    // Construct the date range as strings
     const startOfMonth = moment(month).startOf('month').format('YYYY-MM-DD');
     const endOfMonth = moment(month).endOf('month').format('YYYY-MM-DD');
 
-    // Fetch the schedules based on the school_id and the date range
     const schedules = await Schedule.find({
       school_id: school_id,
       date: { $gte: startOfMonth, $lte: endOfMonth }
     }).sort({ date: 1 });
 
-    // Mark past schedules as false if not already true
     const currentDate = moment().startOf('day');
     const updatePromises = schedules.map(schedule => {
       const scheduleDate = moment(schedule.date);
 
-      // Mark as false if the date is in the past and completed is not "true"
       if (scheduleDate.isBefore(currentDate) && schedule.completed !== "true") {
         return Schedule.updateOne({ _id: schedule._id }, { completed: 'false' });
       }
     });
 
-    // Execute all update promises
     await Promise.all(updatePromises);
 
     if (schedules.length > 0) {
