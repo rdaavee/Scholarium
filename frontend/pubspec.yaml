@@ -47,6 +47,7 @@ dependencies:
   awesome_snackbar_content:
   awesome_dialog:
   shimmer: ^3.0.0
+  flutter_admin_scaffold:
 
 
   # The following adds the Cupertino Icons font to your application.
