@@ -31,9 +31,9 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
               leading: isBackButton
                   ? IconButton(
                       icon: Icon(
-                        Icons.arrow_back,
+                        Icons.arrow_back_ios_new_rounded,
                         color: ColorPalette.accentWhite,
-                        size: 24.0,
+                        size: 13.0,
                       ),
                       onPressed: () {
                         Navigator.pop(context);

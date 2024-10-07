@@ -54,8 +54,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
     return BlocProvider<NotificationsBloc>(
       create: (context) => notificationsBloc,
       child: BlocConsumer<NotificationsBloc, NotificationsState>(
-        listener: (context, state) {
-        },
+        listener: (context, state) {},
         builder: (context, state) {
           if (state is NotificationsLoadingState) {
             return const Scaffold(
@@ -65,52 +64,51 @@ class _NotificationScreenState extends State<NotificationScreen> {
             return Scaffold(
               appBar: const AppBarWidget(
                   title: "Notifications", isBackButton: false),
-              backgroundColor: ColorPalette.primary.withOpacity(0.6),
-              body: Column(
+              body: Stack(
                 children: [
                   Container(
-                    decoration: const BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage('assets/images/image.jpg'),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
+                    color: ColorPalette.primary.withOpacity(0.6),
                   ),
-                  Expanded(
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        color: Color(0xFFF0F3F4),
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(10)),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: ListView.builder(
-                          itemCount: state.notifications.length,
-                          itemBuilder: (context, index) {
-                            final notifications = state.notifications[index];
-                            return GestureDetector(
-                              onTap: () {
-                                // Update notification status when tapped
-                                notificationsBloc.add(
-                                    UpdateNotificationStatusEvent(
-                                        notifications.id.toString()));
+                  Column(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          decoration: const BoxDecoration(
+                            color: Color(0xFFF0F3F4),
+                            borderRadius:
+                                BorderRadius.vertical(top: Radius.circular(10)),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: ListView.builder(
+                              itemCount: state.notifications.length,
+                              itemBuilder: (context, index) {
+                                final notifications =
+                                    state.notifications[index];
+                                return GestureDetector(
+                                  onTap: () {
+                                    // Update notification status when tapped
+                                    notificationsBloc.add(
+                                        UpdateNotificationStatusEvent(
+                                            notifications.id.toString()));
+                                  },
+                                  child: NotificationCard(
+                                    sender: notifications.sender.toString(),
+                                    role: notifications.role.toString(),
+                                    message: notifications.message.toString(),
+                                    status: notifications.status.toString(),
+                                    date: _formatDate(
+                                        notifications.date.toString()),
+                                    time: _formatTime(
+                                        notifications.time.toString()),
+                                  ),
+                                );
                               },
-                              child: NotificationCard(
-                                sender: notifications.sender.toString(),
-                                role: notifications.role.toString(),
-                                message: notifications.message.toString(),
-                                status: notifications.status.toString(),
-                                date:
-                                    _formatDate(notifications.date.toString()),
-                                time:
-                                    _formatTime(notifications.time.toString()),
-                              ),
-                            );
-                          },
+                            ),
+                          ),
                         ),
                       ),
-                    ),
+                    ],
                   ),
                 ],
               ),
@@ -119,19 +117,39 @@ class _NotificationScreenState extends State<NotificationScreen> {
             return Scaffold(
               appBar: const AppBarWidget(
                   title: "Notifications", isBackButton: false),
-              body: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset('assets/images/no-data-img.png',
-                        height: 230, width: 230),
-                    const Text(
-                      'No notifications available',
-                      style: TextStyle(
-                          fontFamily: 'Manrope', fontWeight: FontWeight.bold),
+              body: Stack(
+                children: [
+                  Container(
+                    color: ColorPalette.primary.withOpacity(0.6),
+                  ),
+                  Center(
+                    child: Container(
+                      width: double.infinity,
+                      decoration: const BoxDecoration(
+                        color: Color(0xFFF0F3F4),
+                        borderRadius:
+                            BorderRadius.vertical(top: Radius.circular(10)),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            'assets/images/no-data-img.png',
+                            height: 230,
+                            width: 230,
+                          ),
+                          const Text(
+                            'No notifications available',
+                            style: TextStyle(
+                              fontFamily: 'Manrope',
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             );
           } else {

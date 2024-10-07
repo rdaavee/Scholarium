@@ -60,103 +60,109 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 title: "Profile",
                 isBackButton: false,
               ),
-              body: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              body: Stack(
                 children: [
-                  Container(
-                    decoration: const BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage('assets/images/image.jpg'),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
                   Container(
                     color: ColorPalette.primary.withOpacity(0.6),
                   ),
-                  Expanded(
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        color: Color(0xFFF0F3F4),
-                        borderRadius: BorderRadius.vertical(
-                          top: Radius.circular(10),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        decoration: const BoxDecoration(
+                          image: DecorationImage(
+                            image: AssetImage('assets/images/image.jpg'),
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: ListView(
-                          children: [
-                            const SizedBox(height: 50),
-                            ProfileCircle(
-                              profilePictureUrl: state.users[0].profilePicture,
+                      Expanded(
+                        child: Container(
+                          decoration: const BoxDecoration(
+                            color: Color(0xFFF0F3F4),
+                            borderRadius: BorderRadius.vertical(
+                              top: Radius.circular(10),
                             ),
-                            const SizedBox(height: 80),
-                            InfoSection(
-                              title: 'BASIC INFORMATION',
-                              infoRows: [
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: ListView(
+                              children: [
+                                const SizedBox(height: 50),
+                                ProfileCircle(
+                                  profilePictureUrl:
+                                      state.users[0].profilePicture,
+                                ),
+                                const SizedBox(height: 80),
+                                InfoSection(
+                                  title: 'BASIC INFORMATION',
+                                  infoRows: [
+                                    const SizedBox(height: 20),
+                                    InfoRow(
+                                        label: 'Name',
+                                        value:
+                                            "${state.users[0].firstName} ${state.users[0].middleName} ${state.users[0].lastName}"),
+                                    const SizedBox(height: 15),
+                                    const DividerWidget(),
+                                    const SizedBox(height: 15),
+                                    InfoRow(
+                                        label: 'Email',
+                                        value: state.users[0].email),
+                                    const SizedBox(height: 15),
+                                    const DividerWidget(),
+                                    const SizedBox(height: 15),
+                                    InfoRow(
+                                        label: 'School ID',
+                                        value:
+                                            state.users[0].schoolID.toString()),
+                                    const SizedBox(height: 15),
+                                    const DividerWidget(),
+                                    const SizedBox(height: 15),
+                                    InfoRow(
+                                        label: 'Gender',
+                                        value: state.users[0].gender),
+                                    const SizedBox(height: 15),
+                                    const DividerWidget(),
+                                    const SizedBox(height: 15),
+                                    InfoRow(
+                                        label: 'Contact #',
+                                        value: state.users[0].contact),
+                                    const SizedBox(height: 15),
+                                    const DividerWidget(),
+                                    const SizedBox(height: 15),
+                                    InfoRow(
+                                        label: 'Address',
+                                        value: state.users[0].address),
+                                    const SizedBox(height: 15),
+                                    const DividerWidget(),
+                                    const SizedBox(height: 15),
+                                    InfoRow(
+                                        label: 'HK Type',
+                                        value: state.users[0].hkType),
+                                    const SizedBox(height: 15),
+                                    const DividerWidget(),
+                                    const SizedBox(height: 15),
+                                    InfoRow(
+                                        label: 'Status',
+                                        value: state.users[0].status),
+                                  ],
+                                ),
+                                const SizedBox(height: 30),
+                                const AccountSection(),
                                 const SizedBox(height: 20),
-                                InfoRow(
-                                    label: 'Name',
-                                    value:
-                                        "${state.users[0].firstName} ${state.users[0].middleName} ${state.users[0].lastName}"),
-                                const SizedBox(height: 15),
-                                const DividerWidget(),
-                                const SizedBox(height: 15),
-                                InfoRow(
-                                    label: 'Email',
-                                    value: state.users[0].email),
-                                const SizedBox(height: 15),
-                                const DividerWidget(),
-                                const SizedBox(height: 15),
-                                InfoRow(
-                                    label: 'School ID',
-                                    value: state.users[0].schoolID.toString()),
-                                const SizedBox(height: 15),
-                                const DividerWidget(),
-                                const SizedBox(height: 15),
-                                InfoRow(
-                                    label: 'Gender',
-                                    value: state.users[0].gender),
-                                const SizedBox(height: 15),
-                                const DividerWidget(),
-                                const SizedBox(height: 15),
-                                InfoRow(
-                                    label: 'Contact #',
-                                    value: state.users[0].contact),
-                                const SizedBox(height: 15),
-                                const DividerWidget(),
-                                const SizedBox(height: 15),
-                                InfoRow(
-                                    label: 'Address',
-                                    value: state.users[0].address),
-                                const SizedBox(height: 15),
-                                const DividerWidget(),
-                                const SizedBox(height: 15),
-                                InfoRow(
-                                    label: 'HK Type',
-                                    value: state.users[0].hkType),
-                                const SizedBox(height: 15),
-                                const DividerWidget(),
-                                const SizedBox(height: 15),
-                                InfoRow(
-                                    label: 'Status',
-                                    value: state.users[0].status),
+                                AccountOptions(
+                                  onProfileUpdated: _onProfileUpdated,
+                                  onLogout: () {
+                                    BlocProvider.of<ProfileBloc>(context)
+                                        .add(LogoutEvent(context: context));
+                                  },
+                                ),
                               ],
                             ),
-                            const SizedBox(height: 30),
-                            const AccountSection(),
-                            const SizedBox(height: 20),
-                            AccountOptions(
-                              onProfileUpdated: _onProfileUpdated,
-                              onLogout: () {
-                                BlocProvider.of<ProfileBloc>(context)
-                                    .add(LogoutEvent(context: context));
-                              },
-                            ),
-                          ],
+                          ),
                         ),
                       ),
-                    ),
+                    ],
                   ),
                 ],
               ),
