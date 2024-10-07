@@ -160,9 +160,7 @@ class ProfileChangePassword extends StatelessWidget {
       ),
       validator: (value) {
         if (value == null || value.isEmpty) {
-          return isConfirm
-              ? 'Please confirm your new password'
-              : 'Please enter your ${hint.toLowerCase()}';
+          return isConfirm ? 'Please confirm your new password' : '${hint}';
         }
         return null;
       },
