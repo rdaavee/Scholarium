@@ -180,6 +180,8 @@ class _SetScheduleScreenState extends State<SetScheduleScreen> {
                     'Confirm',
                     style: const TextStyle(
                       color: Colors.white,
+                      fontFamily: 'Manrope',
+                      fontSize: 11.5,
                     ),
                   ),
                 ),

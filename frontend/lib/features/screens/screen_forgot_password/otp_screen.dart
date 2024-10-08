@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
-import 'package:isHKolarium/features/screens/forgot_password_screen/reset_password.dart';
+import 'package:isHKolarium/features/screens/screen_forgot_password/reset_password.dart';
 
 class OTPScreen extends StatelessWidget {
   final String email;

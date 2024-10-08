@@ -13,6 +13,8 @@ void main() async {
   runApp(App(isOnboardCompleted: isOnboardCompleted));
 }
 
+
+
 class App extends StatelessWidget {
   final bool isOnboardCompleted;
   const App({super.key, required this.isOnboardCompleted});

@@ -1,7 +1,7 @@
 // EmailScreen.dart
 import 'package:flutter/material.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
-import 'package:isHKolarium/features/screens/forgot_password_screen/otp_screen.dart';
+import 'package:isHKolarium/features/screens/screen_forgot_password/otp_screen.dart';
 
 class EmailScreen extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
