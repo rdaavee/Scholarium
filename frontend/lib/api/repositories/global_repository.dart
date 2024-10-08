@@ -15,13 +15,16 @@ abstract class GlobalRepository {
   Future<void> logout(BuildContext context);
   Future<UpdatePasswordModel> updatePassword(
       {required String oldPassword, required String newPassword});
-  Future<PasswordModel> resetPassword({
-    required String email,
-    required String code,
-    required String newPassword,
-  });
   Future<PasswordModel> forgotPassword({
     required String email,
+  });
+  Future<PasswordModel> verifyCode({
+    required String email,
+    required String code,
+  });
+  Future<PasswordModel> resetPassword({
+    required String email,
+    required String newPassword,
   });
   Future<UserModel> fetchUserData();
   Future<List<NotificationsModel>> fetchNotificationsData();

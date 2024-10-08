@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:isHKolarium/api/models/user_model.dart';
 import 'package:isHKolarium/blocs/bloc_admin/admin_bloc.dart';
+import 'package:isHKolarium/config/constants/colors.dart';
 import 'package:isHKolarium/features/widgets/admin_widgets/user_form_modal.dart';
 import 'package:isHKolarium/features/widgets/admin_widgets/delete_confirmation_dialog.dart';
 import 'package:isHKolarium/features/widgets/admin_widgets/profile_modal_bottom_sheet.dart';
@@ -11,10 +12,10 @@ class UserDataTable extends StatelessWidget {
   final AdminBloc adminBloc;
 
   const UserDataTable({
-    Key? key,
+    super.key,
     required this.filteredUsers,
     required this.adminBloc,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -64,112 +65,159 @@ class UserDataTable extends StatelessWidget {
             ),
           ),
         ],
-        rows: filteredUsers.map((user) {
-          return DataRow(
-            cells: [
-              DataCell(
-                Text('${user.firstName} ${user.lastName}'),
-              ),
-              DataCell(
-                Text(user.role),
-              ),
-              DataCell(
-                Text(
-                  user.status,
-                  style: TextStyle(
-                    color: user.status == 'Active' ? Colors.green : Colors.red,
-                    fontSize: 11,
-                  ),
-                ),
-              ),
-              DataCell(
-                Container(
-                  padding: EdgeInsets.zero,
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      PopupMenuButton<String>(
-                        onSelected: (String result) {
-                          if (result == 'Profile') {
-                            showModalBottomSheet(
-                              context: context,
-                              shape: const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.vertical(
-                                  top: Radius.circular(20),
-                                ),
-                              ),
-                              isScrollControlled: true,
-                              backgroundColor: Colors.white,
-                              builder: (BuildContext context) {
-                                return ProfileModalBottomSheet(
-                                  name: '${user.firstName} ${user.lastName}',
-                                  schoolId: user.schoolID.toString(),
-                                  role: user.role,
-                                  isActive: user.status == 'Active',
-                                );
+        rows: filteredUsers
+            .asMap()
+            .map((index, user) {
+              return MapEntry(
+                index,
+                DataRow(
+                  cells: [
+                    DataCell(
+                      Text('${user.firstName} ${user.lastName}'),
+                    ),
+                    DataCell(
+                      Text(user.role),
+                    ),
+                    DataCell(
+                      Text(
+                        user.status,
+                        style: TextStyle(
+                          color: user.status == 'Active'
+                              ? Colors.green
+                              : Colors.red,
+                          fontSize: 11,
+                        ),
+                      ),
+                    ),
+                    DataCell(
+                      Container(
+                        padding: EdgeInsets.zero,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            PopupMenuButton<String>(
+                              onSelected: (String result) {
+                                if (result == 'Profile') {
+                                  showModalBottomSheet(
+                                    context: context,
+                                    shape: const RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.vertical(
+                                        top: Radius.circular(20),
+                                      ),
+                                    ),
+                                    isScrollControlled: true,
+                                    backgroundColor: Colors.white,
+                                    builder: (BuildContext context) {
+                                      return ProfileModalBottomSheet(
+                                        name:
+                                            '${user.firstName} ${user.lastName}',
+                                        schoolId: user.schoolID.toString(),
+                                        role: user.role,
+                                        isActive: user.status == 'Active',
+                                      );
+                                    },
+                                  );
+                                } else if (result == 'Edit') {
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return Dialog(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(20.0),
+                                        ),
+                                        child: SizedBox(
+                                          width: double
+                                              .infinity, // Adjusts to the width of the screen
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              .93, // 80% of screen height
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(10.0),
+                                            child: Column(
+                                              children: [
+                                                const Text(
+                                                  'Edit User',
+                                                  style: TextStyle(
+                                                    fontSize: 20,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: ColorPalette.primary,
+                                                  ),
+                                                ),
+                                                const SizedBox(height: 15),
+                                                Expanded(
+                                                  child: BlocProvider.value(
+                                                    value: adminBloc,
+                                                    child: UserFormWidget(
+                                                      schoolId: user.schoolID
+                                                          .toString(),
+                                                      index: index,
+                                                      filteredUsers:
+                                                          filteredUsers,
+                                                      isRole: user.role,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  );
+                                } else if (result == 'Delete') {
+                                  DeleteConfirmationDialog.show(
+                                    context,
+                                    adminBloc,
+                                    user.schoolID.toString(),
+                                  );
+                                }
                               },
-                            );
-                          } else if (result == 'Edit') {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => BlocProvider.value(
-                                  value: adminBloc,
-                                  child: UserFormWidget(
-                                    schoolId: user.schoolID.toString(),
+                              itemBuilder: (BuildContext context) =>
+                                  <PopupMenuEntry<String>>[
+                                const PopupMenuItem<String>(
+                                  value: 'Profile',
+                                  child: Text(
+                                    'Profile',
+                                    style: TextStyle(
+                                      fontFamily: 'Manrope',
+                                      fontSize: 11,
+                                    ),
                                   ),
                                 ),
-                              ),
-                            );
-                          } else if (result == 'Delete') {
-                            DeleteConfirmationDialog.show(
-                              context,
-                              adminBloc,
-                              user.schoolID.toString(),
-                            );
-                          }
-                        },
-                        itemBuilder: (BuildContext context) =>
-                            <PopupMenuEntry<String>>[
-                          const PopupMenuItem<String>(
-                            value: 'Profile',
-                            child: Text(
-                              'Profile',
-                              style: TextStyle(
-                                fontFamily: 'Manrope',
-                                fontSize: 11,
-                              ),
+                                const PopupMenuItem<String>(
+                                  value: 'Edit',
+                                  child: Text(
+                                    'Edit',
+                                    style: TextStyle(
+                                      fontFamily: 'Manrope',
+                                      fontSize: 11,
+                                    ),
+                                  ),
+                                ),
+                                const PopupMenuItem<String>(
+                                  value: 'Delete',
+                                  child: Text(
+                                    'Delete',
+                                    style: TextStyle(
+                                      fontFamily: 'Manrope',
+                                      fontSize: 11,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                          const PopupMenuItem<String>(
-                            value: 'Edit',
-                            child: Text(
-                              'Edit',
-                              style: TextStyle(
-                                fontFamily: 'Manrope',
-                                fontSize: 11,
-                              ),
-                            ),
-                          ),
-                          const PopupMenuItem<String>(
-                            value: 'Delete',
-                            child: Text(
-                              'Delete',
-                              style: TextStyle(
-                                fontFamily: 'Manrope',
-                                fontSize: 11,
-                              ),
-                            ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
-          );
-        }).toList(),
+              );
+            })
+            .values
+            .toList(),
       ),
     );
   }

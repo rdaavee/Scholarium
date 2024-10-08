@@ -132,9 +132,33 @@ class GlobalRepositoryImpl implements GlobalRepository {
   }
 
   @override
-  Future<PasswordModel> resetPassword({
+  Future<PasswordModel> verifyCode({
     required String email,
     required String code,
+  }) async {
+    final response = await http.post(
+      Uri.parse('$baseUrl/auth/verifyCode'),
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(<String, dynamic>{
+        'email': email,
+        'code': code,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> responseBody = jsonDecode(response.body);
+      return PasswordModel.fromJson(responseBody);
+    } else {
+      final Map<String, dynamic> errorBody = jsonDecode(response.body);
+      throw Exception('Failed to reset password: ${errorBody['message']}');
+    }
+  }
+
+  @override
+  Future<PasswordModel> resetPassword({
+    required String email,
     required String newPassword,
   }) async {
     final response = await http.post(
@@ -144,7 +168,6 @@ class GlobalRepositoryImpl implements GlobalRepository {
       },
       body: jsonEncode(<String, dynamic>{
         'email': email,
-        'code': code,
         'newPassword': newPassword,
       }),
     );
@@ -378,4 +401,6 @@ class GlobalRepositoryImpl implements GlobalRepository {
       throw Exception('Error uploading image: $error');
     }
   }
+  
+  
 }

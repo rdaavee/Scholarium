@@ -19,6 +19,7 @@ class AuthenticationBloc
     on<LoginButtonClickedEvent>(loginButtonClickedEvent);
     on<LoginAutomaticEvent>(automaticLogin);
     on<GetOTPEvent>(getOTPEvent);
+    on<VerifyCode>(verifyCode);
     on<ResetPasswordEvent>(resetPasswordEvent);
   }
 
@@ -147,21 +148,30 @@ class AuthenticationBloc
 
   FutureOr<void> getOTPEvent(
       GetOTPEvent event, Emitter<AuthenticationState> emit) async {
-    emit(PasswordLoadingState());
     try {
       await _globalService.forgotPassword(email: event.email);
+      emit(EmailNavigateToOTPPageActionState());
     } catch (e) {
       emit(PasswordErrorState(message: 'Failed to get OTP: $e'));
     }
   }
 
+  FutureOr<void> verifyCode(
+      VerifyCode event, Emitter<AuthenticationState> emit) async {
+    try {
+      await _globalService.verifyCode(email: event.email, code: event.code);
+      emit(OTPNavigateToResetPageActionState());
+    } catch (e) {
+      emit(PasswordErrorState(message: 'Failed to update password: $e'));
+    }
+  }
+
   FutureOr<void> resetPasswordEvent(
       ResetPasswordEvent event, Emitter<AuthenticationState> emit) async {
-    emit(PasswordLoadingState());
     try {
       await _globalService.resetPassword(
-          email: event.email, code: event.code, newPassword: event.newPassword);
-      emit(PasswordLoadedSuccessState());
+          email: event.email, newPassword: event.newPassword);
+      emit(ResetPasswordNavigateToLoginPageActionState());
     } catch (e) {
       emit(PasswordErrorState(message: 'Failed to update password: $e'));
     }

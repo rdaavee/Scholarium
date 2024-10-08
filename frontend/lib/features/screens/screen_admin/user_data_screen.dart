@@ -41,8 +41,9 @@ class UserDataScreenState extends State<UserDataScreen> {
         ),
         floatingActionButton: FloatingActionButton(
           backgroundColor: ColorPalette.primary.withOpacity(0.6),
-          onPressed: () {
-            showDialog(
+          onPressed: () async {
+            // Await the result from the dialog
+            final bool? isCompleted = await showDialog<bool>(
               context: context,
               builder: (context) {
                 return Dialog(
@@ -58,7 +59,7 @@ class UserDataScreenState extends State<UserDataScreen> {
                       padding: const EdgeInsets.all(10.0),
                       child: Column(
                         children: [
-                          Text(
+                          const Text(
                             'Create User',
                             style: TextStyle(
                               fontSize: 20,
@@ -70,7 +71,9 @@ class UserDataScreenState extends State<UserDataScreen> {
                           Expanded(
                             child: BlocProvider.value(
                               value: adminBloc,
-                              child: const UserFormWidget(),
+                              child: UserFormWidget(
+                                filteredUsers: [], index: 0, isRole: "Student",
+                              ),
                             ),
                           ),
                         ],
@@ -80,9 +83,16 @@ class UserDataScreenState extends State<UserDataScreen> {
                 );
               },
             );
+
+            // Handle the result
+            if (isCompleted == true) {
+              adminBloc.add(FetchUsersEvent(selectedRole, statusFilter));
+            } else {
+              print('User creation failed or was canceled.');
+            }
           },
           child: const Icon(
-            Icons.add_circle,
+            Icons.add,
             color: Colors.white,
           ),
         ),

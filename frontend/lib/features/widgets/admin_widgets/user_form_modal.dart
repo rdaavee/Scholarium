@@ -7,7 +7,15 @@ import 'package:isHKolarium/config/constants/colors.dart';
 
 class UserFormWidget extends StatefulWidget {
   final String? schoolId;
-  const UserFormWidget({super.key, this.schoolId});
+  final int index;
+  final String isRole;
+  final List<UserModel> filteredUsers;
+  const UserFormWidget(
+      {super.key,
+      this.schoolId,
+      required this.index,
+      required this.filteredUsers,
+      required this.isRole});
 
   @override
   UserFormWidgetState createState() => UserFormWidgetState();
@@ -28,6 +36,27 @@ class UserFormWidgetState extends State<UserFormWidget> {
   String? selectedHkType;
 
   @override
+  void initState() {
+    super.initState();
+
+    if (widget.filteredUsers.isNotEmpty) {
+      schoolIdController.text =
+          widget.filteredUsers[widget.index].schoolID.toString();
+      firstNameController.text = widget.filteredUsers[widget.index].firstName;
+      middleNameController.text = widget.filteredUsers[widget.index].middleName;
+      lastNameController.text = widget.filteredUsers[widget.index].lastName;
+      emailController.text = widget.filteredUsers[widget.index].email;
+      passwordController.text =
+          widget.filteredUsers[widget.index].password.toString();
+      genderController.text = widget.filteredUsers[widget.index].gender;
+      addressController.text = widget.filteredUsers[widget.index].address;
+      contactController.text = widget.filteredUsers[widget.index].contact;
+      professorController.text = widget.filteredUsers[widget.index].professor;
+      roleController.text = widget.filteredUsers[widget.index].role;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
@@ -35,30 +64,34 @@ class UserFormWidgetState extends State<UserFormWidget> {
           create: (context) => AdminBloc(AdminRepositoryImpl()),
         ),
       ],
-      child: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: ListView(
-          children: [
-            if (widget.schoolId == null)
+      child: Scaffold(
+        body: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: ListView(
+            children: [
               _buildTextField('School ID', schoolIdController),
-            _buildTextField('First Name', firstNameController),
-            _buildTextField('Middle Name', middleNameController),
-            _buildTextField('Last Name', lastNameController),
-            _buildEmailField('Email', emailController),
-            _buildTextField('Password', passwordController),
-            _buildTextField('Gender', genderController),
-            _buildTextField('Address', addressController),
-            _buildContactField('Contact No.', contactController),
-            _buildDropdown('HK Type'),
-            _buildTextField('Professor', professorController),
-            _buildTextField('Role', roleController),
-            SizedBox(
-              height: 10,
-            ),
-            _buildSubmitButton(context),
-          ],
+              _buildTextField('First Name', firstNameController),
+              _buildTextField('Middle Name', middleNameController),
+              _buildTextField('Last Name', lastNameController),
+              _buildEmailField('Email', emailController),
+              _buildTextField('Password', passwordController),
+              _buildTextField('Gender', genderController),
+              _buildTextField('Address', addressController),
+              _buildContactField('Contact No.', contactController),
+
+              if (widget.isRole == 'Student') 
+                _buildDropdown('HK Type'), 
+              
+              if (widget.isRole == 'Student') 
+                _buildTextField('Professor', professorController),
+              
+              _buildTextField('Role', roleController),
+              const SizedBox(height: 10),
+              _buildSubmitButton(context),
+            ],
+          ),
         ),
-      ),
+      )
     );
   }
 
@@ -66,7 +99,7 @@ class UserFormWidgetState extends State<UserFormWidget> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: TextField(
-        style: TextStyle(
+        style: const TextStyle(
           fontFamily: 'Manrope',
           fontSize: 13,
         ),
@@ -83,7 +116,7 @@ class UserFormWidgetState extends State<UserFormWidget> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: TextField(
-        style: TextStyle(
+        style: const TextStyle(
           fontFamily: 'Manrope',
           fontSize: 13,
         ),
@@ -102,12 +135,12 @@ class UserFormWidgetState extends State<UserFormWidget> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: TextField(
-        style: TextStyle(
+        style: const TextStyle(
           fontFamily: 'Manrope',
           fontSize: 13,
         ),
         controller: controller,
-        keyboardType: const TextInputType.numberWithOptions(),
+        keyboardType: TextInputType.phone,
         decoration: InputDecoration(
           labelText: labelText,
           border: const OutlineInputBorder(),
@@ -117,7 +150,7 @@ class UserFormWidgetState extends State<UserFormWidget> {
   }
 
   Widget _buildDropdown(String labelText) {
-    List<String> hkTypes = ['HK 25', 'HK 50', 'HK 75'];
+    List<String> hkTypes = ['', 'HK 25', 'HK 50', 'HK 75'];
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10.0),
@@ -146,6 +179,16 @@ class UserFormWidgetState extends State<UserFormWidget> {
   Widget _buildSubmitButton(BuildContext context) {
     return ElevatedButton(
       onPressed: () {
+        if (schoolIdController.text.isEmpty ||
+            firstNameController.text.isEmpty ||
+            emailController.text.isEmpty) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+                content: Text('Please fill in all required fields.')),
+          );
+          return;
+        }
+
         final newUser = UserModel(
           schoolID: schoolIdController.text,
           email: emailController.text,
@@ -168,6 +211,7 @@ class UserFormWidgetState extends State<UserFormWidget> {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('User created successfully!')),
           );
+          Navigator.pop(context, true);
         } else {
           context
               .read<AdminBloc>()
@@ -175,17 +219,20 @@ class UserFormWidgetState extends State<UserFormWidget> {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('User updated successfully!')),
           );
+          Navigator.pop(context, true);
         }
       },
       style: ElevatedButton.styleFrom(
         backgroundColor: ColorPalette.btnColor,
-        minimumSize: const Size(287, 55),
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+        minimumSize: const Size(360, 55),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
       ),
       child: const Text(
         'Submit',
         style: TextStyle(
-          color: ColorPalette.accentBlack,
+          color: Colors.white,
           fontFamily: 'Manrope',
           fontSize: 12,
         ),

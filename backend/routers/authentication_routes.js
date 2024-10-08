@@ -4,6 +4,7 @@ const authenticationController = require("../controllers/authentication_controll
 const { verifyToken }  = require('../middleware/auth');
 
 router.post('/forgotPassword', authenticationController.forgotPassword);
+router.post('/verifyCode', authenticationController.verifyCode);
 router.post('/resetPassword', authenticationController.resetPassword);
 router.post('/login', authenticationController.login);
 

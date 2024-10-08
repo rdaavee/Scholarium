@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:isHKolarium/blocs/bloc_bottom_nav/bottom_nav_bloc.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
 import 'package:isHKolarium/features/screens/screen_admin/admin_home_screen.dart';
-import 'package:isHKolarium/features/screens/screen_admin/read_screen.dart';
+import 'package:isHKolarium/features/screens/screen_admin/user_data_screen.dart';
 import 'package:isHKolarium/features/screens/screen_announcement/announcement.dart';
 import 'package:isHKolarium/features/screens/screen_notification/notification_screen.dart';
 import 'package:isHKolarium/features/screens/screen_professor/professor_screen.dart';

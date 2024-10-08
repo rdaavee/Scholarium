@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:isHKolarium/blocs/bloc_authentication/authentication_bloc.dart';
+import 'package:isHKolarium/features/screens/screen_forgot_password/email_screen.dart';
 import 'package:isHKolarium/features/widgets/authentication_widgets/sign_in_button.dart';
 import 'package:isHKolarium/features/widgets/password/forgot_password.dart';
 
@@ -12,49 +13,47 @@ class LoginForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Stack(
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _schoolIdField(),
-              const SizedBox(height: 5),
-              _passwordField(),
-              const SizedBox(height: 40),
-              SignInButton(
-                onPressed: () {
-                  loginBloc.add(LoginButtonClickedEvent(
-                    _schoolIdController.text,
-                    _passwordController.text,
-                  ));
-                },
-              ),
-            ],
-          ),
-          Positioned(
-            right: 5,
-            top: 115,
-            child: GestureDetector(
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const ForgotPasswordScreen()));
+    return Stack(
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _schoolIdField(),
+            const SizedBox(height: 5),
+            _passwordField(),
+            const SizedBox(height: 40),
+            SignInButton(
+              onPressed: () {
+                loginBloc.add(LoginButtonClickedEvent(
+                  _schoolIdController.text,
+                  _passwordController.text,
+                ));
               },
-              child: const Text(
-                'Forgot Password?',
-                style: TextStyle(
-                  color: Colors.white60,
-                  fontFamily: 'Manrope',
-                  fontSize: 12,
-                  fontWeight: FontWeight.normal,
-                ),
+            ),
+          ],
+        ),
+        Positioned(
+          right: 5,
+          top: 115,
+          child: GestureDetector(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => EmailScreen()));
+            },
+            child: const Text(
+              'Forgot Password?',
+              style: TextStyle(
+                color: Colors.white60,
+                fontFamily: 'Manrope',
+                fontSize: 12,
+                fontWeight: FontWeight.normal,
               ),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
