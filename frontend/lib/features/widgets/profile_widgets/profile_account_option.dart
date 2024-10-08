@@ -1,8 +1,9 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:isHKolarium/features/screens/screen_profile/profile_update_password.dart';
+import 'package:isHKolarium/features/widgets/password/forgot_password.dart';
 import 'package:isHKolarium/features/widgets/profile_widgets/profile_divider.dart';
 
 class AccountOptions extends StatelessWidget {

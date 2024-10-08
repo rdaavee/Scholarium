@@ -24,6 +24,12 @@ class GetOTPEvent extends AuthenticationEvent {
   final String email;
   GetOTPEvent(this.email);
 }
+
+class VerifyCode extends AuthenticationEvent {
+  final String email;
+  final String code;
+  VerifyCode(this.code, this.email);
+}
 class ResetPasswordEvent extends AuthenticationEvent {
   final String email;
   final String code;

@@ -30,7 +30,9 @@ class PasswordErrorState extends AuthenticationState {
 }
 
 class LoginNavigateToStudentHomePageActionState extends AuthenticationActionState {}
-
 class LoginNavigateToProfessorHomePageActionState extends AuthenticationActionState {}
-
 class LoginNavigateToAdminHomePageActionState extends AuthenticationActionState {}
+
+class EmailNavigateToOTPPageActionState extends AuthenticationActionState {}
+class OTPNavigateToResetPageActionState extends AuthenticationActionState {}
+class ResetPasswordNavigateToLoginPageActionState extends AuthenticationActionState {}

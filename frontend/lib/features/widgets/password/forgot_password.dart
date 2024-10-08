@@ -8,7 +8,8 @@ import 'package:isHKolarium/blocs/bloc_authentication/authentication_bloc.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
-  const ForgotPasswordScreen({super.key});
+  final VoidCallback onPasswordChanged;
+  const ForgotPasswordScreen({super.key, required this.onPasswordChanged});
 
   @override
   State<ForgotPasswordScreen> createState() => _ForgotPasswordScreenState();
@@ -88,7 +89,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           appBar: AppBar(
             backgroundColor: ColorPalette.primary,
             title: const Text(
-              'Forgot Password',
+              'Update Password',
               style: TextStyle(
                 fontFamily: 'Manrope',
                 color: ColorPalette.accentWhite,

@@ -6,6 +6,7 @@ const crypto = require("crypto");
 const { sendVerificationCode } = require("../services/mailService");
 const secretKey = process.env.SECRET_KEY;
 
+//=========================================PASSWORD AUTHENTICATION=====================================================================
 const verificationCodes = {};
 
 // Forgot Password - Request Code
@@ -30,16 +31,22 @@ exports.forgotPassword = async (req, res) => {
   res.status(200).json({ message: "Verification code sent to your email." });
 };
 
-// Verify Code and Reset Password
-exports.resetPassword = async (req, res) => {
-  const { email, code, newPassword } = req.body;
+// Verify Code a
+exports.verifyCode = async (req, res) => {
+  const { email, code } = req.body;
 
   
   if (verificationCodes[email] !== code) {
     return res.status(400).json({ message: "Invalid or expired code." });
   }
 
-  // Find user and update password
+  res.status(200).json({ message: "OTP successful." });
+};
+
+// Verify Code and Reset Password
+exports.resetPassword = async (req, res) => {
+  const { email, newPassword } = req.body;
+
   const user = await User.findOne({ email });
   if (!user) {
     return res.status(404).json({ message: "User not found." });
@@ -100,6 +107,9 @@ exports.login = async (req, res) => {
   }
 };
 
+
+
+//========================================================MESSAGING SYSTEM============================================================
 exports.postMessage = async (req, res) => {
   try {
       const { sender, receiver, content } = req.body;
@@ -128,7 +138,6 @@ exports.postMessage = async (req, res) => {
       res.status(500).json({ message: "Server error" });
   }
 };
-
 
 // Get messages between two users
 exports.getMessages = async (req, res) => {
