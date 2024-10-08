@@ -28,3 +28,17 @@ class LogoutErrorState extends ProfileState {
   final String message;
   LogoutErrorState({required this.message});
 }
+
+class ProfileUploadingState extends ProfileState {
+  final String imageUrl;
+
+  ProfileUploadingState({required this.imageUrl});
+}
+
+class ProfileUploadSuccess extends ProfileState {}
+
+class ProfileUploadFailure extends ProfileState {
+  final String error;
+
+  ProfileUploadFailure(this.error);
+}

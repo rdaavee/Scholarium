@@ -2,7 +2,7 @@ name: isHKolarium
 description: "isHKolarium is an innovative digital platform designed to streamline the management and tracking of student scholars duties. The system provides an efficient way for scholars to access their duty schedules, mark their duty completion, and for teachers to monitor and manage the scholars under their supervision."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -30,7 +30,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  shared_preferences: ^2.0.13 
+  shared_preferences: ^2.0.13
   bloc:
   flutter_bloc:
   timeline_tile:
@@ -41,14 +41,14 @@ dependencies:
   intl:
   equatable:
   fl_chart:
-  pdf: ^3.7.1 
+  pdf: ^3.7.1
   printing: ^5.11.0
   flutter_animate:
   awesome_snackbar_content:
   awesome_dialog:
   shimmer: ^3.0.0
   flutter_admin_scaffold:
-
+  image_picker:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -115,46 +115,46 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
 fonts:
-    - family: Montserrat
-      fonts:
-        - asset: assets/fonts/Montserrat-Medium.ttf
-          weight: 500
-        - asset: assets/fonts/Montserrat-Regular.ttf
-          weight: 400
-        - asset: assets/fonts/Montserrat-Light.ttf
-          weight: 300
-        - asset: assets/fonts/Montserrat-ExtraLight.ttf
-          weight: 200
-        - asset: assets/fonts/Montserrat-Thin.ttf
-          weight: 200
-        - asset: assets/fonts/Montserrat-Bold.ttf
-          weight: 700
-        - asset: assets/fonts/Montserrat-ExtraBold.ttf
-          weight: 800
-    - family: Manrope
-      fonts:
-        - asset: assets/fonts/Manrope-Medium.ttf
-          weight: 500
-        - asset: assets/fonts/Manrope-Regular.ttf
-          weight: 400
-        - asset: assets/fonts/Manrope-Light.ttf
-          weight: 300
-        - asset: assets/fonts/Manrope-ExtraLight.ttf
-          weight: 200
-        - asset: assets/fonts/Manrope-Thin.ttf
-          weight: 200
-        - asset: assets/fonts/Manrope-Bold.ttf
-          weight: 700
-        - asset: assets/fonts/Manrope-ExtraBold.ttf
-          weight: 800
+  - family: Montserrat
+    fonts:
+      - asset: assets/fonts/Montserrat-Medium.ttf
+        weight: 500
+      - asset: assets/fonts/Montserrat-Regular.ttf
+        weight: 400
+      - asset: assets/fonts/Montserrat-Light.ttf
+        weight: 300
+      - asset: assets/fonts/Montserrat-ExtraLight.ttf
+        weight: 200
+      - asset: assets/fonts/Montserrat-Thin.ttf
+        weight: 200
+      - asset: assets/fonts/Montserrat-Bold.ttf
+        weight: 700
+      - asset: assets/fonts/Montserrat-ExtraBold.ttf
+        weight: 800
+  - family: Manrope
+    fonts:
+      - asset: assets/fonts/Manrope-Medium.ttf
+        weight: 500
+      - asset: assets/fonts/Manrope-Regular.ttf
+        weight: 400
+      - asset: assets/fonts/Manrope-Light.ttf
+        weight: 300
+      - asset: assets/fonts/Manrope-ExtraLight.ttf
+        weight: 200
+      - asset: assets/fonts/Manrope-Thin.ttf
+        weight: 200
+      - asset: assets/fonts/Manrope-Bold.ttf
+        weight: 700
+      - asset: assets/fonts/Manrope-ExtraBold.ttf
+        weight: 800
 
 flutter_native_splash:
   android: true
   ios: true
   web: false
   image: "assets/images/logo_college_2.png"
-  color: "#d4e4ed"  
-  
+  color: "#d4e4ed"
+
   android_12:
     color: "#d4e4ed"
     image: "assets/images/logo_college_2.png"

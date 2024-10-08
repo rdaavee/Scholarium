@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:isHKolarium/api/models/announcement_model.dart';
 import 'package:isHKolarium/api/models/notifications_model.dart';
@@ -26,4 +28,5 @@ abstract class GlobalRepository {
   Future<void> updateNotificationStatus(String notificationId);
   Future<List<AnnouncementModel>> fetchAnnoucementData();
   Future<AnnouncementModel> fetchLatestAnnouncementData();
+  Future<void> uploadProfileImage(File file);
 }
