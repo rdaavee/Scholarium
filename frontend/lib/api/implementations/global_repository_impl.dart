@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:isHKolarium/api/models/announcement_model.dart';
@@ -338,6 +339,43 @@ class GlobalRepositoryImpl implements GlobalRepository {
     } else {
       print('Failed to fetch messages: ${response.body}');
       throw Exception('Failed to fetch messages');
+    }
+  }
+
+  @override
+  Future<String> uploadProfileImage(File file) async {
+    final token = await _getToken(); 
+    final String uploadUrl =
+        '$baseUrl/user/profile/upload'; 
+
+    try {
+      var request = http.MultipartRequest('POST', Uri.parse(uploadUrl));
+      request.headers.addAll({
+        'Authorization': 'Bearer $token',
+      });
+
+      request.files.add(await http.MultipartFile.fromPath(
+        'profile_picture',
+        file.path,
+      ));
+
+      var response = await request.send(); 
+      print('Response status code: ${response.statusCode}');
+
+      if (response.statusCode == 200) {
+        var responseData = await http.Response.fromStream(response);
+        var jsonResponse = json.decode(responseData.body);
+        return jsonResponse[
+            'profile_picture'];
+      } else {
+        var responseData = await http.Response.fromStream(response);
+        print('Response body: ${responseData.body}');
+        throw Exception(
+            'Failed to upload image. Status code: ${response.statusCode}');
+      }
+    } catch (error) {
+      print('Error uploading image: $error'); // Log any errors that occur
+      throw Exception('Error uploading image: $error');
     }
   }
 }

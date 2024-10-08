@@ -1,26 +1,14 @@
 const multer = require('multer');
 const path = require('path');
-const fs = require('fs');
-const pool = require('../db');
+const bucket = require('../firebase'); // Firebase bucket
+const { v4: uuidv4 } = require('uuid'); 
+const User = require('../models/user_model'); 
 
-// Set up storage engine
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    const dir = './uploads/profile_pictures';
-    if (!fs.existsSync(dir)) {
-      fs.mkdirSync(dir);
-    }
-    cb(null, dir);
-  },
-  filename: (req, file, cb) => {
-    cb(null, `${Date.now()}${path.extname(file.originalname)}`);
-  }
-});
-
-// Initialize multer upload
+// Set up multer for in-memory storage
+const storage = multer.memoryStorage();
 const upload = multer({
   storage: storage,
-  limits: { fileSize: 5000000 },
+  limits: { fileSize: 5000000 }, // 5MB limit
   fileFilter: (req, file, cb) => {
     checkFileType(file, cb);
   }
@@ -28,62 +16,68 @@ const upload = multer({
 
 // Check file type
 function checkFileType(file, cb) {
-  const filetypes = /jpeg|jpg|png|gif/;
+  const filetypes = /jpeg|jpg|png|gif/; // Allowed file types
   const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
   const mimetype = filetypes.test(file.mimetype);
+
+  console.log('File MIME type:', file.mimetype); // Log the MIME type
+  console.log('File Extension:', path.extname(file.originalname).toLowerCase()); // Log the file extension
 
   if (mimetype && extname) {
     return cb(null, true);
   } else {
-    cb('Error: Images Only!');
+    cb('Error: Only images are allowed!');
   }
 }
 
 // Controller function to upload an image
-exports.uploadImage = (req, res) => {
-  const token = req.params.token;
-  if (!token) {
-    return res.status(401).json({ message: 'No token provided' });
+exports.uploadImage = async (req, res) => {
+  if (!req.userId || !req.userSchoolId) {
+    return res.status(401).json({ message: 'Unauthorized! No user information available.' });
   }
-  // Step 1: Validate the Token and Get school_id
-  pool.getConnection((error, connection) => {
-    if (error) {
-      console.error('Error getting MySQL connection:', error);
-      return res.status(500).json({ message: 'Server error occurred' });
-    }
-    connection.query('SELECT school_id FROM users WHERE token = ?', [token], (error, userResult) => {
-      if (error) {
-        connection.release();
-        console.error('Error executing query:', error);
-        return res.status(500).json({ message: 'Server error occurred' });
+
+  try {
+    const schoolId = req.userSchoolId;
+    req.schoolId = schoolId;
+
+    upload(req, res, async (err) => {
+      if (err) {
+        console.error('Multer Error:', err);
+        return res.status(400).json({ message: err.message });
       }
-      if (userResult.length === 0) {
-        connection.release();
-        return res.status(403).json({ message: 'Invalid token' });
+
+      console.log('Uploaded file:', req.file); // Log the uploaded file details
+
+      if (!req.file) {
+        return res.status(400).json({ message: 'No file selected!' });
       }
-      const schoolId = userResult[0].school_id;
-      req.schoolId = schoolId;
-      // Perform file upload
-      upload(req, res, (err) => {
-        connection.release();
-        if (err) {
-          return res.status(400).json({ message: err.message });
-        }
-        if (req.file === undefined) {
-          return res.status(400).json({ message: 'No file selected!' });
-        }
-        // Update the user's profile picture path in the database
-        const filePath = req.file.filename;
-        pool.query('UPDATE users SET profile_picture = ? WHERE school_id = ?', [filePath, req.schoolId], (err, results) => {
-          if (err) {
-            return res.status(500).json({ message: 'Database update failed' });
-          }
-          res.status(200).json({
-            message: 'Profile picture updated successfully',
-            filePath: `/uploads/profile_pictures/${filePath}`
-          });
+
+      const blob = bucket.file(`${uuidv4()}_${req.file.originalname}`);
+      const blobStream = blob.createWriteStream({
+        metadata: {
+          contentType: req.file.mimetype,
+        },
+      });
+
+      blobStream.on('error', (err) => {
+        return res.status(500).json({ message: 'Upload error: ' + err.message });
+      });
+
+      blobStream.on('finish', async () => {
+        const publicUrl = `https://storage.googleapis.com/${bucket.name}/${blob.name}`;
+        await blob.makePublic();
+
+        await User.updateOne({ school_id: req.schoolId }, { $set: { profile_picture: publicUrl } });
+        res.status(200).json({
+          message: 'Profile picture updated successfully',
+          filePath: publicUrl,
         });
       });
+
+      blobStream.end(req.file.buffer);
     });
-  });
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ message: 'Server error occurred' });
+  }
 };

@@ -1,17 +1,32 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
 import 'package:isHKolarium/api/models/user_model.dart';
 import 'profile_event.dart';
 import 'profile_state.dart';
+
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   final GlobalRepositoryImpl _apiService;
 
   ProfileBloc(this._apiService) : super(ProfileInitial()) {
     on<ProfileInitialEvent>(profileInitialEvent);
     on<FetchProfileEvent>(fetchProfile);
-    on<LogoutEvent>(_onLogout); // Listen for LogoutEvent
+    on<LogoutEvent>(_onLogout);
+    on<PickImageEvent>(uploadProfileImage);
+  }
+
+  Future<void> uploadProfileImage(
+      PickImageEvent event, Emitter<ProfileState> emit) async {
+    try {
+      final imageUrl =
+          await _apiService.uploadProfileImage(File(event.imagePath));
+
+      emit(ProfileUploadingState(imageUrl: imageUrl));
+    } catch (error) {
+      emit(ProfileErrorState(message: 'Failed to upload image: $error'));
+    }
   }
 
   FutureOr<void> profileInitialEvent(

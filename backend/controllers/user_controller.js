@@ -245,7 +245,6 @@ exports.getUserProfile = async (req, res) => {
   try {
     const user = await User.findById(req.userId);
     if (user) {
-      const baseUrl = "http://192.168.42.137:3000"; 
       res.status(200).json({
         id: user._id,
         school_id: user.school_id,
@@ -253,9 +252,7 @@ exports.getUserProfile = async (req, res) => {
         first_name: user.first_name,
         middle_name: user.middle_name,
         last_name: user.last_name,
-        profile_picture: user.profile_picture
-          ? `${baseUrl}/uploads/profile_pictures/${user.profile_picture}`
-          : null,
+        profile_picture: user.profile_picture,
         gender: user.gender,
         contact: user.contact,
         address: user.address,

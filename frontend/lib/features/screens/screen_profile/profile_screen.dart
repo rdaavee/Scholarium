@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
 import 'package:isHKolarium/blocs/bloc_profile/profile_bloc.dart';
 import 'package:isHKolarium/blocs/bloc_profile/profile_event.dart';
@@ -22,6 +25,7 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   late ProfileBloc profileBloc;
+  String _profilePicture = '';
 
   @override
   void initState() {
@@ -33,6 +37,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   void _onProfileUpdated() {
     profileBloc.add(FetchProfileEvent());
+  }
+
+  void _pickImage() async {
+    print("Pick Image Hit");
+    final ImagePicker picker = ImagePicker();
+    final XFile? pickedFile =
+        await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      profileBloc.add(PickImageEvent(pickedFile.path));
+    } else {
+      print('No image selected.');
+    }
   }
 
   @override
@@ -90,8 +107,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               children: [
                                 const SizedBox(height: 50),
                                 ProfileCircle(
-                                  profilePictureUrl:
-                                      state.users[0].profilePicture,
+                                  profilePicture: state.users[0].profilePicture,
+                                  onTap: _pickImage,
                                 ),
                                 const SizedBox(height: 80),
                                 InfoSection(
