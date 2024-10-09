@@ -83,6 +83,7 @@ flutter:
 
   assets:
     - assets/
+    - assets/fonts/Roboto-Regular.ttf
     - assets/images/
     - assets/images/onboarding-img-1.png
     - assets/images/onboarding-img-2.png
@@ -150,6 +151,12 @@ fonts:
         weight: 700
       - asset: assets/fonts/Manrope-ExtraBold.ttf
         weight: 800
+  - family: Roboto
+    fonts:
+      - asset: assets/fonts/Roboto-Regular.ttf
+        weight: 400
+      - asset: assets/fonts/Roboto-Bold.ttf
+        weight: 700
 
 flutter_native_splash:
   android: true

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:isHKolarium/api/implementations/student_repository_impl.dart';
 import 'package:isHKolarium/api/models/dtr_model.dart';
 import 'package:isHKolarium/blocs/bloc_dtr/dtr_bloc.dart';
@@ -52,10 +53,13 @@ class _DtrScreenState extends State<DtrScreen> {
               'Professor Signature',
             ],
             data: dtrList.map((dtr) {
+              String formattedTimeIn = formatTimeToAmPm(dtr.timeIn.toString());
+              String formattedTimeOut =
+                  formatTimeToAmPm(dtr.timeOut.toString());
               return [
                 dtr.date,
-                dtr.timeIn,
-                dtr.timeOut,
+                formattedTimeIn,
+                formattedTimeOut,
                 dtr.hoursRendered.toString(),
                 dtr.professor,
                 dtr.professorSignature,
@@ -73,6 +77,14 @@ class _DtrScreenState extends State<DtrScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Download Completed')),
     );
+  }
+
+  String formatTimeToAmPm(String time) {
+    DateTime dateTime = DateFormat('HH:mm:ss').parse(time);
+
+    String formattedTime = DateFormat('hh:mm a').format(dateTime);
+
+    return formattedTime;
   }
 
   @override
@@ -167,15 +179,18 @@ class _DtrScreenState extends State<DtrScreen> {
                             itemCount: state.dtr.length,
                             itemBuilder: (context, index) {
                               final dtr = state.dtr[index];
+                              String formattedTimeIn =
+                                  formatTimeToAmPm(dtr.timeIn.toString());
+                              String formattedTimeOut =
+                                  formatTimeToAmPm(dtr.timeOut.toString());
                               return Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   YourDtrCard(
-                                    date: DateTime.parse(
-                                        "2024-08-27T16:00:00.000Z"),
-                                    timeIn: dtr.timeIn.toString(),
-                                    timeOut: dtr.timeOut.toString(),
+                                    date: DateTime.parse(dtr.date.toString()),
+                                    timeIn: formattedTimeIn,
+                                    timeOut: formattedTimeOut,
                                     hoursRendered: dtr.hoursRendered.toString(),
                                     cardColor: Colors.white,
                                   ),

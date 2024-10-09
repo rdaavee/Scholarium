@@ -153,13 +153,20 @@ class ScheduleScreenState extends State<ScheduleScreen> {
 
                                       return GestureDetector(
                                         onTap: () async {
-                                          print(duty['_id']);
-                                          
+                                          print(duty['date']);
+
                                           final result = await showDialog(
                                               context: context,
                                               builder: (context) {
                                                 return DialogAlertBox(
                                                   scheduleId: duty['_id'],
+                                                  schoolId: duty['user_info']
+                                                      ['school_id'],
+                                                  date: duty['date'],
+                                                  timeIn: duty['time'],
+                                                  hkType: duty['user_info']['hk_type'],
+                                                  professorName: duty['professor'],
+                                                  professorSignature: '',
                                                 );
                                               });
 

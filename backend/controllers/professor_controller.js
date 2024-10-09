@@ -155,6 +155,7 @@ exports.getProfSchedule = async (req, res) => {
           "user_info.school_id": 1,
           "user_info.first_name": 1,
           "user_info.last_name": 1,
+          "user_info.hk_type": 1,
         },
       },
       {
@@ -263,7 +264,7 @@ exports.createDTR = async (req, res) => {
     const savedRecord = await newDTR.save();
 
     res.status(200).json({
-      message: "Attendance record created successfully",
+      message: "DTR created successfully",
       record: savedRecord,
     });
   } catch (error) {
