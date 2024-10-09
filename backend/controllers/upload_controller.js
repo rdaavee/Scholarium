@@ -16,12 +16,14 @@ const upload = multer({
 
 // Check file type
 function checkFileType(file, cb) {
-  const filetypes = /jpeg|jpg|png|gif/; // Allowed file types
+  const filetypes = /jpeg|jpg|png|gif/;
   const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
-  const mimetype = filetypes.test(file.mimetype);
 
-  console.log('File MIME type:', file.mimetype); // Log the MIME type
-  console.log('File Extension:', path.extname(file.originalname).toLowerCase()); // Log the file extension
+  // Handle cases where MIME type is misinterpreted as 'application/octet-stream'
+  const mimetype = file.mimetype.startsWith('image/') || file.mimetype === 'application/octet-stream';
+
+  console.log('File MIME type:', file.mimetype);
+  console.log('File Extension:', path.extname(file.originalname).toLowerCase());
 
   if (mimetype && extname) {
     return cb(null, true);
@@ -29,6 +31,7 @@ function checkFileType(file, cb) {
     cb('Error: Only images are allowed!');
   }
 }
+
 
 // Controller function to upload an image
 exports.uploadImage = async (req, res) => {

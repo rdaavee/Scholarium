@@ -26,3 +26,12 @@ class LoadScheduleEvent extends ScheduleEvent {
   @override
   List<Object> get props => [selectedMonth];
 }
+
+class UpdateDutySchedule extends ScheduleEvent {
+  final String id;
+
+  UpdateDutySchedule({required this.id});
+
+  @override
+  List<Object> get props => [id];
+}

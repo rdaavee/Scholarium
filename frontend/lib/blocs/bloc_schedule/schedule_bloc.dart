@@ -14,6 +14,7 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
       : super(ScheduleInitialState()) {
     on<ScheduleInitialEvent>(scheduleInitialEvent);
     on<LoadScheduleEvent>(_onLoadScheduleEvent);
+    on<UpdateDutySchedule>(updateDutySchedule);
   }
 
   FutureOr<void> scheduleInitialEvent(
@@ -41,6 +42,17 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
               await profService.getSchedule(selectedMonth: event.selectedMonth);
           emit(ScheduleLoadedSuccessState(schedule: schedule));
       }
+    } catch (e) {
+      emit(ScheduleErrorState(e.toString()));
+    }
+  }
+
+  FutureOr<void> updateDutySchedule(
+      UpdateDutySchedule event, Emitter<ScheduleState> emit) async {
+    emit(ScheduleLoadingState());
+    try {
+      await profService.updateStudentSchedule(event.id);
+      
     } catch (e) {
       emit(ScheduleErrorState(e.toString()));
     }

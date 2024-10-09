@@ -31,6 +31,7 @@ dependencies:
   flutter:
     sdk: flutter
   shared_preferences: ^2.0.13
+  mime: ^2.0.0
   bloc:
   flutter_bloc:
   timeline_tile:
@@ -49,12 +50,14 @@ dependencies:
   shimmer: ^3.0.0
   flutter_admin_scaffold:
   image_picker:
+  
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
   flutter_native_splash: ^2.4.1
   path_provider: ^2.1.4
+  
 
 dev_dependencies:
   flutter_test:

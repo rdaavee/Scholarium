@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:isHKolarium/api/models/dtr_model.dart';
 import 'package:isHKolarium/api/models/post_model.dart';
 import 'package:isHKolarium/api/repositories/professor_repository.dart';
 import 'package:http/http.dart' as http;
@@ -81,6 +82,59 @@ class ProfessorRepositoryImpl extends ProfessorRepository {
     } catch (e) {
       print('Error fetching schedule: $e');
       throw Exception('Error fetching schedule: $e');
+    }
+  }
+
+  Future<void> updateStudentSchedule(String id) async {
+    final token = await _getToken();
+    try {
+      final response = await http.put(
+        Uri.parse("$baseUrl/prof/updateStudentsSchedule/$id"),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      // Handle the response
+      if (response.statusCode == 200) {
+        final responseData = json.decode(response.body);
+        print('Schedule updated successfully: ${responseData['schedule']}');
+      } else if (response.statusCode == 404) {
+        final responseData = json.decode(response.body);
+        print('Error: ${responseData['message']}');
+      } else {
+        print('Failed to update schedule. Status code: ${response.statusCode}');
+        print('Response body: ${response.body}');
+      }
+    } catch (error) {
+      print('Error updating schedule: $error');
+    }
+  }
+
+  Future<void> createDTR(DtrModel dtrModel) async {
+    final token = await _getToken();
+    try {
+      final response = await http.post(
+        Uri.parse('$baseUrl/prof/createDTR'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+        body: json.encode(dtrModel.toJson()),
+      );
+
+      if (response.statusCode == 201) {
+        final responseData = json.decode(response.body);
+        print(
+            'Attendance record created successfully: ${responseData['record']}');
+      } else {
+        print(
+            'Failed to create attendance record. Status code: ${response.statusCode}');
+        print('Response body: ${response.body}');
+      }
+    } catch (error) {
+      print('Error creating attendance record: $error');
     }
   }
 }

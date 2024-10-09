@@ -8,6 +8,7 @@ import 'package:isHKolarium/blocs/bloc_schedule/schedule_event.dart';
 import 'package:isHKolarium/blocs/bloc_schedule/schedule_state.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
 import 'package:isHKolarium/features/widgets/app_bar.dart';
+import 'package:isHKolarium/features/widgets/professor_widgets/alert_dialog.dart';
 import 'package:isHKolarium/features/widgets/student_widgets/schedule_widgets/schedule_dropdown.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../widgets/student_widgets/schedule_widgets/timeline_item.dart';
@@ -21,6 +22,7 @@ class ScheduleScreen extends StatefulWidget {
 class ScheduleScreenState extends State<ScheduleScreen> {
   late ScheduleBloc scheduleBloc;
   late String currentMonth;
+  final ProfessorRepositoryImpl profService = ProfessorRepositoryImpl();
 
   @override
   void initState() {
@@ -149,12 +151,29 @@ class ScheduleScreenState extends State<ScheduleScreen> {
                                       final isCompleted =
                                           duty['completed'] == 'true';
 
-                                      return TimelineItem(
-                                        duty: duty,
-                                        roleFuture: _getRole(),
-                                        color: isCompleted
-                                            ? Colors.green
-                                            : Colors.grey,
+                                      return GestureDetector(
+                                        onTap: () async {
+                                          print(duty['_id']);
+                                          
+                                          final result = await showDialog(
+                                              context: context,
+                                              builder: (context) {
+                                                return DialogAlertBox(
+                                                  scheduleId: duty['_id'],
+                                                );
+                                              });
+
+                                          if (result == true) {
+                                            _initialize(selectedMonth);
+                                          }
+                                        },
+                                        child: TimelineItem(
+                                          duty: duty,
+                                          roleFuture: _getRole(),
+                                          color: isCompleted
+                                              ? Colors.green
+                                              : Colors.grey,
+                                        ),
                                       );
                                     },
                                   );
