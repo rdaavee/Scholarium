@@ -65,16 +65,27 @@ class DialogAlertBox extends StatelessWidget {
                           try {
                             scheduleBloc.add(
                                 UpdateDutySchedule(id: scheduleId.toString()));
-                            final totalDuration = _parseTime(timeIn.toString()) + _parseTime("01:30:00");
-                            String formattedTime = _formatDuration(totalDuration);
+                            final totalDuration =
+                                _parseTime(timeIn.toString()) +
+                                    _parseTime("01:30:00");
+                            String formattedTime =
+                                _formatDuration(totalDuration);
+                            double hoursToRendered = 0.0;
+                            if (hkType.toString() == "HK 25") {
+                              hoursToRendered = 50;
+                            } else if (hkType.toString() == "HK 50") {
+                              hoursToRendered = 90;
+                            } else if (hkType.toString() == "HK 75") {
+                              hoursToRendered = 120;
+                            }
                             final dtrModel = DtrModel(
                               schoolID: schoolId.toString(),
                               date: date.toString(),
                               timeIn: timeIn.toString(),
                               timeOut: formattedTime,
-                              hoursToRendered: 1.5,
-                              hoursRendered: 7,
-                              professor: 'John Doe',
+                              hoursToRendered: hoursToRendered,
+                              hoursRendered: 1.5,
+                              professor: professorName.toString(),
                               professorSignature: 'Signature1',
                             );
                             await ProfessorRepositoryImpl().createDTR(dtrModel);
@@ -111,21 +122,22 @@ class DialogAlertBox extends StatelessWidget {
       },
     );
   }
-  Duration _parseTime(String time) {
-  List<String> parts = time.split(':');
-  int hours = int.parse(parts[0]);
-  int minutes = int.parse(parts[1]);
-  int seconds = int.parse(parts[2]);
-  
-  return Duration(hours: hours, minutes: minutes, seconds: seconds);
-}
 
-String _formatDuration(Duration duration) {
-  String twoDigits(int n) => n.toString().padLeft(2, '0');
-  String twoDigitHours = twoDigits(duration.inHours.remainder(24));
-  String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
-  String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
-  
-  return "$twoDigitHours:$twoDigitMinutes:$twoDigitSeconds";
-}
+  Duration _parseTime(String time) {
+    List<String> parts = time.split(':');
+    int hours = int.parse(parts[0]);
+    int minutes = int.parse(parts[1]);
+    int seconds = int.parse(parts[2]);
+
+    return Duration(hours: hours, minutes: minutes, seconds: seconds);
+  }
+
+  String _formatDuration(Duration duration) {
+    String twoDigits(int n) => n.toString().padLeft(2, '0');
+    String twoDigitHours = twoDigits(duration.inHours.remainder(24));
+    String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
+    String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
+
+    return "$twoDigitHours:$twoDigitMinutes:$twoDigitSeconds";
+  }
 }
