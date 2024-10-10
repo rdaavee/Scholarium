@@ -8,7 +8,6 @@ abstract class AdminRepository {
   Future<void> createUser(UserModel user);
   Future<void> updateUser(String schoolId, UserModel user);
   Future<void> deleteUser(String id);
-  Future<List<AnnouncementModel>> fetchAllAnnouncements();
   Future<void> createAnnouncement(String token, AnnouncementModel announcement);
   Future<void> updateAnnouncement(String token, AnnouncementModel announcement);
   Future<void> deleteAnnouncement(String id);

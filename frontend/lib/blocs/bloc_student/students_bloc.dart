@@ -16,7 +16,6 @@ class StudentsBloc extends Bloc<StudentsEvent, StudentsState> {
 
   StudentsBloc(this._studentRepositoryImpl, this._globalRepositoryImpl) : super(StudentsInitial()) {
     on<StudentsInitialEvent>(studentInitialEvents);
-    on<FetchUserEvent>(_onFetchUserEvent);
     on<FetchAnnouncementEvent>(_onFetchAnnoucementEvent);
     on<FetchLatestEvent>(_onFetchLatestEvent);
   }
@@ -32,29 +31,6 @@ class StudentsBloc extends Bloc<StudentsEvent, StudentsState> {
           announcements: const [],
           hours: const []),
     );
-  }
-
-  FutureOr<void> _onFetchUserEvent(
-      FetchUserEvent event, Emitter<StudentsState> emit) async {
-    try {
-      UserModel user = await _studentRepositoryImpl.fetchUserData();
-      final scheduleData = await _studentRepositoryImpl.fetchUpcomingSchedule();
-      AnnouncementModel latestAnnouncement =
-          await _globalRepositoryImpl.fetchLatestAnnouncementData();
-      DtrHoursModel totalhours =
-          await _studentRepositoryImpl.fetchDtrTotalHoursData();
-
-      emit(StudentsLoadedSuccessState(
-        users: [user],
-        todaySchedule: scheduleData['today'],
-        nextSchedule: [scheduleData['next']],
-        announcements: [latestAnnouncement],
-        hours: [totalhours],
-      ));
-    } catch (error) {
-      print('Error fetching user data: $error');
-      emit(StudentsErrorState(message: error.toString()));
-    }
   }
 
   Future<void> _onFetchAnnoucementEvent(

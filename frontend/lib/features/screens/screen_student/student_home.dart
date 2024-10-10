@@ -438,7 +438,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                                             MaterialPageRoute(
                                               builder: (context) =>
                                                   const AnnouncementsScreen(
-                                                      role: "Student"),
+                                                      isBackButtonTrue: true),
                                             ),
                                           );
                                         },

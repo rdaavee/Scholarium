@@ -71,7 +71,7 @@ class _LoginPageState extends State<LoginPage> {
         } else if (state is LoginNavigateToStudentHomePageActionState) {
           _showSnackBar(
               'Success', 'Student Login Successfully', ContentType.success);
-          Navigator.push(
+          Navigator.pushReplacement(
             context,
             MaterialPageRoute(
               builder: (context) =>
@@ -81,7 +81,7 @@ class _LoginPageState extends State<LoginPage> {
         } else if (state is LoginNavigateToProfessorHomePageActionState) {
           _showSnackBar(
               'Success', 'Professor Login Successfully', ContentType.success);
-          Navigator.push(
+          Navigator.pushReplacement(
             context,
             MaterialPageRoute(
               builder: (context) =>
@@ -91,7 +91,7 @@ class _LoginPageState extends State<LoginPage> {
         } else if (state is LoginNavigateToAdminHomePageActionState) {
           _showSnackBar(
               'Success', 'Admin Login Successfully', ContentType.success);
-          Navigator.push(
+          Navigator.pushReplacement(
             context,
             MaterialPageRoute(
               builder: (context) => const BottomNavigationPage(isRole: "Admin"),

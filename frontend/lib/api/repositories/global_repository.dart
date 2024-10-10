@@ -30,6 +30,7 @@ abstract class GlobalRepository {
   Future<List<NotificationsModel>> fetchNotificationsData();
   Future<void> updateNotificationStatus(String notificationId);
   Future<List<AnnouncementModel>> fetchAnnoucementData();
+  Future<List<AnnouncementModel>> fetchAllAnnouncements();
   Future<AnnouncementModel> fetchLatestAnnouncementData();
   Future<void> uploadProfileImage(File file);
 }

@@ -3,6 +3,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:isHKolarium/api/implementations/admin_repository_impl.dart';
+import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
 import 'package:isHKolarium/api/models/user_model.dart';
 import 'package:isHKolarium/api/models/announcement_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -12,8 +13,9 @@ part 'admin_state.dart';
 
 class AdminBloc extends Bloc<AdminEvent, AdminState> {
   final AdminRepositoryImpl _adminRepositoryImpl;
+  final GlobalRepositoryImpl _globalRepositoryImpl;
 
-  AdminBloc(this._adminRepositoryImpl) : super(AdminInitialState()) {
+  AdminBloc(this._adminRepositoryImpl, this._globalRepositoryImpl) : super(AdminInitialState()) {
     on<AdminInitialEvent>(adminInitialEvent);
     on<FetchDataEvent>(_onFetchDataEvent);
     on<FetchUsersEvent>(_onFetchUsersEvent);
@@ -141,7 +143,7 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
     emit(AdminLoadingState());
     try {
       List<AnnouncementModel> allAnnouncement =
-          await _adminRepositoryImpl.fetchAllAnnouncements();
+          await _globalRepositoryImpl.fetchAllAnnouncements();
       emit(AdminLoadedSuccessState(
           users: const [],
           announcements: allAnnouncement,
