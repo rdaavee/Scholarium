@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:isHKolarium/api/implementations/admin_repository_impl.dart';
 import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
 import 'package:isHKolarium/api/implementations/student_repository_impl.dart';
@@ -11,9 +12,9 @@ import 'package:isHKolarium/features/widgets/app_bar.dart';
 import 'package:isHKolarium/features/widgets/student_widgets/announcement_widgets/announcement_card.dart';
 
 class AnnouncementsScreen extends StatefulWidget {
-  final String role;
+  final bool isBackButtonTrue;
 
-  const AnnouncementsScreen({super.key, required this.role});
+  const AnnouncementsScreen({super.key, required this.isBackButtonTrue});
 
   @override
   State<AnnouncementsScreen> createState() => _AnnouncementsScreenState();
@@ -27,91 +28,55 @@ class _AnnouncementsScreenState extends State<AnnouncementsScreen> {
   void initState() {
     super.initState();
 
-    if (widget.role == "Admin") {
-      final adminRepositoryImpl = AdminRepositoryImpl();
-      adminBloc = AdminBloc(adminRepositoryImpl);
-      adminBloc.add(FetchAnnouncementsEvent());
-    } else if (widget.role == "Student") {
-      final studentRepositoryImpl = StudentRepositoryImpl();
-      final globalRepositoryImpl = GlobalRepositoryImpl();
-      studentsBloc = StudentsBloc(studentRepositoryImpl, globalRepositoryImpl);
-      studentsBloc.add(FetchAnnouncementEvent());
-    }
+    final adminRepository = AdminRepositoryImpl();
+    final globalRepository = GlobalRepositoryImpl();
+    adminBloc = AdminBloc(adminRepository, globalRepository);
+    adminBloc.add(FetchAnnouncementsEvent());
   }
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        if (widget.role == "Admin")
-          BlocProvider<AdminBloc>(
-            create: (context) => adminBloc,
-          ),
-        if (widget.role == "Student")
-          BlocProvider<StudentsBloc>(
-            create: (context) => studentsBloc,
-          ),
+        BlocProvider<AdminBloc>(
+          create: (context) => adminBloc,
+        ),
       ],
       child: Scaffold(
-        appBar: widget.role == "Admin"
-            ? const AppBarWidget(
-                title: "Announcements",
-                isBackButton: false,
-              )
-            : const AppBarWidget(
-                title: "Announcements",
-                isBackButton: true,
-              ),
-        backgroundColor: ColorPalette.primary.withOpacity(0.9),
-        body: widget.role == "Admin"
-            ? BlocConsumer<AdminBloc, AdminState>(
-                listener: (context, state) {
-                  if (state is AdminErrorState) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text(state.message)),
-                    );
-                  }
-                },
-                builder: (context, state) {
-                  if (state is AdminLoadingState) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (state is AdminLoadedSuccessState) {
-                    return _buildAnnouncementsList(state.announcements);
-                  } else if (state is AdminErrorState) {
-                    return Scaffold(
-                      body: Center(child: Text('Error: ${state.message}')),
-                    );
-                  }
-                  return const Scaffold(
-                    body: Center(child: Text('No Data Available')),
-                  );
-                },
-              )
-            : BlocConsumer<StudentsBloc, StudentsState>(
-                listener: (context, state) {
-                  if (state is StudentsErrorState) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text(state.message)),
-                    );
-                  }
-                },
-                builder: (context, state) {
-                  if (state is StudentsLoadingState) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (state is StudentsLoadedSuccessState) {
-                    return _buildAnnouncementsList(state.announcements);
-                  } else if (state is StudentsErrorState) {
-                    return Scaffold(
-                      body: Center(child: Text('Error: ${state.message}')),
-                    );
-                  }
-                  return const Scaffold(
-                    body: Center(child: Text('No Data Available')),
-                  );
-                },
-              ),
-      ),
+          appBar: AppBarWidget(
+            title: "Announcements",
+            isBackButton: widget.isBackButtonTrue,
+          ),
+          backgroundColor: ColorPalette.primary.withOpacity(0.9),
+          body: BlocConsumer<AdminBloc, AdminState>(
+            listener: (context, state) {
+              if (state is AdminErrorState) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(state.message)),
+                );
+              }
+            },
+            builder: (context, state) {
+              if (state is AdminLoadingState) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (state is AdminLoadedSuccessState) {
+                return _buildAnnouncementsList(state.announcements);
+              } else if (state is AdminErrorState) {
+                return Scaffold(
+                  body: Center(child: Text('Error: ${state.message}')),
+                );
+              }
+              return const Scaffold(
+                body: Center(child: Text('No Data Available')),
+              );
+            },
+          )),
     );
+  }
+
+  String _formatTime(String time) {
+    final DateTime parsedTime = DateFormat('HH:mm:ss').parse(time);
+    return DateFormat('h:mm a').format(parsedTime);
   }
 
   Widget _buildAnnouncementsList(List<AnnouncementModel> announcements) {
@@ -157,7 +122,7 @@ class _AnnouncementsScreenState extends State<AnnouncementsScreen> {
                             ),
                           ),
                           date: Text(announcement.date.toString()),
-                          time: Text(announcement.time.toString()),
+                          time: Text(_formatTime(announcement.time.toString())),
                           imageUrl: 'assets/images/card-bg.png',
                         ),
                       ),

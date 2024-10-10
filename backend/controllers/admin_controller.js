@@ -131,7 +131,7 @@ const currentTime = moment().format("HH:mm:ss");
 // Get all Announcements
 exports.getAllAnnouncements = async (req, res) => {
   try {
-    const announcement = await Announcement.find();
+    const announcement = await Announcement.find().sort({ date: -1 });
     res.status(200).json(announcement);
   } catch (error) {
     console.error("Error fetching announcement:", error);

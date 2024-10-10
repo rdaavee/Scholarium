@@ -4,6 +4,7 @@ import 'package:isHKolarium/api/implementations/admin_repository_impl.dart';
 import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
 import 'package:isHKolarium/api/implementations/professor_repository_impl.dart';
 import 'package:isHKolarium/api/implementations/student_repository_impl.dart';
+import 'package:isHKolarium/api/repositories/admin_repository.dart';
 import 'package:isHKolarium/blocs/bloc_admin/admin_bloc.dart';
 import 'package:isHKolarium/blocs/bloc_professor/professors_bloc.dart';
 import 'package:isHKolarium/blocs/bloc_student/students_bloc.dart';
@@ -29,18 +30,20 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
   @override
   void initState() {
     super.initState();
+    final globalRepositoryImpl = GlobalRepositoryImpl();
     if (widget.isRole == "Student") {
       final studentRepositoryImpl = StudentRepositoryImpl();
-      final globalRepositoryImpl = GlobalRepositoryImpl();
       studentBloc = StudentsBloc(studentRepositoryImpl, globalRepositoryImpl);
       studentBloc.add(StudentsInitialEvent());
     } else if (widget.isRole == "Professor") {
       final professorsRepository = ProfessorRepositoryImpl();
-      professorBloc = ProfessorsBloc(professorsRepository);
+      professorBloc =
+          ProfessorsBloc(professorsRepository, globalRepositoryImpl);
       professorBloc.add(ProfessorsInitialEvent());
     } else {
-      final adminService = AdminRepositoryImpl();
-      adminBloc = AdminBloc(adminService);
+      final adminRepository = AdminRepositoryImpl();
+      final globalRepository = GlobalRepositoryImpl();
+      adminBloc = AdminBloc(adminRepository, globalRepository);
       adminBloc.add(AdminInitialEvent());
     }
     bottomNavBloc = BottomNavBloc();

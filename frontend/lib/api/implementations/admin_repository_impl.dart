@@ -132,24 +132,7 @@ class AdminRepositoryImpl extends AdminRepository {
   }
 
 //-------------------------------------------ANNOUNCEMENT FUNCTION----------------------------------------------
-  @override
-  Future<List<AnnouncementModel>> fetchAllAnnouncements() async {
-    final token = await _getToken();
-    final response = await http.get(
-      Uri.parse('$baseUrl/admin/getAllAnnouncements'),
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer $token',
-      },
-    );
-
-    if (response.statusCode == 200) {
-      final List<dynamic> data = json.decode(response.body);
-      return data.map((json) => AnnouncementModel.fromJson(json)).toList();
-    } else {
-      throw Exception('Failed to load announcements');
-    }
-  }
+  
 
   @override
   Future<void> createAnnouncement(

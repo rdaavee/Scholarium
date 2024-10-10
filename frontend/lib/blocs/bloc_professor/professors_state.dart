@@ -7,7 +7,11 @@ final class ProfessorsInitialState extends ProfessorsState {}
 
 final class ProfessorsLoadingState extends ProfessorsState {}
 
-final class ProfessorsLoadedSuccessState extends ProfessorsState {}
+final class ProfessorsLoadedSuccessState extends ProfessorsState {
+  final List<UserModel> users;
+  final List<AnnouncementModel> announcements;
+  ProfessorsLoadedSuccessState({required this.users, required this.announcements});
+}
 
 final class ProfessorsErrorState extends ProfessorsState {
   final String message;

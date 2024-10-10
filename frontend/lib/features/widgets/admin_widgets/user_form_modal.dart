@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
 import 'package:isHKolarium/blocs/bloc_admin/admin_bloc.dart';
 import 'package:isHKolarium/api/models/user_model.dart';
 import 'package:isHKolarium/api/implementations/admin_repository_impl.dart';
@@ -61,7 +62,7 @@ class UserFormWidgetState extends State<UserFormWidget> {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => AdminBloc(AdminRepositoryImpl()),
+          create: (context) => AdminBloc(AdminRepositoryImpl(), GlobalRepositoryImpl()),
         ),
       ],
       child: Scaffold(

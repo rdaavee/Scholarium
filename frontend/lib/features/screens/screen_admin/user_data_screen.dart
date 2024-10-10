@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
 import 'package:isHKolarium/blocs/bloc_admin/admin_bloc.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
 import 'package:isHKolarium/features/widgets/admin_widgets/user_form_modal.dart';
@@ -26,7 +27,8 @@ class UserDataScreenState extends State<UserDataScreen> {
   void initState() {
     super.initState();
     final adminRepository = AdminRepositoryImpl();
-    adminBloc = AdminBloc(adminRepository);
+    final globalRepository = GlobalRepositoryImpl();
+    adminBloc = AdminBloc(adminRepository, globalRepository);
     adminBloc.add(FetchUsersEvent(selectedRole, statusFilter));
   }
 

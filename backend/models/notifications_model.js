@@ -2,9 +2,12 @@ const mongoose = require('mongoose');
 
 
 const notificationsSchema = new mongoose.Schema({
-  school_id: { type: String, required: true }, 
+  school_id: { type:String, index: true, default: null  }, 
+  prof_id: { type: String, index: true, default: null } ,
+  admin_id: { type: String, index: true, default: null } ,
   sender: { type: String, required: true },     
-  role: { type: String, required: true },       
+  role: { type: String, required: true },   
+  title: { type: String, required: true },     
   message: { type: String, required: true },   
   status: { 
     type: String, 

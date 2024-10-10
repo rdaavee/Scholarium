@@ -1,5 +1,6 @@
 const pool = require("../db");
 const Schedule = require("../models/schedule_model");
+const Notification = require("../models/notifications_model")
 const Post = require("../models/posts_model");
 const User = require("../models/user_model");
 const DTR = require("../models/dtr_model")
@@ -40,10 +41,10 @@ exports.createPost = async (req, res) => {
     }
 
     // Fetch existing posts for the logged-in professor to prevent duplicates
-    const existingPosts = await Post.find({
+    const existingPosts = await Notification.find({
       prof_id: loggedInProfId,
       title: req.body.title,
-      body: req.body.body,
+      message: req.body.body,
       school_id: { $in: schedules.map((schedule) => schedule.school_id) }, // Match against all relevant school_ids
     });
 

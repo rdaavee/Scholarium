@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
 import 'package:isHKolarium/api/implementations/professor_repository_impl.dart';
 import 'package:isHKolarium/blocs/bloc_bottom_nav/bottom_nav_bloc.dart';
 import 'package:isHKolarium/blocs/bloc_professor/professors_bloc.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
+import 'package:isHKolarium/features/screens/screen_announcement/announcement.dart';
+import 'package:isHKolarium/features/screens/screen_event/events_screen.dart';
+import 'package:isHKolarium/features/widgets/app_bar.dart';
+import 'package:isHKolarium/features/widgets/student_widgets/announcement_widgets/announcement_card.dart';
 import 'package:isHKolarium/features/widgets/student_widgets/dtr_widgets/duty_card.dart';
+import 'package:isHKolarium/features/widgets/student_widgets/event_widgets/events_card.dart';
 
 class ProfessorHomeScreen extends StatefulWidget {
   const ProfessorHomeScreen({super.key});
@@ -23,9 +29,11 @@ class _ProfessorHomeScreenState extends State<ProfessorHomeScreen> {
   void initState() {
     super.initState();
     final professorRepository = ProfessorRepositoryImpl();
-    professorsBloc = ProfessorsBloc(professorRepository);
+    final globalRepository = GlobalRepositoryImpl();
+    professorsBloc = ProfessorsBloc(professorRepository, globalRepository);
     bottomNavBloc = BottomNavBloc();
     professorsBloc.add(ProfessorsInitialEvent());
+    professorsBloc.add(FetchLatestEvent());
   }
 
   Future<void> createPost() async {
@@ -62,26 +70,21 @@ class _ProfessorHomeScreenState extends State<ProfessorHomeScreen> {
         builder: (context, state) {
           if (state is ProfessorsLoadedSuccessState) {
             return Scaffold(
-              backgroundColor: ColorPalette.primary,
+              appBar: AppBarWidget(
+                  title: "Hello, ${state.users[0].firstName}!",
+                  isBackButton: false),
               body: Column(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 30.0),
-                    child: Container(
-                      height: 100.0,
-                      color: ColorPalette.primary,
-                      alignment: Alignment.centerLeft,
-                      child: const Text(
-                        "Hi, Professor",
-                        style: TextStyle(
-                          fontSize: 17,
-                          fontFamily: 'Manrope',
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 1.1,
-                          color: Colors.white,
-                        ),
+                  Container(
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage('assets/images/image.jpg'),
+                        fit: BoxFit.cover,
                       ),
                     ),
+                  ),
+                  Container(
+                    color: ColorPalette.primary.withOpacity(0.6),
                   ),
                   Expanded(
                     child: Container(
@@ -322,6 +325,145 @@ class _ProfessorHomeScreenState extends State<ProfessorHomeScreen> {
                                 ],
                               ),
                             ),
+                            const SizedBox(height: 16),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  right: 15, left: 15, top: 15),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  const Text(
+                                    "Announcements",
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      fontFamily: 'Manrope',
+                                      fontWeight: FontWeight.bold,
+                                      color: Color(0xFF6D7278),
+                                      letterSpacing: 0.5,
+                                    ),
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const AnnouncementsScreen(
+                                                  isBackButtonTrue: true),
+                                        ),
+                                      );
+                                    },
+                                    child: const Text(
+                                      "View All",
+                                      style: TextStyle(
+                                        fontSize: 11,
+                                        fontFamily: 'Manrope',
+                                        fontWeight: FontWeight.bold,
+                                        color: ColorPalette.viewAllColor,
+                                        letterSpacing: 0.5,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            AnnouncementCard(
+                              textLabel: Text(
+                                state.announcements[0].title.toString(),
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  fontFamily: 'Manrope',
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFF6D7278),
+                                  letterSpacing: 0.5,
+                                ),
+                              ),
+                              textBody: Text(
+                                state.announcements[0].body.toString(),
+                                style: const TextStyle(
+                                  fontSize: 13,
+                                  fontFamily: 'Manrope',
+                                  color: Color(0xFFC1C1C1),
+                                  fontWeight: FontWeight.w400,
+                                  letterSpacing: 0.8,
+                                ),
+                              ),
+                              date: Text(
+                                state.announcements[0].date.toString(),
+                                style: const TextStyle(
+                                  fontFamily: 'Manrope',
+                                  color: Color(0xFFC1C1C1),
+                                  fontWeight: FontWeight.w500,
+                                  letterSpacing: 1.2,
+                                ),
+                              ),
+                              time: Text(
+                                state.announcements[0].time.toString(),
+                                style: const TextStyle(
+                                  fontFamily: 'Manrope',
+                                  color: Color(0xFFC1C1C1),
+                                  fontWeight: FontWeight.w500,
+                                  letterSpacing: 1.2,
+                                ),
+                              ),
+                              imageUrl: 'assets/images/card-bg.png',
+                            ),
+                            // Events Section
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  right: 15, left: 15, top: 15),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  const Text(
+                                    "Events",
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      fontFamily: 'Manrope',
+                                      fontWeight: FontWeight.bold,
+                                      color: Color(0xFF6D7278),
+                                      letterSpacing: 0.5,
+                                    ),
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const EventsScreen(),
+                                        ),
+                                      );
+                                    },
+                                    child: const Text(
+                                      "View All",
+                                      style: TextStyle(
+                                        fontSize: 11,
+                                        fontFamily: 'Manrope',
+                                        fontWeight: FontWeight.bold,
+                                        color: ColorPalette.viewAllColor,
+                                        letterSpacing: 0.5,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const EventsCard(
+                              textLabel: Text(
+                                'Leadership Camp',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontFamily: 'Manrope',
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              cardColor: Colors.white,
+                              imageAssetPath: 'assets/images/img1.png',
+                            ),
                           ],
                         ),
                       ),
@@ -331,9 +473,13 @@ class _ProfessorHomeScreenState extends State<ProfessorHomeScreen> {
               ),
             );
           } else if (state is ProfessorsErrorState) {
-            return Center(child: Text(state.message));
+            return const Scaffold(
+              body: Center(child: Text('Error loading data')),
+            );
           } else {
-            return const Center(child: CircularProgressIndicator());
+            return const Scaffold(
+              body: Center(child: CircularProgressIndicator()),
+            );
           }
         },
       ),

@@ -1,8 +1,11 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
 import 'package:isHKolarium/api/implementations/professor_repository_impl.dart';
+import 'package:isHKolarium/api/models/announcement_model.dart';
 import 'package:isHKolarium/api/models/post_model.dart';
+import 'package:isHKolarium/api/models/user_model.dart';
 import 'package:meta/meta.dart';
 
 part 'professors_event.dart';
@@ -10,16 +13,19 @@ part 'professors_state.dart';
 
 class ProfessorsBloc extends Bloc<ProfessorsEvent, ProfessorsState> {
   final ProfessorRepositoryImpl _professorRepositoryImpl;
+  final GlobalRepositoryImpl _globalRepositoryImpl;
 
-  ProfessorsBloc(this._professorRepositoryImpl)
+  ProfessorsBloc(this._professorRepositoryImpl, this._globalRepositoryImpl)
       : super(ProfessorsInitialState()) {
     on<ProfessorsInitialEvent>(professorsInitialEvent);
+    on<FetchLatestEvent>(fetchLatestEvent);
     on<ProfessorsCreatePostEvent>(createPost);
   }
 
   FutureOr<void> professorsInitialEvent(
       ProfessorsInitialEvent event, Emitter<ProfessorsState> emit) async {
-    emit(ProfessorsLoadedSuccessState());
+    emit(ProfessorsLoadingState());
+    emit(ProfessorsLoadedSuccessState(users: [], announcements: []));
   }
 
   Future<void> createPost(
@@ -39,6 +45,24 @@ class ProfessorsBloc extends Bloc<ProfessorsEvent, ProfessorsState> {
     } catch (e) {
       print('Error creating post: $e');
       emit(PostErrorState());
+    }
+  }
+
+  Future<void> fetchLatestEvent(
+      FetchLatestEvent event, Emitter<ProfessorsState> emit) async {
+    emit(ProfessorsLoadingState());
+    try {
+      UserModel user = await _globalRepositoryImpl.fetchUserData();
+      AnnouncementModel latestAnnouncement =
+          await _globalRepositoryImpl.fetchLatestAnnouncementData();
+
+      emit(ProfessorsLoadedSuccessState(
+        users: [user],
+        announcements: [latestAnnouncement],
+      ));
+    } catch (error) {
+      print('Error fetching latest announcement: $error');
+      emit(ProfessorsErrorState(message: error.toString()));
     }
   }
 }

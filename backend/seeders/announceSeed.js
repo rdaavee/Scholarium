@@ -14,14 +14,14 @@ const seedAnnouncements = async () => {
     // Sample announcement data
     const announcementData = [
       {
-        admin_id: '03-0000-00001',
+        admin_id: '03-0000-00003',
         title: 'Meeting with Staff',
         body: 'Discuss the new curriculum changes.',
         time: '10:00:00',
         date: '2024-08-26',
       },
       {
-        admin_id: '03-0000-00002',
+        admin_id: '03-0000-00003',
         title: 'Faculty Workshop',
         body: 'Workshop on advanced teaching techniques.',
         time: '11:30:00',

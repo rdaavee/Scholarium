@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
 import 'package:isHKolarium/blocs/bloc_admin/admin_bloc.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
+import 'package:isHKolarium/features/screens/screen_bottom_nav/bottom_navigation_page.dart';
 import 'package:isHKolarium/features/widgets/app_bar.dart';
 import 'package:isHKolarium/api/models/announcement_model.dart';
 import 'package:isHKolarium/api/implementations/admin_repository_impl.dart';
@@ -24,10 +26,14 @@ class AnnouncementFormScreenState extends State<AnnouncementFormScreen> {
   final TextEditingController titleController = TextEditingController();
   final TextEditingController bodyController = TextEditingController();
   String? selectedHkType;
+  late AdminBloc adminBloc;
 
   @override
   void initState() {
     super.initState();
+    final adminRepository = AdminRepositoryImpl();
+    final globalRepository = GlobalRepositoryImpl();
+    adminBloc = AdminBloc(adminRepository, globalRepository);
     if (widget.existingAnnouncement != null) {
       titleController.text = widget.existingAnnouncement!.title.toString();
       bodyController.text = widget.existingAnnouncement!.body.toString();
@@ -37,45 +43,50 @@ class AnnouncementFormScreenState extends State<AnnouncementFormScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AdminBloc(AdminRepositoryImpl()),
-      child: Scaffold(
-        appBar: AppBarWidget(
-          title: widget.announcementId == null
-              ? "Create Announcement"
-              : "Update Announcement",
-          isBackButton: true,
-        ),
-        body: Stack(
-          children: [
-            Container(
-              color: ColorPalette.primary.withOpacity(0.6),
+      create: (context) => adminBloc,
+      child: BlocConsumer<AdminBloc, AdminState>(
+        listener: (context, state) {},
+        builder: (context, state) {
+          return Scaffold(
+            appBar: AppBarWidget(
+              title: widget.announcementId == null
+                  ? "Create Announcement"
+                  : "Update Announcement",
+              isBackButton: true,
             ),
-            Column(
+            body: Stack(
               children: [
-                Expanded(
-                  child: Container(
-                    decoration: const BoxDecoration(
-                      color: Color(0xFFF0F3F4),
-                      borderRadius: BorderRadius.vertical(
-                        top: Radius.circular(10),
+                Container(
+                  color: ColorPalette.primary.withOpacity(0.6),
+                ),
+                Column(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          color: Color(0xFFF0F3F4),
+                          borderRadius: BorderRadius.vertical(
+                            top: Radius.circular(10),
+                          ),
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.all(10),
+                          child: ListView(
+                            children: [
+                              _buildTextField('Title', titleController),
+                              _buildTextField('Body', bodyController),
+                              _buildSubmitButton(context),
+                            ],
+                          ),
+                        ),
                       ),
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.all(10),
-                      child: ListView(
-                        children: [
-                          _buildTextField('Title', titleController),
-                          _buildTextField('Body', bodyController),
-                          _buildSubmitButton(context),
-                        ],
-                      ),
-                    ),
-                  ),
+                    )
+                  ],
                 )
               ],
-            )
-          ],
-        ),
+            ),
+          );
+        },
       ),
     );
   }
@@ -138,6 +149,7 @@ class AnnouncementFormScreenState extends State<AnnouncementFormScreen> {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Announcement created successfully!')),
           );
+          Navigator.pop(context);
         } else {
           // Updating an existing announcement
           context.read<AdminBloc>().add(
@@ -146,7 +158,12 @@ class AnnouncementFormScreenState extends State<AnnouncementFormScreen> {
             const SnackBar(content: Text('Announcement updated successfully!')),
           );
         }
-        Navigator.pop(context);
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const BottomNavigationPage(isRole: "Admin"),
+            ),
+          );
       },
       style: ElevatedButton.styleFrom(
         backgroundColor: ColorPalette.primary,

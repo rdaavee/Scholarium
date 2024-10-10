@@ -14,7 +14,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../widgets/student_widgets/schedule_widgets/timeline_item.dart';
 
 class ScheduleScreen extends StatefulWidget {
-  const ScheduleScreen({super.key});
+  final String role;
+  const ScheduleScreen({super.key, required this.role});
   @override
   ScheduleScreenState createState() => ScheduleScreenState();
 }
@@ -151,37 +152,49 @@ class ScheduleScreenState extends State<ScheduleScreen> {
                                       final isCompleted =
                                           duty['completed'] == 'true';
 
-                                      return GestureDetector(
-                                        onTap: () async {
-                                          print(duty['date']);
+                                      if (widget.role == "Professor" && duty['completed'] == "false") {
+                                        return GestureDetector(
+                                          onTap: () async {
+                                            print(duty['date']);
 
-                                          final result = await showDialog(
-                                              context: context,
-                                              builder: (context) {
-                                                return DialogAlertBox(
-                                                  scheduleId: duty['_id'],
-                                                  schoolId: duty['user_info']
-                                                      ['school_id'],
-                                                  date: duty['date'],
-                                                  timeIn: duty['time'],
-                                                  hkType: duty['user_info']['hk_type'],
-                                                  professorName: duty['professor'],
-                                                  professorSignature: '',
-                                                );
-                                              });
+                                            final result = await showDialog(
+                                                context: context,
+                                                builder: (context) {
+                                                  return DialogAlertBox(
+                                                    scheduleId: duty['_id'],
+                                                    schoolId: duty['user_info']
+                                                        ['school_id'],
+                                                    date: duty['date'],
+                                                    timeIn: duty['time'],
+                                                    hkType: duty['user_info']
+                                                        ['hk_type'],
+                                                    professorName:
+                                                        duty['professor'],
+                                                    professorSignature: '',
+                                                  );
+                                                });
 
-                                          if (result == true) {
-                                            _initialize(selectedMonth);
-                                          }
-                                        },
-                                        child: TimelineItem(
+                                            if (result == true) {
+                                              _initialize(selectedMonth);
+                                            }
+                                          },
+                                          child: TimelineItem(
+                                            duty: duty,
+                                            roleFuture: _getRole(),
+                                            color: isCompleted
+                                                ? Colors.green
+                                                : Colors.grey,
+                                          ),
+                                        );
+                                      } else {
+                                        return TimelineItem(
                                           duty: duty,
                                           roleFuture: _getRole(),
                                           color: isCompleted
                                               ? Colors.green
                                               : Colors.grey,
-                                        ),
-                                      );
+                                        );
+                                      }
                                     },
                                   );
                                 } else if (state is ScheduleErrorState) {

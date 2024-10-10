@@ -7,7 +7,7 @@ import 'package:isHKolarium/features/screens/screen_student/student_home.dart';
 Widget getPage(int index) {
   switch (index) {
     case 1:
-      return const ScheduleScreen();
+      return const ScheduleScreen(role: 'Student',);
     case 2:
       return const NotificationScreen();
     case 3:
