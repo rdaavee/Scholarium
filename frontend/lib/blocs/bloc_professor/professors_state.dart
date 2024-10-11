@@ -9,8 +9,12 @@ final class ProfessorsLoadingState extends ProfessorsState {}
 
 final class ProfessorsLoadedSuccessState extends ProfessorsState {
   final List<UserModel> users;
+  final List<ProfessorScheduleModel> schedules;
   final List<AnnouncementModel> announcements;
-  ProfessorsLoadedSuccessState({required this.users, required this.announcements});
+  ProfessorsLoadedSuccessState(
+      {required this.users,
+      required this.announcements,
+      required this.schedules});
 }
 
 final class ProfessorsErrorState extends ProfessorsState {

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:isHKolarium/api/implementations/endpoint.dart';
 import 'package:isHKolarium/api/models/dtr_model.dart';
 import 'package:isHKolarium/api/models/post_model.dart';
+import 'package:isHKolarium/api/models/professor_schedule_model.dart';
 import 'package:isHKolarium/api/repositories/professor_repository.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -57,6 +58,31 @@ class ProfessorRepositoryImpl extends ProfessorRepository implements Endpoint {
       }
     } catch (e) {
       throw Exception('Error: $e');
+    }
+  }
+
+  @override
+  Future<List<ProfessorScheduleModel>> fetchProfTodaySchedule(
+      String profId) async {
+    final token = await _getToken();
+    final response = await http.get(
+      Uri.parse(
+        '$baseUrl/prof/getTodaySchedule/$profId',
+      ),
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final List<dynamic> schedulesJson =
+          json.decode(response.body)['schedules'];
+      return schedulesJson
+          .map((json) => ProfessorScheduleModel.fromJson(json))
+          .toList();
+    } else {
+      throw Exception('Failed to load schedules');
     }
   }
 

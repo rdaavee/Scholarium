@@ -6,6 +6,7 @@ import 'package:isHKolarium/blocs/bloc_notification/notification_bloc.dart';
 import 'package:isHKolarium/blocs/bloc_bottom_nav/bottom_nav_bloc.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
 import 'package:isHKolarium/features/widgets/app_bar.dart';
+import 'package:isHKolarium/features/widgets/notification_widgets/notification_message.dart';
 import 'package:isHKolarium/features/widgets/student_widgets/notification_widgets/notification_card.dart';
 
 class NotificationScreen extends StatefulWidget {
@@ -89,14 +90,71 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                     state.notifications[index];
                                 return GestureDetector(
                                   onTap: () {
-                                    // Update notification status when tapped
                                     notificationsBloc.add(
                                         UpdateNotificationStatusEvent(
                                             notifications.id.toString()));
-                                    // Trigger unread count update in BottomNavBloc
                                     context
                                         .read<BottomNavBloc>()
                                         .add(FetchUnreadCountEvent());
+
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return Dialog(
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(20.0),
+                                          ),
+                                          child: SizedBox(
+                                            width: double
+                                                .infinity, // Adjusts to the width of the screen
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                .50, 
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(10.0),
+                                              child: Column(
+                                                children: [
+                                                  const SizedBox(height: 15),
+                                                  Expanded(
+                                                    child:
+                                                        NotificationMessageWidget(
+                                                      sender: notifications
+                                                          .sender
+                                                          .toString(),
+                                                      senderName: notifications
+                                                          .senderName
+                                                          .toString(),
+                                                      receiver: notifications
+                                                          .receiver
+                                                          .toString(),
+                                                      role: notifications.role
+                                                          .toString(),
+                                                      title: notifications.title
+                                                          .toString(),
+                                                      message: notifications
+                                                          .message
+                                                          .toString(),
+                                                      status: notifications
+                                                          .status
+                                                          .toString(),
+                                                      date: _formatDate(
+                                                          notifications.date
+                                                              .toString()),
+                                                      time: _formatTime(
+                                                          notifications.time
+                                                              .toString()),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    );
                                   },
                                   child: NotificationCard(
                                     sender: notifications.sender.toString(),

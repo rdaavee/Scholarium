@@ -282,10 +282,42 @@ exports.updateNotificationStatus = async (req, res) => {
   }
 };
 
-// Get specific user
+// Get specific user using token
 exports.getUserProfile = async (req, res) => {
   try {
     const user = await User.findById(req.userId);
+    if (user) {
+      res.status(200).json({
+        id: user._id,
+        school_id: user.school_id,
+        email: user.email,
+        first_name: user.first_name,
+        middle_name: user.middle_name,
+        last_name: user.last_name,
+        profile_picture: user.profile_picture,
+        gender: user.gender,
+        contact: user.contact,
+        address: user.address,
+        role: user.role,
+        hk_type: user.hk_type,
+        status: user.status,
+        token: user.token,
+      });
+    } else {
+      res.status(404).json({ message: "User not found" });
+    }
+  } catch (error) {
+    console.error("Error in getUserProfile:", error);
+    res.status(500).json({ message: "Server error occurred" });
+  }
+};
+
+
+// Get specific user using School_id
+exports.getUserData = async (req, res) => {
+  const {school_id} = req.params
+  try {
+    const user = await User.findOne({school_id: school_id});
     if (user) {
       res.status(200).json({
         id: user._id,

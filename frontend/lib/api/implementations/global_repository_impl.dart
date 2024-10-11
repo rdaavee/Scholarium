@@ -183,7 +183,7 @@ class GlobalRepositoryImpl extends GlobalRepository implements Endpoint {
 
 //-------------------------------------FOR FETCHING------------------------------------------------------------
   @override
-  Future<UserModel> fetchUserData() async {
+  Future<UserModel> fetchUserProfile() async {
     try {
       final token = await _getToken();
       if (token == null) {
@@ -192,6 +192,49 @@ class GlobalRepositoryImpl extends GlobalRepository implements Endpoint {
 
       final response = await http.get(
         Uri.parse('$baseUrl/user/profile'),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> data = jsonDecode(response.body);
+        return UserModel.fromJson(data);
+      } else {
+        return UserModel(
+          schoolID: '',
+          email: '',
+          firstName: 'N/A',
+          middleName: '',
+          lastName: '',
+          profilePicture: '',
+          gender: '',
+          contact: '',
+          address: '',
+          role: '',
+          professor: '',
+          hkType: '',
+          status: '',
+          token: '',
+        );
+      }
+    } catch (error) {
+      print('Error fetching user data: $error'); // Debug print
+      throw Exception('Error fetching user data: $error');
+    }
+  }
+
+  @override
+  Future<UserModel> fetchUserData(String schoolId) async {
+    try {
+      final token = await _getToken();
+      if (token == null) {
+        throw Exception('Token not found');
+      }
+
+      final response = await http.get(
+        Uri.parse('$baseUrl/user/getUserData/$schoolId'),
         headers: <String, String>{
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',

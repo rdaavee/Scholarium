@@ -5,8 +5,10 @@ import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
 import 'package:isHKolarium/api/implementations/professor_repository_impl.dart';
 import 'package:isHKolarium/api/models/announcement_model.dart';
 import 'package:isHKolarium/api/models/post_model.dart';
+import 'package:isHKolarium/api/models/professor_schedule_model.dart';
 import 'package:isHKolarium/api/models/user_model.dart';
 import 'package:meta/meta.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'professors_event.dart';
 part 'professors_state.dart';
@@ -25,7 +27,8 @@ class ProfessorsBloc extends Bloc<ProfessorsEvent, ProfessorsState> {
   FutureOr<void> professorsInitialEvent(
       ProfessorsInitialEvent event, Emitter<ProfessorsState> emit) async {
     emit(ProfessorsLoadingState());
-    emit(ProfessorsLoadedSuccessState(users: [], announcements: []));
+    emit(ProfessorsLoadedSuccessState(
+        users: [], announcements: [], schedules: []));
   }
 
   Future<void> createPost(
@@ -52,16 +55,20 @@ class ProfessorsBloc extends Bloc<ProfessorsEvent, ProfessorsState> {
       FetchLatestEvent event, Emitter<ProfessorsState> emit) async {
     emit(ProfessorsLoadingState());
     try {
-      UserModel user = await _globalRepositoryImpl.fetchUserData();
+      UserModel user = await _globalRepositoryImpl.fetchUserProfile();
       AnnouncementModel latestAnnouncement =
           await _globalRepositoryImpl.fetchLatestAnnouncementData();
-
+      final prefs = await SharedPreferences.getInstance();
+      final schoolId = prefs.getString('schoolID');
+      final schedule =
+          await _professorRepositoryImpl.fetchProfTodaySchedule(schoolId.toString());
       emit(ProfessorsLoadedSuccessState(
         users: [user],
         announcements: [latestAnnouncement],
+        schedules: schedule,
       ));
     } catch (error) {
-      print('Error fetching latest announcement: $error');
+      print(error);
       emit(ProfessorsErrorState(message: error.toString()));
     }
   }

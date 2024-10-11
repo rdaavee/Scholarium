@@ -1,37 +1,37 @@
 class UserModel {
   final int? id;
   final String? schoolID;
-  final String email;
-  final String firstName;
-  final String middleName;
-  final String lastName;
-  final String profilePicture;
-  final String gender;
+  final String? email;
+  final String? firstName;
+  final String? middleName;
+  final String? lastName;
+  final String? profilePicture;
+  final String? gender;
   final String? password;
-  final String contact;
-  final String address;
-  final String role;
-  final String professor;
-  final String hkType;
-  final String status;
+  final String? contact;
+  final String? address;
+  final String? role;
+  final String? professor;
+  final String? hkType;
+  final String? status;
   final String? token;
 
   UserModel({
     this.id,
     this.schoolID,
-    required this.email,
-    required this.firstName,
-    required this.middleName,
-    required this.lastName,
-    required this.profilePicture,
-    required this.gender,
+    this.email,
+    this.firstName,
+    this.middleName,
+    this.lastName,
+    this.profilePicture,
+    this.gender,
     this.password,
-    required this.contact,
-    required this.address,
-    required this.role,
-    required this.professor,
-    required this.hkType,
-    required this.status,
+    this.contact,
+    this.address,
+    this.role,
+    this.professor,
+    this.hkType,
+    this.status,
     this.token,
   });
 

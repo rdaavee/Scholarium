@@ -26,7 +26,8 @@ abstract class GlobalRepository {
     required String email,
     required String newPassword,
   });
-  Future<UserModel> fetchUserData();
+  Future<UserModel> fetchUserProfile();
+  Future<UserModel> fetchUserData(String schoolId);
   Future<List<NotificationsModel>> fetchNotificationsData();
   Future<int> fetchUnreadNotificationCount();
   Future<void> updateNotificationStatus(String notificationId);

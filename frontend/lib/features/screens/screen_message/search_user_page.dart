@@ -154,7 +154,7 @@ class SearchUserScreenState extends State<SearchUserScreen> {
                             ),
                           ),
                           subtitle: Text(
-                            user.email,
+                            user.email.toString(),
                             style: TextStyle(
                                 fontFamily: 'Manrope',
                                 fontSize: 12,

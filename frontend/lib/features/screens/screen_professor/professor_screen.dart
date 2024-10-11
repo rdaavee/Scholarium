@@ -310,20 +310,22 @@ class _ProfessorHomeScreenState extends State<ProfessorHomeScreen> {
                             ),
                             const SizedBox(height: 16),
                             Expanded(
-                              child: ListView(
-                                children: const [
-                                  DutyCard(
-                                    cardColor: Color(0xFF549E73),
-                                    time: '7:30AM-9:00AM',
-                                    roomName: 'PTC-206',
-                                  ),
-                                  SizedBox(height: 16),
-                                  DutyCard(
-                                    cardColor: Color(0xFF6DD400),
-                                    time: '7:30AM-9:00AM',
-                                    roomName: 'PTC-206',
-                                  ),
-                                ],
+                              child: ListView.builder(
+                                itemCount: state.schedules.length,
+                                itemBuilder: (context, index) {
+                                  final schedule = state.schedules[index];
+                                  return Column(
+                                    children: [
+                                      DutyCard(
+                                        cardColor: ColorPalette.primary,
+                                        time: schedule.time,
+                                        roomName: schedule.room,
+                                        students: schedule.students,
+                                      ),
+                                      const SizedBox(height: 16),
+                                    ],
+                                  );
+                                },
                               ),
                             ),
                             const SizedBox(height: 16),

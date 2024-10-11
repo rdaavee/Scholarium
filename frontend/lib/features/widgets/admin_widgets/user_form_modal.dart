@@ -46,18 +46,18 @@ class UserFormWidgetState extends State<UserFormWidget> {
     if (widget.filteredUsers.isNotEmpty) {
       schoolIdController.text =
           widget.filteredUsers[widget.index].schoolID.toString();
-      firstNameController.text = widget.filteredUsers[widget.index].firstName;
-      middleNameController.text = widget.filteredUsers[widget.index].middleName;
-      lastNameController.text = widget.filteredUsers[widget.index].lastName;
-      emailController.text = widget.filteredUsers[widget.index].email;
+      firstNameController.text = widget.filteredUsers[widget.index].firstName.toString();
+      middleNameController.text = widget.filteredUsers[widget.index].middleName.toString();
+      lastNameController.text = widget.filteredUsers[widget.index].lastName.toString();
+      emailController.text = widget.filteredUsers[widget.index].email.toString();
       passwordController.text =
           widget.filteredUsers[widget.index].password.toString();
-      genderController.text = widget.filteredUsers[widget.index].gender;
-      addressController.text = widget.filteredUsers[widget.index].address;
-      contactController.text = widget.filteredUsers[widget.index].contact;
-      professorController.text = widget.filteredUsers[widget.index].professor;
-      roleController.text = widget.filteredUsers[widget.index].role;
-      isActive = widget.filteredUsers[widget.index].status;
+      genderController.text = widget.filteredUsers[widget.index].gender.toString();
+      addressController.text = widget.filteredUsers[widget.index].address.toString();
+      contactController.text = widget.filteredUsers[widget.index].contact.toString();
+      professorController.text = widget.filteredUsers[widget.index].professor.toString();
+      roleController.text = widget.filteredUsers[widget.index].role.toString();
+      isActive = widget.filteredUsers[widget.index].status.toString();
       _isSwitched = isActive.toLowerCase() == 'active';
     }
   }
