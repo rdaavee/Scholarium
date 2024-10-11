@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
 import 'package:isHKolarium/api/implementations/professor_repository_impl.dart';
 import 'package:isHKolarium/api/implementations/student_repository_impl.dart';
 import 'package:isHKolarium/blocs/bloc_bottom_nav/bottom_nav_bloc.dart';
@@ -16,13 +17,16 @@ import '../../widgets/student_widgets/schedule_widgets/timeline_item.dart';
 
 class ScheduleScreen extends StatefulWidget {
   final String role;
-  const ScheduleScreen({super.key, required this.role});
+  final bool isAppBarBack;
+  const ScheduleScreen(
+      {super.key, required this.role, required this.isAppBarBack});
   @override
   ScheduleScreenState createState() => ScheduleScreenState();
 }
 
 class ScheduleScreenState extends State<ScheduleScreen> {
   late ScheduleBloc scheduleBloc;
+  late BottomNavBloc bottomNavBloc;
   late String currentMonth;
   final ProfessorRepositoryImpl profService = ProfessorRepositoryImpl();
 
@@ -37,7 +41,8 @@ class ScheduleScreenState extends State<ScheduleScreen> {
       selectedMonth = currentMonth;
     });
     _initialize(currentMonth);
-    context.read<BottomNavBloc>().add(FetchUnreadCountEvent());
+    bottomNavBloc = BottomNavBloc(GlobalRepositoryImpl());
+    bottomNavBloc.add(FetchUnreadCountEvent());
   }
 
   Future<void> _initialize(String selectedMonth) async {
@@ -95,7 +100,8 @@ class ScheduleScreenState extends State<ScheduleScreen> {
         listener: (context, state) {},
         builder: (context, state) {
           return Scaffold(
-            appBar: const AppBarWidget(title: "Schedule", isBackButton: false),
+            appBar: AppBarWidget(
+                title: "Schedule", isBackButton: widget.isAppBarBack),
             body: Stack(
               children: [
                 Container(

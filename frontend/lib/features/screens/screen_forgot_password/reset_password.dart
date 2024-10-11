@@ -36,6 +36,10 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
             context,
             MaterialPageRoute(builder: (context) => LoginPage()),
           );
+        } else if (State is PasswordErrorState) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Confirm Password and New Password is not the same')),
+          );
         }
       },
       builder: (context, state) {
