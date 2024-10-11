@@ -69,7 +69,7 @@ exports.updateUser = async (req, res) => {
   const params = req.body;
 
   try {
-    const user = await User.findOneAndUpdate(
+    user = await User.findOneAndUpdate(
       { school_id: school_id },
       {
         email: params.email,

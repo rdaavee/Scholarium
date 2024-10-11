@@ -40,15 +40,13 @@ exports.createPost = async (req, res) => {
         .json({ message: "No schedules found for this professor." });
     }
 
-    // Fetch existing posts for the logged-in professor to prevent duplicates
     const existingPosts = await Notification.find({
       prof_id: loggedInProfId,
       title: req.body.title,
       message: req.body.body,
-      school_id: { $in: schedules.map((schedule) => schedule.school_id) }, // Match against all relevant school_ids
+      school_id: { $in: schedules.map((schedule) => schedule.school_id) }, 
     });
 
-    // Map over schedules and filter out any duplicates based on existing posts
     const postsData = schedules.reduce((acc, schedule) => {
       const schoolId = schedule.school_id;
       const alreadyExists = existingPosts.some(
@@ -68,7 +66,6 @@ exports.createPost = async (req, res) => {
       return acc;
     }, []);
 
-    // Only insert if there are new posts to add
     if (postsData.length > 0) {
       await Post.insertMany(postsData);
       res
