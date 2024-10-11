@@ -98,17 +98,6 @@ class NotificationCard extends StatelessWidget {
                             ),
                           ),
                         ),
-                        Container(
-                          margin: const EdgeInsets.only(right: 16),
-                          child: Text(
-                            date,
-                            style: const TextStyle(
-                              color: Colors.grey,
-                              fontFamily: 'Manrope',
-                              fontSize: 11,
-                            ),
-                          ),
-                        ),
                         Text(
                           time,
                           style: const TextStyle(
@@ -117,7 +106,6 @@ class NotificationCard extends StatelessWidget {
                             fontSize: 11,
                           ),
                         ),
-                        const SizedBox(width: 22),
                       ],
                     ),
                     Text(
@@ -129,13 +117,26 @@ class NotificationCard extends StatelessWidget {
                         fontFamily: 'Manrope',
                       ),
                     ),
-                    Text(
-                      title,
-                      style: const TextStyle(
-                        fontSize: 12,
-                        color: Color(0xFFC1C1C1),
-                        fontFamily: 'Manrope',
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          title,
+                          style: const TextStyle(
+                            fontSize: 12,
+                            color: Color(0xFFC1C1C1),
+                            fontFamily: 'Manrope',
+                          ),
+                        ),
+                        Text(
+                          date,
+                          style: const TextStyle(
+                            color: Colors.grey,
+                            fontFamily: 'Manrope',
+                            fontSize: 9,
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
