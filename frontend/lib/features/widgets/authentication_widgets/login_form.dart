@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:isHKolarium/blocs/bloc_authentication/authentication_bloc.dart';
 import 'package:isHKolarium/features/screens/screen_forgot_password/email_screen.dart';
 import 'package:isHKolarium/features/widgets/authentication_widgets/sign_in_button.dart';
-import 'package:isHKolarium/features/widgets/password/forgot_password.dart';
 
 class LoginForm extends StatelessWidget {
   final AuthenticationBloc loginBloc;

@@ -85,6 +85,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                               itemBuilder: (context, index) {
                                 final notifications =
                                     state.notifications[index];
+                                print(notifications);
                                 return GestureDetector(
                                   onTap: () {
                                     // Update notification status when tapped
@@ -94,13 +95,16 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                   },
                                   child: NotificationCard(
                                     sender: notifications.sender.toString(),
+                                    senderName: notifications.senderName.toString(),
+                                    receiver: notifications.receiver.toString(),
                                     role: notifications.role.toString(),
+                                    title: notifications.title.toString(),
                                     message: notifications.message.toString(),
                                     status: notifications.status.toString(),
                                     date: _formatDate(
                                         notifications.date.toString()),
                                     time: _formatTime(
-                                        notifications.time.toString()),
+                                        notifications.time.toString()), 
                                   ),
                                 );
                               },

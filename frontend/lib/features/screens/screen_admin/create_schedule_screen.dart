@@ -3,11 +3,13 @@ import 'package:isHKolarium/config/constants/colors.dart';
 import 'package:isHKolarium/features/widgets/app_bar.dart';
 
 class SetScheduleScreen extends StatefulWidget {
+  const SetScheduleScreen({super.key});
+
   @override
-  _SetScheduleScreenState createState() => _SetScheduleScreenState();
+  SetScheduleScreenState createState() => SetScheduleScreenState();
 }
 
-class _SetScheduleScreenState extends State<SetScheduleScreen> {
+class SetScheduleScreenState extends State<SetScheduleScreen> {
   DateTime? selectedDate;
   String? selectedTimeSlot;
   String? selectedProfessor;
