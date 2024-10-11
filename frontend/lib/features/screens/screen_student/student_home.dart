@@ -40,7 +40,8 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
     final globalRepositoryImpl = GlobalRepositoryImpl();
     studentBloc = StudentsBloc(studentRepositoryImpl, globalRepositoryImpl);
     studentBloc.add(FetchLatestEvent());
-    bottomNavBloc = BottomNavBloc();
+    bottomNavBloc = BottomNavBloc(globalRepositoryImpl);
+    bottomNavBloc.add(FetchUnreadCountEvent());
   }
 
   String _formatDate(String date) {

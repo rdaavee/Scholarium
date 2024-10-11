@@ -29,23 +29,22 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
   @override
   void initState() {
     super.initState();
-    final globalRepositoryImpl = GlobalRepositoryImpl();
+    final globalRepository = GlobalRepositoryImpl();
     if (widget.isRole == "Student") {
       final studentRepositoryImpl = StudentRepositoryImpl();
-      studentBloc = StudentsBloc(studentRepositoryImpl, globalRepositoryImpl);
+      studentBloc = StudentsBloc(studentRepositoryImpl, globalRepository);
       studentBloc.add(StudentsInitialEvent());
     } else if (widget.isRole == "Professor") {
       final professorsRepository = ProfessorRepositoryImpl();
       professorBloc =
-          ProfessorsBloc(professorsRepository, globalRepositoryImpl);
+          ProfessorsBloc(professorsRepository, globalRepository);
       professorBloc.add(ProfessorsInitialEvent());
     } else {
       final adminRepository = AdminRepositoryImpl();
-      final globalRepository = GlobalRepositoryImpl();
       adminBloc = AdminBloc(adminRepository, globalRepository);
       adminBloc.add(AdminInitialEvent());
     }
-    bottomNavBloc = BottomNavBloc();
+    bottomNavBloc = BottomNavBloc(globalRepository);
   }
 
   @override

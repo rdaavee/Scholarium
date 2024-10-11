@@ -5,7 +5,6 @@ import 'package:isHKolarium/blocs/bloc_bottom_nav/bottom_nav_bloc.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
 import 'package:isHKolarium/features/screens/screen_admin/admin_home_screen.dart';
 import 'package:isHKolarium/features/screens/screen_admin/user_data_screen.dart';
-import 'package:isHKolarium/features/screens/screen_announcement/announcement.dart';
 import 'package:isHKolarium/features/screens/screen_notification/notification_screen.dart';
 import 'package:isHKolarium/features/screens/screen_professor/professor_screen.dart';
 import 'package:isHKolarium/features/screens/screen_profile/profile_screen.dart';
@@ -21,22 +20,29 @@ class BottomNavWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<BottomNavBloc, BottomNavState>(
       builder: (context, state) {
-        final selectedIndex =
-            state is BottomNavItemSelectedState ? state.selectedIndex : 0;
+        if (state is BottomNavLoadingState) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        
+        if (state is BottomNavLoadedSuccessState) {
+          final selectedIndex = state.selectedIndex;
+          final unreadCount = state.unreadCount;
 
-        return Scaffold(
-          backgroundColor: ColorPalette.accentBlack,
-          body: Center(
-            child: _getRoleSpecificPage(selectedIndex),
-          ),
-          bottomNavigationBar:
-              _buildBottomNavigationBar(context, selectedIndex),
-        );
+          return Scaffold(
+            backgroundColor: ColorPalette.accentBlack,
+            body: _getRoleSpecificPage(selectedIndex),
+            bottomNavigationBar: _buildBottomNavigationBar(context, selectedIndex, unreadCount),
+          );
+        }
+        
+        // Trigger initial event and fetch unread count on first build
+        context.read<BottomNavBloc>().add(BottomNavInitialEvent());
+        return const Center(child: CircularProgressIndicator());
       },
     );
   }
 
-  Widget _buildBottomNavigationBar(BuildContext context, int selectedIndex) {
+  Widget _buildBottomNavigationBar(BuildContext context, int selectedIndex, int unreadCount) {
     return BottomNavigationBarTheme(
       data: const BottomNavigationBarThemeData(
         backgroundColor: Colors.transparent,
@@ -64,7 +70,12 @@ class BottomNavWidget extends StatelessWidget {
             label: _getLabelForRole(isRole, 'schedule'),
           ),
           BottomNavigationBarItem(
-            icon: _getIconForRole(isRole, 'notification'),
+            icon: Stack(
+              children: [
+                _getIconForRole(isRole, 'notification'),
+                if (unreadCount > 0) _buildUnreadBadge(unreadCount),
+              ],
+            ),
             label: _getLabelForRole(isRole, 'notification'),
           ),
           BottomNavigationBarItem(
@@ -76,35 +87,30 @@ class BottomNavWidget extends StatelessWidget {
     );
   }
 
-  String _getLabelForRole(String role, String itemType) {
-    switch (itemType) {
-      case 'home':
-        return role == 'Student'
-            ? 'Home'
-            : role == 'Professor'
-                ? 'Home'
-                : 'Home';
-      case 'schedule':
-        return role == 'Student'
-            ? 'Schedule'
-            : role == 'Professor'
-                ? 'Schedule'
-                : 'Users';
-      case 'notification':
-        return role == 'Student'
-            ? 'Notifications'
-            : role == 'Professor'
-                ? 'Notifications'
-                : 'Announcements';
-      case 'profile':
-        return role == 'Student'
-            ? 'Profile'
-            : role == 'Professor'
-                ? 'Profile'
-                : 'Profile';
-      default:
-        return 'Item';
-    }
+  Widget _buildUnreadBadge(int unreadCount) {
+    return Positioned(
+      right: 0,
+      child: Container(
+        padding: const EdgeInsets.all(2),
+        decoration: BoxDecoration(
+          color: Colors.red,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        constraints: const BoxConstraints(
+          minWidth: 16,
+          minHeight: 16,
+        ),
+        child: Text(
+          '$unreadCount',
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 10,
+            fontWeight: FontWeight.bold,
+          ),
+          textAlign: TextAlign.center,
+        ),
+      ),
+    );
   }
 
   Widget _getRoleSpecificPage(int index) {
@@ -125,7 +131,7 @@ class BottomNavWidget extends StatelessWidget {
       case 0:
         return const StudentHomeScreen();
       case 1:
-        return const ScheduleScreen(role: 'Student',);
+        return const ScheduleScreen(role: 'Student');
       case 2:
         return const NotificationScreen();
       case 3:
@@ -140,7 +146,7 @@ class BottomNavWidget extends StatelessWidget {
       case 0:
         return const ProfessorHomeScreen();
       case 1:
-        return const ScheduleScreen(role: 'Professor',);
+        return const ScheduleScreen(role: 'Professor');
       case 2:
         return const NotificationScreen();
       case 3:
@@ -165,32 +171,33 @@ class BottomNavWidget extends StatelessWidget {
     }
   }
 
+  String _getLabelForRole(String role, String itemType) {
+    switch (itemType) {
+      case 'home':
+        return 'Home';
+      case 'schedule':
+        return role == 'Admin' ? 'Users' : 'Schedule';
+      case 'notification':
+        return role == 'Admin' ? 'Announcements' : 'Notifications';
+      case 'profile':
+        return 'Profile';
+      default:
+        return 'Item';
+    }
+  }
+
   Icon _getIconForRole(String role, String itemType) {
     switch (itemType) {
       case 'home':
-        return Icon(role == 'Student'
-            ? CupertinoIcons.home
-            : role == 'Professor'
-                ? CupertinoIcons.home
-                : CupertinoIcons.home);
+        return const Icon(CupertinoIcons.home);
       case 'schedule':
-        return Icon(role == 'Student'
-            ? CupertinoIcons.calendar
-            : role == 'Professor'
-                ? CupertinoIcons.calendar
-                : CupertinoIcons.person_2_square_stack);
+        return role == 'Admin'
+            ? const Icon(CupertinoIcons.person_2_square_stack)
+            : const Icon(CupertinoIcons.calendar);
       case 'notification':
-        return Icon(role == 'Student'
-            ? CupertinoIcons.bell
-            : role == 'Professor'
-                ? CupertinoIcons.bell
-                : CupertinoIcons.bell);
+        return const Icon(CupertinoIcons.bell);
       case 'profile':
-        return Icon(role == 'Student'
-            ? CupertinoIcons.profile_circled
-            : role == 'Professor'
-                ? CupertinoIcons.profile_circled
-                : CupertinoIcons.profile_circled);
+        return const Icon(CupertinoIcons.profile_circled);
       default:
         return const Icon(CupertinoIcons.question);
     }

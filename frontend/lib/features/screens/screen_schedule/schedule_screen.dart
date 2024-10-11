@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:isHKolarium/api/implementations/professor_repository_impl.dart';
 import 'package:isHKolarium/api/implementations/student_repository_impl.dart';
+import 'package:isHKolarium/blocs/bloc_bottom_nav/bottom_nav_bloc.dart';
 import 'package:isHKolarium/blocs/bloc_schedule/schedule_bloc.dart';
 import 'package:isHKolarium/blocs/bloc_schedule/schedule_event.dart';
 import 'package:isHKolarium/blocs/bloc_schedule/schedule_state.dart';
@@ -36,6 +37,7 @@ class ScheduleScreenState extends State<ScheduleScreen> {
       selectedMonth = currentMonth;
     });
     _initialize(currentMonth);
+    context.read<BottomNavBloc>().add(FetchUnreadCountEvent());
   }
 
   Future<void> _initialize(String selectedMonth) async {
@@ -152,7 +154,8 @@ class ScheduleScreenState extends State<ScheduleScreen> {
                                       final isCompleted =
                                           duty['completed'] == 'true';
 
-                                      if (widget.role == "Professor" && duty['completed'] == "false") {
+                                      if (widget.role == "Professor" &&
+                                          duty['completed'] == "false") {
                                         return GestureDetector(
                                           onTap: () async {
                                             print(duty['date']);

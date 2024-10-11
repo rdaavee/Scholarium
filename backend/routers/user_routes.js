@@ -20,6 +20,7 @@ router.get("/getSchedule/:month", verifyToken, userController.getUserSchedule);
 
 //--------------------------------FOR NOTIFICATION PAGE----------------------------------------------------------
 router.get("/getNotifications", verifyToken, userController.getUserNotifications);
+router.get("/getUnreadNotifications", verifyToken, userController.getUserUnreadNotifications);
 router.put("/updateNotificationsStatus/:id", verifyToken, userController.updateNotificationStatus);
 
 //--------------------------------FOR PROFILE PAGE---------------------------------------------------------------
