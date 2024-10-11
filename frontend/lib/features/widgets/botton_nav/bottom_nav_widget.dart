@@ -157,7 +157,7 @@ class BottomNavWidget extends StatelessWidget {
       case 1:
         return const UserDataScreen();
       case 2:
-        return const AnnouncementsScreen(isBackButtonTrue: false,);
+        return const NotificationScreen();
       case 3:
         return const ProfileScreen();
       default:

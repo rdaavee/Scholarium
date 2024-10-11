@@ -204,7 +204,7 @@ exports.getUserNotifications = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    const notifications = await Notification.find({ school_id: user.school_id });
+    const notifications = await Notification.find({ receiver: user.school_id }).sort({ date: -1});
     if (notifications.length > 0) {
       res.status(200).json(notifications);
     } else {

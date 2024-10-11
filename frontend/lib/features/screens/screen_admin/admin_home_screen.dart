@@ -1,15 +1,14 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_admin_scaffold/admin_scaffold.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fl_chart/fl_chart.dart';
 import 'package:isHKolarium/api/implementations/admin_repository_impl.dart';
 import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
-import 'package:isHKolarium/api/repositories/global_repository.dart';
 import 'package:isHKolarium/blocs/bloc_admin/admin_bloc.dart';
 import 'package:isHKolarium/blocs/bloc_bottom_nav/bottom_nav_bloc.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
 import 'package:isHKolarium/features/widgets/admin_widgets/duty_card.dart';
-import 'package:flutter_admin_scaffold/admin_scaffold.dart';
 
 class AdminHomeScreen extends StatefulWidget {
   const AdminHomeScreen({super.key});
@@ -89,13 +88,23 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                           icon: Icons.space_dashboard_rounded,
                         ),
                         AdminMenuItem(
+                          title: 'View Announcement',
+                          route: '/view_announcement',
+                          icon: CupertinoIcons.rectangle_stack_fill_badge_plus,
+                        ),
+                        AdminMenuItem(
+                          title: 'View Schedule',
+                          route: '/view_schedule',
+                          icon: CupertinoIcons.calendar_badge_plus,
+                        ),
+                        AdminMenuItem(
                           title: 'Create Announcement',
-                          route: '/announcement',
+                          route: '/create_announcement',
                           icon: CupertinoIcons.rectangle_stack_fill_badge_plus,
                         ),
                         AdminMenuItem(
                           title: 'Create Schedule',
-                          route: '/schedule',
+                          route: '/create_schedule',
                           icon: CupertinoIcons.calendar_badge_plus,
                         ),
                       ],

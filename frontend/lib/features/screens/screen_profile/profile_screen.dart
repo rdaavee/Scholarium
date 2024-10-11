@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -9,9 +7,10 @@ import 'package:isHKolarium/blocs/bloc_profile/profile_event.dart';
 import 'package:isHKolarium/blocs/bloc_profile/profile_state.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
 import 'package:isHKolarium/features/widgets/app_bar.dart';
-import '../../widgets/profile_widgets/profile_circle.dart';
+
 import '../../widgets/profile_widgets/profile_account_option.dart';
 import '../../widgets/profile_widgets/profile_account_section.dart';
+import '../../widgets/profile_widgets/profile_circle.dart';
 import '../../widgets/profile_widgets/profile_divider.dart';
 import '../../widgets/profile_widgets/profile_info_data.dart';
 import '../../widgets/profile_widgets/profile_info_section.dart';
