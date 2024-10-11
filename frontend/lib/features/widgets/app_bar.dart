@@ -42,7 +42,7 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
                   : null,
               automaticallyImplyLeading: false,
               iconTheme: const IconThemeData(color: ColorPalette.accentWhite),
-              backgroundColor: ColorPalette.primary.withOpacity(0.5),
+              backgroundColor: ColorPalette.dutyCardColor.withOpacity(0.7),
               toolbarHeight: 130,
               elevation: 0,
               title: Container(
