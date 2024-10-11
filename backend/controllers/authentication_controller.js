@@ -1,5 +1,4 @@
 const jwt = require("jsonwebtoken");
-
 const User = require("../models/user_model");
 const Message = require("../models/message_system_model");
 const crypto = require("crypto");
@@ -22,7 +21,6 @@ exports.forgotPassword = async (req, res) => {
     return res.status(404).json({ message: "User not found." });
   }
 
-  // Generate a verification code
   const code = crypto.randomInt(100000, 999999).toString();
   verificationCodes[email] = code;
 
@@ -31,16 +29,19 @@ exports.forgotPassword = async (req, res) => {
   res.status(200).json({ message: "Verification code sent to your email." });
 };
 
-// Verify Code a
+// Verify Code
 exports.verifyCode = async (req, res) => {
   const { email, code } = req.body;
 
-  
-  if (verificationCodes[email] !== code) {
+  console.log(email);
+  console.log(code);
+  if (verificationCodes[email] == code) {
+    console.log("OTP successful.")
+    res.status(200).json({ message: "OTP successful." });
+  } else {
+    console.log("OTP mali.")
     return res.status(400).json({ message: "Invalid or expired code." });
   }
-
-  res.status(200).json({ message: "OTP successful." });
 };
 
 // Verify Code and Reset Password
@@ -52,36 +53,27 @@ exports.resetPassword = async (req, res) => {
     return res.status(404).json({ message: "User not found." });
   }
 
-  // Hash new password and update user
-  // const hashedPassword = await bcrypt.hash(newPassword, 10);
+  // Update user password without hashing
   user.password = newPassword;
   await user.save();
 
-  // Delete the used verification code
   delete verificationCodes[email];
 
   res.status(200).json({ message: "Password reset successful." });
 };
 
+// Login
 exports.login = async (req, res) => {
-  console.log("Login route hit");
   try {
     const { school_id, password } = req.body;
-    const trimmedSchoolId = school_id.trim();
 
-    console.log(`Searching for user with school_id: '${trimmedSchoolId}'`);
-
-    const user = await User.findOne({ school_id: trimmedSchoolId });
-    console.log(`Querying for user with school_id: '${trimmedSchoolId}'`);
-    console.log("User found:", user);
+    const user = await User.findOne({ school_id: school_id.trim() });
 
     if (!user) {
-      console.log("No user found with that school_id.");
       return res.status(401).json({ message: "Invalid school ID or password" });
     }
 
-    console.log("User password from DB:", user.password);
-
+    // Compare the plaintext password
     if (user.password === password) {
       const token = jwt.sign(
         { id: user._id, school_id: user.school_id, role: user.role },
@@ -98,7 +90,6 @@ exports.login = async (req, res) => {
         role: user.role,
       });
     } else {
-      console.log("Password mismatch");
       res.status(401).json({ message: "Invalid school ID or password" });
     }
   } catch (error) {
@@ -107,35 +98,29 @@ exports.login = async (req, res) => {
   }
 };
 
-
-
 //========================================================MESSAGING SYSTEM============================================================
 exports.postMessage = async (req, res) => {
   try {
-      const { sender, receiver, content } = req.body;
+    const { sender, receiver, content } = req.body;
 
-      // Find sender and receiver users by their school_id
-      const senderUser = await User.findOne({ school_id: sender });
-      const receiverUser = await User.findOne({ school_id: receiver });
+    const senderUser = await User.findOne({ school_id: sender });
+    const receiverUser = await User.findOne({ school_id: receiver });
 
-      // Check if both users exist
-      if (!senderUser || !receiverUser) {
-          return res.status(404).json({ message: "Sender or receiver not found" });
-      }
+    if (!senderUser || !receiverUser) {
+      return res.status(404).json({ message: "Sender or receiver not found" });
+    }
 
-      // Create the message with ObjectId references
-      const message = new Message({
-          sender: senderUser._id,
-          receiver: receiverUser._id,
-          content,
-      });
+    const message = new Message({
+      sender: senderUser._id,
+      receiver: receiverUser._id,
+      content,
+    });
 
-      await message.save();
-      console.log("Message sent successfully from " + sender + " to " + receiver);
-      res.status(200).json({ message: "Message sent successfully" });
+    await message.save();
+    res.status(200).json({ message: "Message sent successfully" });
   } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: "Server error" });
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
   }
 };
 
@@ -172,7 +157,6 @@ exports.getReceiversBySender = async (req, res) => {
   try {
     const loggedInProfId = req.userSchoolId; // Assuming req.userSchoolId is the logged-in user's ID
 
-    // Find all messages where the logged-in professor is the sender and get unique receivers
     const uniqueReceivers = await Message.find({ sender: loggedInProfId })
       .distinct('receiver');
 
@@ -180,22 +164,9 @@ exports.getReceiversBySender = async (req, res) => {
       return res.status(404).json({ message: 'No receivers found for this professor.' });
     }
 
-    // Optionally, you can populate the receiver's user information if needed
-    // const receiversWithDetails = await User.find({ _id: { $in: uniqueReceivers } });
-
     res.status(200).json({ receivers: uniqueReceivers });
   } catch (error) {
     console.error('Error fetching receivers:', error);
     res.status(500).json({ message: 'Server error. Unable to fetch receivers.' });
   }
 };
-
-
-
-
-
-
-
-
-
-

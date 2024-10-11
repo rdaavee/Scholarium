@@ -28,13 +28,12 @@ class GetOTPEvent extends AuthenticationEvent {
 class VerifyCode extends AuthenticationEvent {
   final String email;
   final String code;
-  VerifyCode(this.code, this.email);
+  VerifyCode(this.email, this.code);
 }
 class ResetPasswordEvent extends AuthenticationEvent {
   final String email;
-  final String code;
   final String newPassword;
-  ResetPasswordEvent(this.email, this.code, this.newPassword);
+  ResetPasswordEvent(this.email, this.newPassword);
 }
 
 class LoginButtonNavigateEvent extends AuthenticationEvent {}
