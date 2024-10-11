@@ -38,6 +38,10 @@ exports.uploadImage = async (req, res) => {
   if (!req.userId || !req.userSchoolId) {
     return res.status(401).json({ message: 'Unauthorized! No user information available.' });
   }
+  console.log('User ID:', req.userId);
+  console.log('School ID:', req.userSchoolId);
+  console.log('File uploaded:', req.filePath);
+
 
   try {
     const schoolId = req.userSchoolId;
