@@ -30,6 +30,15 @@ class UserDataTable extends StatelessWidget {
         columns: const <DataColumn>[
           DataColumn(
             label: Text(
+              '',
+              style: TextStyle(
+                  fontFamily: 'Manrope',
+                  fontSize: 13,
+                  fontWeight: FontWeight.bold),
+            ),
+          ),
+          DataColumn(
+            label: Text(
               'Name',
               style: TextStyle(
                   fontFamily: 'Manrope',
@@ -73,14 +82,22 @@ class UserDataTable extends StatelessWidget {
                 DataRow(
                   cells: [
                     DataCell(
+                      CircleAvatar(
+                        backgroundColor: Colors.grey,
+                        backgroundImage: user.profilePicture != null
+                            ? NetworkImage(user.profilePicture!)
+                            : null,
+                      ),
+                    ),
+                    DataCell(
                       Text('${user.firstName} ${user.lastName}'),
                     ),
                     DataCell(
-                      Text(user.role),
+                      Text(user.role.toString()),
                     ),
                     DataCell(
                       Text(
-                        user.status,
+                        user.status.toString(),
                         style: TextStyle(
                           color: user.status == 'Active'
                               ? Colors.green
@@ -112,7 +129,7 @@ class UserDataTable extends StatelessWidget {
                                         name:
                                             '${user.firstName} ${user.lastName}',
                                         schoolId: user.schoolID.toString(),
-                                        role: user.role,
+                                        role: user.role.toString(),
                                         isActive: user.status == 'Active',
                                       );
                                     },
@@ -155,7 +172,8 @@ class UserDataTable extends StatelessWidget {
                                                       index: index,
                                                       filteredUsers:
                                                           filteredUsers,
-                                                      isRole: user.role,
+                                                      isRole:
+                                                          user.role.toString(),
                                                     ),
                                                   ),
                                                 ),

@@ -1,10 +1,83 @@
 const pool = require("../db");
 const Schedule = require("../models/schedule_model");
-const Notification = require("../models/notifications_model")
+const Notification = require("../models/notifications_model");
 const Post = require("../models/posts_model");
 const User = require("../models/user_model");
-const DTR = require("../models/dtr_model")
+const DTR = require("../models/dtr_model");
 const moment = require("moment");
+
+exports.getProfTodaySchedule = async (req, res) => {
+  const { prof_id } = req.params;
+  const today = moment().format("YYYY-MM-DD");
+
+  try {
+    const schedules = await Schedule.find({
+      prof_id: prof_id,
+      date: today,
+    });
+
+    if (schedules.length === 0) {
+      return res.status(404).json({ message: "No schedules found for today." });
+    }
+
+    const groupedSchedules = {};
+
+    for (const schedule of schedules) {
+      const { time, room } = schedule;
+
+      if (!groupedSchedules[time]) {
+        groupedSchedules[time] = {
+          room: room,
+          date: schedule.date,
+          students: [], 
+        };
+      }
+
+      const matchingSchedules = await Schedule.find({
+        time: schedule.time,
+        date: schedule.date,
+        room: schedule.room,
+      });
+
+      for (const match of matchingSchedules) {
+        const existingStudent = groupedSchedules[time].students.find(
+          (student) => student.school_id === match.school_id
+        );
+
+        if (!existingStudent) {
+          const user = await User.findOne(
+            { school_id: match.school_id },
+            "school_id profile_picture"
+          ); 
+
+          if (user) {
+            groupedSchedules[time].students.push({
+              school_id: user.school_id,
+              profile_picture: user.profile_picture,
+            });
+          }
+        }
+      }
+    }
+
+    const responseSchedules = Object.entries(groupedSchedules).map(
+      ([time, details]) => ({
+        time,
+        room: details.room,
+        date: details.date,
+        students: details.students, 
+      })
+    );
+
+    return res.json({ schedules: responseSchedules });
+  } catch (error) {
+    console.error("Error fetching schedules:", error);
+    return res.status(500).json({ message: "Internal server error." });
+  }
+};
+
+
+
 //Get Announcement
 exports.getAnnouncements = (req, res) => {
   pool.getConnection((error, connection) => {
@@ -44,7 +117,7 @@ exports.createPost = async (req, res) => {
       prof_id: loggedInProfId,
       title: req.body.title,
       message: req.body.body,
-      school_id: { $in: schedules.map((schedule) => schedule.school_id) }, 
+      school_id: { $in: schedules.map((schedule) => schedule.school_id) },
     });
 
     const postsData = schedules.reduce((acc, schedule) => {
@@ -257,7 +330,6 @@ exports.createDTR = async (req, res) => {
       professor,
       professor_signature,
     });
-
 
     const savedRecord = await newDTR.save();
 

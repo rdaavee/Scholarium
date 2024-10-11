@@ -13,17 +13,17 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   ProfileBloc(this._apiService) : super(ProfileInitial()) {
     on<ProfileInitialEvent>(profileInitialEvent);
     on<FetchProfileEvent>(fetchProfile);
+    on<FetchUserDataEvent>(fetchUserData);
     on<LogoutEvent>(_onLogout);
     on<PickImageEvent>(uploadProfileImage);
   }
 
   Future<void> uploadProfileImage(
       PickImageEvent event, Emitter<ProfileState> emit) async {
+    emit(ProfileLoadingState());
     try {
-      final imageUrl =
-          await _apiService.uploadProfileImage(File(event.imagePath));
-
-      emit(ProfileUploadingState(imageUrl: imageUrl));
+      await _apiService.uploadProfileImage(File(event.imagePath));
+      await fetchProfile(FetchProfileEvent(), emit);
     } catch (error) {
       emit(ProfileErrorState(message: 'Failed to upload image: $error'));
     }
@@ -40,7 +40,17 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   Future<void> fetchProfile(
       FetchProfileEvent event, Emitter<ProfileState> emit) async {
     try {
-      UserModel user = await _apiService.fetchUserData();
+      UserModel user = await _apiService.fetchUserProfile();
+      emit(ProfileLoadedSuccessState(users: [user]));
+    } catch (e) {
+      emit(ProfileErrorState(message: 'Failed to load profile data: $e'));
+    }
+  }
+
+  FutureOr<void> fetchUserData(
+      FetchUserDataEvent event, Emitter<ProfileState> emit) async {
+    try {
+      UserModel user = await _apiService.fetchUserData(event.schoolId);
       emit(ProfileLoadedSuccessState(users: [user]));
     } catch (e) {
       emit(ProfileErrorState(message: 'Failed to load profile data: $e'));

@@ -9,6 +9,7 @@ import 'package:isHKolarium/blocs/bloc_student/students_bloc.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
 import 'package:isHKolarium/features/widgets/app_bar.dart';
 import 'package:isHKolarium/features/widgets/student_widgets/announcement_widgets/announcement_card.dart';
+import 'package:shimmer/shimmer.dart';
 
 class AnnouncementsScreen extends StatefulWidget {
   final bool isBackButtonTrue;
@@ -135,4 +136,26 @@ class _AnnouncementsScreenState extends State<AnnouncementsScreen> {
       ],
     );
   }
+  
+  Widget _buildShimmerEffect() {
+  return Shimmer.fromColors(
+    baseColor: Colors.grey[300]!,
+    highlightColor: Colors.grey[100]!,
+    child: ListView.builder(
+      itemCount: 5, // Number of shimmer items to show
+      itemBuilder: (context, index) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 10.0),
+          child: Container(
+            height: 80, // Height of the shimmer card
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
+        );
+      },
+    ),
+  );
+}
 }

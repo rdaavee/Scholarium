@@ -23,7 +23,7 @@ class BottomNavWidget extends StatelessWidget {
         if (state is BottomNavLoadingState) {
           return const Center(child: CircularProgressIndicator());
         }
-        
+
         if (state is BottomNavLoadedSuccessState) {
           final selectedIndex = state.selectedIndex;
           final unreadCount = state.unreadCount;
@@ -31,10 +31,11 @@ class BottomNavWidget extends StatelessWidget {
           return Scaffold(
             backgroundColor: ColorPalette.accentBlack,
             body: _getRoleSpecificPage(selectedIndex),
-            bottomNavigationBar: _buildBottomNavigationBar(context, selectedIndex, unreadCount),
+            bottomNavigationBar:
+                _buildBottomNavigationBar(context, selectedIndex, unreadCount),
           );
         }
-        
+
         // Trigger initial event and fetch unread count on first build
         context.read<BottomNavBloc>().add(BottomNavInitialEvent());
         return const Center(child: CircularProgressIndicator());
@@ -42,7 +43,8 @@ class BottomNavWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildBottomNavigationBar(BuildContext context, int selectedIndex, int unreadCount) {
+  Widget _buildBottomNavigationBar(
+      BuildContext context, int selectedIndex, int unreadCount) {
     return BottomNavigationBarTheme(
       data: const BottomNavigationBarThemeData(
         backgroundColor: Colors.transparent,
@@ -178,7 +180,7 @@ class BottomNavWidget extends StatelessWidget {
       case 'schedule':
         return role == 'Admin' ? 'Users' : 'Schedule';
       case 'notification':
-        return role == 'Admin' ? 'Announcements' : 'Notifications';
+        return 'Notifications';
       case 'profile':
         return 'Profile';
       default:

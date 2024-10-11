@@ -1,17 +1,20 @@
 // duty_card.dart
 import 'package:flutter/material.dart';
+import 'package:isHKolarium/api/models/user_model.dart';
 import 'package:isHKolarium/features/widgets/profile_widgets/profile_modal_bottom_sheet.dart';
 
 class DutyCard extends StatelessWidget {
   final Color cardColor;
   final String time;
   final String roomName;
+  final List<UserModel> students;
 
   const DutyCard({
     super.key,
     required this.cardColor,
     required this.time,
     required this.roomName,
+    required this.students,
   });
 
   @override
@@ -26,9 +29,9 @@ class DutyCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
+            Text(
               'Facilitator Duty',
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 26,
                 fontWeight: FontWeight.bold,
                 fontFamily: 'Manrope',
@@ -68,31 +71,22 @@ class DutyCard extends StatelessWidget {
             ),
             const SizedBox(height: 5),
             Row(
-              children: [
-                GestureDetector(
+              children: students.map((student) {
+                return GestureDetector(
                   onTap: () {
-                    _showBottomSheet(context, 'Ranier Tan', '03-0000-00001',
-                        'Pantal, Dagupan City', true);
+                    _showBottomSheet(
+                      context,
+                      student.schoolID.toString(),
+                    );
                   },
-                  child: const CircleAvatar(backgroundColor: Colors.white),
-                ),
-                const SizedBox(width: 5),
-                GestureDetector(
-                  onTap: () {
-                    _showBottomSheet(context, 'Mark Benedict Abalos',
-                        '03-0000-00002', 'Lingayen, Pangasinan', true);
-                  },
-                  child: CircleAvatar(backgroundColor: Colors.grey[300]),
-                ),
-                const SizedBox(width: 5),
-                GestureDetector(
-                  onTap: () {
-                    _showBottomSheet(context, 'Olibird Ferrer', '03-0000-00003',
-                        'Mangaldan, Pangasinan', true);
-                  },
-                  child: const CircleAvatar(backgroundColor: Colors.grey),
-                ),
-              ],
+                  child: CircleAvatar(
+                    backgroundColor: Colors.white,
+                    backgroundImage: student.profilePicture != null
+                        ? NetworkImage(student.profilePicture!)
+                        : null,
+                  ),
+                );
+              }).toList(),
             ),
           ],
         ),
@@ -102,10 +96,7 @@ class DutyCard extends StatelessWidget {
 
   void _showBottomSheet(
     BuildContext context,
-    String name,
     String schoolId,
-    String address,
-    bool isActive,
   ) {
     showModalBottomSheet(
       context: context,
@@ -116,10 +107,7 @@ class DutyCard extends StatelessWidget {
       backgroundColor: Colors.white,
       builder: (BuildContext context) {
         return ProfileModalBottomSheet(
-          name: name,
           schoolId: schoolId,
-          address: address,
-          isActive: isActive,
         );
       },
     );

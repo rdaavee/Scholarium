@@ -25,6 +25,7 @@ router.put("/updateNotificationsStatus/:id", verifyToken, userController.updateN
 
 //--------------------------------FOR PROFILE PAGE---------------------------------------------------------------
 router.get("/profile",verifyToken, userController.getUserProfile);
+router.get("/getUserData/:school_id",verifyToken, userController.getUserData);
 router.put("/updatePassword",verifyToken, userController.updatePassword);
 router.post("/profile/upload",verifyToken, uploadcontroller.uploadImage);
 

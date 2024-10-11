@@ -107,7 +107,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               children: [
                                 const SizedBox(height: 50),
                                 ProfileCircle(
-                                  profilePicture: state.users[0].profilePicture,
+                                  profilePicture: state.users[0].profilePicture.toString(),
                                   onTap: _pickImage,
                                 ),
                                 const SizedBox(height: 80),
@@ -124,7 +124,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     const SizedBox(height: 15),
                                     InfoRow(
                                         label: 'Email',
-                                        value: state.users[0].email),
+                                        value: state.users[0].email.toString()),
                                     const SizedBox(height: 15),
                                     const DividerWidget(),
                                     const SizedBox(height: 15),
@@ -137,31 +137,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     const SizedBox(height: 15),
                                     InfoRow(
                                         label: 'Gender',
-                                        value: state.users[0].gender),
+                                        value: state.users[0].gender.toString()),
                                     const SizedBox(height: 15),
                                     const DividerWidget(),
                                     const SizedBox(height: 15),
                                     InfoRow(
                                         label: 'Contact #',
-                                        value: state.users[0].contact),
+                                        value: state.users[0].contact.toString()),
                                     const SizedBox(height: 15),
                                     const DividerWidget(),
                                     const SizedBox(height: 15),
                                     InfoRow(
                                         label: 'Address',
-                                        value: state.users[0].address),
+                                        value: state.users[0].address.toString()),
                                     const SizedBox(height: 15),
                                     const DividerWidget(),
                                     const SizedBox(height: 15),
                                     InfoRow(
                                         label: 'HK Type',
-                                        value: state.users[0].hkType),
+                                        value: state.users[0].hkType.toString()),
                                     const SizedBox(height: 15),
                                     const DividerWidget(),
                                     const SizedBox(height: 15),
                                     InfoRow(
                                         label: 'Status',
-                                        value: state.users[0].status),
+                                        value: state.users[0].status.toString()),
                                   ],
                                 ),
                                 const SizedBox(height: 30),

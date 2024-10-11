@@ -6,6 +6,12 @@ class ProfileInitialEvent extends ProfileEvent {}
 
 class FetchProfileEvent extends ProfileEvent {}
 
+class FetchUserDataEvent extends ProfileEvent {
+  final String schoolId;
+
+  FetchUserDataEvent({required this.schoolId});
+}
+
 class LogoutEvent extends ProfileEvent {
   final BuildContext context;
 
