@@ -10,6 +10,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 class AdminRepositoryImpl extends AdminRepository implements Endpoint {
   @override
   final String baseUrl = Endpoint().baseUrl;
+  // final String baseUrl = 'https://scholarium-app.vercel.app/api'; //host
+  // final String baseUrl =
+  //     'https://ishkolarium-ju4i141ge-ranjsxs-projects.vercel.app/api'; //host
 
   Future<String?> _getToken() async {
     final prefs = await SharedPreferences.getInstance();
