@@ -25,7 +25,6 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   late ProfileBloc profileBloc;
-  String _profilePicture = '';
 
   @override
   void initState() {

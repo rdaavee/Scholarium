@@ -153,13 +153,10 @@ class ScheduleScreenState extends State<ScheduleScreen> {
                                           duties[index]);
                                       final isCompleted =
                                           duty['completed'] == 'true';
-
                                       if (widget.role == "Professor" &&
                                           duty['completed'] == "false") {
                                         return GestureDetector(
                                           onTap: () async {
-                                            print(duty['date']);
-
                                             final result = await showDialog(
                                                 context: context,
                                                 builder: (context) {
@@ -176,7 +173,6 @@ class ScheduleScreenState extends State<ScheduleScreen> {
                                                     professorSignature: '',
                                                   );
                                                 });
-
                                             if (result == true) {
                                               _initialize(selectedMonth);
                                             }
