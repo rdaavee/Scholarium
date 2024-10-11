@@ -10,6 +10,7 @@ import 'package:isHKolarium/config/constants/colors.dart';
 import 'package:isHKolarium/features/screens/screen_announcement/announcement.dart';
 import 'package:isHKolarium/features/screens/screen_dtr/dtr_screen.dart';
 import 'package:isHKolarium/features/screens/screen_event/events_screen.dart';
+import 'package:isHKolarium/features/screens/screen_schedule/schedule_screen.dart';
 import 'package:isHKolarium/features/widgets/app_bar.dart';
 import 'package:isHKolarium/features/widgets/student_widgets/announcement_widgets/announcement_card.dart';
 import 'package:isHKolarium/features/widgets/student_widgets/dtr_widgets/dtr_hours_card.dart';
@@ -242,8 +243,14 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                                       ),
                                       GestureDetector(
                                         onTap: () {
-                                          bottomNavBloc
-                                              .add(BottomNavItemSelected(1));
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ScheduleScreen(
+                                                        role: "Student",
+                                                        isAppBarBack: true,
+                                                      )));
                                         },
                                         child: const Text(
                                           "View All",
