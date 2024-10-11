@@ -146,36 +146,46 @@ class _ProfessorHomeScreenState extends State<ProfessorHomeScreen> {
                                             controller: titleController,
                                             maxLines: 1,
                                             decoration: InputDecoration(
-                                              hintText: 'Create a title...',
+                                              hintText: 'Create a post',
+                                              labelStyle: const TextStyle(
+                                                color: Colors.grey,
+                                                fontFamily: 'Manrope',
+                                                fontSize: 13,
+                                              ),
+                                              floatingLabelStyle:
+                                                  const TextStyle(
+                                                      fontFamily: 'Manrope',
+                                                      fontSize: 13,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color:
+                                                          ColorPalette.primary),
                                               border: OutlineInputBorder(
                                                 borderRadius:
                                                     BorderRadius.circular(8.0),
                                                 borderSide: const BorderSide(
-                                                  color: Color(0xFF6D7278),
-                                                ),
+                                                    color: Colors.grey),
                                               ),
                                               focusedBorder: OutlineInputBorder(
                                                 borderRadius:
-                                                    BorderRadius.circular(8.0),
+                                                    BorderRadius.circular(12.0),
                                                 borderSide: const BorderSide(
-                                                  color: Color(0xFF549E73),
-                                                ),
+                                                    color: ColorPalette.primary,
+                                                    width: 2),
                                               ),
                                               enabledBorder: OutlineInputBorder(
                                                 borderRadius:
                                                     BorderRadius.circular(8.0),
                                                 borderSide: const BorderSide(
-                                                  color: Color(0xFF6D7278),
-                                                ),
+                                                    color: Colors.grey),
                                               ),
-                                              contentPadding:
-                                                  const EdgeInsets.symmetric(
-                                                vertical: 5,
-                                                horizontal: 20,
-                                              ),
+                                              hoverColor: ColorPalette.primary,
                                             ),
                                             style: const TextStyle(
-                                              color: Color(0xFF000000),
+                                              color: Colors.black,
+                                              fontSize: 12.0,
+                                              fontFamily: 'Manrope',
+                                              fontWeight: FontWeight.w100,
                                             ),
                                           ),
                                           const SizedBox(height: 20),
@@ -183,36 +193,46 @@ class _ProfessorHomeScreenState extends State<ProfessorHomeScreen> {
                                             controller: bodyController,
                                             maxLines: 5,
                                             decoration: InputDecoration(
-                                              hintText: 'Write something...',
+                                              hintText: 'Write Something',
+                                              labelStyle: const TextStyle(
+                                                color: Colors.grey,
+                                                fontFamily: 'Manrope',
+                                                fontSize: 13,
+                                              ),
+                                              floatingLabelStyle:
+                                                  const TextStyle(
+                                                      fontFamily: 'Manrope',
+                                                      fontSize: 13,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color:
+                                                          ColorPalette.primary),
                                               border: OutlineInputBorder(
                                                 borderRadius:
                                                     BorderRadius.circular(8.0),
                                                 borderSide: const BorderSide(
-                                                  color: Color(0xFF6D7278),
-                                                ),
+                                                    color: Colors.grey),
                                               ),
                                               focusedBorder: OutlineInputBorder(
                                                 borderRadius:
-                                                    BorderRadius.circular(8.0),
+                                                    BorderRadius.circular(12.0),
                                                 borderSide: const BorderSide(
-                                                  color: Color(0xFF549E73),
-                                                ),
+                                                    color: ColorPalette.primary,
+                                                    width: 2),
                                               ),
                                               enabledBorder: OutlineInputBorder(
                                                 borderRadius:
                                                     BorderRadius.circular(8.0),
                                                 borderSide: const BorderSide(
-                                                  color: Color(0xFF6D7278),
-                                                ),
+                                                    color: Colors.grey),
                                               ),
-                                              contentPadding:
-                                                  const EdgeInsets.symmetric(
-                                                vertical: 20,
-                                                horizontal: 20,
-                                              ),
+                                              hoverColor: ColorPalette.primary,
                                             ),
                                             style: const TextStyle(
-                                              color: Color(0xFF000000),
+                                              color: Colors.black,
+                                              fontSize: 12.0,
+                                              fontFamily: 'Manrope',
+                                              fontWeight: FontWeight.w100,
                                             ),
                                           ),
                                           const SizedBox(height: 20),
@@ -224,10 +244,13 @@ class _ProfessorHomeScreenState extends State<ProfessorHomeScreen> {
                                                 Navigator.of(context).pop();
                                               },
                                               style: ElevatedButton.styleFrom(
+                                                backgroundColor:
+                                                    ColorPalette.btnColor,
+                                                minimumSize:
+                                                    const Size(395, 55),
                                                 shape: RoundedRectangleBorder(
                                                   borderRadius:
-                                                      BorderRadius.circular(
-                                                          8.0),
+                                                      BorderRadius.circular(8),
                                                 ),
                                                 padding:
                                                     const EdgeInsets.symmetric(
@@ -243,15 +266,22 @@ class _ProfessorHomeScreenState extends State<ProfessorHomeScreen> {
                                                   (Set<WidgetState> states) {
                                                     if (states.contains(
                                                         WidgetState.hovered)) {
-                                                      return const Color(
-                                                          0xFF549E73);
+                                                      return ColorPalette
+                                                          .primary;
                                                     }
                                                     return const Color(
                                                         0xFFC1C1C1);
                                                   },
                                                 ),
                                               ),
-                                              child: const Text('Post'),
+                                              child: const Text(
+                                                'Post',
+                                                style: TextStyle(
+                                                  fontFamily: 'Manrope',
+                                                  fontSize: 11.5,
+                                                  color: Colors.white,
+                                                ),
+                                              ),
                                             ),
                                           ),
                                         ],

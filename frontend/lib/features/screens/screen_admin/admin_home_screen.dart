@@ -33,26 +33,6 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
     bottomNavBloc.add(FetchUnreadCountEvent());
   }
 
-  // Dummy duties for the ListView
-  List<Duty> dummyDuties = [
-    Duty(
-        color: ColorPalette.dutyCardColor,
-        time: '7:30AM-9:00AM',
-        roomName: 'PTC-206'),
-    Duty(
-        color: ColorPalette.accentDutyCardColor,
-        time: '9:00AM-10:30AM',
-        roomName: 'PTC-207'),
-    Duty(
-        color: ColorPalette.accentDutyCardColor,
-        time: '10:30AM-12:00PM',
-        roomName: 'PTC-208'),
-    Duty(
-        color: ColorPalette.accentDutyCardColor,
-        time: '12:00PM-1:30PM',
-        roomName: 'PTC-209'),
-  ];
-
   void toggleSidebar() {
     setState(() {
       isSidebarOpen = !isSidebarOpen;
@@ -151,104 +131,130 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                           ),
                         ),
                       ),
-                      SizedBox(
-                        height: 400,
-                        child: Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: GridView.count(
-                            crossAxisCount: 2, // 2 columns
-                            crossAxisSpacing: 8.0, // spacing between columns
-                            mainAxisSpacing: 8.0,
-                            children: [
-                              DutyCard(
-                                cardColor: Colors.blue,
-                                title: 'Account Status',
-                                content:
-                                    'Active: ${state.activeCount}\nInactive: ${state.inactiveCount}',
-                                textColor: Colors.white,
-                              ),
-                              DutyCard(
-                                cardColor: Colors.green,
-                                title: 'HK Discount\nTypes',
-                                content:
-                                    '25%: ${state.hk25}\n50%: ${state.hk50}\n75%: ${state.hk75}',
-                                textColor: Colors.white,
-                              ),
-                              DutyCard(
-                                cardColor: Colors.red,
-                                title: 'Duties Status',
-                                content:
-                                    'Ongoing: ${state.todaySchedulesCount.toString()}\nCompleted: ${state.completedSchedulesCount.toString()}',
-                                textColor: Colors.white,
-                              ),
-                              DutyCard(
-                                cardColor: Colors.orange,
-                                title: 'DTR\nStatus',
-                                content: 'Completed: ${state.completedDtr}',
-                                textColor: Colors.white,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 25.0),
-                        child: Align(
-                          alignment: Alignment.topLeft,
-                          child: Text(
-                            'Status Chart',
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontFamily: 'Manrope',
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xFF6D7278),
-                              letterSpacing: 0.5,
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 15),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          height: 300,
-                          child: PieChart(
-                            PieChartData(
-                              sections: [
-                                PieChartSectionData(
-                                  color: ColorPalette.primary,
-                                  value: state.activeCount.toDouble(),
-                                  title: 'Active',
-                                  radius: 120,
-                                  titleStyle: const TextStyle(
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                    fontFamily: 'Manrope',
+                      // Container holding both DutyCards and PieChart
+                      Container(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Column(
+                          children: [
+                            Wrap(
+                              spacing: 5.0,
+                              runSpacing: 5.0,
+                              children: [
+                                SizedBox(
+                                  width: MediaQuery.of(context).size.width / 2 -
+                                      20,
+                                  child: DutyCard(
+                                    cardColor: ColorPalette.accent,
+                                    title: 'Account Status',
+                                    content:
+                                        'Active: ${state.activeCount}\nInactive: ${state.inactiveCount}',
+                                    textColor: Colors.black,
+                                    icon: CupertinoIcons.person_2_alt,
                                   ),
                                 ),
-                                PieChartSectionData(
-                                  color: Colors.grey.withOpacity(0.85),
-                                  value: state.inactiveCount.toDouble(),
-                                  title: 'Inactive',
-                                  radius: 120,
-                                  titleStyle: const TextStyle(
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                    fontFamily: 'Manrope',
+                                SizedBox(
+                                  width: MediaQuery.of(context).size.width / 2 -
+                                      20,
+                                  child: DutyCard(
+                                    cardColor: ColorPalette.dutyCardColor,
+                                    title: 'HK Discount\nTypes',
+                                    content:
+                                        '25%: ${state.hk25}\n50%: ${state.hk50}\n75%: ${state.hk75}',
+                                    textColor: Colors.white,
+                                    icon: CupertinoIcons.tag_solid,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: MediaQuery.of(context).size.width / 2 -
+                                      20,
+                                  child: DutyCard(
+                                    cardColor: ColorPalette.dutyCardColor,
+                                    title: 'Duties Status',
+                                    content:
+                                        'Ongoing: ${state.todaySchedulesCount}\nCompleted: ${state.completedSchedulesCount}',
+                                    textColor: Colors.white,
+                                    icon: CupertinoIcons
+                                        .rectangle_fill_on_rectangle_angled_fill,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: MediaQuery.of(context).size.width / 2 -
+                                      20,
+                                  child: DutyCard(
+                                    cardColor: ColorPalette.accent,
+                                    title: 'DTR Status',
+                                    content: 'Completed: ${state.completedDtr}',
+                                    textColor: Colors.black,
+                                    icon:
+                                        CupertinoIcons.check_mark_circled_solid,
                                   ),
                                 ),
                               ],
-                              borderData: FlBorderData(show: false),
-                              sectionsSpace: 0,
-                              centerSpaceRadius: 0,
                             ),
-                          ),
+                            const SizedBox(height: 20),
+                            // Pie Chart
+                            const Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 25.0),
+                              child: Align(
+                                alignment: Alignment.topLeft,
+                                child: Text(
+                                  'Status Chart',
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    fontFamily: 'Manrope',
+                                    fontWeight: FontWeight.bold,
+                                    color: Color(0xFF6D7278),
+                                    letterSpacing: 0.5,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 15),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 16.0),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                height: 300,
+                                child: PieChart(
+                                  PieChartData(
+                                    sections: [
+                                      PieChartSectionData(
+                                        color: ColorPalette.primary,
+                                        value: state.activeCount.toDouble(),
+                                        title: 'Active',
+                                        radius: 120,
+                                        titleStyle: const TextStyle(
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                          fontFamily: 'Manrope',
+                                        ),
+                                      ),
+                                      PieChartSectionData(
+                                        color: Colors.grey.withOpacity(0.85),
+                                        value: state.inactiveCount.toDouble(),
+                                        title: 'Inactive',
+                                        radius: 120,
+                                        titleStyle: const TextStyle(
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                          fontFamily: 'Manrope',
+                                        ),
+                                      ),
+                                    ],
+                                    borderData: FlBorderData(show: false),
+                                    sectionsSpace: 0,
+                                    centerSpaceRadius: 0,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                       const SizedBox(height: 30),
@@ -266,12 +272,4 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
       ),
     );
   }
-}
-
-class Duty {
-  final Color color;
-  final String time;
-  final String roomName;
-
-  Duty({required this.color, required this.time, required this.roomName});
 }
