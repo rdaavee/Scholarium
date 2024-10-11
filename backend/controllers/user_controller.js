@@ -1,10 +1,10 @@
 const moment = require("moment");
-const User = require('../models/user_model'); 
-const Announcement = require('../models/announcement_model');
-const Post = require('../models/posts_model');
-const Schedule = require('../models/schedule_model'); 
-const DTR = require('../models/dtr_model'); 
-const Notification = require('../models/notifications_model');
+const User = require("../models/user_model");
+const Announcement = require("../models/announcement_model");
+const Post = require("../models/posts_model");
+const Schedule = require("../models/schedule_model");
+const DTR = require("../models/dtr_model");
+const Notification = require("../models/notifications_model");
 
 // Middleware to validate token and extract user ID
 const validateToken = async (req, res, next) => {
@@ -25,8 +25,10 @@ exports.getAnnouncements = async (req, res) => {
 // Get Latest Announcement
 exports.getLatestAnnouncement = async (req, res) => {
   try {
-    const latestAnnouncement = await Announcement.find().sort({ date: -1 }).limit(1);
-    
+    const latestAnnouncement = await Announcement.find()
+      .sort({ date: -1 })
+      .limit(1);
+
     if (latestAnnouncement.length > 0) {
       const announcementDate = moment(latestAnnouncement[0].date);
       const currentDate = moment().format("YYYY-MM-DD");
@@ -68,12 +70,16 @@ exports.getUserUpcomingSchedule = async (req, res) => {
     const currentDate = moment().format("YYYY-MM-DD");
     const schedules = await Schedule.find({
       school_id: school_id,
-      $or: [{ date: currentDate }, { date: { $gt: currentDate } }]
+      $or: [{ date: currentDate }, { date: { $gt: currentDate } }],
     }).sort({ date: 1 });
 
     if (schedules.length > 0) {
-      const todaySchedule = schedules.filter(schedule => moment(schedule.date).isSame(currentDate, "day"));
-      const nextSchedule = schedules.find(schedule => moment(schedule.date).isAfter(currentDate));
+      const todaySchedule = schedules.filter((schedule) =>
+        moment(schedule.date).isSame(currentDate, "day")
+      );
+      const nextSchedule = schedules.find((schedule) =>
+        moment(schedule.date).isAfter(currentDate)
+      );
 
       res.status(200).json({
         today: todaySchedule.length ? todaySchedule : null,
@@ -118,7 +124,13 @@ exports.getUserTotalHours = async (req, res) => {
 
     const result = await DTR.aggregate([
       { $match: { school_id: user.school_id } },
-      { $group: { _id: null, total_hours: { $sum: "$hours_rendered" }, target_hours: { $first: "$hours_to_rendered" } } }
+      {
+        $group: {
+          _id: null,
+          total_hours: { $sum: "$hours_rendered" },
+          target_hours: { $first: "$hours_to_rendered" },
+        },
+      },
     ]);
 
     if (result.length > 0) {
@@ -127,7 +139,9 @@ exports.getUserTotalHours = async (req, res) => {
         targethours: result[0].target_hours,
       });
     } else {
-      res.status(404).json({ message: "No hours rendered found for this user" });
+      res
+        .status(404)
+        .json({ message: "No hours rendered found for this user" });
     }
   } catch (error) {
     console.error(error);
@@ -137,7 +151,7 @@ exports.getUserTotalHours = async (req, res) => {
 
 // Get User Schedule
 exports.getUserSchedule = async (req, res) => {
-  const month = req.params.month; 
+  const month = req.params.month;
 
   try {
     const user = await User.findById(req.userId);
@@ -149,20 +163,23 @@ exports.getUserSchedule = async (req, res) => {
 
     await updatePastSchedules(school_id);
 
-    const startOfMonth = moment(month).startOf('month').format('YYYY-MM-DD');
-    const endOfMonth = moment(month).endOf('month').format('YYYY-MM-DD');
+    const startOfMonth = moment(month).startOf("month").format("YYYY-MM-DD");
+    const endOfMonth = moment(month).endOf("month").format("YYYY-MM-DD");
 
     const schedules = await Schedule.find({
       school_id: school_id,
-      date: { $gte: startOfMonth, $lte: endOfMonth }
+      date: { $gte: startOfMonth, $lte: endOfMonth },
     }).sort({ date: 1 });
 
-    const currentDate = moment().startOf('day');
-    const updatePromises = schedules.map(schedule => {
+    const currentDate = moment().startOf("day");
+    const updatePromises = schedules.map((schedule) => {
       const scheduleDate = moment(schedule.date);
 
       if (scheduleDate.isBefore(currentDate) && schedule.completed !== "true") {
-        return Schedule.updateOne({ _id: schedule._id }, { completed: 'false' });
+        return Schedule.updateOne(
+          { _id: schedule._id },
+          { completed: "false" }
+        );
       }
     });
 
@@ -181,15 +198,15 @@ exports.getUserSchedule = async (req, res) => {
 
 // Helper function to update past schedules
 async function updatePastSchedules(school_id) {
-  const currentDate = moment().startOf('day');
+  const currentDate = moment().startOf("day");
   const pastSchedules = await Schedule.find({
     school_id: school_id,
-    date: { $lt: currentDate.format('YYYY-MM-DD') } // Fetch past schedules
+    date: { $lt: currentDate.format("YYYY-MM-DD") }, // Fetch past schedules
   });
 
-  const updatePromises = pastSchedules.map(schedule => {
+  const updatePromises = pastSchedules.map((schedule) => {
     if (schedule.completed !== "true") {
-      return Schedule.updateOne({ _id: schedule._id }, { completed: 'false' });
+      return Schedule.updateOne({ _id: schedule._id }, { completed: "false" });
     }
   });
 
@@ -204,9 +221,34 @@ exports.getUserNotifications = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    const notifications = await Notification.find({ receiver: user.school_id }).sort({ date: -1});
+    const notifications = await Notification.find({
+      receiver: user.school_id,
+    }).sort({ date: -1 });
     if (notifications.length > 0) {
       res.status(200).json(notifications);
+    } else {
+      res.status(404).json({ message: "No notifications found" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error occurred" });
+  }
+};
+
+exports.getUserUnreadNotifications = async (req, res) => {
+  try {
+    const user = await User.findById(req.userId);
+    console.log("User ID:", req.userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const unreadNotifications = await Notification.find({
+      receiver: user.school_id,
+      status: false,
+    });
+    if (unreadNotifications.length > 0) {
+      res.status(200).json(unreadNotifications.length);
     } else {
       res.status(404).json({ message: "No notifications found" });
     }
@@ -222,21 +264,21 @@ exports.updateNotificationStatus = async (req, res) => {
   try {
     const result = await Notification.findByIdAndUpdate(
       notificationId,
-      { status: "read" }, 
-      { new: true, runValidators: true } 
+      { status: true },
+      { new: true, runValidators: true }
     );
 
     if (result) {
-      res.status(200).json({ 
-        message: "Notification status updated to read", 
-        notification: result 
+      res.status(200).json({
+        message: "Notification status updated to read",
+        notification: result,
       });
     } else {
-      res.status(404).json({ message: "Notification not found" }); 
+      res.status(404).json({ message: "Notification not found" });
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Server error occurred" }); 
+    res.status(500).json({ message: "Server error occurred" });
   }
 };
 
@@ -272,7 +314,7 @@ exports.getUserProfile = async (req, res) => {
 
 // Change Password
 exports.updatePassword = async (req, res) => {
-  const { oldPassword, newPassword } = req.body; 
+  const { oldPassword, newPassword } = req.body;
 
   try {
     const user = await User.findById(req.userId);
@@ -283,13 +325,14 @@ exports.updatePassword = async (req, res) => {
     if (user.password !== oldPassword) {
       return res.status(400).json({ message: "Old password is incorrect" });
     }
-    user.password = newPassword; 
+    user.password = newPassword;
     await user.save();
 
-    res.status(200).json({ message: "Password updated successfully", success: true });
+    res
+      .status(200)
+      .json({ message: "Password updated successfully", success: true });
   } catch (error) {
     console.error("Error in updatePassword:", error);
     res.status(500).json({ message: "Server error occurred" });
   }
 };
-

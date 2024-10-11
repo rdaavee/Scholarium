@@ -292,6 +292,29 @@ class GlobalRepositoryImpl implements GlobalRepository {
   }
 
   @override
+  Future<int> fetchUnreadNotificationCount() async {
+    try {
+      final token = await _getToken();
+      final response = await http.get(
+        Uri.parse('$baseUrl/user/getUnreadNotifications'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        return int.parse(response.body);
+      } else {
+        return 0;
+      }
+    } catch (error) {
+      print("Error fetching unread notifications count: $error");
+      return 0;
+    }
+  }
+
+  @override
   Future<void> updateNotificationStatus(String notificationId) async {
     final url =
         Uri.parse('$baseUrl/user/updateNotificationsStatus/$notificationId');
@@ -386,9 +409,8 @@ class GlobalRepositoryImpl implements GlobalRepository {
 
   @override
   Future<String> uploadProfileImage(File file) async {
-    final token = await _getToken(); 
-    final String uploadUrl =
-        '$baseUrl/user/profile/upload'; 
+    final token = await _getToken();
+    final String uploadUrl = '$baseUrl/user/profile/upload';
 
     try {
       var request = http.MultipartRequest('POST', Uri.parse(uploadUrl));
@@ -401,14 +423,13 @@ class GlobalRepositoryImpl implements GlobalRepository {
         file.path,
       ));
 
-      var response = await request.send(); 
+      var response = await request.send();
       print('Response status code: ${response.statusCode}');
 
       if (response.statusCode == 200) {
         var responseData = await http.Response.fromStream(response);
         var jsonResponse = json.decode(responseData.body);
-        return jsonResponse[
-            'profile_picture'];
+        return jsonResponse['profile_picture'];
       } else {
         var responseData = await http.Response.fromStream(response);
         print('Response body: ${responseData.body}');
@@ -420,6 +441,4 @@ class GlobalRepositoryImpl implements GlobalRepository {
       throw Exception('Error uploading image: $error');
     }
   }
-  
-  
 }

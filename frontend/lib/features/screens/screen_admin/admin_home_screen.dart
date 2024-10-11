@@ -29,7 +29,8 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
     final globalRepository = GlobalRepositoryImpl();
     adminBloc = AdminBloc(adminRepository, globalRepository);
     adminBloc.add(FetchDataEvent());
-    bottomNavBloc = BottomNavBloc();
+    bottomNavBloc = BottomNavBloc(globalRepository);
+    bottomNavBloc.add(FetchUnreadCountEvent());
   }
 
   // Dummy duties for the ListView

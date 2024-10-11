@@ -50,6 +50,7 @@ dependencies:
   shimmer: ^3.0.0
   flutter_admin_scaffold:
   image_picker:
+  badges: ^3.1.2
   
 
   # The following adds the Cupertino Icons font to your application.

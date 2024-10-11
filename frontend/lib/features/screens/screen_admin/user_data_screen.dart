@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
 import 'package:isHKolarium/blocs/bloc_admin/admin_bloc.dart';
+import 'package:isHKolarium/blocs/bloc_bottom_nav/bottom_nav_bloc.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
 import 'package:isHKolarium/features/widgets/admin_widgets/user_form_modal.dart';
 import 'package:isHKolarium/features/widgets/admin_widgets/role_dropdown.dart';
@@ -30,6 +31,7 @@ class UserDataScreenState extends State<UserDataScreen> {
     final globalRepository = GlobalRepositoryImpl();
     adminBloc = AdminBloc(adminRepository, globalRepository);
     adminBloc.add(FetchUsersEvent(selectedRole, statusFilter));
+    context.read<BottomNavBloc>().add(FetchUnreadCountEvent());
   }
 
   @override
@@ -74,7 +76,9 @@ class UserDataScreenState extends State<UserDataScreen> {
                             child: BlocProvider.value(
                               value: adminBloc,
                               child: UserFormWidget(
-                                filteredUsers: [], index: 0, isRole: "Student",
+                                filteredUsers: [],
+                                index: 0,
+                                isRole: "Student",
                               ),
                             ),
                           ),

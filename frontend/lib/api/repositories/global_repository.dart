@@ -28,6 +28,7 @@ abstract class GlobalRepository {
   });
   Future<UserModel> fetchUserData();
   Future<List<NotificationsModel>> fetchNotificationsData();
+  Future<int> fetchUnreadNotificationCount();
   Future<void> updateNotificationStatus(String notificationId);
   Future<List<AnnouncementModel>> fetchAnnoucementData();
   Future<List<AnnouncementModel>> fetchAllAnnouncements();

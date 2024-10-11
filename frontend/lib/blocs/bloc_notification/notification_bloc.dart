@@ -39,7 +39,6 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
       Emitter<NotificationsState> emit) async {
     try {
       await _globalService.updateNotificationStatus(event.notificationId);
-      // Optionally re-fetch notifications after an update
       add(FetchNotificationsEvent());
     } catch (e) {
       emit(NotificationsErrorState(message: 'Failed to update notification status: $e'));

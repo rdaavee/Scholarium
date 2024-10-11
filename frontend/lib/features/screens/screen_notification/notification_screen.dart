@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
 import 'package:isHKolarium/blocs/bloc_notification/notification_bloc.dart';
+import 'package:isHKolarium/blocs/bloc_bottom_nav/bottom_nav_bloc.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
 import 'package:isHKolarium/features/widgets/app_bar.dart';
 import 'package:isHKolarium/features/widgets/student_widgets/notification_widgets/notification_card.dart';
@@ -23,6 +24,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
     final apiService = GlobalRepositoryImpl();
     notificationsBloc = NotificationsBloc(apiService);
     notificationsBloc.add(FetchNotificationsEvent());
+    context.read<BottomNavBloc>().add(FetchUnreadCountEvent());
   }
 
   String _formatDate(String date) {
@@ -85,17 +87,21 @@ class _NotificationScreenState extends State<NotificationScreen> {
                               itemBuilder: (context, index) {
                                 final notifications =
                                     state.notifications[index];
-                                print(notifications);
                                 return GestureDetector(
                                   onTap: () {
                                     // Update notification status when tapped
                                     notificationsBloc.add(
                                         UpdateNotificationStatusEvent(
                                             notifications.id.toString()));
+                                    // Trigger unread count update in BottomNavBloc
+                                    context
+                                        .read<BottomNavBloc>()
+                                        .add(FetchUnreadCountEvent());
                                   },
                                   child: NotificationCard(
                                     sender: notifications.sender.toString(),
-                                    senderName: notifications.senderName.toString(),
+                                    senderName:
+                                        notifications.senderName.toString(),
                                     receiver: notifications.receiver.toString(),
                                     role: notifications.role.toString(),
                                     title: notifications.title.toString(),
@@ -104,7 +110,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                     date: _formatDate(
                                         notifications.date.toString()),
                                     time: _formatTime(
-                                        notifications.time.toString()), 
+                                        notifications.time.toString()),
                                   ),
                                 );
                               },

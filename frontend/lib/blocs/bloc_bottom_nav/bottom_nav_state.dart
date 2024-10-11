@@ -5,7 +5,16 @@ abstract class BottomNavState {}
 
 class BottomNavInitialState extends BottomNavState {}
 
-class BottomNavItemSelectedState extends BottomNavState {
+class BottomNavLoadingState extends BottomNavState {}
+
+
+class BottomNavLoadedSuccessState extends BottomNavState {
+  final int unreadCount;
   final int selectedIndex;
-  BottomNavItemSelectedState(this.selectedIndex);
+
+  BottomNavLoadedSuccessState({
+    required this.unreadCount,
+    required this.selectedIndex,
+  });
 }
+
