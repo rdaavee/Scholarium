@@ -17,7 +17,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 class GlobalRepositoryImpl extends GlobalRepository implements Endpoint {
   @override
   final String baseUrl = Endpoint().baseUrl;
-
+  // final String baseUrl =
+  //     'https://ishkolarium-ju4i141ge-ranjsxs-projects.vercel.app/api'; //host
+  // final String baseUrl = 'http://192.168.4.181:3000/api'; //usb tethering
 
   Future<String?> _getToken() async {
     final prefs = await SharedPreferences.getInstance();
