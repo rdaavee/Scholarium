@@ -15,7 +15,8 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
   final AdminRepositoryImpl _adminRepositoryImpl;
   final GlobalRepositoryImpl _globalRepositoryImpl;
 
-  AdminBloc(this._adminRepositoryImpl, this._globalRepositoryImpl) : super(AdminInitialState()) {
+  AdminBloc(this._adminRepositoryImpl, this._globalRepositoryImpl)
+      : super(AdminInitialState()) {
     on<AdminInitialEvent>(adminInitialEvent);
     on<FetchDataEvent>(_onFetchDataEvent);
     on<FetchUsersEvent>(_onFetchUsersEvent);
@@ -38,7 +39,11 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
         activeCount: 0,
         inactiveCount: 0,
         completedSchedulesCount: 0,
-        todaySchedulesCount: 0));
+        todaySchedulesCount: 0,
+        hk25: 0,
+        hk50: 0,
+        hk75: 0,
+        completedDtr: 0));
   }
 
   Future<void> _onFetchDataEvent(
@@ -50,18 +55,20 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
       int inactiveCount =
           users.where((user) => user.status == 'Inactive').length;
 
+      int hk25 = users.where((user) => user.hkType == 'HK 25').length;
+      int hk50 = users.where((user) => user.hkType == 'HK 50').length;
+      int hk75 = users.where((user) => user.hkType == 'HK 75').length;
+
       final schedules = await _adminRepositoryImpl.fetchYearSchedule();
       final today = DateFormat('yyyy-MM-dd').format(DateTime.now());
       int completedSchedulesCount = schedules
           .where((schedule) => schedule.isCompleted?.toLowerCase() == 'true')
           .length;
-      print(completedSchedulesCount);
       int todaySchedulesCount = schedules
           .where((schedule) =>
               schedule.date == today &&
               schedule.isCompleted?.toLowerCase() != 'true')
           .length;
-      print(todaySchedulesCount);
 
       emit(AdminLoadedSuccessState(
           users: users,
@@ -69,7 +76,11 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
           activeCount: activeCount,
           inactiveCount: inactiveCount,
           completedSchedulesCount: completedSchedulesCount,
-          todaySchedulesCount: todaySchedulesCount));
+          todaySchedulesCount: todaySchedulesCount,
+          hk25: hk25,
+          hk50: hk50,
+          hk75: hk75,
+          completedDtr: 25));
     } catch (e) {
       emit(AdminErrorState(message: 'Failed to load users: $e'));
     }
@@ -150,7 +161,11 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
           activeCount: 0,
           inactiveCount: 0,
           completedSchedulesCount: 0,
-          todaySchedulesCount: 0));
+          todaySchedulesCount: 0,
+          hk25: 0,
+          hk50: 0,
+          hk75: 0,
+          completedDtr: 0));
     } catch (e) {
       emit(AdminErrorState(message: 'Failed to load announcement: $e'));
     }

@@ -12,6 +12,10 @@ class AdminLoadedSuccessState extends AdminState {
   final List<AnnouncementModel> announcements;
   final int activeCount;
   final int inactiveCount;
+  final int hk25;
+  final int hk50;
+  final int hk75;
+  final int completedDtr;
   final int completedSchedulesCount;
   final int todaySchedulesCount;
 
@@ -20,6 +24,10 @@ class AdminLoadedSuccessState extends AdminState {
     required this.announcements,
     required this.activeCount,
     required this.inactiveCount,
+    required this.hk25,
+    required this.hk50,
+    required this.hk75,
+    required this.completedDtr,
     required this.completedSchedulesCount,
     required this.todaySchedulesCount,
   });

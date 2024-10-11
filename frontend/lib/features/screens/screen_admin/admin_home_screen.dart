@@ -128,83 +128,6 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                   ),
                   child: Column(
                     children: [
-                      Padding(
-                        padding: EdgeInsets.all(25.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text(
-                                  state.completedSchedulesCount.toString(),
-                                  style: const TextStyle(
-                                    color: Colors.black,
-                                    fontFamily: 'Inter',
-                                    fontSize: 42,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                const Text(
-                                  'Completed',
-                                  style: TextStyle(
-                                    color: Color(0xFFC1C1C1),
-                                    fontFamily: 'Inter',
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text(
-                                  state.todaySchedulesCount.toString(),
-                                  style: const TextStyle(
-                                    color: Colors.black,
-                                    fontFamily: 'Inter',
-                                    fontSize: 42,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                const Text(
-                                  'Ongoing',
-                                  style: TextStyle(
-                                    color: Color(0xFFC1C1C1),
-                                    fontFamily: 'Inter',
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text(
-                                  "60", // Backlogs count from state (You might want to replace this with a dynamic value)
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontFamily: 'Inter',
-                                    fontSize: 42,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                Text(
-                                  'Backlogs',
-                                  style: TextStyle(
-                                    color: Color(0xFFC1C1C1),
-                                    fontFamily: 'Inter',
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
                       Divider(
                         thickness: 0.4,
                         indent: 20,
@@ -217,7 +140,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                         child: Align(
                           alignment: Alignment.topLeft,
                           child: Text(
-                            'Ongoing Duties',
+                            'Account Monitoring',
                             style: TextStyle(
                               fontSize: 15,
                               fontFamily: 'Manrope',
@@ -232,28 +155,39 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                         height: 400,
                         child: Padding(
                           padding: const EdgeInsets.all(12.0),
-                          child: GridView.builder(
-                            physics: const NeverScrollableScrollPhysics(),
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              childAspectRatio: 1,
-                              crossAxisSpacing: 10,
-                              mainAxisSpacing: 10,
-                            ),
-                            itemCount: dummyDuties.length,
-                            itemBuilder: (context, index) {
-                              final duty = dummyDuties[index];
-                              final textColor =
-                                  index == 0 ? Colors.white : Colors.black;
-
-                              return DutyCard(
-                                cardColor: duty.color,
-                                time: duty.time,
-                                roomName: duty.roomName,
-                                textColor: textColor,
-                              );
-                            },
+                          child: GridView.count(
+                            crossAxisCount: 2, // 2 columns
+                            crossAxisSpacing: 8.0, // spacing between columns
+                            mainAxisSpacing: 8.0,
+                            children: [
+                              DutyCard(
+                                cardColor: Colors.blue,
+                                title: 'Account Status',
+                                content:
+                                    'Active: ${state.activeCount}\nInactive: ${state.inactiveCount}',
+                                textColor: Colors.white,
+                              ),
+                              DutyCard(
+                                cardColor: Colors.green,
+                                title: 'HK Discount\nTypes',
+                                content:
+                                    '25%: ${state.hk25}\n50%: ${state.hk50}\n75%: ${state.hk75}',
+                                textColor: Colors.white,
+                              ),
+                              DutyCard(
+                                cardColor: Colors.red,
+                                title: 'Duties Status',
+                                content:
+                                    'Ongoing: ${state.todaySchedulesCount.toString()}\nCompleted: ${state.completedSchedulesCount.toString()}',
+                                textColor: Colors.white,
+                              ),
+                              DutyCard(
+                                cardColor: Colors.orange,
+                                title: 'DTR\nStatus',
+                                content: 'Completed: ${state.completedDtr}',
+                                textColor: Colors.white,
+                              ),
+                            ],
                           ),
                         ),
                       ),
@@ -286,7 +220,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                             PieChartData(
                               sections: [
                                 PieChartSectionData(
-                                  color: ColorPalette.accent,
+                                  color: ColorPalette.primary,
                                   value: state.activeCount.toDouble(),
                                   title: 'Active',
                                   radius: 120,
