@@ -35,14 +35,10 @@ class _OTPScreenState extends State<OTPScreen> {
           Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => ResetPasswordScreen(
-                    email: widget.email,
-                    otp: otpControllers
-                        .map((controller) => controller.text)
-                        .join())),
+                builder: (context) => ResetPasswordScreen(email: widget.email)),
           );
         } else if (State is PasswordLoadingState) {
-            Center(child: CircularProgressIndicator());
+          Center(child: CircularProgressIndicator());
         }
       },
       builder: (context, state) {
@@ -136,12 +132,13 @@ class _OTPScreenState extends State<OTPScreen> {
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
-                  onPressed: () {
+                  onPressed: () async {
                     authenticationBloc.add(VerifyCode(
                         widget.email,
                         otpControllers
                             .map((controller) => controller.text)
                             .join()));
+
                   },
                   child: const Text(
                     'Verify OTP',

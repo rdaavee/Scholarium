@@ -8,8 +8,8 @@ class PasswordModel {
 
   factory PasswordModel.fromJson(Map<String, dynamic> json) {
     return PasswordModel(
-      email: json['success'] ?? '',
-      code: json['message'] ?? '',
+      email: json['email'] ?? '',
+      code: json['code'] ?? '',
       newPassword: json['newPassword'] ?? '',
     );
   }

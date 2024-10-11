@@ -8,9 +8,8 @@ import 'package:isHKolarium/features/screens/screen_login/login_page.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
   final String email;
-  final String otp;
 
-  ResetPasswordScreen({super.key, required this.email, required this.otp});
+  const ResetPasswordScreen({super.key, required this.email});
 
   @override
   State<ResetPasswordScreen> createState() => _ResetPasswordScreenState();
@@ -30,6 +29,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AuthenticationBloc, AuthenticationState>(
+      bloc: authenticationBloc,
       listener: (context, state) {
         if (state is ResetPasswordNavigateToLoginPageActionState) {
           Navigator.push(
@@ -162,7 +162,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
-                  onPressed: () {
+                  onPressed: () async {
                     String newPassword = newPassController.text.trim();
                     String confirmPassword = confirmPassController.text.trim();
 
@@ -182,8 +182,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                       );
                     } else {
                       authenticationBloc.add(
-                        ResetPasswordEvent(
-                            widget.email, widget.otp, confirmPassword),
+                        ResetPasswordEvent(widget.email, confirmPassword),
                       );
                     }
                   },

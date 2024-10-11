@@ -18,7 +18,6 @@ class GlobalRepositoryImpl extends GlobalRepository implements Endpoint {
   @override
   final String baseUrl = Endpoint().baseUrl;
 
-
   Future<String?> _getToken() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString('token');
@@ -146,7 +145,9 @@ class GlobalRepositoryImpl extends GlobalRepository implements Endpoint {
         'code': code,
       }),
     );
-
+    print(email);
+    print(code);
+    print(response.statusCode);
     if (response.statusCode == 200) {
       final Map<String, dynamic> responseBody = jsonDecode(response.body);
       return PasswordModel.fromJson(responseBody);

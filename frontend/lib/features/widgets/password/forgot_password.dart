@@ -200,7 +200,6 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                           authenticationBloc.add(
                             ResetPasswordEvent(
                               emailController.text,
-                              codeController.text,
                               newPasswordController.text,
                             ),
                           );
