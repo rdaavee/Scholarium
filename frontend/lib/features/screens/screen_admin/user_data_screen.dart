@@ -158,7 +158,6 @@ class UserDataScreenState extends State<UserDataScreen> {
                           user.status == statusFilter);
                       return matchesRole && matchesStatus;
                     }).toList();
-
                     return UserDataTable(
                       filteredUsers: filteredUsers,
                       adminBloc: adminBloc,

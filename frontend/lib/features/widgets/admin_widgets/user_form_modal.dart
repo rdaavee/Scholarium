@@ -11,12 +11,13 @@ class UserFormWidget extends StatefulWidget {
   final int index;
   final String isRole;
   final List<UserModel> filteredUsers;
-  const UserFormWidget(
-      {super.key,
-      this.schoolId,
-      required this.index,
-      required this.filteredUsers,
-      required this.isRole});
+  const UserFormWidget({
+    super.key,
+    this.schoolId,
+    required this.index,
+    required this.filteredUsers,
+    required this.isRole,
+  });
 
   @override
   UserFormWidgetState createState() => UserFormWidgetState();
@@ -34,7 +35,9 @@ class UserFormWidgetState extends State<UserFormWidget> {
   final TextEditingController contactController = TextEditingController();
   final TextEditingController professorController = TextEditingController();
   final TextEditingController roleController = TextEditingController();
+  String isActive = "";
   String? selectedHkType;
+  bool _isSwitched = false;
 
   @override
   void initState() {
@@ -54,6 +57,8 @@ class UserFormWidgetState extends State<UserFormWidget> {
       contactController.text = widget.filteredUsers[widget.index].contact;
       professorController.text = widget.filteredUsers[widget.index].professor;
       roleController.text = widget.filteredUsers[widget.index].role;
+      isActive = widget.filteredUsers[widget.index].status;
+      _isSwitched = isActive.toLowerCase() == 'active';
     }
   }
 
@@ -62,7 +67,8 @@ class UserFormWidgetState extends State<UserFormWidget> {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => AdminBloc(AdminRepositoryImpl(), GlobalRepositoryImpl()),
+          create: (context) =>
+              AdminBloc(AdminRepositoryImpl(), GlobalRepositoryImpl()),
         ),
       ],
       child: Scaffold(
@@ -79,20 +85,17 @@ class UserFormWidgetState extends State<UserFormWidget> {
               _buildTextField('Gender', genderController),
               _buildTextField('Address', addressController),
               _buildContactField('Contact No.', contactController),
-
-              if (widget.isRole == 'Student') 
-                _buildDropdown('HK Type'), 
-              
-              if (widget.isRole == 'Student') 
+              if (widget.isRole == 'Student') _buildDropdown('HK Type'),
+              if (widget.isRole == 'Student')
                 _buildTextField('Professor', professorController),
-              
               _buildTextField('Role', roleController),
+              _buildSwitch('Account Status'),
               const SizedBox(height: 10),
               _buildSubmitButton(context),
             ],
           ),
         ),
-      )
+      ),
     );
   }
 
@@ -146,6 +149,27 @@ class UserFormWidgetState extends State<UserFormWidget> {
           labelText: labelText,
           border: const OutlineInputBorder(),
         ),
+      ),
+    );
+  }
+
+  Widget _buildSwitch(String labelText) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10.0),
+      child: Row(
+        children: [
+          Text(labelText),
+          Spacer(),
+          Switch(
+            value: _isSwitched,
+            onChanged: (bool value) {
+              setState(() {
+                _isSwitched = value;
+                isActive = value ? 'Active' : 'Inactive';
+              });
+            },
+          ),
+        ],
       ),
     );
   }
@@ -204,7 +228,7 @@ class UserFormWidgetState extends State<UserFormWidget> {
           role: roleController.text,
           professor: professorController.text,
           hkType: selectedHkType ?? '',
-          status: 'Active',
+          status: isActive,
         );
 
         if (widget.schoolId == null) {
