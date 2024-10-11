@@ -409,23 +409,23 @@ class GlobalRepositoryImpl implements GlobalRepository {
 
   @override
   Future<String> uploadProfileImage(File file) async {
+    print('File path: ${file.path}');
+    if (!file.existsSync()) {
+      throw Exception('The file does not exist.');
+    }
     final token = await _getToken();
     final String uploadUrl = '$baseUrl/user/profile/upload';
-
     try {
       var request = http.MultipartRequest('POST', Uri.parse(uploadUrl));
       request.headers.addAll({
         'Authorization': 'Bearer $token',
       });
-
       request.files.add(await http.MultipartFile.fromPath(
         'profile_picture',
         file.path,
       ));
-
       var response = await request.send();
       print('Response status code: ${response.statusCode}');
-
       if (response.statusCode == 200) {
         var responseData = await http.Response.fromStream(response);
         var jsonResponse = json.decode(responseData.body);
@@ -437,7 +437,7 @@ class GlobalRepositoryImpl implements GlobalRepository {
             'Failed to upload image. Status code: ${response.statusCode}');
       }
     } catch (error) {
-      print('Error uploading image: $error'); // Log any errors that occur
+      print('Error uploading image: $error');
       throw Exception('Error uploading image: $error');
     }
   }
