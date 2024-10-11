@@ -35,18 +35,11 @@ function checkFileType(file, cb) {
 
 // Controller function to upload an image
 exports.uploadImage = async (req, res) => {
-  if (!req.userId || !req.userSchoolId) {
-    return res.status(401).json({ message: 'Unauthorized! No user information available.' });
-  }
   console.log('User ID:', req.userId);
   console.log('School ID:', req.userSchoolId);
-  console.log('File uploaded:', req.filePath);
-
+  console.log('File uploaded:', req.file);
 
   try {
-    const schoolId = req.userSchoolId;
-    req.schoolId = schoolId;
-
     upload(req, res, async (err) => {
       if (err) {
         console.error('Multer Error:', err);
@@ -67,21 +60,23 @@ exports.uploadImage = async (req, res) => {
       });
 
       blobStream.on('error', (err) => {
+        console.error('Upload error:', err);
         return res.status(500).json({ message: 'Upload error: ' + err.message });
       });
 
       blobStream.on('finish', async () => {
         const publicUrl = `https://storage.googleapis.com/${bucket.name}/${blob.name}`;
-        await blob.makePublic();
+        await blob.makePublic(); 
 
-        await User.updateOne({ school_id: req.schoolId }, { $set: { profile_picture: publicUrl } });
+        await User.updateOne({ school_id: req.userSchoolId }, { $set: { profile_picture: publicUrl } });
+
         res.status(200).json({
           message: 'Profile picture updated successfully',
           filePath: publicUrl,
         });
       });
 
-      blobStream.end(req.file.buffer);
+      blobStream.end(req.file.buffer); // End the stream and upload the file
     });
   } catch (error) {
     console.error('Error:', error);
