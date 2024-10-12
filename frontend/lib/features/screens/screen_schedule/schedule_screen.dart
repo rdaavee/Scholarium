@@ -161,7 +161,8 @@ class ScheduleScreenState extends State<ScheduleScreen> {
                                       final isCompleted =
                                           duty['completed'] == 'true';
                                       if (widget.role == "Professor" &&
-                                          duty['completed'] == "false") {
+                                              duty['completed'] == "false" ||
+                                          duty['completed'] == 'pending') {
                                         return GestureDetector(
                                           onTap: () async {
                                             final result = await showDialog(
@@ -173,7 +174,8 @@ class ScheduleScreenState extends State<ScheduleScreen> {
                                                         ['school_id'],
                                                     date: duty['date'],
                                                     timeIn: duty['time'],
-                                                    hkType: duty['user_info']['hk_type'],
+                                                    hkType: duty['user_info']
+                                                        ['hk_type'],
                                                     professorName:
                                                         duty['professor'],
                                                     professorSignature: '',

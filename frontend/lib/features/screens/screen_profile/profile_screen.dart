@@ -9,6 +9,7 @@ import 'package:isHKolarium/blocs/bloc_profile/profile_state.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
 import 'package:isHKolarium/features/widgets/app_bar.dart';
 import 'package:isHKolarium/features/widgets/no_data.dart';
+import 'package:isHKolarium/features/widgets/profile_widgets/custom_shimmer.dart';
 
 import '../../widgets/profile_widgets/profile_account_option.dart';
 import '../../widgets/profile_widgets/profile_account_section.dart';
@@ -16,7 +17,6 @@ import '../../widgets/profile_widgets/profile_circle.dart';
 import '../../widgets/profile_widgets/profile_divider.dart';
 import '../../widgets/profile_widgets/profile_info_data.dart';
 import '../../widgets/profile_widgets/profile_info_section.dart';
-import 'package:shimmer/shimmer.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -75,86 +75,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
               body: Center(
                 child: Padding(
                   padding: EdgeInsets.all(16.0),
-                  child: Shimmer.fromColors(
+                  child: CustomSkeletonLoader(
+                    itemCount: 6,
+                    circleSize: 100.0,
+                    longRectangleHeight: 30.0,
+                    shortRectangleHeight: 20.0,
                     baseColor: Colors.grey[300]!,
                     highlightColor: Colors.white,
-                    child: ListView(
-                      children: [
-                        const SizedBox(height: 50),
-                        Container(
-                          width: 100,
-                          height: 100,
-                          decoration: BoxDecoration(
-                            color: Colors.grey[300],
-                            shape: BoxShape.circle,
-                          ),
-                        ),
-                        const SizedBox(height: 80),
-                        Container(
-                          width: double.infinity,
-                          height: 30,
-                          color: Colors.grey[300],
-                        ),
-                        const SizedBox(height: 20),
-                        Container(
-                          width: double.infinity,
-                          height: 20,
-                          color: Colors.grey[300],
-                        ),
-                        const SizedBox(height: 15),
-                        Divider(color: Colors.grey[300]),
-                        const SizedBox(height: 15),
-                        Container(
-                          width: double.infinity,
-                          height: 20,
-                          color: Colors.grey[300],
-                        ),
-                        const SizedBox(height: 15),
-                        Divider(color: Colors.grey[300]),
-                        const SizedBox(height: 15),
-                        Container(
-                          width: double.infinity,
-                          height: 20,
-                          color: Colors.grey[300],
-                        ),
-                        const SizedBox(height: 15),
-                        Divider(color: Colors.grey[300]),
-                        const SizedBox(height: 15),
-                        Container(
-                          width: double.infinity,
-                          height: 20,
-                          color: Colors.grey[300],
-                        ),
-                        const SizedBox(height: 15),
-                        Divider(color: Colors.grey[300]),
-                        const SizedBox(height: 15),
-                        Container(
-                          width: double.infinity,
-                          height: 20,
-                          color: Colors.grey[300],
-                        ),
-                        const SizedBox(height: 15),
-                        Divider(color: Colors.grey[300]),
-                        const SizedBox(height: 15),
-                        Container(
-                          width: double.infinity,
-                          height: 20,
-                          color: Colors.grey[300],
-                        ),
-                        const SizedBox(height: 30),
-                        Container(
-                          width: double.infinity,
-                          height: 40,
-                          color: Colors.grey[300],
-                        ),
-                        const SizedBox(height: 20),
-                        Container(
-                          width: double.infinity,
-                          height: 40,
-                          color: Colors.grey[300],
-                        ),
-                      ],
-                    ),
                   ),
                 ),
               ),

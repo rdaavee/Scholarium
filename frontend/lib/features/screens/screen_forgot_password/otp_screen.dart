@@ -5,6 +5,8 @@ import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
 import 'package:isHKolarium/blocs/bloc_authentication/authentication_bloc.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
 import 'package:isHKolarium/features/screens/screen_forgot_password/reset_password.dart';
+import 'package:isHKolarium/features/widgets/forgot_password_widgets/custom_otp_textfield.dart';
+import 'package:isHKolarium/features/widgets/forgot_password_widgets/custom_verifybutton.dart';
 
 class OTPScreen extends StatefulWidget {
   final String email;
@@ -95,27 +97,9 @@ class _OTPScreenState extends State<OTPScreen> {
                   children: List.generate(6, (index) {
                     return SizedBox(
                       width: 40,
-                      child: TextField(
+                      child: CustomOTPTextField(
                         controller: otpControllers[index],
-                        textAlign: TextAlign.center,
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
-                          border: const OutlineInputBorder(),
-                          hintText: '',
-                          counterStyle: const TextStyle(
-                            color: Colors.white,
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8.0),
-                            borderSide: const BorderSide(
-                                color: ColorPalette.primary, width: 2),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(color: Colors.grey),
-                          ),
-                        ),
-                        maxLength: 1,
+                        index: index,
                         onChanged: (value) {
                           if (value.length == 1 && index < 5) {
                             FocusScope.of(context).nextFocus();
@@ -128,30 +112,20 @@ class _OTPScreenState extends State<OTPScreen> {
                   }),
                 ),
                 const SizedBox(height: 20),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: ColorPalette.primary,
-                    minimumSize: const Size(360, 55),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                  onPressed: () async {
-                    authenticationBloc.add(VerifyCode(
+                CustomVerifyButton(
+                  buttonText: 'Verify OTP',
+                  backgroundColor: ColorPalette.primary,
+                  textColor: ColorPalette.accentWhite,
+                  onPressed: () {
+                    authenticationBloc.add(
+                      VerifyCode(
                         widget.email,
                         otpControllers
                             .map((controller) => controller.text)
-                            .join()));
-
+                            .join(),
+                      ),
+                    );
                   },
-                  child: const Text(
-                    'Verify OTP',
-                    style: TextStyle(
-                      fontFamily: 'Manrope',
-                      fontSize: 11.5,
-                      color: ColorPalette.accentWhite,
-                    ),
-                  ),
                 ),
               ],
             ),
