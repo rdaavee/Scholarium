@@ -9,6 +9,7 @@ import 'package:isHKolarium/blocs/bloc_schedule/schedule_event.dart';
 import 'package:isHKolarium/blocs/bloc_schedule/schedule_state.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
 import 'package:isHKolarium/features/widgets/app_bar.dart';
+import 'package:isHKolarium/features/widgets/no_data.dart';
 import 'package:isHKolarium/features/widgets/professor_widgets/alert_dialog.dart';
 import 'package:isHKolarium/features/widgets/student_widgets/schedule_widgets/schedule_dropdown.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -197,24 +198,7 @@ class ScheduleScreenState extends State<ScheduleScreen> {
                                     },
                                   );
                                 } else if (state is ScheduleErrorState) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Center(
-                                        child: Image.asset(
-                                          'assets/images/no-data-img.png',
-                                          height: 230,
-                                          width: 230,
-                                        ),
-                                      ),
-                                      const Text(
-                                        'No schedules available',
-                                        style: TextStyle(
-                                            fontFamily: 'Manrope',
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ],
-                                  );
+                                  return NoData();
                                 } else {
                                   return const Scaffold(
                                     body: Center(

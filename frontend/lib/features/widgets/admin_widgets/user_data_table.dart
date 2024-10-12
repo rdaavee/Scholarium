@@ -26,7 +26,10 @@ class UserDataTable extends StatelessWidget {
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
       child: DataTable(
-        dataTextStyle: const TextStyle(fontFamily: 'Manrope', fontSize: 11),
+        columnSpacing: 17,
+        // ignore: deprecated_member_use
+        dataRowHeight: 70,
+        dataTextStyle: const TextStyle(fontFamily: 'Manrope', fontSize: 10),
         columns: const <DataColumn>[
           DataColumn(
             label: Text(

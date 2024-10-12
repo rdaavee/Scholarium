@@ -6,6 +6,7 @@ import 'package:isHKolarium/blocs/bloc_notification/notification_bloc.dart';
 import 'package:isHKolarium/blocs/bloc_bottom_nav/bottom_nav_bloc.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
 import 'package:isHKolarium/features/widgets/app_bar.dart';
+import 'package:isHKolarium/features/widgets/no_data.dart';
 import 'package:isHKolarium/features/widgets/notification_widgets/notification_message.dart';
 import 'package:isHKolarium/features/widgets/student_widgets/notification_widgets/notification_card.dart';
 
@@ -106,12 +107,11 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                                 BorderRadius.circular(20.0),
                                           ),
                                           child: SizedBox(
-                                            width: double
-                                                .infinity, // Adjusts to the width of the screen
+                                            width: double.infinity,
                                             height: MediaQuery.of(context)
                                                     .size
                                                     .height *
-                                                .50, 
+                                                .50,
                                             child: Padding(
                                               padding:
                                                   const EdgeInsets.all(10.0),
@@ -169,6 +169,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                         notifications.date.toString()),
                                     time: _formatTime(
                                         notifications.time.toString()),
+                                    profilePicture:
+                                        notifications.profilePicture.toString(),
                                   ),
                                 );
                               },
@@ -198,23 +200,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                         borderRadius:
                             BorderRadius.vertical(top: Radius.circular(10)),
                       ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset(
-                            'assets/images/no-data-img.png',
-                            height: 230,
-                            width: 230,
-                          ),
-                          const Text(
-                            'No notifications available',
-                            style: TextStyle(
-                              fontFamily: 'Manrope',
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
+                      child: NoData(),
                     ),
                   ),
                 ],
