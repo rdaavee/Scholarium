@@ -26,8 +26,9 @@ class ScheduleModel {
   final String? department;
   final String? time;
   final String? date;
+  final bool? isActive;
   final String? isCompleted;
-  final UserInfo? userInfo;
+  final UserInfo? userInfo; 
 
   const ScheduleModel(
       {this.id,
@@ -40,6 +41,7 @@ class ScheduleModel {
       required this.department,
       required this.time,
       required this.date,
+      this.isActive,
       required this.isCompleted,
       this.userInfo});
 
@@ -55,6 +57,7 @@ class ScheduleModel {
       department: map['department'] as String?,
       time: map['time'] as String?,
       date: map['date'] as String?,
+      isActive: map['isActive'] as bool?,
       isCompleted: map['completed'] as String?,
       userInfo: map['user_info'] != null
           ? UserInfo.fromJson(map['user_info'] as Map<String, dynamic>)
@@ -73,6 +76,7 @@ class ScheduleModel {
       'department': department,
       'time': time,
       'date': date,
+      'isActive': isActive
     };
   }
 }

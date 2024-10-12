@@ -254,6 +254,7 @@ exports.getUserNotifications = async (req, res) => {
           status: 1,
           date: 1,
           time: 1,
+          isActive: 1,
           createdAt: 1,
           updatedAt: 1,
           "sender_info.profile_picture": 1, 

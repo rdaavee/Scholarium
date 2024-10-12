@@ -3,7 +3,7 @@ const moment = require("moment");
 const User = require("../models/user_model");
 const Schedule = require("../models/schedule_model");
 const Announcement = require("../models/announcement_model");
-const Notifications = require('../models/notifications_model');
+const Notifications = require("../models/notifications_model");
 
 //-------------------------------------------- STUDENT CRUD ----------------------------------------------------------------------
 // Get all users
@@ -52,26 +52,50 @@ exports.createUser = async (req, res) => {
 
 exports.createSchedule = async (req, res) => {
   try {
-    const params = req.body;
+    const { schedule, notification } = req.body; 
     console.log(req.body);
 
-    const schedule = new Schedule({
-      school_id: params.school_id,
-      room: params.room,
-      block: params.block,
-      subject: params.subject,
-      prof_id: params.prof_id,
-      professor: params.professor,
-      department: params.department,
-      time: params.time,
-      date: params.date,
+    const newSchedule = new Schedule({
+      school_id: schedule.school_id,
+      room: schedule.room,
+      block: schedule.block,
+      subject: schedule.subject,
+      prof_id: schedule.prof_id,
+      professor: schedule.professor,
+      department: schedule.department,
+      time: schedule.time,
+      date: schedule.date,
+      isActive: schedule.isActive,
+      isCompleted: schedule.isCompleted || "pending"
     });
 
-    await schedule.save();
-    res.status(200).json({
+    const savedSchedule = await newSchedule.save();
+
+    const newNotification = new Notifications({
+      sender: notification.sender,
+      senderName: notification.senderName,
+      receiver: savedSchedule.school_id,
+      receiverName: notification.receiverName,
+      role: notification.role,
+      title: notification.title,
+      message: notification.message,
+      scheduleId: savedSchedule._id,
+      date: currentDate,
+      time: currentTime,
+      status: notification.status,
+      profile_picture: notification.profile_picture,
     });
+
+    await newNotification.save();
+
+    res.status(200).json({
+      message: `Notification "${notification.title}" has been sent by ${notification.senderName} to ${notification.receiverName || "all"}.`,
+      schedule: savedSchedule,
+      notification: newNotification,
+    });
+    console.log(savedSchedule, newNotification);
   } catch (error) {
-    console.error("Error creating user:", error);
+    console.error("Error creating schedule or notification:", error);
     res.status(500).json({ message: error.message });
   }
 };
@@ -96,7 +120,7 @@ exports.updateUser = async (req, res) => {
   const params = req.body;
 
   try {
-    user = await User.findOneAndUpdate(
+    const user = await User.findOneAndUpdate(
       { school_id: school_id },
       {
         email: params.email,
@@ -152,24 +176,38 @@ exports.deleteUser = async (req, res) => {
 
 exports.createNotification = async (req, res) => {
   try {
-    const { sender, senderName, receiver, receiverName, role, title, message } = req.body;
-
-    const notification = new Notifications({
-      sender: sender, 
-      senderName: senderName, 
+    const {
+      sender,
+      senderName,
       receiver,
       receiverName,
       role,
       title,
       message,
-      date: currentDate, 
-      time: currentTime,  
+      scheduleId,
+      isActive,
+    } = req.body;
+
+    const notification = new Notifications({
+      sender: sender,
+      senderName: senderName,
+      receiver,
+      receiverName,
+      role,
+      title,
+      message,
+      scheduleId,
+      date: currentDate,
+      time: currentTime,
+      isActive: isActive,
     });
 
     await notification.save();
 
     res.status(200).json({
-      message: `Notification "${notification.title}" has been sent by ${notification.senderName} to ${notification.receiverName || 'all'}.`,
+      message: `Notification "${notification.title}" has been sent by ${
+        notification.senderName
+      } to ${notification.receiverName || "all"}.`,
     });
   } catch (error) {
     console.error("Error creating notification:", error);
@@ -238,7 +276,9 @@ exports.updateAnnouncement = async (req, res) => {
     }
     res
       .status(200)
-      .json({ message: `Announcement with ID ${req.userSchoolId} has been updated.` });
+      .json({
+        message: `Announcement with ID ${req.userSchoolId} has been updated.`,
+      });
   } catch (error) {
     console.error("Error updating announcement:", error);
     res.status(500).json({ message: error.message });
@@ -250,15 +290,17 @@ exports.deleteAnnouncement = async (req, res) => {
   const id = req.params.id;
 
   try {
-      const result = await Announcement.deleteOne({ _id: id });
+    const result = await Announcement.deleteOne({ _id: id });
 
-      if (result.deletedCount > 0) {
-          res.status(200).json({ message: `Announcement with ID #${id} has been deleted.` });
-      } else {
-          res.status(404).json({ message: "Announcement doesn't exist" });
-      }
+    if (result.deletedCount > 0) {
+      res
+        .status(200)
+        .json({ message: `Announcement with ID #${id} has been deleted.` });
+    } else {
+      res.status(404).json({ message: "Announcement doesn't exist" });
+    }
   } catch (error) {
-      console.error('Error deleting announcement:', error);
-      res.status(500).json({ message: 'Server error occurred' });
+    console.error("Error deleting announcement:", error);
+    res.status(500).json({ message: "Server error occurred" });
   }
 };

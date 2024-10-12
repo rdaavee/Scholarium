@@ -99,6 +99,38 @@ class NotificationMessageState extends State<NotificationMessageWidget> {
                       ),
                     ),
                     const SizedBox(height: 8.0),
+                    if (widget.title == "Schedule Duty") ...[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.green,
+                            ),
+                            child: const Text(
+                              "Accept",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            onPressed: () {
+                              Navigator.pop(context, true);
+                            },
+                          ),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.red,
+                            ),
+                            child: const Text(
+                              "Reject",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            onPressed: () {
+                              Navigator.pop(context, false);
+                            },
+                          ),
+                        ],
+                      )
+                    ]
                   ],
                 ),
               ),
