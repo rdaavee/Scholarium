@@ -1,3 +1,17 @@
+class UserInfo {
+  final String? profilePicture;
+
+  const UserInfo({
+    required this.profilePicture,
+  });
+
+  factory UserInfo.fromJson(Map<String, dynamic> map) {
+    return UserInfo(
+      profilePicture: map['profile_picture'] as String?,
+    );
+  }
+}
+
 class NotificationsModel {
   final String? id;
   final String? sender;
@@ -10,20 +24,21 @@ class NotificationsModel {
   final bool? status;
   final String? date;
   final String? time;
+  final UserInfo? userInfo;
 
-  const NotificationsModel({
-    this.id,
-    this.sender,
-    this.senderName,
-    this.receiver,
-    this.receiverName,
-    this.title,
-    this.role,
-    this.message,
-    this.status,
-    this.date,
-    this.time,
-  });
+  const NotificationsModel(
+      {this.id,
+      required this.sender,
+      required this.senderName,
+      required this.receiver,
+      required this.receiverName,
+      required this.title,
+      required this.role,
+      required this.message,
+      required this.status,
+      required this.date,
+      required this.time,
+      this.userInfo});
 
   factory NotificationsModel.fromJson(Map<String, dynamic> map) {
     return NotificationsModel(
@@ -38,6 +53,9 @@ class NotificationsModel {
       status: map['status'] as bool?,
       time: map['time'] as String?,
       date: map['date'] as String?,
+      userInfo: map['user_info'] != null
+          ? UserInfo.fromJson(map['user_info'] as Map<String, dynamic>)
+          : null,
     );
   }
 }

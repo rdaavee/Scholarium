@@ -6,6 +6,7 @@ import 'package:isHKolarium/blocs/bloc_notification/notification_bloc.dart';
 import 'package:isHKolarium/blocs/bloc_bottom_nav/bottom_nav_bloc.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
 import 'package:isHKolarium/features/widgets/app_bar.dart';
+import 'package:isHKolarium/features/widgets/no_data.dart';
 import 'package:isHKolarium/features/widgets/notification_widgets/notification_message.dart';
 import 'package:isHKolarium/features/widgets/student_widgets/notification_widgets/notification_card.dart';
 import 'package:isHKolarium/features/widgets/student_widgets/notification_widgets/notification_message.dart';
@@ -166,8 +167,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                                 BorderRadius.circular(20.0),
                                           ),
                                           child: SizedBox(
-                                            width: double
-                                                .infinity, // Adjusts to the width of the screen
+                                            width: double.infinity,
                                             height: MediaQuery.of(context)
                                                     .size
                                                     .height *
@@ -217,23 +217,25 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                     );
                                   },
                                   child: NotificationCard(
-                                    // Change the background color based on the status
-                                    color: notifications.status == false
-                                        ? Color.fromARGB(255, 236, 240, 241)
-                                        : Color.fromARGB(255, 213, 222, 224), // Replace with your default color
-                                    sender: notifications.sender.toString(),
-                                    senderName:
-                                        notifications.senderName.toString(),
-                                    receiver: notifications.receiver.toString(),
-                                    role: notifications.role.toString(),
-                                    title: notifications.title.toString(),
-                                    message: notifications.message.toString(),
-                                    status: notifications.status.toString(),
-                                    date: _formatDate(
-                                        notifications.date.toString()),
-                                    time: _formatTime(
-                                        notifications.time.toString()),
-                                  ),
+                                      // Change the background color based on the status
+                                      color: notifications.status == false
+                                          ? Color.fromARGB(255, 236, 240, 241)
+                                          : Color.fromARGB(255, 213, 222,
+                                              224), // Replace with your default color
+                                      sender: notifications.sender.toString(),
+                                      senderName:
+                                          notifications.senderName.toString(),
+                                      receiver:
+                                          notifications.receiver.toString(),
+                                      role: notifications.role.toString(),
+                                      title: notifications.title.toString(),
+                                      message: notifications.message.toString(),
+                                      status: notifications.status.toString(),
+                                      date: _formatDate(
+                                          notifications.date.toString()),
+                                      time: _formatTime(
+                                          notifications.time.toString()),
+                                      profilePicture: "hello"),
                                 );
                               },
                             ),
@@ -262,23 +264,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                         borderRadius:
                             BorderRadius.vertical(top: Radius.circular(10)),
                       ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset(
-                            'assets/images/no-data-img.png',
-                            height: 230,
-                            width: 230,
-                          ),
-                          const Text(
-                            'No notifications available',
-                            style: TextStyle(
-                              fontFamily: 'Manrope',
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
+                      child: NoData(),
                     ),
                   ),
                 ],

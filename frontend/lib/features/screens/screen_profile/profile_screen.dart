@@ -8,6 +8,7 @@ import 'package:isHKolarium/blocs/bloc_profile/profile_event.dart';
 import 'package:isHKolarium/blocs/bloc_profile/profile_state.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
 import 'package:isHKolarium/features/widgets/app_bar.dart';
+import 'package:isHKolarium/features/widgets/no_data.dart';
 
 import '../../widgets/profile_widgets/profile_account_option.dart';
 import '../../widgets/profile_widgets/profile_account_section.dart';
@@ -15,6 +16,7 @@ import '../../widgets/profile_widgets/profile_circle.dart';
 import '../../widgets/profile_widgets/profile_divider.dart';
 import '../../widgets/profile_widgets/profile_info_data.dart';
 import '../../widgets/profile_widgets/profile_info_section.dart';
+import 'package:shimmer/shimmer.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -68,8 +70,94 @@ class _ProfileScreenState extends State<ProfileScreen> {
         },
         builder: (context, state) {
           if (state is ProfileLoadingState) {
-            return const Scaffold(
-              body: Center(child: CircularProgressIndicator()),
+            print("Loading state triggered");
+            return Scaffold(
+              body: Center(
+                child: Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Shimmer.fromColors(
+                    baseColor: Colors.grey[300]!,
+                    highlightColor: Colors.white,
+                    child: ListView(
+                      children: [
+                        const SizedBox(height: 50),
+                        Container(
+                          width: 100,
+                          height: 100,
+                          decoration: BoxDecoration(
+                            color: Colors.grey[300],
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                        const SizedBox(height: 80),
+                        Container(
+                          width: double.infinity,
+                          height: 30,
+                          color: Colors.grey[300],
+                        ),
+                        const SizedBox(height: 20),
+                        Container(
+                          width: double.infinity,
+                          height: 20,
+                          color: Colors.grey[300],
+                        ),
+                        const SizedBox(height: 15),
+                        Divider(color: Colors.grey[300]),
+                        const SizedBox(height: 15),
+                        Container(
+                          width: double.infinity,
+                          height: 20,
+                          color: Colors.grey[300],
+                        ),
+                        const SizedBox(height: 15),
+                        Divider(color: Colors.grey[300]),
+                        const SizedBox(height: 15),
+                        Container(
+                          width: double.infinity,
+                          height: 20,
+                          color: Colors.grey[300],
+                        ),
+                        const SizedBox(height: 15),
+                        Divider(color: Colors.grey[300]),
+                        const SizedBox(height: 15),
+                        Container(
+                          width: double.infinity,
+                          height: 20,
+                          color: Colors.grey[300],
+                        ),
+                        const SizedBox(height: 15),
+                        Divider(color: Colors.grey[300]),
+                        const SizedBox(height: 15),
+                        Container(
+                          width: double.infinity,
+                          height: 20,
+                          color: Colors.grey[300],
+                        ),
+                        const SizedBox(height: 15),
+                        Divider(color: Colors.grey[300]),
+                        const SizedBox(height: 15),
+                        Container(
+                          width: double.infinity,
+                          height: 20,
+                          color: Colors.grey[300],
+                        ),
+                        const SizedBox(height: 30),
+                        Container(
+                          width: double.infinity,
+                          height: 40,
+                          color: Colors.grey[300],
+                        ),
+                        const SizedBox(height: 20),
+                        Container(
+                          width: double.infinity,
+                          height: 40,
+                          color: Colors.grey[300],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
             );
           } else if (state is ProfileLoadedSuccessState) {
             return Scaffold(
@@ -107,7 +195,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               children: [
                                 const SizedBox(height: 50),
                                 ProfileCircle(
-                                  profilePicture: state.users[0].profilePicture.toString(),
+                                  profilePicture:
+                                      state.users[0].profilePicture.toString(),
                                   onTap: _pickImage,
                                 ),
                                 const SizedBox(height: 80),
@@ -137,31 +226,36 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     const SizedBox(height: 15),
                                     InfoRow(
                                         label: 'Gender',
-                                        value: state.users[0].gender.toString()),
+                                        value:
+                                            state.users[0].gender.toString()),
                                     const SizedBox(height: 15),
                                     const DividerWidget(),
                                     const SizedBox(height: 15),
                                     InfoRow(
                                         label: 'Contact #',
-                                        value: state.users[0].contact.toString()),
+                                        value:
+                                            state.users[0].contact.toString()),
                                     const SizedBox(height: 15),
                                     const DividerWidget(),
                                     const SizedBox(height: 15),
                                     InfoRow(
                                         label: 'Address',
-                                        value: state.users[0].address.toString()),
+                                        value:
+                                            state.users[0].address.toString()),
                                     const SizedBox(height: 15),
                                     const DividerWidget(),
                                     const SizedBox(height: 15),
                                     InfoRow(
                                         label: 'HK Type',
-                                        value: state.users[0].hkType.toString()),
+                                        value:
+                                            state.users[0].hkType.toString()),
                                     const SizedBox(height: 15),
                                     const DividerWidget(),
                                     const SizedBox(height: 15),
                                     InfoRow(
                                         label: 'Status',
-                                        value: state.users[0].status.toString()),
+                                        value:
+                                            state.users[0].status.toString()),
                                   ],
                                 ),
                                 const SizedBox(height: 30),
@@ -188,18 +282,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
             Navigator.pushReplacementNamed(context, '/login');
             return Container();
           } else if (state is LogoutErrorState) {
-            return Scaffold(
-              body: Center(
-                child: Text(
-                  state.message,
-                  style: const TextStyle(color: Colors.red),
-                ),
-              ),
-            );
+            return NoData();
           } else {
-            return const Scaffold(
-              body: Center(child: CircularProgressIndicator()),
-            );
+            return const Scaffold();
           }
         },
       ),

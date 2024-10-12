@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_null_comparison
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
@@ -13,6 +15,7 @@ class NotificationCard extends StatelessWidget {
   final String status;
   final String date;
   final String time;
+  final String profilePicture;
 
   const NotificationCard({
     super.key,
@@ -26,6 +29,7 @@ class NotificationCard extends StatelessWidget {
     required this.status,
     required this.date,
     required this.time,
+    required this.profilePicture,
   });
 
   String _formatDate(String date) {
@@ -73,9 +77,10 @@ class NotificationCard extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: CircleAvatar(
-                  backgroundColor: Colors.grey[300],
-                  radius: 25,
-                  child: const Icon(Icons.person, color: Colors.white),
+                  backgroundColor: Colors.grey,
+                  backgroundImage: profilePicture != null
+                      ? NetworkImage(profilePicture)
+                      : null,
                 ),
               ),
               const SizedBox(width: 10),

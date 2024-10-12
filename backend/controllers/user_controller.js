@@ -221,9 +221,49 @@ exports.getUserNotifications = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    const notifications = await Notification.find({
-      receiver: user.school_id,
-    }).sort({ date: -1 });
+    const notifications = await Notification.aggregate([
+      {
+        $match: {
+          receiver: user.school_id, 
+        },
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "sender",
+          foreignField: "school_id", 
+          as: "sender_info",
+        },
+      },
+      {
+        $unwind: {
+          path: "$sender_info",
+          preserveNullAndEmptyArrays: true, 
+        },
+      },
+      {
+        $project: {
+          _id: 1,
+          sender: 1,
+          senderName: 1,
+          receiver: 1,
+          receiverName: 1,
+          role: 1,
+          title: 1,
+          message: 1,
+          status: 1,
+          date: 1,
+          time: 1,
+          createdAt: 1,
+          updatedAt: 1,
+          "sender_info.profile_picture": 1, 
+        },
+      },
+      {
+        $sort: { date: -1 },
+      },
+    ]);
+
     if (notifications.length > 0) {
       res.status(200).json(notifications);
     } else {
