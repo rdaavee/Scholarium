@@ -5,6 +5,9 @@ const Post = require("../models/posts_model");
 const User = require("../models/user_model");
 const DTR = require("../models/dtr_model");
 const moment = require("moment");
+const admin = require('firebase-admin');
+const { v4: uuidv4 } = require('uuid'); 
+
 
 exports.getProfTodaySchedule = async (req, res) => {
   const { prof_id } = req.params;
@@ -260,25 +263,23 @@ exports.getProfSchedule = async (req, res) => {
 
 const updatePastSchedules = async (prof_id) => {
   try {
-    const currentDate = moment().startOf("day").format("YYYY-MM-DD"); // Get the current date
+    const currentDate = moment().startOf("day").format("YYYY-MM-DD"); 
 
-    // Find schedules where the date is in the past and completed is not "true"
     await Schedule.updateMany(
       {
         prof_id: prof_id,
-        date: { $lt: currentDate }, // Dates in the past
-        completed: { $ne: "true" }, // Only update if not already "true"
+        date: { $lt: currentDate }, 
+        completed: { $ne: "true" }, 
       },
-      { $set: { completed: "false" } } // Set 'completed' to 'false'
+      { $set: { completed: "false" } } 
     );
 
     console.log("Past schedules updated successfully.");
   } catch (error) {
     console.error("Error updating past schedules:", error);
-    throw new Error("Error updating past schedules"); // Handle this error in the calling function
+    throw new Error("Error updating past schedules"); 
   }
 };
-
 exports.updateStudentsSchedules = async (req, res) => {
   const { id } = req.params;
 
@@ -318,8 +319,23 @@ exports.createDTR = async (req, res) => {
     professor,
     professor_signature,
   } = req.body;
+  console.log(req.body);
 
   try {
+    const base64Image = professor_signature.split(';base64,').pop();
+    const buffer = Buffer.from(base64Image, 'base64');
+
+    const filename = `professor_signature_${uuidv4()}.png`;
+
+    const bucket = admin.storage().bucket();
+    const file = bucket.file(filename);
+    await file.save(buffer, {
+      metadata: { contentType: 'image/png' },
+      public: true,
+    });
+
+    const imageUrl = `https://storage.googleapis.com/${bucket.name}/${filename}`;
+
     const newDTR = new DTR({
       school_id,
       date,
@@ -328,7 +344,7 @@ exports.createDTR = async (req, res) => {
       hours_rendered,
       hours_to_rendered,
       professor,
-      professor_signature,
+      professor_signature: imageUrl,
     });
 
     const savedRecord = await newDTR.save();
@@ -339,11 +355,10 @@ exports.createDTR = async (req, res) => {
     });
   } catch (error) {
     console.error(error);
-    res
-      .status(500)
-      .json({ message: "Server error occurred", error: error.message });
+    res.status(500).json({ message: "Server error occurred", error: error.message });
   }
 };
+
 
 //Update post
 exports.updatePost = (req, res) => {
