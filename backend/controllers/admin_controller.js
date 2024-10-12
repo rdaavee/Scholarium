@@ -3,6 +3,7 @@ const moment = require("moment");
 const User = require("../models/user_model");
 const Schedule = require("../models/schedule_model");
 const Announcement = require("../models/announcement_model");
+const Notifications = require('../models/notifications_model');
 
 //-------------------------------------------- STUDENT CRUD ----------------------------------------------------------------------
 // Get all users
@@ -120,6 +121,33 @@ exports.deleteUser = async (req, res) => {
   } catch (error) {
     console.error("Error deleting user:", error);
     res.status(500).json({ message: "Server error occurred" });
+  }
+};
+
+exports.createNotification = async (req, res) => {
+  try {
+    const { sender, senderName, receiver, receiverName, role, title, message } = req.body;
+
+    const notification = new Notifications({
+      sender: sender, 
+      senderName: senderName, 
+      receiver,
+      receiverName,
+      role,
+      title,
+      message,
+      date: currentDate, 
+      time: currentTime,  
+    });
+
+    await notification.save();
+
+    res.status(200).json({
+      message: `Notification "${notification.title}" has been sent by ${notification.senderName} to ${notification.receiverName || 'all'}.`,
+    });
+  } catch (error) {
+    console.error("Error creating notification:", error);
+    res.status(500).json({ message: error.message });
   }
 };
 

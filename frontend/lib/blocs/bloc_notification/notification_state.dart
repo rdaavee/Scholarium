@@ -11,7 +11,8 @@ class NotificationsLoadingState extends NotificationsState {}
 
 class NotificationsLoadedSuccessState extends NotificationsState {
   final List<NotificationsModel> notifications;
-  NotificationsLoadedSuccessState({required this.notifications});
+  final List<UserModel> users;
+  NotificationsLoadedSuccessState({required this.notifications, required this.users});
 }
 
 class NotificationsErrorState extends NotificationsState {

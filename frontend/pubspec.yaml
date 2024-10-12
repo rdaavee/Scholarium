@@ -51,6 +51,7 @@ dependencies:
   flutter_admin_scaffold:
   image_picker:
   badges: ^3.1.2
+  dropdown_search: ^6.0.1
   
 
   # The following adds the Cupertino Icons font to your application.
