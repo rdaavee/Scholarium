@@ -1,3 +1,8 @@
+// ignore_for_file: use_build_context_synchronously, library_private_types_in_public_api
+
+import 'dart:convert';
+import 'dart:typed_data';
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:isHKolarium/api/implementations/professor_repository_impl.dart';
@@ -6,87 +11,117 @@ import 'package:isHKolarium/api/models/dtr_model.dart';
 import 'package:isHKolarium/blocs/bloc_schedule/schedule_bloc.dart';
 import 'package:isHKolarium/blocs/bloc_schedule/schedule_event.dart';
 import 'package:isHKolarium/blocs/bloc_schedule/schedule_state.dart';
+import 'package:signature/signature.dart';
 
-class DialogAlertBox extends StatelessWidget {
+class DialogAlertBox extends StatefulWidget {
   final String? scheduleId;
   final String? schoolId;
   final String? date;
   final String? timeIn;
   final String? hkType;
   final String? professorName;
-  final String? professorSignature;
-  const DialogAlertBox(
-      {super.key,
-      required this.scheduleId,
-      this.schoolId,
-      this.date,
-      this.timeIn,
-      this.hkType,
-      this.professorName,
-      this.professorSignature});
+
+  const DialogAlertBox({
+    super.key,
+    required this.scheduleId,
+    this.schoolId,
+    this.date,
+    this.timeIn,
+    this.hkType,
+    this.professorName,
+  });
+
+  @override
+  _DialogAlertBoxState createState() => _DialogAlertBoxState();
+}
+
+class _DialogAlertBoxState extends State<DialogAlertBox> {
+  final ScheduleBloc _scheduleBloc =
+      ScheduleBloc(StudentRepositoryImpl(), ProfessorRepositoryImpl());
+  final SignatureController _signatureController =
+      SignatureController(penStrokeWidth: 5, penColor: Colors.black);
+
+  Uint8List? _signatureImage;
 
   @override
   Widget build(BuildContext context) {
-    final ScheduleBloc scheduleBloc =
-        ScheduleBloc(StudentRepositoryImpl(), ProfessorRepositoryImpl());
     return BlocConsumer<ScheduleBloc, ScheduleState>(
-      bloc: scheduleBloc,
+      bloc: _scheduleBloc,
       listener: (context, state) {},
       builder: (context, state) {
         return AlertDialog(
           backgroundColor: Colors.white,
           content: SizedBox(
-            height: 120,
-            width: 100,
+            height: 450,
+            width: 300,
             child: Column(
               children: [
                 Container(
                   margin: EdgeInsets.fromLTRB(0, 0, 0, 20),
                   child: Text(
-                    "Completed their Duty?",
-                    style: TextStyle(),
+                    "Completed their Duty? Please Sign Below:",
+                    style: TextStyle(fontSize: 16),
                   ),
                 ),
+                Expanded(
+                  child: Signature(
+                    controller: _signatureController,
+                    height: 300,
+                    width: double.infinity,
+                    backgroundColor: Colors.grey[200]!,
+                  ),
+                ),
+                if (_signatureImage !=
+                    null) // Display the signature image if it exists
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Image.memory(_signatureImage!),
+                  ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.green,
-                        ),
-                        child: Text(
-                          "Confirm",
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
-                        ),
-                        onPressed: () async {
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.green,
+                      ),
+                      child: Text(
+                        "Confirm",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      onPressed: () async {
+                        if (_signatureController.isNotEmpty) {
+                          final image = await _signatureController.toImage();
+                          final byteData = await image?.toByteData(
+                              format: ImageByteFormat.png);
+                          _signatureImage = byteData!.buffer.asUint8List();
+                          setState(() {});
                           try {
-                            scheduleBloc.add(
-                                UpdateDutySchedule(id: scheduleId.toString()));
+                            _scheduleBloc.add(UpdateDutySchedule(
+                                id: widget.scheduleId.toString()));
                             final totalDuration =
-                                _parseTime(timeIn.toString()) +
+                                _parseTime(widget.timeIn.toString()) +
                                     _parseTime("01:30:00");
                             String formattedTime =
                                 _formatDuration(totalDuration);
                             double hoursToRendered = 0.0;
-                            if (hkType.toString() == "HK 25") {
+                            if (widget.hkType == "HK 25") {
                               hoursToRendered = 50;
-                            } else if (hkType.toString() == "HK 50") {
+                            } else if (widget.hkType == "HK 50") {
                               hoursToRendered = 90;
-                            } else if (hkType.toString() == "HK 75") {
+                            } else if (widget.hkType == "HK 75") {
                               hoursToRendered = 120;
                             }
                             final dtrModel = DtrModel(
-                              schoolID: schoolId.toString(),
-                              date: date.toString(),
-                              timeIn: timeIn.toString(),
+                              schoolID: widget.schoolId.toString(),
+                              date: widget.date.toString(),
+                              timeIn: widget.timeIn.toString(),
                               timeOut: formattedTime,
                               hoursToRendered: hoursToRendered,
                               hoursRendered: 1.5,
-                              professor: professorName.toString(),
-                              professorSignature: 'Signature1',
+                              professor: widget.professorName.toString(),
+                              professorSignature: _signatureImage != null
+                                  ? base64Encode(_signatureImage!)
+                                  : null,
                             );
                             await ProfessorRepositoryImpl().createDTR(dtrModel);
                             ScaffoldMessenger.of(context).showSnackBar(
@@ -99,22 +134,27 @@ class DialogAlertBox extends StatelessWidget {
                               SnackBar(content: Text('Error: $error')),
                             );
                           }
-                        }),
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Please sign to confirm.')),
+                          );
+                        }
+                      },
+                    ),
                     ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.red,
-                        ),
-                        child: Text(
-                          "Cancel",
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
-                        ),
-                        onPressed: () {
-                          Navigator.pop(context, false);
-                        }),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red,
+                      ),
+                      child: Text(
+                        "Cancel",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context, false);
+                      },
+                    ),
                   ],
-                )
+                ),
               ],
             ),
           ),

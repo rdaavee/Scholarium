@@ -27,7 +27,7 @@ class ScheduleModel {
   final String? time;
   final String? date;
   final String? isCompleted;
-  final UserInfo? userInfo; // Include UserInfo object
+  final UserInfo? userInfo;
 
   const ScheduleModel(
       {this.id,
@@ -61,6 +61,7 @@ class ScheduleModel {
           : null,
     );
   }
+
   Map<String, dynamic> toMap() {
     return {
       'school_id': schoolID,
