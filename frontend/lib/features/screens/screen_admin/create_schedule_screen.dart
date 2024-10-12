@@ -1,6 +1,11 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
-import 'package:isHKolarium/config/constants/colors.dart';
+import 'package:isHKolarium/api/implementations/admin_repository_impl.dart';
+import 'package:isHKolarium/api/models/schedule_model.dart';
+import 'package:isHKolarium/api/models/user_model.dart';
 import 'package:isHKolarium/features/widgets/app_bar.dart';
+import 'package:isHKolarium/config/constants/colors.dart';
 
 class SetScheduleScreen extends StatefulWidget {
   const SetScheduleScreen({super.key});
@@ -13,6 +18,19 @@ class SetScheduleScreenState extends State<SetScheduleScreen> {
   DateTime? selectedDate;
   String? selectedTimeSlot;
   String? selectedProfessor;
+  String? selectedProfessorId;
+  String? selectedStudent;
+  List<UserModel>? users;
+  final adminRepositoryImpl = AdminRepositoryImpl();
+
+  @override
+  void initState() {
+    super.initState();
+    initialize();
+  }
+
+  final List<Map<String, String>> professors = [];
+  final List<Map<String, String>> students = [];
 
   final List<String> timeSlots = [
     '7 AM',
@@ -28,11 +46,70 @@ class SetScheduleScreenState extends State<SetScheduleScreen> {
     '5 PM',
   ];
 
-  final List<Map<String, String>> professors = [
-    {'name': 'John Doe', 'image': 'assets/john_doe.png'},
-    {'name': 'Jane Smith', 'image': 'assets/jane_smith.png'},
-    // Add more professors here
-  ];
+  // Mapper for 12-hour to 24-hour time conversion
+  final Map<String, String> timeTo24HourMap = {
+    '7 AM': '07:00:00',
+    '8 AM': '08:00:00',
+    '9 AM': '09:00:00',
+    '10 AM': '10:00:00',
+    '11 AM': '11:00:00',
+    '12 PM': '12:00:00',
+    '1 PM': '13:00:00',
+    '2 PM': '14:00:00',
+    '3 PM': '15:00:00',
+    '4 PM': '16:00:00',
+    '5 PM': '17:00:00',
+  };
+
+  Future<void> initialize() async {
+    try {
+      final users = await adminRepositoryImpl.fetchAllUsers();
+
+      for (var user in users) {
+        if (user.role == 'Professor') {
+          professors.add({
+            'school_id': user.schoolID.toString(),
+            'name': "${user.firstName} ${user.lastName}",
+          });
+        } else if (user.role == 'Student') {
+          students.add({
+            'school_id': user.schoolID.toString(),
+            'name': "${user.firstName} ${user.lastName}",
+          });
+        }
+      }
+    } catch (e) {
+      print("Error: $e");
+    }
+  }
+
+  Future<void> uploadSchedule() async {
+    print("Selected Student: $selectedStudent");
+    print("Selected Date: $selectedDate");
+    print("Selected Professor: $selectedProfessor");
+    print("Selected Time Slot: $selectedTimeSlot");
+
+    final schedule = ScheduleModel(
+      schoolID: selectedStudent,
+      room: "room",
+      block: "block",
+      subject: "subject",
+      profID: selectedProfessor,
+      professor: "David Aldrin", // Update as needed
+      department: "department", // Update as needed
+      time:
+          timeTo24HourMap[selectedTimeSlot] ?? '', // Convert to 24-hour format
+      date: selectedDate?.toString() ?? '',
+      isCompleted: "",
+    );
+    try {
+      await adminRepositoryImpl.createSchedule(schedule);
+      print("Schedule uploaded successfully");
+      Navigator.pop(context);
+    } catch (e) {
+      print("Error uploading schedule: $e");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -150,13 +227,45 @@ class SetScheduleScreenState extends State<SetScheduleScreen> {
               ),
               items: professors.map((professor) {
                 return DropdownMenuItem<String>(
-                  value: professor['name'],
+                  value: professor['school_id'],
                   child: Text(professor['name']!),
                 );
               }).toList(),
               onChanged: (value) {
                 setState(() {
                   selectedProfessor = value;
+                });
+              },
+            ),
+            Text(
+              'Select Student',
+              style: TextStyle(
+                color: Color(0xFF6D7278),
+                fontSize: 15,
+                fontFamily: 'Manrope',
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(height: 10),
+            DropdownButton<String>(
+              isExpanded: true,
+              value: selectedStudent,
+              hint: Text(
+                "Select Student",
+                style: TextStyle(
+                  fontFamily: 'Manrope',
+                  fontSize: 12,
+                ),
+              ),
+              items: students.map((student) {
+                return DropdownMenuItem<String>(
+                  value: student['school_id'],
+                  child: Text(student['name']!),
+                );
+              }).toList(),
+              onChanged: (value) {
+                setState(() {
+                  selectedStudent = value;
                 });
               },
             ),
@@ -175,7 +284,7 @@ class SetScheduleScreenState extends State<SetScheduleScreen> {
                           selectedTimeSlot != null &&
                           selectedProfessor != null
                       ? () {
-                          // Confirm the scheduling here
+                          uploadSchedule();
                         }
                       : null,
                   child: Text(

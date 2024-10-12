@@ -14,7 +14,7 @@ const seedUsers = async () => {
     // Sample user data with professor field for Student role
     const users = [
       {
-        school_id: "03-0000-00001",
+        school_id: "03-2021-01071",
         email: "benedict@phinmaed.com",
         password: "1",
         first_name: "Mark Benedict",
@@ -31,7 +31,7 @@ const seedUsers = async () => {
         professor: "03-0000-00002", // Add professor field here
       },
       {
-        school_id: "03-0000-00002",
+        school_id: "03-2223-038891",
         email: "david@phinmaed.com",
         password: "2",
         first_name: "David Aldrin",
@@ -41,13 +41,13 @@ const seedUsers = async () => {
         gender: "Male",
         contact: "0900-000-0002",
         address: "456 Oak St",
-        role: "Professor",
+        role: "Student",
         hk_type: "",
         status: "Active",
         token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzUsI...",
       },
       {
-        school_id: "03-0000-00003",
+        school_id: "03-2223-044501",
         email: "ranier@phinmaed.com",
         password: "3",
         first_name: "Ranier Dave",
@@ -57,7 +57,23 @@ const seedUsers = async () => {
         gender: "Male",
         contact: "0900-000-0003",
         address: "789 Pine St",
-        role: "Admin",
+        role: "Student",
+        hk_type: "",
+        status: "Active",
+        token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzYsI...",
+      },
+      {
+        school_id: "03-2223-039024",
+        email: "olib@phinmaed.com",
+        password: "3",
+        first_name: "John Oliver",
+        middle_name: "I.",
+        last_name: "Ferrer",
+        profile_picture: null,
+        gender: "Male",
+        contact: "0900-000-0003",
+        address: "789 Pine St",
+        role: "Student",
         hk_type: "",
         status: "Active",
         token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzYsI...",

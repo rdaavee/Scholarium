@@ -324,8 +324,11 @@ class GlobalRepositoryImpl extends GlobalRepository implements Endpoint {
       );
 
       if (response.statusCode == 200) {
-        final List<dynamic> data = jsonDecode(response.body);
-        return data.map((json) => NotificationsModel.fromJson(json)).toList();
+        List<dynamic> data = jsonDecode(response.body);
+        return data
+            .map((item) =>
+                NotificationsModel.fromJson(item as Map<String, dynamic>))
+            .toList();
       } else {
         throw Exception('Failed to load Notifications data');
       }

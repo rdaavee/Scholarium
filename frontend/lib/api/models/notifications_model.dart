@@ -24,38 +24,39 @@ class NotificationsModel {
   final bool? status;
   final String? date;
   final String? time;
-  final UserInfo? userInfo;
+  final String profilePicture;
 
-  const NotificationsModel(
-      {this.id,
-      required this.sender,
-      required this.senderName,
-      required this.receiver,
-      required this.receiverName,
-      required this.title,
-      required this.role,
-      required this.message,
-      required this.status,
-      required this.date,
-      required this.time,
-      this.userInfo});
+  const NotificationsModel({
+    this.id,
+    required this.sender,
+    required this.senderName,
+    required this.receiver,
+    required this.receiverName,
+    required this.title,
+    required this.role,
+    required this.message,
+    required this.status,
+    required this.date,
+    required this.time,
+    required this.profilePicture,
+  });
 
-  factory NotificationsModel.fromJson(Map<String, dynamic> map) {
+  factory NotificationsModel.fromJson(Map<String, dynamic> json) {
     return NotificationsModel(
-      id: map['_id'] as String?,
-      sender: map['sender'] as String?,
-      senderName: map['senderName'] as String?,
-      receiver: map['receiver'] as String?,
-      receiverName: map['receiverName'] as String?,
-      role: map['role'] as String?,
-      title: map['title'] as String?,
-      message: map['message'] as String?,
-      status: map['status'] as bool?,
-      time: map['time'] as String?,
-      date: map['date'] as String?,
-      userInfo: map['user_info'] != null
-          ? UserInfo.fromJson(map['user_info'] as Map<String, dynamic>)
-          : null,
+      id: json['_id'] ?? '',
+      sender: json['sender'] ?? '',
+      senderName: json['senderName'] ?? '',
+      receiver: json['receiver'] ?? '',
+      receiverName: json['receiverName'] ?? '',
+      role: json['role'] ?? '',
+      title: json['title'] ?? '',
+      message: json['message'] ?? '',
+      status: json['status'] ?? false,
+      date: json['date'] ?? '',
+      time: json['time'] ?? '',
+      profilePicture: json['sender_info'] != null
+          ? json['sender_info']['profile_picture'] ?? ''
+          : '',
     );
   }
 }
