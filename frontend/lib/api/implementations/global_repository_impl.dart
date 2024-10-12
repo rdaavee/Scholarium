@@ -485,15 +485,8 @@ class GlobalRepositoryImpl extends GlobalRepository implements Endpoint {
   }
 
   @override
-  Future<NotificationsModel> createNotification({
-    required String sender,
-    required String senderName,
-    required String receiver,
-    required String receiverName,
-    required String role,
-    required String title,
-    required String message,
-  }) async {
+  Future<void> createNotification(
+      {required NotificationsModel notification}) async {
     final token = await _getToken();
     try {
       final response = await http.post(
@@ -502,29 +495,14 @@ class GlobalRepositoryImpl extends GlobalRepository implements Endpoint {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
         },
-        body: jsonEncode({
-          'sender': sender,
-          'senderName': senderName,
-          'receiver': receiver,
-          'receiverName': receiverName,
-          'role': role,
-          'title': title,
-          'message': message,
-        }),
+        body: jsonEncode(notification.toMap()),
       );
 
-      if (response.statusCode == 200) {
-        print("Notification sent successfully.");
-        // Assuming the response body contains the notification data
-        final Map<String, dynamic> responseData = jsonDecode(response.body);
-        return NotificationsModel.fromJson(
-            responseData); // Create and return NotificationsModel instance
-      } else {
-        throw Exception('Failed to send notification: ${response.statusCode}');
+      if (response.statusCode != 200) {
+        throw Exception('${response.statusCode}');
       }
     } catch (e) {
-      print("Error: $e");
-      throw Exception('Error sending notification: $e');
+      throw Exception('Error: $e');
     }
   }
 }

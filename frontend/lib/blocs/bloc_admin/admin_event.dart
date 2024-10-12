@@ -56,3 +56,10 @@ class DeleteAnnouncementEvent extends AdminEvent {
 
   DeleteAnnouncementEvent(this.id);
 }
+
+class CreateScheduleAndNotificationEvent extends AdminEvent {
+  final ScheduleModel schedule;
+  final NotificationsModel notification;
+
+  CreateScheduleAndNotificationEvent(this.schedule, this.notification);
+}

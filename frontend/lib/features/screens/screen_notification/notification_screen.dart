@@ -238,7 +238,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                       time: _formatTime(
                                           notifications.time.toString()),
                                       profilePicture:
-                                          notifications.profilePicture),
+                                          notifications.profilePicture.toString()),
                                 );
                               },
                             ),
