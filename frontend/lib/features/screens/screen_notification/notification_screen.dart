@@ -149,6 +149,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
                               itemBuilder: (context, index) {
                                 final notifications =
                                     state.notifications[index];
+                                print(
+                                    "Profile: ${notifications.profilePicture}");
                                 return GestureDetector(
                                   onTap: () {
                                     notificationsBloc.add(
@@ -235,7 +237,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                           notifications.date.toString()),
                                       time: _formatTime(
                                           notifications.time.toString()),
-                                      profilePicture: "hello"),
+                                      profilePicture:
+                                          notifications.profilePicture),
                                 );
                               },
                             ),

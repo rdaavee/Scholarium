@@ -50,6 +50,32 @@ exports.createUser = async (req, res) => {
   }
 };
 
+exports.createSchedule = async (req, res) => {
+  try {
+    const params = req.body;
+    console.log(req.body);
+
+    const schedule = new Schedule({
+      school_id: params.school_id,
+      room: params.room,
+      block: params.block,
+      subject: params.subject,
+      prof_id: params.prof_id,
+      professor: params.professor,
+      department: params.department,
+      time: params.time,
+      date: params.date,
+    });
+
+    await schedule.save();
+    res.status(200).json({
+    });
+  } catch (error) {
+    console.error("Error creating user:", error);
+    res.status(500).json({ message: error.message });
+  }
+};
+
 exports.getCurrentYearSchedules = async (req, res) => {
   try {
     const currentYear = moment().year().toString();

@@ -36,7 +36,7 @@ class ScheduleModel {
       required this.block,
       required this.subject,
       required this.profID,
-      required this.professor,
+      this.professor,
       required this.department,
       required this.time,
       required this.date,
@@ -60,5 +60,18 @@ class ScheduleModel {
           ? UserInfo.fromJson(map['user_info'] as Map<String, dynamic>)
           : null,
     );
+  }
+  Map<String, dynamic> toMap() {
+    return {
+      'school_id': schoolID,
+      'room': room,
+      'block': block,
+      'subject': subject,
+      'prof_id': profID,
+      'professor': professor,
+      'department': department,
+      'time': time,
+      'date': date,
+    };
   }
 }

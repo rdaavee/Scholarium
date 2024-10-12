@@ -86,6 +86,28 @@ class AdminRepositoryImpl extends AdminRepository implements Endpoint {
     }
   }
 
+  Future<void> createSchedule(ScheduleModel schedule) async {
+    final String? token = await _getToken();
+    final url = Uri.parse('$baseUrl/admin/createSchedule');
+
+    try {
+      final response = await http.post(
+        url,
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+        },
+        body: json.encode(schedule.toMap()),
+      );
+
+      if (response.statusCode != 200) {
+        throw Exception('Failed to create user: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Error: $e');
+    }
+  }
+
   @override
   Future<void> updateUser(String schoolId, UserModel user) async {
     final String? token = await _getToken();
