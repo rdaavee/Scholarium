@@ -140,13 +140,15 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                                       GestureDetector(
                                         onTap: () {
                                           Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      ScheduleScreen(
-                                                        role: "Student",
-                                                        isAppBarBack: true,
-                                                      )));
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ScheduleScreen(
+                                                role: "Student",
+                                                isAppBarBack: true,
+                                              ),
+                                            ),
+                                          );
                                         },
                                         child: const ViewAllText(),
                                       ),

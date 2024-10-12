@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
 import 'package:isHKolarium/blocs/bloc_authentication/authentication_bloc.dart';
-import 'package:isHKolarium/config/constants/colors.dart';
 import 'package:isHKolarium/features/screens/screen_bottom_nav/bottom_navigation_page.dart';
-import 'package:isHKolarium/features/widgets/authentication_widgets/login_form.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
+import 'package:isHKolarium/features/widgets/authentication_widgets/background_widget.dart';
+import 'package:isHKolarium/features/widgets/authentication_widgets/login_form_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
@@ -36,7 +36,7 @@ class _LoginPageState extends State<LoginPage> {
     final password = prefs.getString('password').toString();
     if (isLogin == "true") {
       _loginBloc.add(LoginAutomaticEvent(schoolID, password));
-    } else {}
+    }
   }
 
   @override
@@ -105,115 +105,15 @@ class _LoginPageState extends State<LoginPage> {
         return Scaffold(
           body: Stack(
             children: [
-              _buildBackground(),
+              const BackgroundWidget(),
               if (state is LoginLoadingState)
                 const Center(child: CircularProgressIndicator())
               else
-                _buildLoginForm(),
+                LoginFormWidget(loginBloc: _loginBloc),
             ],
           ),
         );
       },
-    );
-  }
-
-  Widget _buildBackground() {
-    return Stack(
-      children: [
-        Container(
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage('assets/images/image.jpg'),
-              fit: BoxFit.cover,
-            ),
-          ),
-        ),
-        Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                ColorPalette.primary.withOpacity(0.8),
-                Colors.black.withOpacity(0.9),
-              ],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildLoginForm() {
-    return Column(
-      children: [
-        Container(
-          width: double.infinity,
-          padding: const EdgeInsets.symmetric(vertical: 30),
-          child: RichText(
-            textAlign: TextAlign.center,
-            text: const TextSpan(
-              children: <TextSpan>[
-                TextSpan(
-                  text: 'is',
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontFamily: 'Manrope',
-                    fontWeight: FontWeight.normal,
-                    color: Colors.white,
-                    letterSpacing: 5,
-                  ),
-                ),
-                TextSpan(
-                  text: 'HK',
-                  style: TextStyle(
-                    fontSize: 15,
-                    fontFamily: 'Manrope',
-                    fontWeight: FontWeight.bold,
-                    color: ColorPalette.textAccent,
-                    letterSpacing: 5,
-                  ),
-                ),
-                TextSpan(
-                  text: 'olarium',
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontFamily: 'Manrope',
-                    fontWeight: FontWeight.normal,
-                    color: Colors.white,
-                    letterSpacing: 5,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-        Expanded(
-          child: Center(
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const Text(
-                    'Login your account',
-                    style: TextStyle(
-                      fontSize: 17,
-                      fontFamily: 'Manrope',
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      letterSpacing: 1.1,
-                    ),
-                  ),
-                  const SizedBox(height: 30),
-                  LoginForm(loginBloc: _loginBloc),
-                  const SizedBox(height: 50),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ],
     );
   }
 }

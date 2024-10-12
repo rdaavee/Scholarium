@@ -5,6 +5,8 @@ import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
 import 'package:isHKolarium/blocs/bloc_authentication/authentication_bloc.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
 import 'package:isHKolarium/features/screens/screen_forgot_password/otp_screen.dart';
+import 'package:isHKolarium/features/widgets/forgot_password_widgets/custom_elevatedbutton.dart';
+import 'package:isHKolarium/features/widgets/forgot_password_widgets/custom_textfield.dart';
 
 class EmailScreen extends StatefulWidget {
   const EmailScreen({super.key});
@@ -35,7 +37,7 @@ class _EmailScreenState extends State<EmailScreen> {
                 builder: (context) => OTPScreen(email: emailController.text)),
           );
         } else if (state is PasswordLoadingState) {
-            Center(child: CircularProgressIndicator());
+          Center(child: CircularProgressIndicator());
         } else if (State is PasswordErrorState) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Invalid Credential')),
@@ -92,68 +94,26 @@ class _EmailScreenState extends State<EmailScreen> {
                 const SizedBox(
                   height: 30,
                 ),
-                TextField(
+                CustomTextField(
                   controller: emailController,
-                  decoration: InputDecoration(
-                    labelText: 'Email',
-                    labelStyle: const TextStyle(
-                      color: Colors.grey,
-                      fontFamily: 'Manrope',
-                      fontSize: 13,
-                    ),
-                    floatingLabelStyle: const TextStyle(
-                        fontFamily: 'Manrope',
-                        fontSize: 13,
-                        fontWeight: FontWeight.bold,
-                        color: ColorPalette.primary),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8.0),
-                      borderSide: const BorderSide(color: Colors.grey),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12.0),
-                      borderSide: const BorderSide(
-                          color: ColorPalette.primary, width: 2),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8.0),
-                      borderSide: const BorderSide(color: Colors.grey),
-                    ),
-                    hoverColor: ColorPalette.primary,
-                  ),
-                  style: const TextStyle(
-                    color: Colors.black,
-                    fontFamily: 'Manrope',
-                    fontSize: 13,
-                  ),
+                  labelText: 'Email',
+                  borderColor: Colors.grey,
+                  focusedBorderColor: ColorPalette.primary,
+                  hoverColor: ColorPalette.primary,
                 ),
                 const SizedBox(
                   height: 20,
                 ),
                 const SizedBox(height: 20),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: ColorPalette.primary,
-                    minimumSize: const Size(360, 55),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 15),
-                  ),
-                  onPressed: () async {
+                CustomElevatedButton(
+                  text: 'Next',
+                  backgroundColor: ColorPalette.primary,
+                  textColor: ColorPalette.accentWhite,
+                  onPressed: () {
                     authenticationBloc.add(
                       GetOTPEvent(emailController.text),
                     );
                   },
-                  child: const Text(
-                    'Next',
-                    style: TextStyle(
-                      fontFamily: 'Manrope',
-                      fontSize: 11.5,
-                      color: ColorPalette.accentWhite,
-                    ),
-                  ),
                 ),
               ],
             ),
