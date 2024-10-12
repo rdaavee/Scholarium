@@ -13,16 +13,16 @@ class NotificationsModel {
 
   const NotificationsModel({
     this.id,
-    required this.sender,
-    required this.senderName,
-    required this.receiver,
-    required this.receiverName,
-    required this.title,
-    required this.role,
-    required this.message,
-    required this.status,
-    required this.date,
-    required this.time,
+    this.sender,
+    this.senderName,
+    this.receiver,
+    this.receiverName,
+    this.title,
+    this.role,
+    this.message,
+    this.status,
+    this.date,
+    this.time,
   });
 
   factory NotificationsModel.fromJson(Map<String, dynamic> map) {
