@@ -39,6 +39,10 @@ class _OTPScreenState extends State<OTPScreen> {
           );
         } else if (State is PasswordLoadingState) {
           Center(child: CircularProgressIndicator());
+        } else if (State is PasswordErrorState) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Invalid or Expired Code!')),
+          );
         }
       },
       builder: (context, state) {

@@ -9,9 +9,11 @@ import 'package:isHKolarium/features/widgets/app_bar.dart';
 import 'package:isHKolarium/features/widgets/no_data.dart';
 import 'package:isHKolarium/features/widgets/notification_widgets/notification_message.dart';
 import 'package:isHKolarium/features/widgets/student_widgets/notification_widgets/notification_card.dart';
+import 'package:isHKolarium/features/widgets/student_widgets/notification_widgets/notification_message.dart';
 
 class NotificationScreen extends StatefulWidget {
-  const NotificationScreen({super.key});
+  final String isRole;
+  const NotificationScreen({super.key, required this.isRole});
 
   @override
   State<NotificationScreen> createState() => _NotificationScreenState();
@@ -68,6 +70,64 @@ class _NotificationScreenState extends State<NotificationScreen> {
             return Scaffold(
               appBar: const AppBarWidget(
                   title: "Notifications", isBackButton: false),
+              floatingActionButton: widget.isRole != "Student"
+                  ? FloatingActionButton(
+                      backgroundColor: ColorPalette.primary.withOpacity(0.6),
+                      onPressed: () async {
+                        final bool? isCompleted = await showDialog<bool>(
+                          context: context,
+                          builder: (context) {
+                            return Dialog(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20.0),
+                              ),
+                              child: SizedBox(
+                                width: double.infinity,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.93,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Column(
+                                    children: [
+                                      const Text(
+                                        'Create User',
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                          color: ColorPalette.primary,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 15),
+                                      Expanded(
+                                        child: BlocProvider.value(
+                                          value: notificationsBloc,
+                                          child:
+                                              NotificationCreateMessageWidget(
+                                            index: 0,
+                                            isRole: "Admin",
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        );
+
+                        if (isCompleted == true) {
+                          // Handle completion if needed
+                        } else {
+                          print('User creation failed or was canceled.');
+                        }
+                      },
+                      child: const Icon(
+                        Icons.add,
+                        color: Colors.white,
+                      ),
+                    )
+                  : null,
               body: Stack(
                 children: [
                   Container(
@@ -157,21 +217,25 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                     );
                                   },
                                   child: NotificationCard(
-                                    sender: notifications.sender.toString(),
-                                    senderName:
-                                        notifications.senderName.toString(),
-                                    receiver: notifications.receiver.toString(),
-                                    role: notifications.role.toString(),
-                                    title: notifications.title.toString(),
-                                    message: notifications.message.toString(),
-                                    status: notifications.status.toString(),
-                                    date: _formatDate(
-                                        notifications.date.toString()),
-                                    time: _formatTime(
-                                        notifications.time.toString()),
-                                    profilePicture:
-                                        notifications.profilePicture.toString(),
-                                  ),
+                                      // Change the background color based on the status
+                                      color: notifications.status == false
+                                          ? Color.fromARGB(255, 236, 240, 241)
+                                          : Color.fromARGB(255, 213, 222,
+                                              224), // Replace with your default color
+                                      sender: notifications.sender.toString(),
+                                      senderName:
+                                          notifications.senderName.toString(),
+                                      receiver:
+                                          notifications.receiver.toString(),
+                                      role: notifications.role.toString(),
+                                      title: notifications.title.toString(),
+                                      message: notifications.message.toString(),
+                                      status: notifications.status.toString(),
+                                      date: _formatDate(
+                                          notifications.date.toString()),
+                                      time: _formatTime(
+                                          notifications.time.toString()),
+                                      profilePicture: "hello"),
                                 );
                               },
                             ),

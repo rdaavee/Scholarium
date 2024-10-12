@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
 
 class NotificationCard extends StatelessWidget {
+  final Color color;
   final String sender;
   final String senderName;
   final String receiver;
@@ -18,6 +19,7 @@ class NotificationCard extends StatelessWidget {
 
   const NotificationCard({
     super.key,
+    required this.color,
     required this.sender,
     required this.senderName,
     required this.receiver,
@@ -67,7 +69,7 @@ class NotificationCard extends StatelessWidget {
           height: 5,
         ),
         Container(
-          color: Color.fromARGB(255, 236, 240, 241),
+          color: color,
           padding: const EdgeInsets.all(10.0),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,

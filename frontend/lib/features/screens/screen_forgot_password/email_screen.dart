@@ -36,6 +36,10 @@ class _EmailScreenState extends State<EmailScreen> {
           );
         } else if (state is PasswordLoadingState) {
             Center(child: CircularProgressIndicator());
+        } else if (State is PasswordErrorState) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Invalid Credential')),
+          );
         }
       },
       builder: (context, state) {
