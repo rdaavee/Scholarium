@@ -6,6 +6,7 @@ import 'package:isHKolarium/api/implementations/student_repository_impl.dart';
 import 'package:isHKolarium/api/models/notifications_model.dart';
 import 'package:isHKolarium/blocs/bloc_admin/admin_bloc.dart';
 import 'package:isHKolarium/blocs/bloc_notification/notification_bloc.dart';
+import 'package:isHKolarium/config/constants/colors.dart';
 
 class NotificationMessageWidget extends StatefulWidget {
   final String sender;
@@ -67,113 +68,136 @@ class NotificationMessageState extends State<NotificationMessageWidget> {
               NotificationsBloc(globalRepository, studentRepository),
         ),
       ],
-      child: Scaffold(
-        body: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: SizedBox(
-            width: double.infinity,
-            child: Card(
-              margin: const EdgeInsets.all(10.0),
-              elevation: 4.0,
-              color: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12.0),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Scaffold(
+          body: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  RichText(
+                    text: TextSpan(
                       children: [
-                        Text(
-                          "From: ${widget.senderName}",
+                        TextSpan(
+                          text: "From: ",
                           style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xFF6D7278),
+                            fontFamily: 'Manrope',
+                            fontSize: 13,
                           ),
                         ),
-                        Text(
-                          widget.date,
+                        TextSpan(
+                          text: widget.senderName,
                           style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.grey[300],
-                              fontSize: 10),
-                        ),
-                        Text(
-                          widget.time,
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.grey[300],
-                              fontSize: 10),
+                            fontWeight: FontWeight.w900,
+                            color: ColorPalette.accentBlack,
+                            fontFamily: 'Manrope',
+                            fontSize: 15.5,
+                            letterSpacing: .8,
+                          ),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 8.0),
-                    Text(
-                      widget.title,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
+                  ),
+                  Text(
+                    widget.time,
+                    style: TextStyle(
+                      fontWeight: FontWeight.normal,
+                      color: Color(0xFF6D7278),
+                      fontSize: 10,
+                      fontFamily: 'Manrope',
                     ),
-                    Text(
-                      widget.message,
-                      style: TextStyle(
-                        color: Colors.black,
-                      ),
-                    ),
-                    const SizedBox(height: 8.0),
-                    if (widget.scheduleId.isNotEmpty) ...[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.green,
-                            ),
-                            child: const Text(
-                              "Accept",
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            onPressed: () async {
-                              notificationsBloc.add(
-                                  UpdateScheduleStatusEvent(widget.scheduleId));
-                              notificationsBloc.add(FetchNotificationsEvent());
-                              final notification = NotificationsModel(
-                                  sender: "userProfile.schoolID",
-                                  senderName: "",
-                                  receiverName: "selectedStudent",
-                                  title: "Schedule Duty",
-                                  role: "Admin",
-                                  message: "",
-                                  profilePicture: "userProfile.profilePicture");
-                              adminBloc
-                                  .add(CreateNotificationEvent(notification));
-                              Navigator.pop(context, true);
-                            },
-                          ),
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.red,
-                            ),
-                            child: const Text(
-                              "Reject",
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            onPressed: () {
-                              Navigator.pop(context, false);
-                            },
-                          ),
-                        ],
-                      )
-                    ]
-                  ],
+                  ),
+                ],
+              ),
+              const SizedBox(height: 10.0),
+              const Divider(
+                thickness: .09,
+                color: ColorPalette.accentBlack,
+              ),
+              const SizedBox(height: 5.0),
+              Text(
+                widget.title,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                  fontFamily: 'Manrope',
+                  fontSize: 18,
                 ),
               ),
-            ),
+              Text(
+                widget.message,
+                style: TextStyle(
+                  color: Colors.black,
+                  fontFamily: 'Manrope',
+                  fontSize: 11,
+                ),
+              ),
+              Spacer(),
+              if (widget.scheduleId.isNotEmpty) ...[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.green,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        minimumSize: const Size(160, 60),
+                      ),
+                      child: const Text(
+                        "Accept",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: 'Manrope',
+                          fontSize: 12,
+                        ),
+                      ),
+                      onPressed: () async {
+                        notificationsBloc
+                            .add(UpdateScheduleStatusEvent(widget.scheduleId));
+                        notificationsBloc.add(FetchNotificationsEvent());
+                        final notification = NotificationsModel(
+                          sender: "userProfile.schoolID",
+                          senderName: "",
+                          receiverName: "selectedStudent",
+                          title: "Schedule Duty",
+                          role: "Admin",
+                          message: "",
+                          profilePicture: "userProfile.profilePicture",
+                        );
+                        adminBloc.add(CreateNotificationEvent(notification));
+                        Navigator.pop(context, true);
+                      },
+                    ),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        minimumSize: const Size(160, 60),
+                      ),
+                      child: const Text(
+                        "Reject",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: 'Manrope',
+                          fontSize: 12,
+                        ),
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context, false);
+                      },
+                    ),
+                  ],
+                ),
+              ],
+            ],
           ),
         ),
       ),

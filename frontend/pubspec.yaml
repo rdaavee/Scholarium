@@ -110,7 +110,7 @@ flutter:
     - assets/images/enter-password-img.png
     - assets/images/bg_img.png
     - assets/images/ishkolarium.png
-    - assets/images/profile_image.png
+    - assets/images/avatar.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

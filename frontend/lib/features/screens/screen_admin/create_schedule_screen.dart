@@ -8,8 +8,11 @@ import 'package:isHKolarium/api/models/notifications_model.dart';
 import 'package:isHKolarium/api/models/schedule_model.dart';
 import 'package:isHKolarium/api/models/user_model.dart';
 import 'package:isHKolarium/blocs/bloc_admin/admin_bloc.dart';
+import 'package:isHKolarium/features/widgets/admin_widgets/room_textfield.dart';
+import 'package:isHKolarium/features/widgets/admin_widgets/subject_textfield.dart';
 import 'package:isHKolarium/features/widgets/app_bar.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
+import 'package:isHKolarium/features/widgets/label_text_widget.dart';
 
 class SetScheduleScreen extends StatefulWidget {
   const SetScheduleScreen({super.key});
@@ -145,15 +148,7 @@ class SetScheduleScreenState extends State<SetScheduleScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'Select Date',
-              style: TextStyle(
-                color: Color(0xFF6D7278),
-                fontSize: 15,
-                fontFamily: 'Manrope',
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+            LabelTextWidget(title: 'Select Date'),
             SizedBox(height: 10),
             GestureDetector(
               onTap: () async {
@@ -191,15 +186,7 @@ class SetScheduleScreenState extends State<SetScheduleScreen> {
               ),
             ),
             SizedBox(height: 20),
-            Text(
-              'Select Time',
-              style: TextStyle(
-                color: Color(0xFF6D7278),
-                fontSize: 15,
-                fontFamily: 'Manrope',
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+            LabelTextWidget(title: 'Select Time'),
             SizedBox(height: 10),
             Wrap(
               spacing: 10,
@@ -229,15 +216,7 @@ class SetScheduleScreenState extends State<SetScheduleScreen> {
               }).toList(),
             ),
             SizedBox(height: 30),
-            Text(
-              'Select Professor',
-              style: TextStyle(
-                color: Color(0xFF6D7278),
-                fontSize: 15,
-                fontFamily: 'Manrope',
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+            LabelTextWidget(title: 'Select Professor'),
             SizedBox(height: 10),
             DropdownButton<String>(
               isExpanded: true,
@@ -261,15 +240,7 @@ class SetScheduleScreenState extends State<SetScheduleScreen> {
                 });
               },
             ),
-            Text(
-              'Select Student',
-              style: TextStyle(
-                color: Color(0xFF6D7278),
-                fontSize: 15,
-                fontFamily: 'Manrope',
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+            LabelTextWidget(title: 'Select Student'),
             SizedBox(height: 10),
             DropdownButton<String>(
               isExpanded: true,
@@ -293,10 +264,21 @@ class SetScheduleScreenState extends State<SetScheduleScreen> {
                 });
               },
             ),
-            SizedBox(height: 10),
+            SizedBox(height: 20),
+            Row(
+              children: [
+                Expanded(
+                  child: RoomTextfield(labelText: 'Enter a room'),
+                ),
+                SizedBox(width: 10),
+                Expanded(
+                  child: SubjectTextfield(labelText: 'Enter a subject'),
+                ),
+              ],
+            ),
             Center(
               child: Container(
-                margin: const EdgeInsets.symmetric(vertical: 30),
+                margin: const EdgeInsets.symmetric(vertical: 20),
                 width: MediaQuery.of(context).size.width * .9,
                 height: 55,
                 decoration: BoxDecoration(
