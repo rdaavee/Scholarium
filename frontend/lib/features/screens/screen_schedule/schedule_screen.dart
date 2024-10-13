@@ -160,6 +160,10 @@ class ScheduleScreenState extends State<ScheduleScreen> {
                                     itemBuilder: (context, index) {
                                       final duty = Map<String, dynamic>.from(
                                           duties[index]);
+                                      if (duty['isActive'] != true) {
+                                        return SizedBox
+                                            .shrink();
+                                      }
                                       final isCompleted =
                                           duty['completed'] == 'true';
                                       if (widget.role == "Student") {
@@ -173,7 +177,7 @@ class ScheduleScreenState extends State<ScheduleScreen> {
                                       } else {
                                         return GestureDetector(
                                           onTap: isCompleted
-                                              ? null // No action when completed (non-clickable)
+                                              ? null
                                               : () async {
                                                   final result =
                                                       await showDialog(

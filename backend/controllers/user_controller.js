@@ -196,6 +196,7 @@ exports.getUserSchedule = async (req, res) => {
   }
 };
 
+
 // Helper function to update past schedules
 async function updatePastSchedules(school_id) {
   const currentDate = moment().startOf("day");
@@ -322,6 +323,25 @@ exports.updateNotificationStatus = async (req, res) => {
     res.status(500).json({ message: "Server error occurred" });
   }
 };
+
+exports.notificationConfirmSched = async (req, res)=>{
+  const scheduleId = req.params.id
+  try{
+    const result = await Schedule.findByIdAndUpdate(
+      scheduleId,
+      {isActive: true},
+      {new: true, runValidators: true}
+    )
+    if (!result) {
+      return res.status(404).json({ message: "Schedule not found." });
+    }
+    res.status(200).json({ message: "Schedule updated successfully.", schedule: result });
+  }catch(error){
+    console.error(error);
+    res.status(500).json({ message: "Server error occurred" });
+  }
+}
+
 
 // Get specific user using token
 exports.getUserProfile = async (req, res) => {
