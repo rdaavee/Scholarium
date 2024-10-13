@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:isHKolarium/api/implementations/admin_repository_impl.dart';
 import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
+import 'package:isHKolarium/api/models/notifications_model.dart';
+import 'package:isHKolarium/api/models/schedule_model.dart';
 import 'package:isHKolarium/api/models/user_model.dart';
 import 'package:isHKolarium/api/models/announcement_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -27,6 +29,7 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
     on<CreateAnnouncementEvent>(_onCreateAnnouncementEvent);
     on<UpdateAnnouncementEvent>(_onUpdateAnnouncementEvent);
     on<DeleteAnnouncementEvent>(_onDeleteAnnouncementEvent);
+    on<CreateScheduleAndNotificationEvent>(_onCreateScheduleAndNotificationEvent);
   }
 
   FutureOr<void> adminInitialEvent(
@@ -204,6 +207,17 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
       await _adminRepositoryImpl.deleteAnnouncement(event.id);
     } catch (e) {
       emit(AdminErrorState(message: 'Failed to delete announcement: $e'));
+    }
+  }
+
+//=========================================SCHEDULE=========================================================
+  FutureOr<void> _onCreateScheduleAndNotificationEvent(
+      CreateScheduleAndNotificationEvent event, Emitter<AdminState> emit) async {
+    emit(AdminLoadingState());
+    try {
+      await _adminRepositoryImpl.createSchedule(event.schedule, event.notification);
+    } catch (e) {
+      emit(AdminErrorState(message: 'Failed to create schedule: $e'));
     }
   }
 }

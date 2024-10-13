@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:isHKolarium/api/implementations/endpoint.dart';
+import 'package:isHKolarium/api/models/notifications_model.dart';
 import 'package:isHKolarium/api/models/schedule_model.dart';
 import 'package:isHKolarium/api/models/user_model.dart';
 import 'package:isHKolarium/api/models/announcement_model.dart';
@@ -86,27 +87,35 @@ class AdminRepositoryImpl extends AdminRepository implements Endpoint {
     }
   }
 
-  Future<void> createSchedule(ScheduleModel schedule) async {
-    final String? token = await _getToken();
-    final url = Uri.parse('$baseUrl/admin/createSchedule');
+  Future<void> createSchedule(ScheduleModel schedule, NotificationsModel notification) async {
+  final String? token = await _getToken();
+  final url = Uri.parse('$baseUrl/admin/createSchedule');
 
-    try {
-      final response = await http.post(
-        url,
-        headers: {
-          'Authorization': 'Bearer $token',
-          'Content-Type': 'application/json',
-        },
-        body: json.encode(schedule.toMap()),
-      );
+  final combinedData = {
+    'schedule': schedule.toMap(), 
+    'notification': notification.toMap(), 
+  };
 
-      if (response.statusCode != 200) {
-        throw Exception('Failed to create user: ${response.statusCode}');
-      }
-    } catch (e) {
-      throw Exception('Error: $e');
+  try {
+    final response = await http.post(
+      url,
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json',
+      },
+      body: json.encode(combinedData),
+    );
+
+    if (response.statusCode == 200) {
+      print("Schedule and Notification created successfully");
+    } else {
+      throw Exception('Failed to create schedule and notification: ${response.statusCode}');
     }
+  } catch (e) {
+    throw Exception('Error: $e');
   }
+}
+
 
   @override
   Future<void> updateUser(String schoolId, UserModel user) async {

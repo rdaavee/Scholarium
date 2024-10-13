@@ -1,9 +1,13 @@
 // ignore_for_file: avoid_print
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:isHKolarium/api/implementations/admin_repository_impl.dart';
+import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
+import 'package:isHKolarium/api/models/notifications_model.dart';
 import 'package:isHKolarium/api/models/schedule_model.dart';
 import 'package:isHKolarium/api/models/user_model.dart';
+import 'package:isHKolarium/blocs/bloc_admin/admin_bloc.dart';
 import 'package:isHKolarium/features/widgets/app_bar.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
 
@@ -20,17 +24,18 @@ class SetScheduleScreenState extends State<SetScheduleScreen> {
   String? selectedProfessor;
   String? selectedProfessorId;
   String? selectedStudent;
+  late UserModel userProfile;
   List<UserModel>? users;
   final adminRepositoryImpl = AdminRepositoryImpl();
+  late AdminBloc adminBloc;
+  final List<Map<String, String>> professors = [];
+  final List<Map<String, String>> students = [];
 
   @override
   void initState() {
     super.initState();
     initialize();
   }
-
-  final List<Map<String, String>> professors = [];
-  final List<Map<String, String>> students = [];
 
   final List<String> timeSlots = [
     '7 AM',
@@ -63,7 +68,11 @@ class SetScheduleScreenState extends State<SetScheduleScreen> {
 
   Future<void> initialize() async {
     try {
+      final adminRepository = AdminRepositoryImpl();
+      final globalRepository = GlobalRepositoryImpl();
+      adminBloc = AdminBloc(adminRepository, globalRepository);
       final users = await adminRepositoryImpl.fetchAllUsers();
+      userProfile = await globalRepository.fetchUserProfile();
 
       for (var user in users) {
         if (user.role == 'Professor') {
@@ -84,27 +93,42 @@ class SetScheduleScreenState extends State<SetScheduleScreen> {
   }
 
   Future<void> uploadSchedule() async {
+    String formattedTime = timeTo24HourMap[selectedTimeSlot] ?? '';
+    String formattedDate = selectedDate != null
+        ? DateFormat('yyyy-MM-dd').format(selectedDate!)
+        : '';
     print("Selected Student: $selectedStudent");
-    print("Selected Date: $selectedDate");
+    print("Selected Date: $formattedDate");
     print("Selected Professor: $selectedProfessor");
-    print("Selected Time Slot: $selectedTimeSlot");
-
+    print("Selected Time Slot: $formattedTime");
     final schedule = ScheduleModel(
       schoolID: selectedStudent,
       room: "room",
       block: "block",
       subject: "subject",
       profID: selectedProfessor,
-      professor: "David Aldrin", // Update as needed
-      department: "department", // Update as needed
-      time:
-          timeTo24HourMap[selectedTimeSlot] ?? '', // Convert to 24-hour format
-      date: selectedDate?.toString() ?? '',
-      isCompleted: "",
+      professor: "David Aldrin",
+      department: "department",
+      time: formattedTime,
+      date: formattedDate,
+      isActive: false,
+      isCompleted: "pending",
     );
+
+    final notification = NotificationsModel(
+        sender: userProfile.schoolID,
+        senderName: "${userProfile.firstName} ${userProfile.lastName}",
+        receiverName: selectedStudent,
+        title: "Schedule Duty",
+        role: "Admin",
+        message:
+            "A Schedule has been assign to you. \n You have been assigned a schedule to: Professor $selectedProfessor, \n Room: room, \n Subject: subject,\n time: $formattedTime \n date: $formattedDate ",
+        status: false,
+        profilePicture: userProfile.profilePicture);
     try {
-      await adminRepositoryImpl.createSchedule(schedule);
+      adminBloc.add(CreateScheduleAndNotificationEvent(schedule, notification));
       print("Schedule uploaded successfully");
+      print("Notification uploaded successfully");
       Navigator.pop(context);
     } catch (e) {
       print("Error uploading schedule: $e");
@@ -283,7 +307,7 @@ class SetScheduleScreenState extends State<SetScheduleScreen> {
                   onPressed: selectedDate != null &&
                           selectedTimeSlot != null &&
                           selectedProfessor != null
-                      ? () {
+                      ? () async {
                           uploadSchedule();
                         }
                       : null,

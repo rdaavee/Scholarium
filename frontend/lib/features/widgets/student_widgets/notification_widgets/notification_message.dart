@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:isHKolarium/api/implementations/admin_repository_impl.dart';
 import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
+import 'package:isHKolarium/api/models/notifications_model.dart';
 import 'package:isHKolarium/blocs/bloc_notification/notification_bloc.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
 
@@ -57,7 +59,8 @@ class NotificationMessageWidgetState
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => NotificationsBloc(GlobalRepositoryImpl()),
+          create: (context) =>
+              NotificationsBloc(GlobalRepositoryImpl()),
         ),
       ],
       child: Scaffold(
@@ -105,16 +108,17 @@ class NotificationMessageWidgetState
           return;
         }
 
+        final notifications = NotificationsModel(
+          sender: senderController.text,
+          senderName: senderNameController.text,
+          receiver: receiverController.text,
+          receiverName: receiverNameController.text,
+          role: roleController.text,
+          title: titleController.text,
+          message: messageController.text,
+        );
         try {
-          await globalRepository.createNotification(
-            sender: senderController.text,
-            senderName: senderNameController.text,
-            receiver: receiverController.text,
-            receiverName: receiverNameController.text,
-            role: roleController.text,
-            title: titleController.text,
-            message: messageController.text,
-          );
+          await globalRepository.createNotification(notification: notifications);
 
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Notification created successfully!')),

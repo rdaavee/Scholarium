@@ -21,24 +21,26 @@ class NotificationsModel {
   final String? role;
   final String? title;
   final String? message;
+  final String? scheduleId;
   final bool? status;
   final String? date;
   final String? time;
-  final String profilePicture;
+  final String? profilePicture;
 
   const NotificationsModel({
     this.id,
-    required this.sender,
-    required this.senderName,
-    required this.receiver,
-    required this.receiverName,
-    required this.title,
-    required this.role,
-    required this.message,
-    required this.status,
-    required this.date,
-    required this.time,
-    required this.profilePicture,
+    this.sender,
+    this.senderName,
+    this.receiver,
+    this.receiverName,
+    this.title,
+    this.role,
+    this.message,
+    this.scheduleId,
+    this.status,
+    this.date,
+    this.time,
+    this.profilePicture,
   });
 
   factory NotificationsModel.fromJson(Map<String, dynamic> json) {
@@ -51,6 +53,7 @@ class NotificationsModel {
       role: json['role'] ?? '',
       title: json['title'] ?? '',
       message: json['message'] ?? '',
+      scheduleId: json['scheduleId'] ?? '',
       status: json['status'] ?? false,
       date: json['date'] ?? '',
       time: json['time'] ?? '',
@@ -58,5 +61,23 @@ class NotificationsModel {
           ? json['sender_info']['profile_picture'] ?? ''
           : '',
     );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      '_id': id,
+      'sender': sender,
+      'senderName': senderName,
+      'receiver': receiver,
+      'receiverName': receiverName,
+      'role': role,
+      'title': title,
+      'message': message,
+      'scheduleId': scheduleId,
+      'status': status,
+      'date': date,
+      'time': time,
+      'profile_picture': profilePicture,
+    };
   }
 }
