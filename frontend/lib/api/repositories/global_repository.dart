@@ -32,6 +32,7 @@ abstract class GlobalRepository {
   Future<int> fetchUnreadNotificationCount();
   Future<void> createNotification({required NotificationsModel notification});
   Future<void> updateNotificationStatus(String notificationId);
+  Future<void> deleteNotificationAndScheduleStatus(String scheduleId,String schoolId);
   Future<List<AnnouncementModel>> fetchAnnoucementData();
   Future<List<AnnouncementModel>> fetchAllAnnouncements();
   Future<AnnouncementModel> fetchLatestAnnouncementData();

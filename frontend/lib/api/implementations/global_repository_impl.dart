@@ -396,6 +396,34 @@ class GlobalRepositoryImpl extends GlobalRepository implements Endpoint {
   }
 
   @override
+  Future<void> deleteNotificationAndScheduleStatus(
+      String scheduleId, String schoolId) async {
+    final String? token = await _getToken();
+    final url = Uri.parse('$baseUrl/admin/deleteSchedule');
+    print(schoolId);
+    try {
+      final response = await http.delete(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+        body: json.encode({
+          'scheduleId': scheduleId,
+          'school_id': schoolId,
+        }),
+      );
+
+      if (response.statusCode != 200) {
+        throw Exception(
+            'Failed to delete notification: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Error: $e');
+    }
+  }
+
+  @override
   Future<List<AnnouncementModel>> fetchAnnoucementData() {
     throw UnimplementedError();
   }

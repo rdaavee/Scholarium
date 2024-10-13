@@ -23,3 +23,10 @@ class UpdateScheduleStatusEvent extends NotificationsEvent {
 
   const UpdateScheduleStatusEvent(this.scheduleId);
 }
+
+class DeleteScheduleNotificationEvent extends NotificationsEvent {
+  final String scheduleId;
+  final String schoolId;
+
+  const DeleteScheduleNotificationEvent(this.scheduleId, this.schoolId);
+}

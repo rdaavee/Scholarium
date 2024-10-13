@@ -104,7 +104,7 @@ exports.getUserDTR = async (req, res) => {
     }
 
     const dtrRecords = await DTR.find({ school_id: user.school_id });
-    if (dtrRecords.length > 0) {
+    if (dtrRecords.length >= 0) {
       res.status(200).json(dtrRecords);
     } else {
       res.status(404).json({ message: "User DTR not found" });
@@ -197,16 +197,16 @@ exports.getUserSchedule = async (req, res) => {
   }
 };
 
-// Helper function to update past schedules
 async function updatePastSchedules(school_id) {
+  const currentDate = moment().startOf("day").format("YYYY-MM-DD"); 
   const pastSchedules = await Schedule.find({
     school_id: school_id,
-    date: { $lt: currentDate.format("YYYY-MM-DD") }, // Fetch past schedules
+    date: { $lt: currentDate }
   });
 
   const updatePromises = pastSchedules.map(async (schedule) => {
     if (schedule.completed !== "true") {
-      return Schedule.updateOne({ _id: schedule._id }, { completed: "false" });
+      await Schedule.updateOne({ _id: schedule._id }, { completed: "false" });
     }
 
     const user = await User.findOne({ school_id: school_id });
@@ -214,22 +214,21 @@ async function updatePastSchedules(school_id) {
 
     const newNotification = new Notification({
       sender: bot.school_id,
-      senderName: bot.first_name + " " + bot.last_name,
+      senderName: `${bot.first_name} ${bot.last_name}`, 
       receiver: user.school_id,
-      receiverName: user.first_name + " " + user.last_name,
+      receiverName: `${user.first_name} ${user.last_name}`, 
       role: "Bot",
       title: "Duty Alert",
-      message: `Dear ${user.first_name}, you have not completed your duty on ${date} at ${time_in}. Please check your records for more details.`,
-      scheduleId: "",
-      date: currentDate,
-      time: currentTime,
+      message: `Dear ${user.first_name}, you have not completed your duty on ${schedule.date} at ${schedule.time_in}. Please check your records for more details.`,
+      scheduleId: schedule._id,
+      date: moment(), 
+      time: moment().format("HH:mm:ss"), 
       status: false,
       profile_picture: bot.profile_picture,
     });
 
     await newNotification.save();
   });
-
   await Promise.all(updatePromises);
 }
 
