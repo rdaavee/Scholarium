@@ -21,7 +21,7 @@ class ProfessorRepositoryImpl extends ProfessorRepository implements Endpoint {
   @override
   Future<void> createPost(NotificationsModel notification) async {
     final String? token = await _getToken();
-    final url = Uri.parse('http://localhost:3000/api/prof/createPost');
+    final url = Uri.parse('$baseUrl/prof/createPost');
 
     if (notification.title!.isEmpty || notification.message!.isEmpty) {
       throw Exception('Title and body cannot be empty.');

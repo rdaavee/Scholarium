@@ -33,7 +33,7 @@ class _ProfessorHomeScreenState extends State<ProfessorHomeScreen> {
     final globalRepository = GlobalRepositoryImpl();
     professorsBloc = ProfessorsBloc(professorRepository, globalRepository);
     bottomNavBloc = BottomNavBloc(globalRepository);
-    bottomNavBloc.add(FetchUnreadCountEvent());
+    context.read<BottomNavBloc>().add(FetchUnreadCountEvent());
     professorsBloc.add(ProfessorsInitialEvent());
     professorsBloc.add(FetchLatestEvent());
   }

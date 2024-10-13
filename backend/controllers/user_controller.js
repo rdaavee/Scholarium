@@ -196,7 +196,6 @@ exports.getUserSchedule = async (req, res) => {
   }
 };
 
-
 // Helper function to update past schedules
 async function updatePastSchedules(school_id) {
   const currentDate = moment().startOf("day");
@@ -225,21 +224,21 @@ exports.getUserNotifications = async (req, res) => {
     const notifications = await Notification.aggregate([
       {
         $match: {
-          receiver: user.school_id, 
+          receiver: user.school_id,
         },
       },
       {
         $lookup: {
           from: "users",
           localField: "sender",
-          foreignField: "school_id", 
+          foreignField: "school_id",
           as: "sender_info",
         },
       },
       {
         $unwind: {
           path: "$sender_info",
-          preserveNullAndEmptyArrays: true, 
+          preserveNullAndEmptyArrays: true,
         },
       },
       {
@@ -253,16 +252,16 @@ exports.getUserNotifications = async (req, res) => {
           title: 1,
           message: 1,
           status: 1,
+          scheduleId: 1,
           date: 1,
           time: 1,
-          isActive: 1,
           createdAt: 1,
           updatedAt: 1,
-          "sender_info.profile_picture": 1, 
+          "sender_info.profile_picture": 1,
         },
       },
       {
-        $sort: { date: -1 },
+        $sort: { date: -1, time: -1 },
       },
     ]);
 
@@ -324,24 +323,28 @@ exports.updateNotificationStatus = async (req, res) => {
   }
 };
 
-exports.notificationConfirmSched = async (req, res)=>{
-  const scheduleId = req.params.id
-  try{
+exports.notificationConfirmSched = async (req, res) => {
+  const scheduleId = req.params.id;
+  try {
     const result = await Schedule.findByIdAndUpdate(
       scheduleId,
-      {isActive: true},
-      {new: true, runValidators: true}
-    )
+      { isActive: true },
+      { new: true, runValidators: true }
+    );
     if (!result) {
       return res.status(404).json({ message: "Schedule not found." });
     }
+
+    await Notification.updateMany(
+      { scheduleId: scheduleId },
+      { $set: { scheduleId: "" } }
+    );
     res.status(200).json({ message: "Schedule updated successfully.", schedule: result });
-  }catch(error){
+  } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error occurred" });
   }
-}
-
+};
 
 // Get specific user using token
 exports.getUserProfile = async (req, res) => {
@@ -373,12 +376,11 @@ exports.getUserProfile = async (req, res) => {
   }
 };
 
-
 // Get specific user using School_id
 exports.getUserData = async (req, res) => {
-  const {school_id} = req.params
+  const { school_id } = req.params;
   try {
-    const user = await User.findOne({school_id: school_id});
+    const user = await User.findOne({ school_id: school_id });
     if (user) {
       res.status(200).json({
         id: user._id,

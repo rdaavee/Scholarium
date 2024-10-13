@@ -63,3 +63,9 @@ class CreateScheduleAndNotificationEvent extends AdminEvent {
 
   CreateScheduleAndNotificationEvent(this.schedule, this.notification);
 }
+
+class CreateNotificationEvent extends AdminEvent {
+  final NotificationsModel notification;
+
+  CreateNotificationEvent(this.notification);
+}
