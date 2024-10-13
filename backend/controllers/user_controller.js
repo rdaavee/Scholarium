@@ -10,7 +10,8 @@ const Notification = require("../models/notifications_model");
 const validateToken = async (req, res, next) => {
   // Implement your token validation logic here to set req.userId
 };
-
+const currentDate = moment().format("YYYY-MM-DD");
+const currentTime = moment().format("HH:mm:ss");
 // Get Announcement
 exports.getAnnouncements = async (req, res) => {
   try {
@@ -198,16 +199,35 @@ exports.getUserSchedule = async (req, res) => {
 
 // Helper function to update past schedules
 async function updatePastSchedules(school_id) {
-  const currentDate = moment().startOf("day");
   const pastSchedules = await Schedule.find({
     school_id: school_id,
     date: { $lt: currentDate.format("YYYY-MM-DD") }, // Fetch past schedules
   });
 
-  const updatePromises = pastSchedules.map((schedule) => {
+  const updatePromises = pastSchedules.map(async (schedule) => {
     if (schedule.completed !== "true") {
       return Schedule.updateOne({ _id: schedule._id }, { completed: "false" });
     }
+
+    const user = await User.findOne({ school_id: school_id });
+    const bot = await User.findOne({ school_id: "00-0000-00000" });
+
+    const newNotification = new Notification({
+      sender: bot.school_id,
+      senderName: bot.first_name + " " + bot.last_name,
+      receiver: user.school_id,
+      receiverName: user.first_name + " " + user.last_name,
+      role: "Bot",
+      title: "Duty Alert",
+      message: `Dear ${user.first_name}, you have not completed your duty on ${date} at ${time_in}. Please check your records for more details.`,
+      scheduleId: "",
+      date: currentDate,
+      time: currentTime,
+      status: false,
+      profile_picture: bot.profile_picture,
+    });
+
+    await newNotification.save();
   });
 
   await Promise.all(updatePromises);
@@ -334,11 +354,52 @@ exports.notificationConfirmSched = async (req, res) => {
     if (!result) {
       return res.status(404).json({ message: "Schedule not found." });
     }
+    const bot = await User.findOne({school_id: "00-0000-00000"});
+    const userInfo = await Notification.findOne({scheduleId: scheduleId}); 
+    const profId = await Schedule.findOne({_id: scheduleId}); 
+    const adminId = await Notification.findOne({sender: userInfo.sender});
+    const adminInfo = await User.findOne({school_id: adminId.sender});
+    const senderInfo = await User.findOne({ school_id: userInfo.receiver });
+    const receiverInfo = await User.findOne({ school_id: profId.prof_id });
+    const now = new Date();
+    const date = now.toISOString().split('T')[0];
+    const time = now.toTimeString().split(' ')[0];
 
+    const newNotification = new Notification({
+      sender: bot.school_id,
+      senderName: `${bot.first_name} ${bot.last_name}`,
+      receiver: receiverInfo.school_id,
+      receiverName:  `${receiverInfo.first_name} ${receiverInfo.last_name}`,
+      role: bot.role,
+      title: "Schedule Confirmed!",
+      message: `Student ${senderInfo.first_name} ${senderInfo.last_name} has accepted your requested schedule.`,
+      scheduleId: "",
+      date: date,
+      time: time,
+      status: false,
+    });
+    await newNotification.save();
+    const adminNotification = new Notification({
+      sender: bot.school_id,
+      senderName: `${bot.first_name} ${bot.last_name}`,
+      receiver: adminInfo.school_id,
+      receiverName: `${adminInfo.first_name} ${adminInfo.last_name}`,
+      role: bot.role,
+      title: "Schedule Confirmed!",
+      message: `Student ${senderInfo.first_name} ${senderInfo.last_name} has accepted their schedule towards ${receiverInfo.first_name} ${receiverInfo.last_name}.`,
+      scheduleId: "",
+      date: date,
+      time: time,
+      status: false,
+    });
+    await adminNotification.save();
     await Notification.updateMany(
       { scheduleId: scheduleId },
       { $set: { scheduleId: "" } }
-    );
+    );    
+
+    console.log("NOTIFICATIONS DONE");
+
     res.status(200).json({ message: "Schedule updated successfully.", schedule: result });
   } catch (error) {
     console.error(error);

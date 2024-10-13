@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:isHKolarium/api/models/dtr_model.dart';
 
 abstract class ScheduleEvent extends Equatable {
   @override
@@ -34,4 +35,13 @@ class UpdateDutySchedule extends ScheduleEvent {
 
   @override
   List<Object> get props => [id];
+}
+
+class CreateDTREvent extends ScheduleEvent {
+  final DtrModel dtr;
+
+  CreateDTREvent({required this.dtr});
+
+  @override
+  List<Object> get props => [dtr];
 }

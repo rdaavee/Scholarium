@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -195,56 +197,63 @@ class _NotificationScreenState extends State<NotificationScreen> {
                     ],
                   ),
                   if (widget.isRole != "Student")
-                    FloatingActionButton(
-                      backgroundColor: ColorPalette.primary.withOpacity(0.6),
-                      onPressed: () async {
-                        final bool? isCompleted = await showDialog<bool>(
-                          context: context,
-                          builder: (context) {
-                            return Dialog(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20.0),
-                              ),
-                              child: SizedBox(
-                                width: double.infinity,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.93,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: Column(
-                                    children: [
-                                      const Text(
-                                        'Create User',
-                                        style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
-                                          color: ColorPalette.primary,
-                                        ),
-                                      ),
-                                      const SizedBox(height: 15),
-                                      Expanded(
-                                        child: BlocProvider.value(
-                                          value: notificationsBloc,
-                                          child:
-                                              NotificationCreateMessageWidget(
-                                            index: 0,
-                                            isRole: "Admin",
-                                          ),
-                                        ),
-                                      ),
-                                    ],
+                    Align(
+                      alignment: Alignment.bottomRight,
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 20, bottom: 20),
+                        child: FloatingActionButton(
+                          backgroundColor:
+                              ColorPalette.primary.withOpacity(0.6),
+                          onPressed: () async {
+                            final bool? isCompleted = await showDialog<bool>(
+                              context: context,
+                              builder: (context) {
+                                return Dialog(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20.0),
                                   ),
-                                ),
-                              ),
+                                  child: SizedBox(
+                                    width: double.infinity,
+                                    height: MediaQuery.of(context).size.height *
+                                        0.93,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: Column(
+                                        children: [
+                                          const Text(
+                                            'Create User',
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                              color: ColorPalette.primary,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 15),
+                                          Expanded(
+                                            child: BlocProvider.value(
+                                              value: notificationsBloc,
+                                              child:
+                                                  NotificationCreateMessageWidget(
+                                                index: 0,
+                                                isRole: "Admin",
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
                             );
+                            if (isCompleted == true) {
+                            } else {
+                              print('User creation failed or was canceled.');
+                            }
                           },
-                        );
-                        if (isCompleted == true) {
-                        } else {
-                          print('User creation failed or was canceled.');
-                        }
-                      },
-                      child: const Icon(Icons.add, color: Colors.white),
+                          child: const Icon(Icons.add, color: Colors.white),
+                        ),
+                      ),
                     ),
                 ],
               );

@@ -7,14 +7,15 @@ import 'package:isHKolarium/blocs/bloc_schedule/schedule_event.dart';
 import 'package:isHKolarium/blocs/bloc_schedule/schedule_state.dart';
 
 class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
-  final StudentRepositoryImpl studentService;
-  final ProfessorRepositoryImpl profService;
+  final StudentRepositoryImpl studentRepository;
+  final ProfessorRepositoryImpl professorRepository;
 
-  ScheduleBloc(this.studentService, this.profService)
+  ScheduleBloc(this.studentRepository, this.professorRepository)
       : super(ScheduleInitialState()) {
     on<ScheduleInitialEvent>(scheduleInitialEvent);
     on<LoadScheduleEvent>(_onLoadScheduleEvent);
     on<UpdateDutySchedule>(updateDutySchedule);
+    on<CreateDTREvent>(createDTREvent);
   }
 
   FutureOr<void> scheduleInitialEvent(
@@ -33,13 +34,13 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
     try {
       switch (event.role) {
         case "Student":
-          final schedule = await studentService.getSchedule(
+          final schedule = await studentRepository.getSchedule(
               selectedMonth: event.selectedMonth);
           emit(ScheduleLoadedSuccessState(schedule: schedule));
           break;
         case "Professor":
-          final schedule =
-              await profService.getSchedule(selectedMonth: event.selectedMonth);
+          final schedule = await professorRepository.getSchedule(
+              selectedMonth: event.selectedMonth);
           emit(ScheduleLoadedSuccessState(schedule: schedule));
       }
     } catch (e) {
@@ -51,8 +52,17 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
       UpdateDutySchedule event, Emitter<ScheduleState> emit) async {
     emit(ScheduleLoadingState());
     try {
-      await profService.updateStudentSchedule(event.id);
-      
+      await professorRepository.updateStudentSchedule(event.id);
+    } catch (e) {
+      emit(ScheduleErrorState(e.toString()));
+    }
+  }
+
+  FutureOr<void> createDTREvent(
+      CreateDTREvent event, Emitter<ScheduleState> emit) async {
+    emit(ScheduleLoadingState());
+    try {
+      await professorRepository.createDTR(event.dtr);
     } catch (e) {
       emit(ScheduleErrorState(e.toString()));
     }

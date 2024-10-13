@@ -5,10 +5,12 @@ const Post = require("../models/posts_model");
 const User = require("../models/user_model");
 const DTR = require("../models/dtr_model");
 const moment = require("moment");
-const admin = require('firebase-admin');
-const { v4: uuidv4 } = require('uuid'); 
+const admin = require("firebase-admin");
+const { v4: uuidv4 } = require("uuid");
+const Notifications = require("../models/notifications_model");
 
-
+const currentDate = moment().format("YYYY-MM-DD");
+const currentTime = moment().format("HH:mm:ss");
 exports.getProfTodaySchedule = async (req, res) => {
   const { prof_id } = req.params;
   const today = moment().format("YYYY-MM-DD");
@@ -32,7 +34,7 @@ exports.getProfTodaySchedule = async (req, res) => {
         groupedSchedules[time] = {
           room: room,
           date: schedule.date,
-          students: [], 
+          students: [],
         };
       }
 
@@ -51,7 +53,7 @@ exports.getProfTodaySchedule = async (req, res) => {
           const user = await User.findOne(
             { school_id: match.school_id },
             "school_id profile_picture"
-          ); 
+          );
 
           if (user) {
             groupedSchedules[time].students.push({
@@ -68,7 +70,7 @@ exports.getProfTodaySchedule = async (req, res) => {
         time,
         room: details.room,
         date: details.date,
-        students: details.students, 
+        students: details.students,
       })
     );
 
@@ -104,31 +106,43 @@ exports.createNotification = async (req, res) => {
     const loggedInProfId = req.userSchoolId;
     console.log("Logged In Prof ID:", loggedInProfId);
 
-    const senderInfo = await User.findOne({ school_id: loggedInProfId }).select('first_name last_name role');
+    const senderInfo = await User.findOne({ school_id: loggedInProfId }).select(
+      "first_name last_name role"
+    );
     if (!senderInfo) {
       return res.status(404).json({ message: "Sender not found." });
     }
     const senderName = `${senderInfo.first_name} ${senderInfo.last_name}`;
     console.log("Sender Name:", senderName);
 
-    const schedules = await Schedule.find({ prof_id: loggedInProfId }).select("school_id");
+    const schedules = await Schedule.find({ prof_id: loggedInProfId }).select(
+      "school_id"
+    );
     if (schedules.length === 0) {
-      return res.status(404).json({ message: "No schedules found for this professor." });
+      return res
+        .status(404)
+        .json({ message: "No schedules found for this professor." });
     }
 
     // Extract unique school IDs
-    const schoolIds = [...new Set(schedules.map(schedule => schedule.school_id))];
+    const schoolIds = [
+      ...new Set(schedules.map((schedule) => schedule.school_id)),
+    ];
     console.log("Unique School IDs:", schoolIds);
 
     // Create notifications directly based on unique school IDs
     const notificationsData = await Promise.all(
       schoolIds.map(async (schoolId) => {
-        const receiverInfo = await User.findOne({ school_id: schoolId }).select('first_name last_name');
-        const receiverName = receiverInfo ? `${receiverInfo.first_name} ${receiverInfo.last_name}` : null;
+        const receiverInfo = await User.findOne({ school_id: schoolId }).select(
+          "first_name last_name"
+        );
+        const receiverName = receiverInfo
+          ? `${receiverInfo.first_name} ${receiverInfo.last_name}`
+          : null;
 
         const now = new Date();
-        const date = now.toISOString().split('T')[0];
-        const time = now.toTimeString().split(' ')[0];
+        const date = now.toISOString().split("T")[0];
+        const time = now.toTimeString().split(" ")[0];
 
         return {
           sender: loggedInProfId,
@@ -148,7 +162,9 @@ exports.createNotification = async (req, res) => {
     );
 
     // Filter out any null values from the notifications data
-    const filteredNotifications = notificationsData.filter(notification => notification);
+    const filteredNotifications = notificationsData.filter(
+      (notification) => notification
+    );
 
     if (filteredNotifications.length > 0) {
       // Insert notifications into the database
@@ -163,7 +179,9 @@ exports.createNotification = async (req, res) => {
     }
   } catch (error) {
     console.error("Error creating notifications:", error);
-    res.status(500).json({ message: "Server error. Unable to create notifications." });
+    res
+      .status(500)
+      .json({ message: "Server error. Unable to create notifications." });
   }
 };
 
@@ -273,21 +291,21 @@ exports.getProfSchedule = async (req, res) => {
 
 const updatePastSchedules = async (prof_id) => {
   try {
-    const currentDate = moment().startOf("day").format("YYYY-MM-DD"); 
+    const currentDate = moment().startOf("day").format("YYYY-MM-DD");
 
     await Schedule.updateMany(
       {
         prof_id: prof_id,
-        date: { $lt: currentDate }, 
-        completed: { $ne: "true" }, 
+        date: { $lt: currentDate },
+        completed: { $ne: "true" },
       },
-      { $set: { completed: "false" } } 
+      { $set: { completed: "false" } }
     );
 
     console.log("Past schedules updated successfully.");
   } catch (error) {
     console.error("Error updating past schedules:", error);
-    throw new Error("Error updating past schedules"); 
+    throw new Error("Error updating past schedules");
   }
 };
 exports.updateStudentsSchedules = async (req, res) => {
@@ -332,15 +350,15 @@ exports.createDTR = async (req, res) => {
   console.log(req.body);
 
   try {
-    const base64Image = professor_signature.split(';base64,').pop();
-    const buffer = Buffer.from(base64Image, 'base64');
+    const base64Image = professor_signature.split(";base64,").pop();
+    const buffer = Buffer.from(base64Image, "base64");
 
     const filename = `professor_signature_${uuidv4()}.png`;
 
     const bucket = admin.storage().bucket();
     const file = bucket.file(filename);
     await file.save(buffer, {
-      metadata: { contentType: 'image/png' },
+      metadata: { contentType: "image/png" },
       public: true,
     });
 
@@ -359,16 +377,38 @@ exports.createDTR = async (req, res) => {
 
     const savedRecord = await newDTR.save();
 
+    const user = await User.findOne({ school_id: school_id });
+    const bot = await User.findOne({ school_id: "00-0000-00000" });
+
+    const newNotification = new Notifications({
+      sender: bot.school_id,
+      senderName: bot.first_name + " " + bot.last_name,
+      receiver: user.school_id,
+      receiverName: user.first_name + " " + user.last_name,
+      role: "Bot",
+      title: "Duty Alert",
+      message: `Dear ${user.first_name}, you have successfully completed your duty on ${date} at ${time_out}. Please check your records for more details.`,
+      scheduleId: "",
+      date: currentDate,
+      time: currentTime,
+      status: false,
+      profile_picture: bot.profile_picture,
+    });
+
+    await newNotification.save();
+    console.log(newNotification)
     res.status(200).json({
       message: "DTR created successfully",
       record: savedRecord,
+      notification: newNotification,
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Server error occurred", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Server error occurred", error: error.message });
   }
 };
-
 
 //Update post
 exports.updatePost = (req, res) => {

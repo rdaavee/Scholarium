@@ -50,7 +50,7 @@ exports.createUser = async (req, res) => {
   }
 };
 
-exports.createSchedule = async (req, res) => {
+exports.createScheduleAndNotification = async (req, res) => {
   try {
     const { schedule, notification } = req.body; 
     console.log(req.body);
@@ -128,7 +128,6 @@ exports.updateUser = async (req, res) => {
         first_name: params.first_name,
         middle_name: params.middle_name,
         last_name: params.last_name,
-        profile_picture: params.profile_picture,
         gender: params.gender,
         contact: params.contact,
         address: params.address,
