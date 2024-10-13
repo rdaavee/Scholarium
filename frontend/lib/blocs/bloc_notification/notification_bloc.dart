@@ -6,7 +6,6 @@ import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
 import 'package:isHKolarium/api/implementations/student_repository_impl.dart';
 import 'package:isHKolarium/api/models/notifications_model.dart';
 import 'package:isHKolarium/api/models/user_model.dart';
-import 'package:isHKolarium/api/repositories/student_repository.dart';
 
 part 'notification_event.dart';
 part 'notification_state.dart';
