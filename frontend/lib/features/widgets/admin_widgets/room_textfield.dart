@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-class CustomTextField extends StatelessWidget {
-  final TextEditingController controller;
+class RoomTextfield extends StatelessWidget {
   final String labelText;
   final TextInputType keyboardType;
   final bool obscureText;
@@ -13,9 +12,8 @@ class CustomTextField extends StatelessWidget {
   final Color hoverColor;
   final double borderRadius;
 
-  const CustomTextField({
+  const RoomTextfield({
     super.key,
-    required this.controller,
     required this.labelText,
     this.keyboardType = TextInputType.text,
     this.obscureText = false,
@@ -31,7 +29,6 @@ class CustomTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
-      controller: controller,
       keyboardType: keyboardType,
       obscureText: obscureText,
       decoration: InputDecoration(

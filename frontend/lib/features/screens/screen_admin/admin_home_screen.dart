@@ -8,7 +8,11 @@ import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
 import 'package:isHKolarium/blocs/bloc_admin/admin_bloc.dart';
 import 'package:isHKolarium/blocs/bloc_bottom_nav/bottom_nav_bloc.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
-import 'package:isHKolarium/features/widgets/admin_widgets/duty_card.dart';
+import 'package:isHKolarium/features/widgets/admin_widgets/account_status_card.dart';
+import 'package:isHKolarium/features/widgets/admin_widgets/dtr_status_card.dart';
+import 'package:isHKolarium/features/widgets/admin_widgets/duty_status_card.dart';
+import 'package:isHKolarium/features/widgets/admin_widgets/hk_discount_status_card.dart';
+import 'package:isHKolarium/features/widgets/label_text_widget.dart';
 import 'package:isHKolarium/features/widgets/loading_circular.dart';
 
 class AdminHomeScreen extends StatefulWidget {
@@ -67,12 +71,12 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                   AdminMenuItem(
                     title: 'View Announcement',
                     route: '/view_announcement',
-                    icon: CupertinoIcons.rectangle_stack_fill_badge_plus,
+                    icon: CupertinoIcons.rectangle_stack_fill,
                   ),
                   AdminMenuItem(
                     title: 'View Schedule',
                     route: '/view_schedule',
-                    icon: CupertinoIcons.calendar_badge_plus,
+                    icon: CupertinoIcons.calendar,
                   ),
                   AdminMenuItem(
                     title: 'Create Announcement',
@@ -101,7 +105,6 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
           builder: (context, state) {
             if (state is AdminLoadedSuccessState) {
               return SingleChildScrollView(
-                // Ensure this is returned
                 child: Container(
                   decoration: const BoxDecoration(
                     color: Color(0xFFF0F3F4),
@@ -110,27 +113,12 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                   ),
                   child: Column(
                     children: [
-                      Divider(
-                        thickness: 0.4,
-                        indent: 20,
-                        endIndent: 15,
-                        color: Colors.grey[400],
-                      ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 23),
                       const Padding(
                         padding: EdgeInsets.symmetric(horizontal: 25.0),
                         child: Align(
                           alignment: Alignment.topLeft,
-                          child: Text(
-                            'Account Monitoring',
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontFamily: 'Manrope',
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xFF6D7278),
-                              letterSpacing: 0.5,
-                            ),
-                          ),
+                          child: LabelTextWidget(title: 'Account Monitoring'),
                         ),
                       ),
                       Container(
@@ -138,57 +126,40 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                         child: Column(
                           children: [
                             Wrap(
-                              spacing: 5.0,
-                              runSpacing: 5.0,
+                              spacing: 8.0,
+                              runSpacing: 8.0,
                               children: [
-                                SizedBox(
+                                AccountStatusCard(
+                                  title: 'Account Status',
+                                  activeCount: state.activeCount,
+                                  inactiveCount: state.inactiveCount,
+                                  cardColor: Colors.green,
                                   width: MediaQuery.of(context).size.width / 2 -
                                       20,
-                                  child: DutyCard(
-                                    cardColor: ColorPalette.accent,
-                                    title: 'Account Status',
-                                    content:
-                                        'Active: ${state.activeCount}\nInactive: ${state.inactiveCount}',
-                                    textColor: Colors.black,
-                                    icon: CupertinoIcons.person_2_alt,
-                                  ),
                                 ),
-                                SizedBox(
+                                HkDiscountStatusCard(
+                                  title: 'HK Discounts',
+                                  discount25: state.hk25,
+                                  discount50: state.hk50,
+                                  discount75: state.hk75,
+                                  cardColor: Colors.red,
                                   width: MediaQuery.of(context).size.width / 2 -
                                       20,
-                                  child: DutyCard(
-                                    cardColor: ColorPalette.dutyCardColor,
-                                    title: 'HK Discount\nTypes',
-                                    content:
-                                        '25%: ${state.hk25}\n50%: ${state.hk50}\n75%: ${state.hk75}',
-                                    textColor: Colors.white,
-                                    icon: CupertinoIcons.tag_solid,
-                                  ),
                                 ),
-                                SizedBox(
+                                DutyStatusCard(
+                                  title: 'Duty Status',
+                                  ongoingCount: state.todaySchedulesCount,
+                                  completedCount: state.completedSchedulesCount,
+                                  cardColor: Colors.orange,
                                   width: MediaQuery.of(context).size.width / 2 -
                                       20,
-                                  child: DutyCard(
-                                    cardColor: ColorPalette.dutyCardColor,
-                                    title: 'Duties Status',
-                                    content:
-                                        'Ongoing: ${state.todaySchedulesCount}\nCompleted: ${state.completedSchedulesCount}',
-                                    textColor: Colors.white,
-                                    icon: CupertinoIcons
-                                        .rectangle_fill_on_rectangle_angled_fill,
-                                  ),
                                 ),
-                                SizedBox(
+                                DtrStatusCard(
+                                  title: 'DTR Status',
+                                  completedCount: state.completedDtr,
+                                  cardColor: Colors.purple,
                                   width: MediaQuery.of(context).size.width / 2 -
                                       20,
-                                  child: DutyCard(
-                                    cardColor: ColorPalette.accent,
-                                    title: 'DTR Status',
-                                    content: 'Completed: ${state.completedDtr}',
-                                    textColor: Colors.black,
-                                    icon:
-                                        CupertinoIcons.check_mark_circled_solid,
-                                  ),
                                 ),
                               ],
                             ),
@@ -197,19 +168,10 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                               padding: EdgeInsets.symmetric(horizontal: 25.0),
                               child: Align(
                                 alignment: Alignment.topLeft,
-                                child: Text(
-                                  'Status Chart',
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    fontFamily: 'Manrope',
-                                    fontWeight: FontWeight.bold,
-                                    color: Color(0xFF6D7278),
-                                    letterSpacing: 0.5,
-                                  ),
-                                ),
+                                child: LabelTextWidget(title: 'Status Chart'),
                               ),
                             ),
-                            const SizedBox(height: 15),
+                            const SizedBox(height: 20),
                             Padding(
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 16.0),
@@ -218,7 +180,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                                   color: Colors.white,
                                   borderRadius: BorderRadius.circular(15),
                                 ),
-                                height: 300,
+                                height: 270,
                                 child: PieChart(
                                   PieChartData(
                                     sections: [

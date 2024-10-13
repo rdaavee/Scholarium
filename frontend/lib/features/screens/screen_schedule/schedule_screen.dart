@@ -117,112 +117,120 @@ class ScheduleScreenState extends State<ScheduleScreen> {
                 Container(
                   color: ColorPalette.primary.withOpacity(0.6),
                 ),
-                Expanded(
-                  child: Container(
-                      decoration: const BoxDecoration(
-                        color: Color(0xFFF0F3F4),
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(10)),
-                      ),
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: ScheduleDropdown(
-                              selectedMonth: selectedMonth,
-                              months: months,
-                              onChanged: (String? newValue) {
-                                setState(() {
-                                  selectedMonth = newValue!;
-                                  _initialize(selectedMonth);
-                                });
-                              },
+                Column(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          color: Color(0xFFF0F3F4),
+                          borderRadius:
+                              BorderRadius.vertical(top: Radius.circular(10)),
+                        ),
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: ScheduleDropdown(
+                                selectedMonth: selectedMonth,
+                                months: months,
+                                onChanged: (String? newValue) {
+                                  setState(() {
+                                    selectedMonth = newValue!;
+                                    _initialize(selectedMonth);
+                                  });
+                                },
+                              ),
                             ),
-                          ),
-                          Expanded(
-                            child: BlocBuilder<ScheduleBloc, ScheduleState>(
-                              bloc: scheduleBloc,
-                              builder: (context, state) {
-                                if (state is ScheduleLoadingState) {
-                                  return const Center(child: LoadingCircular());
-                                } else if (state
-                                    is ScheduleLoadedSuccessState) {
-                                  final duties = state.schedule.where((duty) {
-                                    return duty['isActive'] == true;
-                                  }).toList();
-
-                                  if (duties.isEmpty) {
+                            Expanded(
+                              child: BlocBuilder<ScheduleBloc, ScheduleState>(
+                                bloc: scheduleBloc,
+                                builder: (context, state) {
+                                  if (state is ScheduleLoadingState) {
                                     return const Center(
-                                        child: Text('No schedules available'));
-                                  }
-
-                                  return ListView.builder(
-                                    itemCount: duties.length,
-                                    itemBuilder: (context, index) {
-                                      final duty = Map<String, dynamic>.from(
-                                          duties[index]);
-                                      final isCompleted =
-                                          duty['completed'] == 'true';
-
-                                      if (widget.role == "Student") {
-                                        return TimelineItem(
-                                          duty: duty,
-                                          roleFuture: _getRole(),
-                                          color: isCompleted
-                                              ? Colors.green
-                                              : Colors.grey,
-                                        );
-                                      } else {
-                                        return GestureDetector(
-                                          onTap: isCompleted
-                                              ? null
-                                              : () async {
-                                                  final result =
-                                                      await showDialog(
-                                                    context: context,
-                                                    builder: (context) {
-                                                      return DialogAlertBox(
-                                                        scheduleId: duty['_id'],
-                                                        schoolId:
-                                                            duty['user_info']
-                                                                ['school_id'],
-                                                        date: duty['date'],
-                                                        timeIn: duty['time'],
-                                                        hkType:
-                                                            duty['user_info']
-                                                                ['hk_type'],
-                                                        professorName:
-                                                            duty['professor'],
-                                                      );
-                                                    },
-                                                  );
-                                                  if (result == true) {
-                                                    _initialize(selectedMonth);
-                                                  }
-                                                },
-                                          child: TimelineItem(
+                                        child: LoadingCircular());
+                                  } else if (state
+                                      is ScheduleLoadedSuccessState) {
+                                    final duties = state.schedule.where((duty) {
+                                      return duty['isActive'] == true;
+                                    }).toList();
+                                    if (duties.isEmpty) {
+                                      return const Center(
+                                          child:
+                                              Text('No schedules available'));
+                                    }
+                                    return ListView.builder(
+                                      itemCount: duties.length,
+                                      itemBuilder: (context, index) {
+                                        final duty = Map<String, dynamic>.from(
+                                            duties[index]);
+                                        final isCompleted =
+                                            duty['completed'] == 'true';
+                                        if (widget.role == "Student") {
+                                          return TimelineItem(
                                             duty: duty,
                                             roleFuture: _getRole(),
                                             color: isCompleted
                                                 ? Colors.green
                                                 : Colors.grey,
-                                          ),
-                                        );
-                                      }
-                                    },
-                                  );
-                                } else if (state is ScheduleErrorState) {
-                                  return NoData();
-                                } else {
-                                  return const Scaffold(
-                                    body: Center(child: LoadingCircular()),
-                                  );
-                                }
-                              },
+                                          );
+                                        } else {
+                                          return GestureDetector(
+                                            onTap: isCompleted
+                                                ? null
+                                                : () async {
+                                                    final result =
+                                                        await showDialog(
+                                                      context: context,
+                                                      builder: (context) {
+                                                        return DialogAlertBox(
+                                                          scheduleId:
+                                                              duty['_id'],
+                                                          schoolId:
+                                                              duty['user_info']
+                                                                  ['school_id'],
+                                                          date: duty['date'],
+                                                          timeIn: duty['time'],
+                                                          hkType:
+                                                              duty['user_info']
+                                                                  ['hk_type'],
+                                                          professorName:
+                                                              duty['professor'],
+                                                        );
+                                                      },
+                                                    );
+                                                    if (result == true) {
+                                                      _initialize(
+                                                          selectedMonth);
+                                                    }
+                                                  },
+                                            child: TimelineItem(
+                                              duty: duty,
+                                              roleFuture: _getRole(),
+                                              color: isCompleted
+                                                  ? Colors.green
+                                                  : Colors.grey,
+                                            ),
+                                          );
+                                        }
+                                      },
+                                    );
+                                  } else if (state is ScheduleErrorState) {
+                                    return NoData();
+                                  } else {
+                                    return const Scaffold(
+                                      body: Center(
+                                        child: LoadingCircular(),
+                                      ),
+                                    );
+                                  }
+                                },
+                              ),
                             ),
-                          ),
-                        ],
-                      )),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             );

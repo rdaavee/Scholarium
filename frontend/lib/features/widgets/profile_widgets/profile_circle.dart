@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:isHKolarium/config/constants/colors.dart';
 
 class ProfileCircle extends StatelessWidget {
   final String profilePicture;
   final VoidCallback onTap;
 
   const ProfileCircle({
-    Key? key,
+    super.key,
     required this.profilePicture,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -20,9 +21,15 @@ class ProfileCircle extends StatelessWidget {
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           image: DecorationImage(
-            image: NetworkImage(profilePicture),
+            image: profilePicture.isNotEmpty
+                ? NetworkImage(profilePicture)
+                : AssetImage('assets/images/avatar.png') as ImageProvider,
             scale: 1.0,
             fit: BoxFit.contain,
+          ),
+          border: Border.all(
+            color: ColorPalette.gray,
+            width: 1.0,
           ),
         ),
       ),

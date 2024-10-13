@@ -13,7 +13,7 @@ import 'package:isHKolarium/features/widgets/loading_circular.dart';
 import 'package:isHKolarium/features/widgets/no_data.dart';
 import 'package:isHKolarium/features/widgets/notification_widgets/notification_message.dart';
 import 'package:isHKolarium/features/widgets/student_widgets/notification_widgets/notification_card.dart';
-import 'package:isHKolarium/features/widgets/student_widgets/notification_widgets/notification_message.dart';
+import 'package:isHKolarium/features/widgets/student_widgets/notification_widgets/notification_message_form.dart';
 
 class NotificationScreen extends StatefulWidget {
   final String isRole;
@@ -110,14 +110,11 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                       return Dialog(
                                         shape: RoundedRectangleBorder(
                                           borderRadius:
-                                              BorderRadius.circular(20.0),
+                                              BorderRadius.circular(10.0),
                                         ),
                                         child: SizedBox(
                                           width: double.infinity,
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              .50,
+                                          height: 400,
                                           child: Padding(
                                             padding: const EdgeInsets.all(10.0),
                                             child: Column(
@@ -200,7 +197,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                     Align(
                       alignment: Alignment.bottomRight,
                       child: Padding(
-                        padding: const EdgeInsets.only(right: 20, bottom: 20),
+                        padding: const EdgeInsets.only(right: 15, bottom: 15),
                         child: FloatingActionButton(
                           backgroundColor:
                               ColorPalette.primary.withOpacity(0.6),
