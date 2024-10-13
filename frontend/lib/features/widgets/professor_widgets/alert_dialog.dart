@@ -123,7 +123,7 @@ class _DialogAlertBoxState extends State<DialogAlertBox> {
                                   ? base64Encode(_signatureImage!)
                                   : null,
                             );
-                            await ProfessorRepositoryImpl().createDTR(dtrModel);
+                            _scheduleBloc.add(CreateDTREvent(dtr: dtrModel));
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                   content: Text('Student Duty Completed')),

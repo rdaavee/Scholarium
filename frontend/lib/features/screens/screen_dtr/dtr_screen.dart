@@ -50,12 +50,14 @@ class _DtrScreenState extends State<DtrScreen> {
     for (var dtr in dtrList) {
       String formattedTimeIn = formatTimeToAmPm(dtr.timeIn.toString());
       String formattedTimeOut = formatTimeToAmPm(dtr.timeOut.toString());
+      String formattedDate =
+          DateFormat('yyyy-MM-dd').format(DateTime.parse(dtr.date.toString()));
 
       // Fetch the image asynchronously
       final imageProvider = await fetchImage(dtr.professorSignature.toString());
 
       tableData.add([
-        dtr.date,
+        formattedDate,
         formattedTimeIn,
         formattedTimeOut,
         dtr.hoursRendered.toString(),
