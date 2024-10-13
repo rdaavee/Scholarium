@@ -79,8 +79,6 @@ exports.getProfTodaySchedule = async (req, res) => {
   }
 };
 
-
-
 //Get Announcement
 exports.getAnnouncements = (req, res) => {
   pool.getConnection((error, connection) => {
@@ -100,61 +98,72 @@ exports.getAnnouncements = (req, res) => {
   });
 };
 
-exports.createPost = async (req, res) => {
-  console.log("createPost HIT");
+exports.createNotification = async (req, res) => {
+  console.log("createNotification HIT");
   try {
     const loggedInProfId = req.userSchoolId;
     console.log("Logged In Prof ID:", loggedInProfId);
 
-    const schedules = await Schedule.find({ prof_id: loggedInProfId }).select(
-      "school_id"
-    );
+    const senderInfo = await User.findOne({ school_id: loggedInProfId }).select('first_name last_name role');
+    if (!senderInfo) {
+      return res.status(404).json({ message: "Sender not found." });
+    }
+    const senderName = `${senderInfo.first_name} ${senderInfo.last_name}`;
+    console.log("Sender Name:", senderName);
 
+    const schedules = await Schedule.find({ prof_id: loggedInProfId }).select("school_id");
     if (schedules.length === 0) {
-      return res
-        .status(404)
-        .json({ message: "No schedules found for this professor." });
+      return res.status(404).json({ message: "No schedules found for this professor." });
     }
 
-    const existingPosts = await Notification.find({
-      prof_id: loggedInProfId,
-      title: req.body.title,
-      message: req.body.body,
-      school_id: { $in: schedules.map((schedule) => schedule.school_id) },
-    });
+    // Extract unique school IDs
+    const schoolIds = [...new Set(schedules.map(schedule => schedule.school_id))];
+    console.log("Unique School IDs:", schoolIds);
 
-    const postsData = schedules.reduce((acc, schedule) => {
-      const schoolId = schedule.school_id;
-      const alreadyExists = existingPosts.some(
-        (post) => post.school_id === schoolId
-      );
+    // Create notifications directly based on unique school IDs
+    const notificationsData = await Promise.all(
+      schoolIds.map(async (schoolId) => {
+        const receiverInfo = await User.findOne({ school_id: schoolId }).select('first_name last_name');
+        const receiverName = receiverInfo ? `${receiverInfo.first_name} ${receiverInfo.last_name}` : null;
 
-      if (!alreadyExists) {
-        acc.push({
+        const now = new Date();
+        const date = now.toISOString().split('T')[0];
+        const time = now.toTimeString().split(' ')[0];
+
+        return {
+          sender: loggedInProfId,
+          senderName: senderName,
+          receiver: schoolId,
+          receiverName: receiverName,
+          role: senderInfo.role,
           title: req.body.title,
-          body: req.body.body,
-          status: req.body.status || "Active",
-          school_id: schoolId,
-          prof_id: loggedInProfId,
-        });
-      }
+          message: req.body.message,
+          status: req.body.status || false,
+          scheduleId: schedules.find(schedule => schedule.school_id === schoolId)?._id || null,
+          isActive: true,
+          date: date,
+          time: time,
+        };
+      })
+    );
 
-      return acc;
-    }, []);
+    // Filter out any null values from the notifications data
+    const filteredNotifications = notificationsData.filter(notification => notification);
 
-    if (postsData.length > 0) {
-      await Post.insertMany(postsData);
-      res
-        .status(200)
-        .json({ message: `Posts created successfully for all school_ids.` });
+    if (filteredNotifications.length > 0) {
+      // Insert notifications into the database
+      await Notification.insertMany(filteredNotifications);
+      res.status(200).json({
+        message: `Notifications created successfully for all school_ids.`,
+      });
     } else {
       res.status(200).json({
-        message: `No new posts to create. Duplicate messages detected.`,
+        message: `No new notifications to create.`,
       });
     }
   } catch (error) {
-    console.error("Error creating posts:", error);
-    res.status(500).json({ message: "Server error. Unable to create posts." });
+    console.error("Error creating notifications:", error);
+    res.status(500).json({ message: "Server error. Unable to create notifications." });
   }
 };
 

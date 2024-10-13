@@ -1,6 +1,4 @@
 part of 'professors_bloc.dart';
-
-@immutable
 abstract class ProfessorsState {}
 
 final class ProfessorsInitialState extends ProfessorsState {}

@@ -2,14 +2,14 @@ import 'dart:convert';
 
 import 'package:isHKolarium/api/implementations/endpoint.dart';
 import 'package:isHKolarium/api/models/dtr_model.dart';
-import 'package:isHKolarium/api/models/post_model.dart';
+import 'package:isHKolarium/api/models/notifications_model.dart';
 import 'package:isHKolarium/api/models/professor_schedule_model.dart';
-import 'package:isHKolarium/api/models/user_model.dart';
 import 'package:isHKolarium/api/repositories/professor_repository.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfessorRepositoryImpl extends ProfessorRepository implements Endpoint {
+  @override
   final String baseUrl = Endpoint().baseUrl;
   int currentYear = DateTime.now().year;
 
@@ -19,13 +19,11 @@ class ProfessorRepositoryImpl extends ProfessorRepository implements Endpoint {
   }
 
   @override
-  Future<void> createPost(PostModel post) async {
+  Future<void> createPost(NotificationsModel notification) async {
     final String? token = await _getToken();
-    final url = Uri.parse('$baseUrl/prof/createPost');
+    final url = Uri.parse('http://localhost:3000/api/prof/createPost');
 
-    print("running");
-
-    if (post.title.isEmpty || post.body.isEmpty) {
+    if (notification.title!.isEmpty || notification.message!.isEmpty) {
       throw Exception('Title and body cannot be empty.');
     }
 
@@ -36,26 +34,13 @@ class ProfessorRepositoryImpl extends ProfessorRepository implements Endpoint {
           'Authorization': 'Bearer $token',
           'Content-Type': 'application/json',
         },
-        body: json.encode(post.toJson()),
+        body: json.encode(notification.toJsonPost()),
       );
-      print("running");
       if (response.statusCode == 200) {
         return;
       } else {
-        switch (response.statusCode) {
-          case 400:
-            throw Exception('Bad request: ${response.body}');
-          case 401:
-            throw Exception('Unauthorized: Please log in again.');
-          case 403:
-            throw Exception(
-                'Forbidden: You do not have permission to create this post.');
-          case 404:
-            throw Exception('Not found: The endpoint does not exist.');
-          default:
-            throw Exception(
-                'Failed to create post: ${response.statusCode} - ${response.body}');
-        }
+        print(response.statusCode);
+        print(response.body);
       }
     } catch (e) {
       throw Exception('Error: $e');
@@ -85,10 +70,7 @@ class ProfessorRepositoryImpl extends ProfessorRepository implements Endpoint {
     } else {
       return [
         ProfessorScheduleModel(
-            time: "",
-            room: "No Schedule Today",
-            date: "",
-            students: [])
+            time: "", room: "No Schedule Today", date: "", students: [])
       ];
     }
   }
@@ -165,7 +147,6 @@ class ProfessorRepositoryImpl extends ProfessorRepository implements Endpoint {
       } else {
         print(
             'Failed to create attendance record. Status code: ${response.statusCode}');
-        print('Response body: ${response.body}');
       }
     } catch (error) {
       print('Error creating attendance record: $error');

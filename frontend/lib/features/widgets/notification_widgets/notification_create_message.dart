@@ -4,7 +4,6 @@ import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
 import 'package:isHKolarium/api/models/user_model.dart';
 import 'package:isHKolarium/blocs/bloc_notification/notification_bloc.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class NotificationCreateMessageWidget extends StatefulWidget {
   final String? schoolId;
@@ -50,8 +49,7 @@ class NotificationCreateMessageWidgetState
         } else if (state is NotificationsErrorState) {
           return Center(child: Text('Error: ${state.message}'));
         } else if (state is NotificationsLoadedSuccessState) {
-          usersList = state.users; // Get the list of users
-
+          usersList = state.users;
           return Scaffold(
             body: Padding(
               padding: const EdgeInsets.all(20.0),
@@ -59,7 +57,7 @@ class NotificationCreateMessageWidgetState
                 children: [
                   _buildTextField('Title', titleController),
                   _buildTextField('Message', messageController),
-                  _buildReceiverList(), // Updated to display selectable user list
+                  _buildReceiverList(),
                   _buildSubmitButton(context),
                 ],
               ),
@@ -114,46 +112,7 @@ class NotificationCreateMessageWidgetState
 
   Widget _buildSubmitButton(BuildContext context) {
     return ElevatedButton(
-      onPressed: () async {
-        if (titleController.text.isEmpty ||
-            messageController.text.isEmpty ||
-            selectedReceivers.isEmpty) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-                content: Text('Please fill in all required fields.')),
-          );
-          return;
-        }
-        final prefs = await SharedPreferences.getInstance();
-        final schoolId = prefs.getString('schoolId');
-
-        // Ensure to retrieve the sender's details
-        String sender = schoolId
-            .toString(); // Assuming the sender is the logged-in user's school ID
-        String senderName = ''; // Set sender's name if available
-        String role =
-            prefs.getString('role').toString(); // Set role if available
-
-        await globalRepository
-            .createNotification(
-          sender: sender,
-          senderName: senderName,
-          receiver: selectedReceivers
-              .join(','), // Join selected receivers into a single string
-          title: titleController.text,
-          message: messageController.text, role: role, receiverName: "hello",
-        )
-            .then((_) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Notification created successfully!')),
-          );
-          Navigator.pop(context, true);
-        }).catchError((error) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Error: $error')),
-          );
-        });
-      },
+      onPressed: () {},
       style: ElevatedButton.styleFrom(
         backgroundColor: ColorPalette.btnColor,
         minimumSize: const Size(360, 55),

@@ -162,30 +162,42 @@ class ScheduleScreenState extends State<ScheduleScreen> {
                                           duties[index]);
                                       final isCompleted =
                                           duty['completed'] == 'true';
-                                      if (widget.role == "Professor" &&
-                                              duty['completed'] == "false" ||
-                                          duty['completed'] == 'pending') {
+                                      if (widget.role == "Student") {
+                                        return TimelineItem(
+                                          duty: duty,
+                                          roleFuture: _getRole(),
+                                          color: isCompleted
+                                              ? Colors.green
+                                              : Colors.grey,
+                                        );
+                                      } else {
                                         return GestureDetector(
-                                          onTap: () async {
-                                            final result = await showDialog(
-                                                context: context,
-                                                builder: (context) {
-                                                  return DialogAlertBox(
-                                                    scheduleId: duty['_id'],
-                                                    schoolId: duty['user_info']
-                                                        ['school_id'],
-                                                    date: duty['date'],
-                                                    timeIn: duty['time'],
-                                                    hkType: duty['user_info']
-                                                        ['hk_type'],
-                                                    professorName:
-                                                        duty['professor'],
+                                          onTap: isCompleted
+                                              ? null // No action when completed (non-clickable)
+                                              : () async {
+                                                  final result =
+                                                      await showDialog(
+                                                    context: context,
+                                                    builder: (context) {
+                                                      return DialogAlertBox(
+                                                        scheduleId: duty['_id'],
+                                                        schoolId:
+                                                            duty['user_info']
+                                                                ['school_id'],
+                                                        date: duty['date'],
+                                                        timeIn: duty['time'],
+                                                        hkType:
+                                                            duty['user_info']
+                                                                ['hk_type'],
+                                                        professorName:
+                                                            duty['professor'],
+                                                      );
+                                                    },
                                                   );
-                                                });
-                                            if (result == true) {
-                                              _initialize(selectedMonth);
-                                            }
-                                          },
+                                                  if (result == true) {
+                                                    _initialize(selectedMonth);
+                                                  }
+                                                },
                                           child: TimelineItem(
                                             duty: duty,
                                             roleFuture: _getRole(),
@@ -193,14 +205,6 @@ class ScheduleScreenState extends State<ScheduleScreen> {
                                                 ? Colors.green
                                                 : Colors.grey,
                                           ),
-                                        );
-                                      } else {
-                                        return TimelineItem(
-                                          duty: duty,
-                                          roleFuture: _getRole(),
-                                          color: isCompleted
-                                              ? Colors.green
-                                              : Colors.grey,
                                         );
                                       }
                                     },
