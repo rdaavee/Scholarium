@@ -8,8 +8,8 @@ import 'package:isHKolarium/blocs/bloc_profile/profile_event.dart';
 import 'package:isHKolarium/blocs/bloc_profile/profile_state.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
 import 'package:isHKolarium/features/widgets/app_bar.dart';
+import 'package:isHKolarium/features/widgets/loading_circular.dart';
 import 'package:isHKolarium/features/widgets/no_data.dart';
-import 'package:isHKolarium/features/widgets/profile_widgets/custom_shimmer.dart';
 
 import '../../widgets/profile_widgets/profile_account_option.dart';
 import '../../widgets/profile_widgets/profile_account_section.dart';
@@ -71,20 +71,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
         builder: (context, state) {
           if (state is ProfileLoadingState) {
             print("Loading state triggered");
-            return Scaffold(
-              body: Center(
-                child: Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: CustomSkeletonLoader(
-                    itemCount: 6,
-                    circleSize: 100.0,
-                    longRectangleHeight: 30.0,
-                    shortRectangleHeight: 20.0,
-                    baseColor: Colors.grey[300]!,
-                    highlightColor: Colors.white,
-                  ),
-                ),
-              ),
+            return const Scaffold(
+              body: Center(child: CircularProgressIndicator()),
             );
           } else if (state is ProfileLoadedSuccessState) {
             return Scaffold(
@@ -211,7 +199,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           } else if (state is LogoutErrorState) {
             return NoData();
           } else {
-            return const Scaffold();
+            return LoadingCircular();
           }
         },
       ),

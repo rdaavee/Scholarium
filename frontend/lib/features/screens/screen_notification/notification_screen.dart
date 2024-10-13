@@ -142,76 +142,68 @@ class _NotificationScreenState extends State<NotificationScreen> {
                             borderRadius:
                                 BorderRadius.vertical(top: Radius.circular(10)),
                           ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: ListView.builder(
-                              itemCount: state.notifications.length,
-                              itemBuilder: (context, index) {
-                                final notifications =
-                                    state.notifications[index];
-                                print(
-                                    "Profile: ${notifications.profilePicture}");
-                                return GestureDetector(
-                                  onTap: () {
-                                    notificationsBloc.add(
-                                        UpdateNotificationStatusEvent(
-                                            notifications.id.toString()));
-                                    context
-                                        .read<BottomNavBloc>()
-                                        .add(FetchUnreadCountEvent());
+                          child: ListView.builder(
+                            itemCount: state.notifications.length,
+                            itemBuilder: (context, index) {
+                              final notifications = state.notifications[index];
+                              print("Profile: ${notifications.profilePicture}");
+                              return GestureDetector(
+                                onTap: () {
+                                  notificationsBloc.add(
+                                      UpdateNotificationStatusEvent(
+                                          notifications.id.toString()));
+                                  context
+                                      .read<BottomNavBloc>()
+                                      .add(FetchUnreadCountEvent());
 
-                                    showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return Dialog(
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(20.0),
-                                          ),
-                                          child: SizedBox(
-                                            width: double.infinity,
-                                            height: MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                .50,
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(10.0),
-                                              child: Column(
-                                                children: [
-                                                  const SizedBox(height: 15),
-                                                  Expanded(
-                                                    child:
-                                                        NotificationMessageWidget(
-                                                      sender: notifications
-                                                          .sender
-                                                          .toString(),
-                                                      senderName: notifications
-                                                          .senderName
-                                                          .toString(),
-                                                      receiver: notifications
-                                                          .receiver
-                                                          .toString(),
-                                                      role: notifications.role
-                                                          .toString(),
-                                                      title: notifications.title
-                                                          .toString(),
-                                                      message: notifications
-                                                          .message
-                                                          .toString(),
-                                                      status: notifications
-                                                          .status
-                                                          .toString(),
-                                                      date: _formatDate(
-                                                          notifications.date
-                                                              .toString()),
-                                                      time: _formatTime(
-                                                          notifications.time
-                                                              .toString()),
-                                                    ),
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return Dialog(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(20.0),
+                                        ),
+                                        child: SizedBox(
+                                          width: double.infinity,
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              .50,
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(10.0),
+                                            child: Column(
+                                              children: [
+                                                const SizedBox(height: 15),
+                                                Expanded(
+                                                  child:
+                                                      NotificationMessageWidget(
+                                                    sender: notifications.sender
+                                                        .toString(),
+                                                    senderName: notifications
+                                                        .senderName
+                                                        .toString(),
+                                                    receiver: notifications
+                                                        .receiver
+                                                        .toString(),
+                                                    role: notifications.role
+                                                        .toString(),
+                                                    title: notifications.title
+                                                        .toString(),
+                                                    message: notifications
+                                                        .message
+                                                        .toString(),
+                                                    status: notifications.status
+                                                        .toString(),
+                                                    date: _formatDate(
+                                                        notifications.date
+                                                            .toString()),
+                                                    time: _formatTime(
+                                                        notifications.time
+                                                            .toString()),
                                                   ),
-                                                ],
-                                              ),
+                                                ),
+                                              ],
                                             ),
                                           ),
                                         );

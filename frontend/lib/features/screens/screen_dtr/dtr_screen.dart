@@ -6,6 +6,7 @@ import 'package:isHKolarium/api/models/dtr_model.dart';
 import 'package:isHKolarium/blocs/bloc_dtr/dtr_bloc.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
 import 'package:isHKolarium/features/widgets/app_bar.dart';
+import 'package:isHKolarium/features/widgets/loading_circular.dart';
 import 'package:isHKolarium/features/widgets/student_widgets/dtr_widgets/your_dtr_card.dart';
 import 'package:isHKolarium/features/widgets/student_widgets/dtr_widgets/your_dtr_hours_card.dart';
 import 'package:http/http.dart' as http; // Import for HTTP requests
@@ -90,8 +91,8 @@ class _DtrScreenState extends State<DtrScreen> {
                 row[3],
                 row[4],
                 pw.Container(
-                  child: pw.Image(row[5]), 
-                  width: 50, 
+                  child: pw.Image(row[5]),
+                  width: 50,
                   height: 50,
                 ),
               ];
@@ -131,10 +132,7 @@ class _DtrScreenState extends State<DtrScreen> {
         },
         builder: (context, state) {
           if (state is DtrLoadingState) {
-            return const Scaffold(
-              backgroundColor: ColorPalette.accent,
-              body: Center(child: CircularProgressIndicator()),
-            );
+            return LoadingCircular();
           } else if (state is DtrLoadedSuccessState) {
             return Scaffold(
               backgroundColor: ColorPalette.primary.withOpacity(0.9),
@@ -240,10 +238,7 @@ class _DtrScreenState extends State<DtrScreen> {
               ),
             );
           } else {
-            return const Scaffold(
-              backgroundColor: Colors.white,
-              body: Center(child: CircularProgressIndicator()),
-            );
+            return LoadingCircular();
           }
         },
       ),
