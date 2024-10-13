@@ -158,6 +158,8 @@ const seedUsers = async () => {
         hk_type: "",
         status: "Active",
         token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzYsI...",
+        professor: "David Aldrin Mondero",
+        prof_id: "03-0000-00002",
       },
 
 

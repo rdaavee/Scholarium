@@ -48,7 +48,8 @@ class NotificationMessageState extends State<NotificationMessageWidget> {
   void initState() {
     super.initState();
     initialize();
-    print(widget.scheduleId);
+    print(widget.sender);
+    print(widget.receiver);
   }
 
   Future<void> initialize() async {
@@ -161,16 +162,6 @@ class NotificationMessageState extends State<NotificationMessageWidget> {
                         notificationsBloc
                             .add(UpdateScheduleStatusEvent(widget.scheduleId));
                         notificationsBloc.add(FetchNotificationsEvent());
-                        final notification = NotificationsModel(
-                          sender: "userProfile.schoolID",
-                          senderName: "",
-                          receiverName: "selectedStudent",
-                          title: "Schedule Duty",
-                          role: "Admin",
-                          message: "",
-                          profilePicture: "userProfile.profilePicture",
-                        );
-                        adminBloc.add(CreateNotificationEvent(notification));
                         Navigator.pop(context, true);
                       },
                     ),
@@ -191,6 +182,8 @@ class NotificationMessageState extends State<NotificationMessageWidget> {
                         ),
                       ),
                       onPressed: () {
+                        notificationsBloc.add(DeleteScheduleNotificationEvent(
+                            widget.scheduleId, widget.sender));
                         Navigator.pop(context, false);
                       },
                     ),

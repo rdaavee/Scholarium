@@ -8,6 +8,7 @@ router.get('/listUsers', verifyToken, adminController.getAllUsers);
 router.get('/getYearSched', verifyToken, adminController.getCurrentYearSchedules);
 router.post('/insertUser', verifyToken, adminController.createUser);
 router.post('/createSchedule', verifyToken, adminController.createScheduleAndNotification);
+router.delete('/deleteSchedule', verifyToken, adminController.deleteScheduleAndNotification);
 router.put('/updateUser/:school_id',verifyToken, adminController.updateUser);
 router.delete('/deleteUser/:school_id',verifyToken, adminController.deleteUser);
 router.post('/createNotification', verifyToken, adminController.createNotification)

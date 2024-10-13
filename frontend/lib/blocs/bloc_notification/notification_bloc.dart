@@ -20,6 +20,7 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
     on<FetchNotificationsEvent>(onFetchNotificationsEvent);
     on<UpdateNotificationStatusEvent>(onUpdateNotificationsEvent);
     on<UpdateScheduleStatusEvent>(onUpdateScheduleEvent);
+    on<DeleteScheduleNotificationEvent>(onDeleteScheduleNotificationEvent);
   }
 
   FutureOr<void> notificationsInitialEvent(
@@ -61,6 +62,18 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
     } catch (e) {
       emit(NotificationsErrorState(
           message: 'Failed to update schedule status: $e'));
+    }
+  }
+
+  FutureOr<void> onDeleteScheduleNotificationEvent(
+      DeleteScheduleNotificationEvent event,
+      Emitter<NotificationsState> emit) async {
+    try {
+      await _globalRepository.deleteNotificationAndScheduleStatus(
+          event.scheduleId, event.schoolId);
+    } catch (e) {
+      emit(NotificationsErrorState(
+          message: 'Failed to delete schedule and notification: $e'));
     }
   }
 }

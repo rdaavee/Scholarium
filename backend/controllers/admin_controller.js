@@ -52,7 +52,7 @@ exports.createUser = async (req, res) => {
 
 exports.createScheduleAndNotification = async (req, res) => {
   try {
-    const { schedule, notification } = req.body; 
+    const { schedule, notification } = req.body;
     console.log(req.body);
 
     const newSchedule = new Schedule({
@@ -66,7 +66,7 @@ exports.createScheduleAndNotification = async (req, res) => {
       time: schedule.time,
       date: schedule.date,
       isActive: schedule.isActive,
-      isCompleted: schedule.isCompleted || "pending"
+      isCompleted: schedule.isCompleted || "pending",
     });
 
     const savedSchedule = await newSchedule.save();
@@ -89,7 +89,9 @@ exports.createScheduleAndNotification = async (req, res) => {
     await newNotification.save();
 
     res.status(200).json({
-      message: `Notification "${notification.title}" has been sent by ${notification.senderName} to ${notification.receiverName || "all"}.`,
+      message: `Notification "${notification.title}" has been sent by ${
+        notification.senderName
+      } to ${notification.receiverName || "all"}.`,
       schedule: savedSchedule,
       notification: newNotification,
     });
@@ -97,6 +99,109 @@ exports.createScheduleAndNotification = async (req, res) => {
   } catch (error) {
     console.error("Error creating schedule or notification:", error);
     res.status(500).json({ message: error.message });
+  }
+};
+
+// Delete a schedule
+exports.deleteScheduleAndNotification = async (req, res) => {
+  const { scheduleId, school_id } = req.body;
+  console.log(req.body);
+  try {
+    let result;
+    const schedule = await Schedule.findOne({ _id: scheduleId});
+    console.log(schedule);
+    const admin = await User.findOne({ school_id: school_id });
+    const bot = await User.findOne({ school_id: "00-0000-00000" });
+    
+    const user = await User.findOne({ school_id: schedule.school_id });
+    const prof = await User.findOne({ school_id: schedule.prof_id });
+    if (scheduleId == null || scheduleId == "") {
+      const profNotification = new Notifications({
+        sender: bot.school_id,
+        senderName: bot.first_name + " " + bot.last_name,
+        receiver: prof.school_id,
+        receiverName: `${prof.first_name} ${prof.last_name}`,
+        role: "Bot",
+        title: "Task Alert",
+        message: `Dear Professor ${prof.first_name} ${prof.last_name}, the task assigned to ${user.first_name} ${user.last_name} has been rejected. Please review the task details and take appropriate action.`,
+        scheduleId: "",
+        date: currentDate,
+        time: currentTime,
+        status: false,
+        profile_picture: bot.profile_picture,
+      });
+
+      await profNotification.save();
+      console.log(profNotification);
+
+      const adminNotification = new Notifications({
+        sender: bot.school_id,
+        senderName: bot.first_name + " " + bot.last_name,
+        receiver: admin.school_id,
+        receiverName: `${admin.first_name} ${admin.last_name}`,
+        role: "Bot",
+        title: "Task Alert",
+        message: `Dear Admin ${admin.first_name} ${admin.last_name}, the task assigned to ${user.first_name} ${user.last_name} has been rejected.`,
+        scheduleId: "",
+        date: currentDate,
+        time: currentTime,
+        status: false,
+        profile_picture: bot.profile_picture,
+      });
+
+      await adminNotification.save();
+      console.log(adminNotification);
+    } else {
+      result = await Schedule.deleteOne({ _id: scheduleId });
+      const profNotification = new Notifications({
+        sender: bot.school_id,
+        senderName: bot.first_name + " " + bot.last_name,
+        receiver: prof.school_id,
+        receiverName: `${prof.first_name} ${prof.last_name}`,
+        role: "Bot",
+        title: "Task Alert",
+        message: `Dear Professor ${prof.first_name} ${prof.last_name}, the task assigned to ${user.first_name} ${user.last_name} has been rejected. Please review the task details and take appropriate action.`,
+        scheduleId: "",
+        date: currentDate,
+        time: currentTime,
+        status: false,
+        profile_picture: bot.profile_picture,
+      });
+
+      await profNotification.save();
+      console.log(profNotification);
+
+      const adminNotification = new Notifications({
+        sender: bot.school_id,
+        senderName: bot.first_name + " " + bot.last_name,
+        receiver: admin.school_id,
+        receiverName: `${admin.first_name} ${admin.last_name}`,
+        role: "Bot",
+        title: "Task Alert",
+        message: `Dear Admin ${admin.first_name} ${admin.last_name}, the task assigned to ${user.first_name} ${user.last_name} has been rejected.`,
+        scheduleId: "",
+        date: currentDate,
+        time: currentTime,
+        status: false,
+        profile_picture: bot.profile_picture,
+      });
+
+      await adminNotification.save();
+      console.log(adminNotification);
+    }
+
+    if (scheduleId && result && result.deletedCount > 0) {
+      // Only check result if schedule deletion occurs
+      console.log(`Deleted this record ${result}`);
+      res.status(200).json({
+        message: `Record with schedule ID #${scheduleId} has been deleted.`,
+      });
+    } else {
+      res.status(404).json({ message: "User not found" });
+    }
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    res.status(500).json({ message: "Server error occurred" });
   }
 };
 
@@ -273,11 +378,9 @@ exports.updateAnnouncement = async (req, res) => {
         .status(404)
         .json({ message: `No record found with ID ${req.userSchoolId}.` });
     }
-    res
-      .status(200)
-      .json({
-        message: `Announcement with ID ${req.userSchoolId} has been updated.`,
-      });
+    res.status(200).json({
+      message: `Announcement with ID ${req.userSchoolId} has been updated.`,
+    });
   } catch (error) {
     console.error("Error updating announcement:", error);
     res.status(500).json({ message: error.message });
