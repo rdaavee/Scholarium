@@ -29,7 +29,9 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
     on<CreateAnnouncementEvent>(_onCreateAnnouncementEvent);
     on<UpdateAnnouncementEvent>(_onUpdateAnnouncementEvent);
     on<DeleteAnnouncementEvent>(_onDeleteAnnouncementEvent);
-    on<CreateScheduleAndNotificationEvent>(_onCreateScheduleAndNotificationEvent);
+    on<CreateScheduleAndNotificationEvent>(
+        _onCreateScheduleAndNotificationEvent);
+    on<CreateNotificationEvent>(_onCreateNotificationEvent);
   }
 
   FutureOr<void> adminInitialEvent(
@@ -212,10 +214,22 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
 
 //=========================================SCHEDULE=========================================================
   FutureOr<void> _onCreateScheduleAndNotificationEvent(
-      CreateScheduleAndNotificationEvent event, Emitter<AdminState> emit) async {
+      CreateScheduleAndNotificationEvent event,
+      Emitter<AdminState> emit) async {
     emit(AdminLoadingState());
     try {
-      await _adminRepositoryImpl.createSchedule(event.schedule, event.notification);
+      await _adminRepositoryImpl.createSchedule(
+          event.schedule, event.notification);
+    } catch (e) {
+      emit(AdminErrorState(message: 'Failed to create schedule: $e'));
+    }
+  }
+
+  FutureOr<void> _onCreateNotificationEvent(
+      CreateNotificationEvent event, Emitter<AdminState> emit) async {
+    emit(AdminLoadingState());
+    try {
+      await _globalRepositoryImpl.createNotification(notification: event.notification);
     } catch (e) {
       emit(AdminErrorState(message: 'Failed to create schedule: $e'));
     }

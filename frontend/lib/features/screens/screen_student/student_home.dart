@@ -44,7 +44,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
     studentBloc = StudentsBloc(studentRepositoryImpl, globalRepositoryImpl);
     studentBloc.add(FetchLatestEvent());
     bottomNavBloc = BottomNavBloc(globalRepositoryImpl);
-    bottomNavBloc.add(FetchUnreadCountEvent());
+    context.read<BottomNavBloc>().add(FetchUnreadCountEvent());
   }
 
   String _formatDate(String date) {

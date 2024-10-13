@@ -17,3 +17,9 @@ class UpdateNotificationStatusEvent extends NotificationsEvent {
   @override
   List<Object> get props => [notificationId];
 }
+
+class UpdateScheduleStatusEvent extends NotificationsEvent {
+  final String scheduleId;
+
+  const UpdateScheduleStatusEvent(this.scheduleId);
+}

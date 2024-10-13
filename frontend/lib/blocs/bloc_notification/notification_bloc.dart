@@ -3,19 +3,24 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
+import 'package:isHKolarium/api/implementations/student_repository_impl.dart';
 import 'package:isHKolarium/api/models/notifications_model.dart';
 import 'package:isHKolarium/api/models/user_model.dart';
+import 'package:isHKolarium/api/repositories/student_repository.dart';
 
 part 'notification_event.dart';
 part 'notification_state.dart';
 
 class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
-  final GlobalRepositoryImpl _globalService;
+  final GlobalRepositoryImpl _globalRepository;
+  final StudentRepositoryImpl _studentRepository;
 
-  NotificationsBloc(this._globalService) : super(NotificationsInitial()) {
+  NotificationsBloc(this._globalRepository, this._studentRepository)
+      : super(NotificationsInitial()) {
     on<NotificationsInitialEvent>(notificationsInitialEvent);
     on<FetchNotificationsEvent>(onFetchNotificationsEvent);
     on<UpdateNotificationStatusEvent>(onUpdateNotificationsEvent);
+    on<UpdateScheduleStatusEvent>(onUpdateScheduleEvent);
   }
 
   FutureOr<void> notificationsInitialEvent(
@@ -29,10 +34,10 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
     try {
       emit(NotificationsLoadingState());
       List<NotificationsModel> notifications =
-          await _globalService.fetchNotificationsData();
-      UserModel user =
-          await _globalService.fetchUserProfile();
-      emit(NotificationsLoadedSuccessState(notifications: notifications, users: [user]));
+          await _globalRepository.fetchNotificationsData();
+      UserModel user = await _globalRepository.fetchUserProfile();
+      emit(NotificationsLoadedSuccessState(
+          notifications: notifications, users: [user]));
     } catch (e) {
       emit(NotificationsErrorState(message: e.toString()));
     }
@@ -41,11 +46,22 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
   FutureOr<void> onUpdateNotificationsEvent(UpdateNotificationStatusEvent event,
       Emitter<NotificationsState> emit) async {
     try {
-      await _globalService.updateNotificationStatus(event.notificationId);
+      await _globalRepository.updateNotificationStatus(event.notificationId);
       add(FetchNotificationsEvent());
     } catch (e) {
       emit(NotificationsErrorState(
           message: 'Failed to update notification status: $e'));
+    }
+  }
+
+  FutureOr<void> onUpdateScheduleEvent(
+      UpdateScheduleStatusEvent event, Emitter<NotificationsState> emit) async {
+    try {
+      await _studentRepository.confirmSchedule(scheduleId: event.scheduleId);
+      add(FetchNotificationsEvent());
+    } catch (e) {
+      emit(NotificationsErrorState(
+          message: 'Failed to update schedule status: $e'));
     }
   }
 }

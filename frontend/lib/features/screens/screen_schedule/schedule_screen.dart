@@ -45,7 +45,7 @@ class ScheduleScreenState extends State<ScheduleScreen> {
     });
     _initialize(currentMonth);
     bottomNavBloc = BottomNavBloc(GlobalRepositoryImpl());
-    bottomNavBloc.add(FetchUnreadCountEvent());
+    context.read<BottomNavBloc>().add(FetchUnreadCountEvent());
   }
 
   Future<void> _initialize(String selectedMonth) async {
@@ -149,23 +149,25 @@ class ScheduleScreenState extends State<ScheduleScreen> {
                                       child: CircularProgressIndicator());
                                 } else if (state
                                     is ScheduleLoadedSuccessState) {
-                                  final duties = state.schedule;
+                                  final duties = state.schedule.where((duty) {
+                                    // Filter to include only active duties
+                                    return duty['isActive'] ==
+                                        true; // Adjust condition based on your data type
+                                  }).toList();
+
                                   if (duties.isEmpty) {
                                     return const Center(
-                                      child: Text('No schedules available'),
-                                    );
+                                        child: Text('No schedules available'));
                                   }
+
                                   return ListView.builder(
                                     itemCount: duties.length,
                                     itemBuilder: (context, index) {
                                       final duty = Map<String, dynamic>.from(
                                           duties[index]);
-                                      if (duty['isActive'] != true) {
-                                        return SizedBox
-                                            .shrink();
-                                      }
                                       final isCompleted =
                                           duty['completed'] == 'true';
+
                                       if (widget.role == "Student") {
                                         return TimelineItem(
                                           duty: duty,

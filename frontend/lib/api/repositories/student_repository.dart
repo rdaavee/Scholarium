@@ -9,4 +9,5 @@ abstract class StudentRepository {
   Future<DtrHoursModel> fetchDtrTotalHoursData();
   Future<List<DtrModel>> fetchDtrData();
   Future<UserModel> fetchUserData();
+  Future<void> confirmSchedule({required String scheduleId});
 }

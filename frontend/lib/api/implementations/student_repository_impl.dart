@@ -156,4 +156,26 @@ class StudentRepositoryImpl extends StudentRepository implements Endpoint {
       );
     }
   }
+  
+  @override
+  Future<void> confirmSchedule({required String scheduleId}) async {
+    final String? token = await _getToken();
+    final url = Uri.parse('$baseUrl/user/confirmSchedule/$scheduleId');
+
+    try {
+      final response = await http.put(
+        url,
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+        },
+      );
+
+      if (response.statusCode != 200) {
+        throw Exception('Failed to update schedule: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Error: $e');
+    }
+  }
 }

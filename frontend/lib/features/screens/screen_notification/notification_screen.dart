@@ -1,7 +1,12 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
+import 'package:isHKolarium/api/implementations/student_repository_impl.dart';
+import 'package:isHKolarium/api/repositories/global_repository.dart';
+import 'package:isHKolarium/api/repositories/student_repository.dart';
 import 'package:isHKolarium/blocs/bloc_notification/notification_bloc.dart';
 import 'package:isHKolarium/blocs/bloc_bottom_nav/bottom_nav_bloc.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
@@ -25,8 +30,13 @@ class _NotificationScreenState extends State<NotificationScreen> {
   @override
   void initState() {
     super.initState();
-    final apiService = GlobalRepositoryImpl();
-    notificationsBloc = NotificationsBloc(apiService);
+    _initialize();
+  }
+
+  void _initialize() {
+    final globalRepository = GlobalRepositoryImpl();
+    final studentRepository = StudentRepositoryImpl();
+    notificationsBloc = NotificationsBloc(globalRepository, studentRepository);
     notificationsBloc.add(FetchNotificationsEvent());
     context.read<BottomNavBloc>().add(FetchUnreadCountEvent());
   }
@@ -146,14 +156,12 @@ class _NotificationScreenState extends State<NotificationScreen> {
                             itemBuilder: (context, index) {
                               final notifications = state.notifications[index];
                               return GestureDetector(
-                                onTap: () {
-                                  notificationsBloc.add(
-                                      UpdateNotificationStatusEvent(
-                                          notifications.id.toString()));
+                                onTap: () async {
                                   context
                                       .read<BottomNavBloc>()
                                       .add(FetchUnreadCountEvent());
-                                  showDialog(
+                                  print(notifications.id);
+                                  bool? result = await showDialog(
                                     context: context,
                                     builder: (context) {
                                       return Dialog(
@@ -195,6 +203,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                                       status: notifications
                                                           .status
                                                           .toString(),
+                                                      scheduleId: notifications
+                                                          .scheduleId
+                                                          .toString(),
                                                       date: _formatDate(
                                                           notifications.date
                                                               .toString()),
@@ -209,6 +220,16 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                           ));
                                     },
                                   );
+                                  if (result == true) {
+                                    print('Notification Accepted');
+                                    _initialize();
+                                  } else {
+                                    // Perform action if the dialog is rejected
+                                    print('Notification Rejected');
+                                  }
+                                  notificationsBloc.add(
+                                      UpdateNotificationStatusEvent(
+                                          notifications.id.toString()));
                                 },
                                 child: NotificationCard(
                                     // Change the background color based on the status

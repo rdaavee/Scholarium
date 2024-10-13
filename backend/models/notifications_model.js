@@ -14,10 +14,6 @@ const notificationsSchema = new mongoose.Schema({
     default: false
   },
   scheduleId: {type: String, required: false},
-  isActive: { 
-    type: Boolean, 
-    default: false
-  },
   date: { type: String, required: true }, 
   time: { type: String, required: true }   
 }, { timestamps: true }); 

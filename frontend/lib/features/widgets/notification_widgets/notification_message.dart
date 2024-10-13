@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:isHKolarium/api/implementations/admin_repository_impl.dart';
 import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
+import 'package:isHKolarium/api/implementations/student_repository_impl.dart';
+import 'package:isHKolarium/api/models/notifications_model.dart';
 import 'package:isHKolarium/blocs/bloc_admin/admin_bloc.dart';
+import 'package:isHKolarium/blocs/bloc_notification/notification_bloc.dart';
 
 class NotificationMessageWidget extends StatefulWidget {
   final String sender;
@@ -12,6 +15,7 @@ class NotificationMessageWidget extends StatefulWidget {
   final String title;
   final String message;
   final String status;
+  final String scheduleId;
   final String date;
   final String time;
   const NotificationMessageWidget({
@@ -23,6 +27,7 @@ class NotificationMessageWidget extends StatefulWidget {
     required this.title,
     required this.message,
     required this.status,
+    required this.scheduleId,
     required this.date,
     required this.time,
   });
@@ -32,13 +37,34 @@ class NotificationMessageWidget extends StatefulWidget {
 }
 
 class NotificationMessageState extends State<NotificationMessageWidget> {
+  late AdminBloc adminBloc;
+  late NotificationsBloc notificationsBloc;
+  final adminRepository = AdminRepositoryImpl();
+  final globalRepository = GlobalRepositoryImpl();
+  final studentRepository = StudentRepositoryImpl();
+
+  @override
+  void initState() {
+    super.initState();
+    initialize();
+    print(widget.scheduleId);
+  }
+
+  Future<void> initialize() async {
+    adminBloc = AdminBloc(adminRepository, globalRepository);
+    notificationsBloc = NotificationsBloc(globalRepository, studentRepository);
+  }
+
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
+          create: (context) => AdminBloc(adminRepository, globalRepository),
+        ),
+        BlocProvider(
           create: (context) =>
-              AdminBloc(AdminRepositoryImpl(), GlobalRepositoryImpl()),
+              NotificationsBloc(globalRepository, studentRepository),
         ),
       ],
       child: Scaffold(
@@ -99,7 +125,7 @@ class NotificationMessageState extends State<NotificationMessageWidget> {
                       ),
                     ),
                     const SizedBox(height: 8.0),
-                    if (widget.title == "Schedule Duty") ...[
+                    if (widget.scheduleId.isNotEmpty) ...[
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         crossAxisAlignment: CrossAxisAlignment.end,
@@ -112,7 +138,20 @@ class NotificationMessageState extends State<NotificationMessageWidget> {
                               "Accept",
                               style: TextStyle(color: Colors.white),
                             ),
-                            onPressed: () {
+                            onPressed: () async {
+                              notificationsBloc.add(
+                                  UpdateScheduleStatusEvent(widget.scheduleId));
+                              notificationsBloc.add(FetchNotificationsEvent());
+                              final notification = NotificationsModel(
+                                  sender: "userProfile.schoolID",
+                                  senderName: "",
+                                  receiverName: "selectedStudent",
+                                  title: "Schedule Duty",
+                                  role: "Admin",
+                                  message: "",
+                                  profilePicture: "userProfile.profilePicture");
+                              adminBloc
+                                  .add(CreateNotificationEvent(notification));
                               Navigator.pop(context, true);
                             },
                           ),
