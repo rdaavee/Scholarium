@@ -50,7 +50,7 @@ exports.createUser = async (req, res) => {
   }
 };
 
-exports.createSchedule = async (req, res) => {
+exports.createScheduleAndNotification = async (req, res) => {
   try {
     const { schedule, notification } = req.body; 
     console.log(req.body);

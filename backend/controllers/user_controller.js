@@ -10,7 +10,8 @@ const Notification = require("../models/notifications_model");
 const validateToken = async (req, res, next) => {
   // Implement your token validation logic here to set req.userId
 };
-
+const currentDate = moment().format("YYYY-MM-DD");
+const currentTime = moment().format("HH:mm:ss");
 // Get Announcement
 exports.getAnnouncements = async (req, res) => {
   try {
@@ -198,16 +199,35 @@ exports.getUserSchedule = async (req, res) => {
 
 // Helper function to update past schedules
 async function updatePastSchedules(school_id) {
-  const currentDate = moment().startOf("day");
   const pastSchedules = await Schedule.find({
     school_id: school_id,
     date: { $lt: currentDate.format("YYYY-MM-DD") }, // Fetch past schedules
   });
 
-  const updatePromises = pastSchedules.map((schedule) => {
+  const updatePromises = pastSchedules.map(async (schedule) => {
     if (schedule.completed !== "true") {
       return Schedule.updateOne({ _id: schedule._id }, { completed: "false" });
     }
+
+    const user = await User.findOne({ school_id: school_id });
+    const bot = await User.findOne({ school_id: "00-0000-00000" });
+
+    const newNotification = new Notification({
+      sender: bot.school_id,
+      senderName: bot.first_name + " " + bot.last_name,
+      receiver: user.school_id,
+      receiverName: user.first_name + " " + user.last_name,
+      role: "Bot",
+      title: "Duty Alert",
+      message: `Dear ${user.first_name}, you have not completed your duty on ${date} at ${time_in}. Please check your records for more details.`,
+      scheduleId: "",
+      date: currentDate,
+      time: currentTime,
+      status: false,
+      profile_picture: bot.profile_picture,
+    });
+
+    await newNotification.save();
   });
 
   await Promise.all(updatePromises);
