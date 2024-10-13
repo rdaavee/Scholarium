@@ -17,6 +17,7 @@ router.get("/getDTR",verifyToken, userController.getUserDTR);
 //--------------------------------FOR SCHEDULE PAGE--------------------------------------------------------------
 
 router.get("/getSchedule/:month", verifyToken, userController.getUserSchedule);
+router.put("/confirmSchedule/:id", verifyToken, userController.notificationConfirmSched);
 
 //--------------------------------FOR NOTIFICATION PAGE----------------------------------------------------------
 router.get("/getNotifications", verifyToken, userController.getUserNotifications);
