@@ -8,6 +8,7 @@ import 'package:isHKolarium/features/screens/screen_bottom_nav/bottom_navigation
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:isHKolarium/features/widgets/authentication_widgets/background_widget.dart';
 import 'package:isHKolarium/features/widgets/authentication_widgets/login_form_widget.dart';
+import 'package:isHKolarium/features/widgets/loading_circular.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
@@ -67,7 +68,7 @@ class _LoginPageState extends State<LoginPage> {
       bloc: _loginBloc,
       listener: (context, state) {
         if (state is LoginLoadingState) {
-          const Center(child: CircularProgressIndicator());
+          const Center(child: LoadingCircular());
         } else if (state is LoginNavigateToStudentHomePageActionState) {
           _showSnackBar(
               'Success', 'Student Login Successfully', ContentType.success);
@@ -107,7 +108,7 @@ class _LoginPageState extends State<LoginPage> {
             children: [
               const BackgroundWidget(),
               if (state is LoginLoadingState)
-                const Center(child: CircularProgressIndicator())
+                const Center(child: LoadingCircular())
               else
                 LoginFormWidget(loginBloc: _loginBloc),
             ],

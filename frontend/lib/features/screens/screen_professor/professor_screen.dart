@@ -8,6 +8,7 @@ import 'package:isHKolarium/config/constants/colors.dart';
 import 'package:isHKolarium/features/screens/screen_announcement/announcement.dart';
 import 'package:isHKolarium/features/screens/screen_event/events_screen.dart';
 import 'package:isHKolarium/features/widgets/app_bar.dart';
+import 'package:isHKolarium/features/widgets/loading_circular.dart';
 import 'package:isHKolarium/features/widgets/student_widgets/announcement_widgets/announcement_card.dart';
 import 'package:isHKolarium/features/widgets/student_widgets/dtr_widgets/duty_card.dart';
 import 'package:isHKolarium/features/widgets/student_widgets/event_widgets/events_card.dart';
@@ -511,7 +512,7 @@ class _ProfessorHomeScreenState extends State<ProfessorHomeScreen> {
             );
           } else {
             return const Scaffold(
-              body: Center(child: CircularProgressIndicator()),
+              body: Center(child: LoadingCircular()),
             );
           }
         },

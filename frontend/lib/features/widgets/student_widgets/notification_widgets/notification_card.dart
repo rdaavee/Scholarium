@@ -62,93 +62,93 @@ class NotificationCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const Divider(
-          thickness: .03,
-        ),
-        const SizedBox(
-          height: 5,
-        ),
-        Container(
-          color: color,
-          padding: const EdgeInsets.all(10.0),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: CircleAvatar(
-                  backgroundColor: Colors.grey,
-                  backgroundImage: profilePicture != null
-                      ? NetworkImage(profilePicture)
-                      : null,
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Container(
+            color: Color(0xFFF0F3F4),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: CircleAvatar(
+                    radius: 28,
+                    backgroundColor: Colors.grey,
+                    backgroundImage: profilePicture != null
+                        ? NetworkImage(profilePicture)
+                        : null,
+                  ),
                 ),
-              ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(
-                      height: 12,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 10.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Expanded(
-                          child: Text(
-                            senderName,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontFamily: 'Manrope',
-                              fontSize: 15,
-                              color: Colors.black,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                senderName,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'Manrope',
+                                  fontSize: 15,
+                                  color: Colors.black,
+                                ),
+                              ),
                             ),
-                          ),
+                            Text(
+                              time,
+                              style: const TextStyle(
+                                color: Colors.grey,
+                                fontFamily: 'Manrope',
+                                fontSize: 11,
+                              ),
+                            ),
+                          ],
                         ),
                         Text(
-                          time,
+                          role,
                           style: const TextStyle(
-                            color: Colors.grey,
-                            fontFamily: 'Manrope',
                             fontSize: 11,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Text(
-                      role,
-                      style: const TextStyle(
-                        fontSize: 12,
-                        color: ColorPalette.primary,
-                        fontWeight: FontWeight.w500,
-                        fontFamily: 'Manrope',
-                      ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          title,
-                          style: const TextStyle(
-                            fontSize: 12,
-                            color: Color(0xFFC1C1C1),
+                            color: ColorPalette.primary,
+                            fontWeight: FontWeight.w500,
                             fontFamily: 'Manrope',
                           ),
                         ),
-                        Text(
-                          date,
-                          style: const TextStyle(
-                            color: Colors.grey,
-                            fontFamily: 'Manrope',
-                            fontSize: 9,
-                          ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              title,
+                              style: const TextStyle(
+                                fontSize: 12,
+                                color: ColorPalette.accentBlack,
+                                fontFamily: 'Manrope',
+                              ),
+                            ),
+                            Text(
+                              date,
+                              style: const TextStyle(
+                                color: Colors.grey,
+                                fontFamily: 'Manrope',
+                                fontSize: 9,
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
-                  ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ],

@@ -8,6 +8,7 @@ import 'package:isHKolarium/blocs/bloc_admin/admin_bloc.dart';
 import 'package:isHKolarium/blocs/bloc_student/students_bloc.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
 import 'package:isHKolarium/features/widgets/app_bar.dart';
+import 'package:isHKolarium/features/widgets/loading_circular.dart';
 import 'package:isHKolarium/features/widgets/student_widgets/announcement_widgets/announcement_card.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -58,7 +59,7 @@ class _AnnouncementsScreenState extends State<AnnouncementsScreen> {
             },
             builder: (context, state) {
               if (state is AdminLoadingState) {
-                return const Center(child: CircularProgressIndicator());
+                return LoadingCircular();
               } else if (state is AdminLoadedSuccessState) {
                 return _buildAnnouncementsList(state.announcements);
               } else if (state is AdminErrorState) {

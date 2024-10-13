@@ -11,6 +11,7 @@ import 'package:isHKolarium/features/widgets/admin_widgets/user_data_table.dart'
 import 'package:isHKolarium/features/widgets/app_bar.dart';
 import 'package:isHKolarium/api/models/user_model.dart';
 import 'package:isHKolarium/api/implementations/admin_repository_impl.dart';
+import 'package:isHKolarium/features/widgets/loading_circular.dart';
 
 class UserDataScreen extends StatefulWidget {
   const UserDataScreen({super.key});
@@ -147,7 +148,7 @@ class UserDataScreenState extends State<UserDataScreen> {
               child: BlocBuilder<AdminBloc, AdminState>(
                 builder: (context, state) {
                   if (state is AdminLoadingState) {
-                    return const Center(child: CircularProgressIndicator());
+                    return LoadingCircular();
                   } else if (state is AdminListScreenSuccessState) {
                     List<UserModel> allUsers = state.filteredUsers;
                     List<UserModel> filteredUsers = allUsers.where((user) {
