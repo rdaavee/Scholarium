@@ -354,11 +354,52 @@ exports.notificationConfirmSched = async (req, res) => {
     if (!result) {
       return res.status(404).json({ message: "Schedule not found." });
     }
+    const bot = await User.findOne({school_id: "00-0000-00000"});
+    const userInfo = await Notification.findOne({scheduleId: scheduleId}); 
+    const profId = await Schedule.findOne({_id: scheduleId}); 
+    const adminId = await Notification.findOne({sender: userInfo.sender});
+    const adminInfo = await User.findOne({school_id: adminId.sender});
+    const senderInfo = await User.findOne({ school_id: userInfo.receiver });
+    const receiverInfo = await User.findOne({ school_id: profId.prof_id });
+    const now = new Date();
+    const date = now.toISOString().split('T')[0];
+    const time = now.toTimeString().split(' ')[0];
 
+    const newNotification = new Notification({
+      sender: bot.school_id,
+      senderName: `${bot.first_name} ${bot.last_name}`,
+      receiver: receiverInfo.school_id,
+      receiverName:  `${receiverInfo.first_name} ${receiverInfo.last_name}`,
+      role: bot.role,
+      title: "Schedule Confirmed!",
+      message: `Student ${senderInfo.first_name} ${senderInfo.last_name} has accepted your requested schedule.`,
+      scheduleId: "",
+      date: date,
+      time: time,
+      status: false,
+    });
+    await newNotification.save();
+    const adminNotification = new Notification({
+      sender: bot.school_id,
+      senderName: `${bot.first_name} ${bot.last_name}`,
+      receiver: adminInfo.school_id,
+      receiverName: `${adminInfo.first_name} ${adminInfo.last_name}`,
+      role: bot.role,
+      title: "Schedule Confirmed!",
+      message: `Student ${senderInfo.first_name} ${senderInfo.last_name} has accepted their schedule towards ${receiverInfo.first_name} ${receiverInfo.last_name}.`,
+      scheduleId: "",
+      date: date,
+      time: time,
+      status: false,
+    });
+    await adminNotification.save();
     await Notification.updateMany(
       { scheduleId: scheduleId },
       { $set: { scheduleId: "" } }
-    );
+    );    
+
+    console.log("NOTIFICATIONS DONE");
+
     res.status(200).json({ message: "Schedule updated successfully.", schedule: result });
   } catch (error) {
     console.error(error);
