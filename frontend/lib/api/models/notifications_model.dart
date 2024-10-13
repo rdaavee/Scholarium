@@ -63,6 +63,15 @@ class NotificationsModel {
     );
   }
 
+  Map<String, dynamic> toJsonPost() {
+    return {
+      'sender': sender,
+      'title': title,
+      'message': message,
+      'status': status,
+    };
+  }
+
   Map<String, dynamic> toMap() {
     return {
       '_id': id,

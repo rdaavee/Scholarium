@@ -24,7 +24,7 @@ class _ProfessorHomeScreenState extends State<ProfessorHomeScreen> {
   late ProfessorsBloc professorsBloc;
   late BottomNavBloc bottomNavBloc;
   final TextEditingController titleController = TextEditingController();
-  final TextEditingController bodyController = TextEditingController();
+  final TextEditingController messageController = TextEditingController();
 
   @override
   void initState() {
@@ -39,7 +39,7 @@ class _ProfessorHomeScreenState extends State<ProfessorHomeScreen> {
   }
 
   Future<void> createPost() async {
-    if (titleController.text.isEmpty || bodyController.text.isEmpty) {
+    if (titleController.text.isEmpty || messageController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Title and body cannot be empty')),
       );
@@ -48,11 +48,11 @@ class _ProfessorHomeScreenState extends State<ProfessorHomeScreen> {
 
     professorsBloc.add(ProfessorsCreatePostEvent(
       title: titleController.text,
-      body: bodyController.text,
+      message: messageController.text,
     ));
 
     titleController.clear();
-    bodyController.clear();
+    messageController.clear();
   }
 
   @override
@@ -191,7 +191,7 @@ class _ProfessorHomeScreenState extends State<ProfessorHomeScreen> {
                                           ),
                                           const SizedBox(height: 20),
                                           TextField(
-                                            controller: bodyController,
+                                            controller: messageController,
                                             maxLines: 5,
                                             decoration: InputDecoration(
                                               hintText: 'Write Something',

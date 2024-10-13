@@ -10,6 +10,7 @@ const scheduleSchema = new mongoose.Schema({
   department: { type: String, required: true },
   time: { type: String, required: true },
   date: { type: String, required: true },  
+  isActive: { type: Boolean, required: true ,default: false},  
   completed: { type: String, default: 'pending' }  
 }, { timestamps: true });  
 const Schedule = mongoose.model('Schedule', scheduleSchema);

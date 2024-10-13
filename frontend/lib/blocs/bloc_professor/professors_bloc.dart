@@ -4,10 +4,9 @@ import 'package:bloc/bloc.dart';
 import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
 import 'package:isHKolarium/api/implementations/professor_repository_impl.dart';
 import 'package:isHKolarium/api/models/announcement_model.dart';
-import 'package:isHKolarium/api/models/post_model.dart';
+import 'package:isHKolarium/api/models/notifications_model.dart';
 import 'package:isHKolarium/api/models/professor_schedule_model.dart';
 import 'package:isHKolarium/api/models/user_model.dart';
-import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 part 'professors_event.dart';
@@ -34,19 +33,12 @@ class ProfessorsBloc extends Bloc<ProfessorsEvent, ProfessorsState> {
   Future<void> createPost(
       ProfessorsCreatePostEvent event, Emitter<ProfessorsState> emit) async {
     try {
-      print("running");
-      final post = PostModel(
+      final notification = NotificationsModel(
         title: event.title,
-        body: event.body,
-        date: DateTime.now(),
-        time: DateTime.now().toIso8601String(),
-        status: 'Active',
-        schoolId: '',
-        profId: '',
+        message: event.message,
       );
-      await _professorRepositoryImpl.createPost(post);
+      await _professorRepositoryImpl.createPost(notification);
     } catch (e) {
-      print('Error creating post: $e');
       emit(PostErrorState());
     }
   }
@@ -60,8 +52,8 @@ class ProfessorsBloc extends Bloc<ProfessorsEvent, ProfessorsState> {
           await _globalRepositoryImpl.fetchLatestAnnouncementData();
       final prefs = await SharedPreferences.getInstance();
       final schoolId = prefs.getString('schoolID');
-      final schedule =
-          await _professorRepositoryImpl.fetchProfTodaySchedule(schoolId.toString());
+      final schedule = await _professorRepositoryImpl
+          .fetchProfTodaySchedule(schoolId.toString());
       emit(ProfessorsLoadedSuccessState(
         users: [user],
         announcements: [latestAnnouncement],

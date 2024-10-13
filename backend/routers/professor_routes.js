@@ -4,7 +4,7 @@ const professorController = require('../controllers/professor_controller');
 const { verifyToken }  = require('../middleware/auth');
 
 //professor routes
-router.post('/createPost', verifyToken, professorController.createPost);
+router.post('/createPost', verifyToken, professorController.createNotification);
 router.post('/createDTR', verifyToken, professorController.createDTR);
 
 router.get('/profile/:token', verifyToken, professorController.getUserProfile);

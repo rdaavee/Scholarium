@@ -115,7 +115,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
                             );
                           },
                         );
-
                         if (isCompleted == true) {
                           // Handle completion if needed
                         } else {
@@ -146,7 +145,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
                             itemCount: state.notifications.length,
                             itemBuilder: (context, index) {
                               final notifications = state.notifications[index];
-                              print("Profile: ${notifications.profilePicture}");
                               return GestureDetector(
                                 onTap: () {
                                   notificationsBloc.add(
@@ -155,85 +153,85 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                   context
                                       .read<BottomNavBloc>()
                                       .add(FetchUnreadCountEvent());
-
                                   showDialog(
                                     context: context,
                                     builder: (context) {
                                       return Dialog(
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(20.0),
-                                        ),
-                                        child: SizedBox(
-                                          width: double.infinity,
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              .50,
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(10.0),
-                                            child: Column(
-                                              children: [
-                                                const SizedBox(height: 15),
-                                                Expanded(
-                                                  child:
-                                                      NotificationMessageWidget(
-                                                    sender: notifications.sender
-                                                        .toString(),
-                                                    senderName: notifications
-                                                        .senderName
-                                                        .toString(),
-                                                    receiver: notifications
-                                                        .receiver
-                                                        .toString(),
-                                                    role: notifications.role
-                                                        .toString(),
-                                                    title: notifications.title
-                                                        .toString(),
-                                                    message: notifications
-                                                        .message
-                                                        .toString(),
-                                                    status: notifications.status
-                                                        .toString(),
-                                                    date: _formatDate(
-                                                        notifications.date
-                                                            .toString()),
-                                                    time: _formatTime(
-                                                        notifications.time
-                                                            .toString()),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(20.0),
                                           ),
-                                        );
-                                      },
-                                    );
-                                  },
-                                  child: NotificationCard(
-                                      // Change the background color based on the status
-                                      color: notifications.status == false
-                                          ? Color.fromARGB(255, 236, 240, 241)
-                                          : Color.fromARGB(255, 213, 222,
-                                              224), // Replace with your default color
-                                      sender: notifications.sender.toString(),
-                                      senderName:
-                                          notifications.senderName.toString(),
-                                      receiver:
-                                          notifications.receiver.toString(),
-                                      role: notifications.role.toString(),
-                                      title: notifications.title.toString(),
-                                      message: notifications.message.toString(),
-                                      status: notifications.status.toString(),
-                                      date: _formatDate(
-                                          notifications.date.toString()),
-                                      time: _formatTime(
-                                          notifications.time.toString()),
-                                      profilePicture:
-                                          notifications.profilePicture.toString()),
-                                );
-                              },
-                            ),
+                                          child: SizedBox(
+                                            width: double.infinity,
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                .50,
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(10.0),
+                                              child: Column(
+                                                children: [
+                                                  const SizedBox(height: 15),
+                                                  Expanded(
+                                                    child:
+                                                        NotificationMessageWidget(
+                                                      sender: notifications
+                                                          .sender
+                                                          .toString(),
+                                                      senderName: notifications
+                                                          .senderName
+                                                          .toString(),
+                                                      receiver: notifications
+                                                          .receiver
+                                                          .toString(),
+                                                      role: notifications.role
+                                                          .toString(),
+                                                      title: notifications.title
+                                                          .toString(),
+                                                      message: notifications
+                                                          .message
+                                                          .toString(),
+                                                      status: notifications
+                                                          .status
+                                                          .toString(),
+                                                      date: _formatDate(
+                                                          notifications.date
+                                                              .toString()),
+                                                      time: _formatTime(
+                                                          notifications.time
+                                                              .toString()),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ));
+                                    },
+                                  );
+                                },
+                                child: NotificationCard(
+                                    // Change the background color based on the status
+                                    color: notifications.status == false
+                                        ? Color.fromARGB(255, 236, 240, 241)
+                                        : Color.fromARGB(255, 213, 222,
+                                            224), // Replace with your default color
+                                    sender: notifications.sender.toString(),
+                                    senderName:
+                                        notifications.senderName.toString(),
+                                    receiver: notifications.receiver.toString(),
+                                    role: notifications.role.toString(),
+                                    title: notifications.title.toString(),
+                                    message: notifications.message.toString(),
+                                    status: notifications.status.toString(),
+                                    date: _formatDate(
+                                        notifications.date.toString()),
+                                    time: _formatTime(
+                                        notifications.time.toString()),
+                                    profilePicture: notifications.profilePicture
+                                        .toString()),
+                              );
+                            },
                           ),
                         ),
                       ),
