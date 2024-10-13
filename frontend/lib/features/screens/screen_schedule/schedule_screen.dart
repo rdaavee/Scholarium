@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -12,6 +10,7 @@ import 'package:isHKolarium/blocs/bloc_schedule/schedule_event.dart';
 import 'package:isHKolarium/blocs/bloc_schedule/schedule_state.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
 import 'package:isHKolarium/features/widgets/app_bar.dart';
+import 'package:isHKolarium/features/widgets/loading_circular.dart';
 import 'package:isHKolarium/features/widgets/no_data.dart';
 import 'package:isHKolarium/features/widgets/professor_widgets/alert_dialog.dart';
 import 'package:isHKolarium/features/widgets/student_widgets/schedule_widgets/schedule_dropdown.dart';
@@ -99,13 +98,13 @@ class ScheduleScreenState extends State<ScheduleScreen> {
           create: (context) => scheduleBloc,
         )
       ],
-      child: BlocConsumer<ScheduleBloc, ScheduleState>(
-        listener: (context, state) {},
-        builder: (context, state) {
-          return Scaffold(
-            appBar: AppBarWidget(
-                title: "Schedule", isBackButton: widget.isAppBarBack),
-            body: Stack(
+      child: Scaffold(
+        appBar:
+            AppBarWidget(title: "Schedule", isBackButton: widget.isAppBarBack),
+        body: BlocConsumer<ScheduleBloc, ScheduleState>(
+          listener: (context, state) {},
+          builder: (context, state) {
+            return Stack(
               children: [
                 Container(
                   decoration: const BoxDecoration(
@@ -145,14 +144,11 @@ class ScheduleScreenState extends State<ScheduleScreen> {
                               bloc: scheduleBloc,
                               builder: (context, state) {
                                 if (state is ScheduleLoadingState) {
-                                  return const Center(
-                                      child: CircularProgressIndicator());
+                                  return const Center(child: LoadingCircular());
                                 } else if (state
                                     is ScheduleLoadedSuccessState) {
                                   final duties = state.schedule.where((duty) {
-                                    // Filter to include only active duties
-                                    return duty['isActive'] ==
-                                        true; // Adjust condition based on your data type
+                                    return duty['isActive'] == true;
                                   }).toList();
 
                                   if (duties.isEmpty) {
@@ -219,8 +215,7 @@ class ScheduleScreenState extends State<ScheduleScreen> {
                                   return NoData();
                                 } else {
                                   return const Scaffold(
-                                    body: Center(
-                                        child: CircularProgressIndicator()),
+                                    body: Center(child: LoadingCircular()),
                                   );
                                 }
                               },
@@ -230,9 +225,9 @@ class ScheduleScreenState extends State<ScheduleScreen> {
                       )),
                 ),
               ],
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }

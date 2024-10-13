@@ -5,6 +5,10 @@ import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
 import 'package:isHKolarium/blocs/bloc_profile/profile_bloc.dart';
 import 'package:isHKolarium/blocs/bloc_profile/profile_event.dart';
 import 'package:isHKolarium/blocs/bloc_profile/profile_state.dart';
+import 'package:isHKolarium/features/widgets/profile_widgets/profile_divider.dart';
+import 'package:isHKolarium/features/widgets/profile_widgets/profile_info_data.dart';
+import 'package:isHKolarium/features/widgets/profile_widgets/profile_info_section.dart';
+import 'package:isHKolarium/features/widgets/student_widgets/dtr_widgets/dtr_hours_card.dart';
 
 class ProfileModalBottomSheet extends StatefulWidget {
   final String schoolId;
@@ -44,7 +48,7 @@ class _ProfileModalBottomSheetState extends State<ProfileModalBottomSheet> {
           return const Center(child: CircularProgressIndicator());
         } else if (state is ProfileLoadedSuccessState) {
           return SizedBox(
-            height: 750,
+            height: 880,
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
@@ -56,13 +60,13 @@ class _ProfileModalBottomSheetState extends State<ProfileModalBottomSheet> {
                     child: CircleAvatar(
                       radius: 75.0,
                       backgroundColor: const Color(0xFFEDEDED),
-                      backgroundImage:
-                          state.users[0].profilePicture.toString().isNotEmpty
-                              ? NetworkImage(
-                                  state.users[0].profilePicture.toString())
-                              : const AssetImage(
-                                      'assets/images/profile_image.png')
-                                  as ImageProvider,
+                      backgroundImage: state.users[0].profilePicture
+                              .toString()
+                              .isNotEmpty
+                          ? NetworkImage(
+                              state.users[0].profilePicture.toString())
+                          : const AssetImage('assets/images/profile_image.png')
+                              as ImageProvider,
                     ),
                   ),
                   const SizedBox(height: 20),
@@ -78,31 +82,17 @@ class _ProfileModalBottomSheetState extends State<ProfileModalBottomSheet> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 8),
-                  // School ID
                   Center(
                     child: Text(
                       state.users[0].schoolID ?? '',
                       style: const TextStyle(
                         fontFamily: 'Manrope',
-                        fontSize: 16,
+                        fontSize: 13,
                         color: Color(0xFF6D7278),
                       ),
                     ),
                   ),
-                  const SizedBox(height: 8),
-                  // Address
-                  Center(
-                    child: Text(
-                      state.users[0].address.toString(),
-                      style: const TextStyle(
-                        fontFamily: 'Manrope',
-                        fontSize: 16,
-                        color: Color(0xFF6D7278),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 8),
+                  SizedBox(height: 4),
                   // Active/Inactive Status
                   Center(
                     child: Chip(
@@ -137,33 +127,45 @@ class _ProfileModalBottomSheetState extends State<ProfileModalBottomSheet> {
                     color: Colors.grey,
                   ),
                   const SizedBox(height: 20),
-                  Container(
-                    height: 250,
+                  DtrHoursCard(
+                    progress: (0 / 0).clamp(0.0, 1.0),
+                    cardColor: Colors.white,
                   ),
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        // Navigate to the message screen
-                      },
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 20,
-                          vertical: 20,
-                        ),
-                      ),
-                      child: const Text(
-                        'Send Message',
-                        style: TextStyle(
-                          fontFamily: 'Manrope',
-                          fontWeight: FontWeight.normal,
-                          fontSize: 12,
-                        ),
-                      ),
-                    ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  InfoSection(
+                    title: 'BASIC INFORMATION',
+                    infoRows: [
+                      const SizedBox(height: 15),
+                      InfoRow(
+                          label: 'Email',
+                          value: state.users[0].email.toString()),
+                      const SizedBox(height: 15),
+                      const DividerWidget(),
+                      const SizedBox(height: 15),
+                      InfoRow(
+                          label: 'Gender',
+                          value: state.users[0].gender.toString()),
+                      const SizedBox(height: 15),
+                      const DividerWidget(),
+                      const SizedBox(height: 15),
+                      InfoRow(
+                          label: 'Contact #',
+                          value: state.users[0].contact.toString()),
+                      const SizedBox(height: 15),
+                      const DividerWidget(),
+                      const SizedBox(height: 15),
+                      InfoRow(
+                          label: 'Address',
+                          value: state.users[0].address.toString()),
+                      const SizedBox(height: 15),
+                      const DividerWidget(),
+                      const SizedBox(height: 15),
+                      InfoRow(
+                          label: 'HK Type',
+                          value: state.users[0].hkType.toString()),
+                    ],
                   ),
                 ],
               ),
@@ -172,7 +174,7 @@ class _ProfileModalBottomSheetState extends State<ProfileModalBottomSheet> {
         } else if (state is ProfileErrorState) {
           return Center(child: Text(state.message));
         }
-    
+
         return const SizedBox();
       },
     );

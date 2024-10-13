@@ -8,10 +8,16 @@ import 'package:isHKolarium/config/constants/colors.dart';
 import 'package:isHKolarium/features/screens/screen_announcement/announcement.dart';
 import 'package:isHKolarium/features/screens/screen_event/events_screen.dart';
 import 'package:isHKolarium/features/widgets/app_bar.dart';
-import 'package:isHKolarium/features/widgets/loading_circular.dart';
+import 'package:isHKolarium/features/widgets/label_text_widget.dart';
+import 'package:isHKolarium/features/widgets/no_data.dart';
+import 'package:isHKolarium/features/widgets/professor_widgets/message_textfield.dart';
+import 'package:isHKolarium/features/widgets/professor_widgets/post_button.dart';
+import 'package:isHKolarium/features/widgets/professor_widgets/post_textfield.dart';
+import 'package:isHKolarium/features/widgets/professor_widgets/professor_shimmer.dart';
 import 'package:isHKolarium/features/widgets/student_widgets/announcement_widgets/announcement_card.dart';
 import 'package:isHKolarium/features/widgets/student_widgets/dtr_widgets/duty_card.dart';
 import 'package:isHKolarium/features/widgets/student_widgets/event_widgets/events_card.dart';
+import 'package:isHKolarium/features/widgets/view_all_widget.dart';
 
 class ProfessorHomeScreen extends StatefulWidget {
   const ProfessorHomeScreen({super.key});
@@ -133,156 +139,24 @@ class _ProfessorHomeScreenState extends State<ProfessorHomeScreen> {
                                           const SizedBox(
                                             height: 20,
                                           ),
-                                          const Text(
-                                            'Post Something',
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontFamily: 'Manrope',
-                                              fontSize: 18,
-                                              color: Color(0xFF6D7278),
-                                            ),
+                                          const LabelTextWidget(
+                                            title: 'Post something',
+                                            fontSize: 18,
                                           ),
                                           const SizedBox(height: 10),
-                                          TextField(
-                                            controller: titleController,
-                                            maxLines: 1,
-                                            decoration: InputDecoration(
-                                              hintText: 'Create a post',
-                                              labelStyle: const TextStyle(
-                                                color: Colors.grey,
-                                                fontFamily: 'Manrope',
-                                                fontSize: 13,
-                                              ),
-                                              floatingLabelStyle:
-                                                  const TextStyle(
-                                                      fontFamily: 'Manrope',
-                                                      fontSize: 13,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color:
-                                                          ColorPalette.primary),
-                                              border: OutlineInputBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(8.0),
-                                                borderSide: const BorderSide(
-                                                    color: Colors.grey),
-                                              ),
-                                              focusedBorder: OutlineInputBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(12.0),
-                                                borderSide: const BorderSide(
-                                                    color: ColorPalette.primary,
-                                                    width: 2),
-                                              ),
-                                              enabledBorder: OutlineInputBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(8.0),
-                                                borderSide: const BorderSide(
-                                                    color: Colors.grey),
-                                              ),
-                                              hoverColor: ColorPalette.primary,
-                                            ),
-                                            style: const TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 12.0,
-                                              fontFamily: 'Manrope',
-                                              fontWeight: FontWeight.w100,
-                                            ),
-                                          ),
+                                          PostTextField(
+                                              controller: titleController),
                                           const SizedBox(height: 20),
-                                          TextField(
-                                            controller: messageController,
-                                            maxLines: 5,
-                                            decoration: InputDecoration(
-                                              hintText: 'Write Something',
-                                              labelStyle: const TextStyle(
-                                                color: Colors.grey,
-                                                fontFamily: 'Manrope',
-                                                fontSize: 13,
-                                              ),
-                                              floatingLabelStyle:
-                                                  const TextStyle(
-                                                      fontFamily: 'Manrope',
-                                                      fontSize: 13,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color:
-                                                          ColorPalette.primary),
-                                              border: OutlineInputBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(8.0),
-                                                borderSide: const BorderSide(
-                                                    color: Colors.grey),
-                                              ),
-                                              focusedBorder: OutlineInputBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(12.0),
-                                                borderSide: const BorderSide(
-                                                    color: ColorPalette.primary,
-                                                    width: 2),
-                                              ),
-                                              enabledBorder: OutlineInputBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(8.0),
-                                                borderSide: const BorderSide(
-                                                    color: Colors.grey),
-                                              ),
-                                              hoverColor: ColorPalette.primary,
-                                            ),
-                                            style: const TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 12.0,
-                                              fontFamily: 'Manrope',
-                                              fontWeight: FontWeight.w100,
-                                            ),
-                                          ),
+                                          MessageTextField(
+                                              controller: messageController),
                                           const SizedBox(height: 20),
                                           Align(
                                             alignment: Alignment.centerRight,
-                                            child: ElevatedButton(
+                                            child: PostButton(
                                               onPressed: () {
                                                 createPost();
                                                 Navigator.of(context).pop();
                                               },
-                                              style: ElevatedButton.styleFrom(
-                                                backgroundColor:
-                                                    ColorPalette.btnColor,
-                                                minimumSize:
-                                                    const Size(395, 55),
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(8),
-                                                ),
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 20,
-                                                        vertical: 15),
-                                              ).copyWith(
-                                                elevation:
-                                                    ButtonStyleButton.allOrNull(
-                                                        0.0),
-                                                backgroundColor:
-                                                    WidgetStateProperty
-                                                        .resolveWith<Color>(
-                                                  (Set<WidgetState> states) {
-                                                    if (states.contains(
-                                                        WidgetState.hovered)) {
-                                                      return ColorPalette
-                                                          .primary;
-                                                    }
-                                                    return const Color(
-                                                        0xFFC1C1C1);
-                                                  },
-                                                ),
-                                              ),
-                                              child: const Text(
-                                                'Post',
-                                                style: TextStyle(
-                                                  fontFamily: 'Manrope',
-                                                  fontSize: 11.5,
-                                                  color: Colors.white,
-                                                ),
-                                              ),
                                             ),
                                           ),
                                         ],
@@ -303,22 +177,18 @@ class _ProfessorHomeScreenState extends State<ProfessorHomeScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     CircleAvatar(
-                                      backgroundColor: Colors.grey[300],
-                                      radius: 25,
-                                      child: const Icon(Icons.person,
-                                          color: Colors.white),
+                                      backgroundColor: Colors.white,
+                                      backgroundImage: state
+                                                  .users[0].profilePicture !=
+                                              null
+                                          ? NetworkImage(
+                                              state.users[0].profilePicture!)
+                                          : null,
                                     ),
-                                    const SizedBox(width: 10),
+                                    const SizedBox(width: 15),
                                     const Expanded(
-                                      child: Text(
-                                        'Post something',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.normal,
-                                          fontFamily: 'Manrope',
-                                          fontSize: 15,
-                                          color: Color(0xFFC1C1C1),
-                                        ),
-                                      ),
+                                      child: LabelTextWidget(
+                                          title: 'Post something'),
                                     ),
                                   ],
                                 ),
@@ -329,34 +199,33 @@ class _ProfessorHomeScreenState extends State<ProfessorHomeScreen> {
                               color: Color(0xFF6D7278),
                             ),
                             const SizedBox(height: 10),
-                            const Text(
-                              'Ongoing Duties',
-                              style: TextStyle(
-                                fontSize: 15,
-                                fontFamily: 'Manrope',
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xFF6D7278),
-                                letterSpacing: 0.5,
-                              ),
-                            ),
+                            const LabelTextWidget(title: 'Ongoing Duties'),
                             const SizedBox(height: 16),
                             Expanded(
-                              child: ListView.builder(
-                                itemCount: state.schedules.length,
-                                itemBuilder: (context, index) {
-                                  final schedule = state.schedules[index];
-                                  return Column(
-                                    children: [
-                                      DutyCard(
-                                        cardColor: ColorPalette.primary,
-                                        time: schedule.time,
-                                        roomName: schedule.room,
-                                        students: schedule.students,
-                                      ),
-                                      const SizedBox(height: 16),
-                                    ],
-                                  );
-                                },
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  children: List.generate(
+                                    state.schedules.length,
+                                    (index) {
+                                      final schedule = state.schedules[index];
+                                      return Row(
+                                        children: [
+                                          DutyCard(
+                                            cardColor: ColorPalette.primary
+                                                .withOpacity(0.6),
+                                            time: schedule.time,
+                                            roomName: schedule.room,
+                                            students: schedule.students,
+                                          ),
+                                          const SizedBox(
+                                            width: 16,
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  ),
+                                ),
                               ),
                             ),
                             const SizedBox(height: 16),
@@ -367,16 +236,7 @@ class _ProfessorHomeScreenState extends State<ProfessorHomeScreen> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  const Text(
-                                    "Announcements",
-                                    style: TextStyle(
-                                      fontSize: 15,
-                                      fontFamily: 'Manrope',
-                                      fontWeight: FontWeight.bold,
-                                      color: Color(0xFF6D7278),
-                                      letterSpacing: 0.5,
-                                    ),
-                                  ),
+                                  const LabelTextWidget(title: 'Announcements'),
                                   GestureDetector(
                                     onTap: () {
                                       Navigator.push(
@@ -384,20 +244,12 @@ class _ProfessorHomeScreenState extends State<ProfessorHomeScreen> {
                                         MaterialPageRoute(
                                           builder: (context) =>
                                               const AnnouncementsScreen(
-                                                  isBackButtonTrue: true),
+                                            isBackButtonTrue: true,
+                                          ),
                                         ),
                                       );
                                     },
-                                    child: const Text(
-                                      "View All",
-                                      style: TextStyle(
-                                        fontSize: 11,
-                                        fontFamily: 'Manrope',
-                                        fontWeight: FontWeight.bold,
-                                        color: ColorPalette.viewAllColor,
-                                        letterSpacing: 0.5,
-                                      ),
-                                    ),
+                                    child: const ViewAllText(),
                                   ),
                                 ],
                               ),
@@ -451,16 +303,7 @@ class _ProfessorHomeScreenState extends State<ProfessorHomeScreen> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  const Text(
-                                    "Events",
-                                    style: TextStyle(
-                                      fontSize: 15,
-                                      fontFamily: 'Manrope',
-                                      fontWeight: FontWeight.bold,
-                                      color: Color(0xFF6D7278),
-                                      letterSpacing: 0.5,
-                                    ),
-                                  ),
+                                  const LabelTextWidget(title: 'Events'),
                                   GestureDetector(
                                     onTap: () {
                                       Navigator.push(
@@ -471,16 +314,7 @@ class _ProfessorHomeScreenState extends State<ProfessorHomeScreen> {
                                         ),
                                       );
                                     },
-                                    child: const Text(
-                                      "View All",
-                                      style: TextStyle(
-                                        fontSize: 11,
-                                        fontFamily: 'Manrope',
-                                        fontWeight: FontWeight.bold,
-                                        color: ColorPalette.viewAllColor,
-                                        letterSpacing: 0.5,
-                                      ),
-                                    ),
+                                    child: ViewAllText(),
                                   ),
                                 ],
                               ),
@@ -508,11 +342,33 @@ class _ProfessorHomeScreenState extends State<ProfessorHomeScreen> {
             );
           } else if (state is ProfessorsErrorState) {
             return const Scaffold(
-              body: Center(child: Text('Error loading data')),
+              body: NoData(),
             );
           } else {
-            return const Scaffold(
-              body: Center(child: LoadingCircular()),
+            return Scaffold(
+              appBar: AppBarWidget(title: "", isBackButton: false),
+              body: Stack(
+                children: [
+                  Container(
+                    color: Color(0xFF3A5B84).withOpacity(0.6),
+                  ),
+                  Column(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          decoration: const BoxDecoration(
+                            color: Color(0xFFF0F3F4),
+                            borderRadius: BorderRadius.vertical(
+                              top: Radius.circular(10),
+                            ),
+                          ),
+                          child: ProfessorShimmer(),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             );
           }
         },

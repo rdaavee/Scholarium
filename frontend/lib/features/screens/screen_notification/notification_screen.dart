@@ -1,16 +1,13 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
 import 'package:isHKolarium/api/implementations/student_repository_impl.dart';
-import 'package:isHKolarium/api/repositories/global_repository.dart';
-import 'package:isHKolarium/api/repositories/student_repository.dart';
 import 'package:isHKolarium/blocs/bloc_notification/notification_bloc.dart';
 import 'package:isHKolarium/blocs/bloc_bottom_nav/bottom_nav_bloc.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
 import 'package:isHKolarium/features/widgets/app_bar.dart';
+import 'package:isHKolarium/features/widgets/loading_circular.dart';
 import 'package:isHKolarium/features/widgets/no_data.dart';
 import 'package:isHKolarium/features/widgets/notification_widgets/notification_message.dart';
 import 'package:isHKolarium/features/widgets/student_widgets/notification_widgets/notification_card.dart';
@@ -69,19 +66,136 @@ class _NotificationScreenState extends State<NotificationScreen> {
   Widget build(BuildContext context) {
     return BlocProvider<NotificationsBloc>(
       create: (context) => notificationsBloc,
-      child: BlocConsumer<NotificationsBloc, NotificationsState>(
-        listener: (context, state) {},
-        builder: (context, state) {
-          if (state is NotificationsLoadingState) {
-            return const Scaffold(
-              body: Center(child: CircularProgressIndicator()),
-            );
-          } else if (state is NotificationsLoadedSuccessState) {
-            return Scaffold(
-              appBar: const AppBarWidget(
-                  title: "Notifications", isBackButton: false),
-              floatingActionButton: widget.isRole != "Student"
-                  ? FloatingActionButton(
+      child: Scaffold(
+        appBar: const AppBarWidget(
+          title: "Notifications",
+          isBackButton: false,
+        ),
+        body: BlocConsumer<NotificationsBloc, NotificationsState>(
+          listener: (context, state) {},
+          builder: (context, state) {
+            if (state is NotificationsLoadingState) {
+              return const Center(child: LoadingCircular());
+            } else if (state is NotificationsLoadedSuccessState) {
+              return Stack(
+                children: [
+                  Container(
+                    color: ColorPalette.primary.withOpacity(0.6),
+                  ),
+                  Column(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          decoration: const BoxDecoration(
+                            color: Color(0xFFF0F3F4),
+                            borderRadius: BorderRadius.vertical(
+                              top: Radius.circular(10),
+                            ),
+                          ),
+                          child: ListView.builder(
+                            itemCount: state.notifications.length,
+                            itemBuilder: (context, index) {
+                              final notifications = state.notifications[index];
+                              return GestureDetector(
+                                onTap: () async {
+                                  context
+                                      .read<BottomNavBloc>()
+                                      .add(FetchUnreadCountEvent());
+
+                                  bool? result = await showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return Dialog(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(20.0),
+                                        ),
+                                        child: SizedBox(
+                                          width: double.infinity,
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              .50,
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(10.0),
+                                            child: Column(
+                                              children: [
+                                                const SizedBox(height: 15),
+                                                Expanded(
+                                                  child:
+                                                      NotificationMessageWidget(
+                                                    sender: notifications.sender
+                                                        .toString(),
+                                                    senderName: notifications
+                                                        .senderName
+                                                        .toString(),
+                                                    receiver: notifications
+                                                        .receiver
+                                                        .toString(),
+                                                    role: notifications.role
+                                                        .toString(),
+                                                    title: notifications.title
+                                                        .toString(),
+                                                    message: notifications
+                                                        .message
+                                                        .toString(),
+                                                    status: notifications.status
+                                                        .toString(),
+                                                    scheduleId: notifications
+                                                        .scheduleId
+                                                        .toString(),
+                                                    date: _formatDate(
+                                                        notifications.date
+                                                            .toString()),
+                                                    time: _formatTime(
+                                                        notifications.time
+                                                            .toString()),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  );
+                                  if (result == true) {
+                                    _initialize();
+                                  }
+                                  notificationsBloc.add(
+                                    UpdateNotificationStatusEvent(
+                                      notifications.id.toString(),
+                                    ),
+                                  );
+                                },
+                                child: NotificationCard(
+                                  color: notifications.status == false
+                                      ? const Color(0xFFECEFF1)
+                                      : const Color(0xFFD5DEE0),
+                                  sender: notifications.sender.toString(),
+                                  senderName:
+                                      notifications.senderName.toString(),
+                                  receiver: notifications.receiver.toString(),
+                                  role: notifications.role.toString(),
+                                  title: notifications.title.toString(),
+                                  message: notifications.message.toString(),
+                                  status: notifications.status.toString(),
+                                  date: _formatDate(
+                                      notifications.date.toString()),
+                                  time: _formatTime(
+                                      notifications.time.toString()),
+                                  profilePicture:
+                                      notifications.profilePicture.toString(),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  if (widget.isRole != "Student")
+                    FloatingActionButton(
                       backgroundColor: ColorPalette.primary.withOpacity(0.6),
                       onPressed: () async {
                         final bool? isCompleted = await showDialog<bool>(
@@ -126,170 +240,23 @@ class _NotificationScreenState extends State<NotificationScreen> {
                           },
                         );
                         if (isCompleted == true) {
-                          // Handle completion if needed
                         } else {
                           print('User creation failed or was canceled.');
                         }
                       },
-                      child: const Icon(
-                        Icons.add,
-                        color: Colors.white,
-                      ),
-                    )
-                  : null,
-              body: Stack(
-                children: [
-                  Container(
-                    color: ColorPalette.primary.withOpacity(0.6),
-                  ),
-                  Column(
-                    children: [
-                      Expanded(
-                        child: Container(
-                          decoration: const BoxDecoration(
-                            color: Color(0xFFF0F3F4),
-                            borderRadius:
-                                BorderRadius.vertical(top: Radius.circular(10)),
-                          ),
-                          child: ListView.builder(
-                            itemCount: state.notifications.length,
-                            itemBuilder: (context, index) {
-                              final notifications = state.notifications[index];
-                              return GestureDetector(
-                                onTap: () async {
-                                  context
-                                      .read<BottomNavBloc>()
-                                      .add(FetchUnreadCountEvent());
-                                  print(notifications.id);
-                                  bool? result = await showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return Dialog(
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(20.0),
-                                          ),
-                                          child: SizedBox(
-                                            width: double.infinity,
-                                            height: MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                .50,
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(10.0),
-                                              child: Column(
-                                                children: [
-                                                  const SizedBox(height: 15),
-                                                  Expanded(
-                                                    child:
-                                                        NotificationMessageWidget(
-                                                      sender: notifications
-                                                          .sender
-                                                          .toString(),
-                                                      senderName: notifications
-                                                          .senderName
-                                                          .toString(),
-                                                      receiver: notifications
-                                                          .receiver
-                                                          .toString(),
-                                                      role: notifications.role
-                                                          .toString(),
-                                                      title: notifications.title
-                                                          .toString(),
-                                                      message: notifications
-                                                          .message
-                                                          .toString(),
-                                                      status: notifications
-                                                          .status
-                                                          .toString(),
-                                                      scheduleId: notifications
-                                                          .scheduleId
-                                                          .toString(),
-                                                      date: _formatDate(
-                                                          notifications.date
-                                                              .toString()),
-                                                      time: _formatTime(
-                                                          notifications.time
-                                                              .toString()),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ));
-                                    },
-                                  );
-                                  if (result == true) {
-                                    print('Notification Accepted');
-                                    _initialize();
-                                  } else {
-                                    // Perform action if the dialog is rejected
-                                    print('Notification Rejected');
-                                  }
-                                  notificationsBloc.add(
-                                      UpdateNotificationStatusEvent(
-                                          notifications.id.toString()));
-                                },
-                                child: NotificationCard(
-                                    // Change the background color based on the status
-                                    color: notifications.status == false
-                                        ? Color.fromARGB(255, 236, 240, 241)
-                                        : Color.fromARGB(255, 213, 222,
-                                            224), // Replace with your default color
-                                    sender: notifications.sender.toString(),
-                                    senderName:
-                                        notifications.senderName.toString(),
-                                    receiver: notifications.receiver.toString(),
-                                    role: notifications.role.toString(),
-                                    title: notifications.title.toString(),
-                                    message: notifications.message.toString(),
-                                    status: notifications.status.toString(),
-                                    date: _formatDate(
-                                        notifications.date.toString()),
-                                    time: _formatTime(
-                                        notifications.time.toString()),
-                                    profilePicture: notifications.profilePicture
-                                        .toString()),
-                              );
-                            },
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            );
-          } else if (state is NotificationsErrorState) {
-            return Scaffold(
-              appBar: const AppBarWidget(
-                  title: "Notifications", isBackButton: false),
-              body: Stack(
-                children: [
-                  Container(
-                    color: ColorPalette.primary.withOpacity(0.6),
-                  ),
-                  Center(
-                    child: Container(
-                      width: double.infinity,
-                      decoration: const BoxDecoration(
-                        color: Color(0xFFF0F3F4),
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(10)),
-                      ),
-                      child: NoData(),
+                      child: const Icon(Icons.add, color: Colors.white),
                     ),
-                  ),
                 ],
-              ),
-            );
-          } else {
-            return const Scaffold(
-              body: Center(child: CircularProgressIndicator()),
-            );
-          }
-        },
+              );
+            } else if (state is NotificationsErrorState) {
+              return Center(
+                child: NoData(),
+              );
+            } else {
+              return const Center(child: LoadingCircular());
+            }
+          },
+        ),
       ),
     );
   }

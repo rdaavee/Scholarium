@@ -60,27 +60,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
       providers: [
         BlocProvider<ProfileBloc>(create: (context) => profileBloc),
       ],
-      child: BlocConsumer<ProfileBloc, ProfileState>(
-        listener: (context, state) {
-          if (state is ProfileErrorState) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.message)),
-            );
-          }
-        },
-        builder: (context, state) {
-          if (state is ProfileLoadingState) {
-            print("Loading state triggered");
-            return const Scaffold(
-              body: Center(child: CircularProgressIndicator()),
-            );
-          } else if (state is ProfileLoadedSuccessState) {
-            return Scaffold(
-              appBar: const AppBarWidget(
-                title: "Profile",
-                isBackButton: false,
-              ),
-              body: Stack(
+      child: Scaffold(
+        appBar: const AppBarWidget(
+          title: "Profile",
+          isBackButton: false,
+        ),
+        body: BlocConsumer<ProfileBloc, ProfileState>(
+          listener: (context, state) {
+            if (state is ProfileErrorState) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(state.message)),
+              );
+            }
+          },
+          builder: (context, state) {
+            if (state is ProfileLoadingState) {
+              print("Loading state triggered");
+              return const Scaffold(
+                body: Center(child: CircularProgressIndicator()),
+              );
+            } else if (state is ProfileLoadedSuccessState) {
+              return Stack(
                 children: [
                   Container(
                     color: ColorPalette.primary.withOpacity(0.6),
@@ -191,17 +191,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ],
                   ),
                 ],
-              ),
-            );
-          } else if (state is LogoutLoadedSuccessState) {
-            Navigator.pushReplacementNamed(context, '/login');
-            return Container();
-          } else if (state is LogoutErrorState) {
-            return NoData();
-          } else {
-            return LoadingCircular();
-          }
-        },
+              );
+            } else if (state is LogoutLoadedSuccessState) {
+              Navigator.pushReplacementNamed(context, '/login');
+              return Container();
+            } else if (state is LogoutErrorState) {
+              return NoData();
+            } else {
+              return LoadingCircular();
+            }
+          },
+        ),
       ),
     );
   }

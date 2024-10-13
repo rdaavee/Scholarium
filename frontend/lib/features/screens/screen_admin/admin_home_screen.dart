@@ -9,6 +9,7 @@ import 'package:isHKolarium/blocs/bloc_admin/admin_bloc.dart';
 import 'package:isHKolarium/blocs/bloc_bottom_nav/bottom_nav_bloc.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
 import 'package:isHKolarium/features/widgets/admin_widgets/duty_card.dart';
+import 'package:isHKolarium/features/widgets/loading_circular.dart';
 
 class AdminHomeScreen extends StatefulWidget {
   const AdminHomeScreen({super.key});
@@ -46,60 +47,61 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
         BlocProvider<AdminBloc>(create: (context) => adminBloc),
         BlocProvider<BottomNavBloc>(create: (context) => bottomNavBloc),
       ],
-      child: BlocConsumer<AdminBloc, AdminState>(
-        bloc: adminBloc,
-        listener: (BuildContext context, AdminState state) {},
-        builder: (context, state) {
-          if (state is AdminLoadedSuccessState) {
-            return AdminScaffold(
-              appBar: AppBar(
-                title: const Text(
-                  "Dashboard",
-                  style: TextStyle(fontFamily: 'Manrope', fontSize: 15),
-                ),
-                backgroundColor: ColorPalette.primary,
-                foregroundColor: Colors.white,
-              ),
-              sideBar: isSidebarOpen
-                  ? SideBar(
-                      items: [
-                        AdminMenuItem(
-                          title: 'Dashboard',
-                          route: '/',
-                          icon: Icons.space_dashboard_rounded,
-                        ),
-                        AdminMenuItem(
-                          title: 'View Announcement',
-                          route: '/view_announcement',
-                          icon: CupertinoIcons.rectangle_stack_fill_badge_plus,
-                        ),
-                        AdminMenuItem(
-                          title: 'View Schedule',
-                          route: '/view_schedule',
-                          icon: CupertinoIcons.calendar_badge_plus,
-                        ),
-                        AdminMenuItem(
-                          title: 'Create Announcement',
-                          route: '/create_announcement',
-                          icon: CupertinoIcons.rectangle_stack_fill_badge_plus,
-                        ),
-                        AdminMenuItem(
-                          title: 'Create Schedule',
-                          route: '/create_schedule',
-                          icon: CupertinoIcons.calendar_badge_plus,
-                        ),
-                      ],
-                      selectedRoute: '/',
-                      onSelected: (item) {
-                        if (item.route == '/') {
-                          toggleSidebar();
-                        } else if (item.route != null) {
-                          Navigator.of(context).pushNamed(item.route!);
-                        }
-                      },
-                    )
-                  : null,
-              body: SingleChildScrollView(
+      child: AdminScaffold(
+        appBar: AppBar(
+          title: const Text(
+            "Dashboard",
+            style: TextStyle(fontFamily: 'Manrope', fontSize: 15),
+          ),
+          backgroundColor: ColorPalette.primary,
+          foregroundColor: Colors.white,
+        ),
+        sideBar: isSidebarOpen
+            ? SideBar(
+                items: [
+                  AdminMenuItem(
+                    title: 'Dashboard',
+                    route: '/',
+                    icon: Icons.space_dashboard_rounded,
+                  ),
+                  AdminMenuItem(
+                    title: 'View Announcement',
+                    route: '/view_announcement',
+                    icon: CupertinoIcons.rectangle_stack_fill_badge_plus,
+                  ),
+                  AdminMenuItem(
+                    title: 'View Schedule',
+                    route: '/view_schedule',
+                    icon: CupertinoIcons.calendar_badge_plus,
+                  ),
+                  AdminMenuItem(
+                    title: 'Create Announcement',
+                    route: '/create_announcement',
+                    icon: CupertinoIcons.rectangle_stack_fill_badge_plus,
+                  ),
+                  AdminMenuItem(
+                    title: 'Create Schedule',
+                    route: '/create_schedule',
+                    icon: CupertinoIcons.calendar_badge_plus,
+                  ),
+                ],
+                selectedRoute: '/',
+                onSelected: (item) {
+                  if (item.route == '/') {
+                    toggleSidebar();
+                  } else if (item.route != null) {
+                    Navigator.of(context).pushNamed(item.route!);
+                  }
+                },
+              )
+            : null,
+        body: BlocConsumer<AdminBloc, AdminState>(
+          bloc: adminBloc,
+          listener: (BuildContext context, AdminState state) {},
+          builder: (context, state) {
+            if (state is AdminLoadedSuccessState) {
+              return SingleChildScrollView(
+                // Ensure this is returned
                 child: Container(
                   decoration: const BoxDecoration(
                     color: Color(0xFFF0F3F4),
@@ -131,7 +133,6 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                           ),
                         ),
                       ),
-                      // Container holding both DutyCards and PieChart
                       Container(
                         padding: const EdgeInsets.all(12.0),
                         child: Column(
@@ -192,7 +193,6 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                               ],
                             ),
                             const SizedBox(height: 20),
-                            // Pie Chart
                             const Padding(
                               padding: EdgeInsets.symmetric(horizontal: 25.0),
                               child: Align(
@@ -261,14 +261,14 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                     ],
                   ),
                 ),
-              ),
-            );
-          } else if (state is AdminErrorState) {
-            return Center(child: Text(state.message));
-          } else {
-            return const Center(child: CircularProgressIndicator());
-          }
-        },
+              );
+            } else if (state is AdminErrorState) {
+              return Center(child: Text(state.message));
+            } else {
+              return const Center(child: LoadingCircular());
+            }
+          },
+        ),
       ),
     );
   }
