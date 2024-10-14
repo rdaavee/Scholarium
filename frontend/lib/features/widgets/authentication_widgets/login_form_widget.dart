@@ -12,9 +12,12 @@ class LoginFormWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        SizedBox(
+          height: 40,
+        ),
         Container(
           width: double.infinity,
-          padding: const EdgeInsets.symmetric(vertical: 30),
+          padding: const EdgeInsets.symmetric(vertical: 60),
           child: RichText(
             textAlign: TextAlign.center,
             text: const TextSpan(
