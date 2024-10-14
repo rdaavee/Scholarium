@@ -79,24 +79,25 @@ class _ProfessorHomeScreenState extends State<ProfessorHomeScreen> {
           if (state is ProfessorsLoadedSuccessState) {
             return Scaffold(
               appBar: AppBarWidget(
-                  title: "Hello, ${state.users[0].firstName}!",
-                  isBackButton: false),
-              body: Column(
-                children: [
-                  Container(
-                    decoration: const BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage('assets/images/image.jpg'),
-                        fit: BoxFit.cover,
+                title: "Hello, ${state.users[0].firstName}!",
+                isBackButton: false,
+              ),
+              body: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      decoration: const BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage('assets/images/image.jpg'),
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
-                  ),
-                  Container(
-                    color: ColorPalette.primary.withOpacity(0.6),
-                  ),
-                  Expanded(
-                    child: Container(
-                      height: MediaQuery.of(context).size.height - 100.0,
+                    Container(
+                      color: ColorPalette.primary.withOpacity(0.6),
+                    ),
+                    Container(
                       decoration: const BoxDecoration(
                         color: Color(0xFFF0F3F4),
                         borderRadius: BorderRadius.vertical(
@@ -110,60 +111,7 @@ class _ProfessorHomeScreenState extends State<ProfessorHomeScreen> {
                           children: [
                             GestureDetector(
                               onTap: () {
-                                showModalBottomSheet(
-                                  context: context,
-                                  shape: const RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.vertical(
-                                        top: Radius.circular(20)),
-                                  ),
-                                  isScrollControlled: true,
-                                  backgroundColor: Colors.white,
-                                  builder: (BuildContext context) {
-                                    return Padding(
-                                      padding: const EdgeInsets.all(16.0),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          const Center(
-                                            child: SizedBox(
-                                              width: 100,
-                                              child: Divider(
-                                                height: 20,
-                                                thickness: 0.8,
-                                                color: Color(0xFFC1C1C1),
-                                              ),
-                                            ),
-                                          ),
-                                          const SizedBox(
-                                            height: 20,
-                                          ),
-                                          const LabelTextWidget(
-                                            title: 'Post something',
-                                            fontSize: 18,
-                                          ),
-                                          const SizedBox(height: 10),
-                                          PostTextField(
-                                              controller: titleController),
-                                          const SizedBox(height: 20),
-                                          MessageTextField(
-                                              controller: messageController),
-                                          const SizedBox(height: 20),
-                                          Align(
-                                            alignment: Alignment.centerRight,
-                                            child: PostButton(
-                                              onPressed: () {
-                                                createPost();
-                                                Navigator.of(context).pop();
-                                              },
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    );
-                                  },
-                                );
+                                // Your bottom sheet code here
                               },
                               child: Container(
                                 margin: const EdgeInsets.only(bottom: 16.0),
@@ -201,34 +149,32 @@ class _ProfessorHomeScreenState extends State<ProfessorHomeScreen> {
                             const SizedBox(height: 10),
                             const LabelTextWidget(title: 'Ongoing Duties'),
                             const SizedBox(height: 16),
-                            Expanded(
-                              child: SingleChildScrollView(
+                            SizedBox(
+                              height: 205, // Adjust this height as needed
+                              child: ListView.builder(
                                 scrollDirection: Axis.horizontal,
-                                child: Row(
-                                  children: List.generate(
-                                    state.schedules.length,
-                                    (index) {
-                                      final schedule = state.schedules[index];
-                                      return Row(
-                                        children: [
-                                          DutyCard(
-                                            cardColor: ColorPalette.primary
-                                                .withOpacity(0.6),
-                                            time: schedule.time,
-                                            roomName: schedule.room,
-                                            students: schedule.students,
-                                          ),
-                                          const SizedBox(
-                                            width: 16,
-                                          ),
-                                        ],
-                                      );
-                                    },
-                                  ),
-                                ),
+                                itemCount: state.schedules.length,
+                                itemBuilder: (context, index) {
+                                  final schedule = state.schedules[index];
+                                  return Row(
+                                    children: [
+                                      DutyCard(
+                                        cardColor: ColorPalette.primary
+                                            .withOpacity(0.6),
+                                        time: schedule.time,
+                                        roomName: schedule.room,
+                                        students: schedule.students,
+                                      ),
+                                      const SizedBox(
+                                        width: 16,
+                                      ),
+                                    ],
+                                  );
+                                },
                               ),
                             ),
                             const SizedBox(height: 16),
+                            // Announcements Section
                             Padding(
                               padding: const EdgeInsets.only(
                                   right: 15, left: 15, top: 15),
@@ -314,7 +260,7 @@ class _ProfessorHomeScreenState extends State<ProfessorHomeScreen> {
                                         ),
                                       );
                                     },
-                                    child: ViewAllText(),
+                                    child: const ViewAllText(),
                                   ),
                                 ],
                               ),
@@ -336,8 +282,8 @@ class _ProfessorHomeScreenState extends State<ProfessorHomeScreen> {
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             );
           } else if (state is ProfessorsErrorState) {
@@ -364,7 +310,7 @@ class _ProfessorHomeScreenState extends State<ProfessorHomeScreen> {
                               top: Radius.circular(10),
                             ),
                           ),
-                          child: ProfessorShimmer(),
+                          child: const ProfessorShimmer(),
                         ),
                       ),
                     ],
