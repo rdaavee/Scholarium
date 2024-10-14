@@ -118,7 +118,7 @@ class SetScheduleScreenState extends State<SetScheduleScreen> {
       profID: selectedProfessor,
       professor: "",
       department: "department",
-      time: formattedTime,
+      time: time,
       date: formattedDate,
       isActive: false,
       isCompleted: "pending",
