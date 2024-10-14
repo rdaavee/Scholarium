@@ -51,7 +51,8 @@ class ScheduleScreenState extends State<ScheduleScreen> {
     final role = await _getRole();
     String monthNumber = monthMap[selectedMonth] ?? "";
     scheduleBloc.add(
-        LoadScheduleEvent(selectedMonth: monthNumber, role: role.toString()));
+        FetchScheduleEvent(selectedMonth: monthNumber, role: role.toString()));
+    print(monthNumber);
   }
 
   Future<String?> _getRole() async {
@@ -183,9 +184,13 @@ class ScheduleScreenState extends State<ScheduleScreen> {
                                                         await showDialog(
                                                       context: context,
                                                       builder: (context) {
+                                                        print(selectedMonth);
                                                         return DialogAlertBox(
                                                           scheduleId:
                                                               duty['_id'],
+                                                          role: widget.role,
+                                                          selectedMonth:
+                                                              selectedMonth,
                                                           schoolId:
                                                               duty['user_info']
                                                                   ['school_id'],

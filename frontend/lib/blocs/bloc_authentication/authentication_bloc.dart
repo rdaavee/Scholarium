@@ -13,22 +13,13 @@ class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
   final GlobalRepositoryImpl _globalService;
 
-  AuthenticationBloc(this._globalService) : super(LoginInitial()) {
-    on<LoginInitialEvent>(loginInitialEvent);
+  AuthenticationBloc(this._globalService) : super(LoginLoadingState()) {
     on<PasswordInitialEvent>(passwordInitialEvent);
     on<LoginButtonClickedEvent>(loginButtonClickedEvent);
     on<LoginAutomaticEvent>(automaticLogin);
     on<GetOTPEvent>(getOTPEvent);
     on<VerifyCode>(verifyCode);
     on<ResetPasswordEvent>(resetPasswordEvent);
-  }
-
-  Future<void> loginInitialEvent(
-      LoginInitialEvent event, Emitter<AuthenticationState> emit) async {
-    emit(LoginLoadingState());
-    await Future.delayed(
-      const Duration(seconds: 3),
-    );
   }
 
   FutureOr<void> passwordInitialEvent(

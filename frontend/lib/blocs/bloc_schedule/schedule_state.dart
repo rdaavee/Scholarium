@@ -5,13 +5,9 @@ abstract class ScheduleState extends Equatable {
   List<Object> get props => [];
 }
 
-class ScheduleInitialState extends ScheduleState {}
-
 class ScheduleLoadingState extends ScheduleState {}
 
 class ScheduleLoadedSuccessState extends ScheduleState {
-  // final List<ScheduleModel> todaySchedule;
-  // final List<ScheduleModel> nextSchedule;
   final List<Map<String, dynamic>> schedule;
 
   ScheduleLoadedSuccessState({ required this.schedule,});
