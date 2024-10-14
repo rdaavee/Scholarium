@@ -20,7 +20,6 @@ class ScheduleDropdown extends StatelessWidget {
       icon: const Icon(Icons.arrow_drop_down_rounded),
       style: const TextStyle(
         color: Colors.black,
-        fontFamily: 'Manrope',
         fontWeight: FontWeight.w600,
         fontSize: 16,
       ),

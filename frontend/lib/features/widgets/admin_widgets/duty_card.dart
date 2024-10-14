@@ -42,7 +42,6 @@ class DutyCard extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
-                  fontFamily: 'Manrope',
                   color: textColor,
                 ),
               ),
@@ -52,7 +51,6 @@ class DutyCard extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.normal,
-                  fontFamily: 'Manrope',
                   color: textColor,
                 ),
               ),

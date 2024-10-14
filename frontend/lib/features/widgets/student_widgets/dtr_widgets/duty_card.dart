@@ -40,7 +40,6 @@ class DutyCard extends StatelessWidget {
               style: const TextStyle(
                 fontSize: 26,
                 fontWeight: FontWeight.bold,
-                fontFamily: 'Manrope',
                 letterSpacing: 1.1,
                 color: Colors.white,
               ),
@@ -50,7 +49,6 @@ class DutyCard extends StatelessWidget {
               formattedTime,
               style: const TextStyle(
                 fontSize: 18,
-                fontFamily: 'Manrope',
                 fontWeight: FontWeight.bold,
                 letterSpacing: 1.1,
                 color: Colors.white,
@@ -61,7 +59,6 @@ class DutyCard extends StatelessWidget {
               roomName,
               style: const TextStyle(
                 fontSize: 18,
-                fontFamily: 'Manrope',
                 fontWeight: FontWeight.bold,
                 letterSpacing: 1.1,
                 color: Colors.white,

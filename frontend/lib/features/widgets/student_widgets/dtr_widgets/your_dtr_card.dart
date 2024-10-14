@@ -60,7 +60,6 @@ class YourDtrCard extends StatelessWidget {
           text,
           style: const TextStyle(
             color: Colors.black,
-            fontFamily: 'Manrope',
             fontSize: 12,
             fontWeight: FontWeight.bold,
           ),
@@ -77,7 +76,6 @@ class YourDtrCard extends StatelessWidget {
           text,
           style: const TextStyle(
             color: Colors.black,
-            fontFamily: 'Manrope',
             fontSize: 12,
           ),
         ),

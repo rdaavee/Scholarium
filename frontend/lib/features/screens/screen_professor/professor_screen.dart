@@ -205,7 +205,6 @@ class _ProfessorHomeScreenState extends State<ProfessorHomeScreen> {
                                 state.announcements[0].title.toString(),
                                 style: const TextStyle(
                                   fontSize: 18,
-                                  fontFamily: 'Manrope',
                                   fontWeight: FontWeight.bold,
                                   color: Color(0xFF6D7278),
                                   letterSpacing: 0.5,
@@ -215,7 +214,6 @@ class _ProfessorHomeScreenState extends State<ProfessorHomeScreen> {
                                 state.announcements[0].body.toString(),
                                 style: const TextStyle(
                                   fontSize: 13,
-                                  fontFamily: 'Manrope',
                                   color: Color(0xFFC1C1C1),
                                   fontWeight: FontWeight.w400,
                                   letterSpacing: 0.8,
@@ -224,7 +222,6 @@ class _ProfessorHomeScreenState extends State<ProfessorHomeScreen> {
                               date: Text(
                                 state.announcements[0].date.toString(),
                                 style: const TextStyle(
-                                  fontFamily: 'Manrope',
                                   color: Color(0xFFC1C1C1),
                                   fontWeight: FontWeight.w500,
                                   letterSpacing: 1.2,
@@ -233,7 +230,6 @@ class _ProfessorHomeScreenState extends State<ProfessorHomeScreen> {
                               time: Text(
                                 state.announcements[0].time.toString(),
                                 style: const TextStyle(
-                                  fontFamily: 'Manrope',
                                   color: Color(0xFFC1C1C1),
                                   fontWeight: FontWeight.w500,
                                   letterSpacing: 1.2,
@@ -270,7 +266,6 @@ class _ProfessorHomeScreenState extends State<ProfessorHomeScreen> {
                                 'Leadership Camp',
                                 style: TextStyle(
                                   color: Colors.white,
-                                  fontFamily: 'Manrope',
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
                                 ),

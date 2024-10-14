@@ -37,7 +37,6 @@ class ProfileModalBottomSheet extends StatelessWidget {
                 name,
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontFamily: 'Manrope',
                   fontSize: 24,
                   color: Color(0xFF6D7278),
                 ),
@@ -48,7 +47,6 @@ class ProfileModalBottomSheet extends StatelessWidget {
               child: Text(
                 schoolId,
                 style: const TextStyle(
-                  fontFamily: 'Manrope',
                   fontSize: 16,
                   color: Color(0xFF6D7278),
                 ),
@@ -59,7 +57,6 @@ class ProfileModalBottomSheet extends StatelessWidget {
               child: Text(
                 role,
                 style: const TextStyle(
-                  fontFamily: 'Manrope',
                   fontSize: 11,
                   color: Color(0xFF6D7278),
                 ),
@@ -71,7 +68,6 @@ class ProfileModalBottomSheet extends StatelessWidget {
                 label: Text(
                   isActive ? 'Active' : 'Inactive',
                   style: const TextStyle(
-                    fontFamily: 'Manrope',
                     fontSize: 9,
                     color: Colors.white,
                     letterSpacing: 0.5,
@@ -117,7 +113,6 @@ class ProfileModalBottomSheet extends StatelessWidget {
                 child: const Text(
                   'Send Message',
                   style: TextStyle(
-                    fontFamily: 'Manrope',
                     fontWeight: FontWeight.normal,
                     fontSize: 12,
                   ),

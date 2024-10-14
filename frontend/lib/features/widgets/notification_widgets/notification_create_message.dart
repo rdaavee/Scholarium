@@ -75,7 +75,6 @@ class NotificationCreateMessageWidgetState
       padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: TextField(
         style: const TextStyle(
-          fontFamily: 'Manrope',
           fontSize: 13,
         ),
         controller: controller,
@@ -124,7 +123,6 @@ class NotificationCreateMessageWidgetState
         'Submit',
         style: TextStyle(
           color: Colors.white,
-          fontFamily: 'Manrope',
           fontSize: 12,
         ),
       ),

@@ -36,7 +36,6 @@ class OnboardBody extends StatelessWidget {
                   style: const TextStyle(
                     fontSize: 25,
                     fontWeight: FontWeight.bold,
-                    fontFamily: 'Manrope',
                     color: ColorPalette.btnColor,
                   ),
                   textAlign: TextAlign.center,
@@ -46,7 +45,6 @@ class OnboardBody extends StatelessWidget {
                   controller.items[index].description,
                   style: const TextStyle(
                     fontSize: 13,
-                    fontFamily: 'Manrope',
                     color: Colors.grey,
                   ),
                   textAlign: TextAlign.center,

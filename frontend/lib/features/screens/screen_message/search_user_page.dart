@@ -73,21 +73,17 @@ class SearchUserScreenState extends State<SearchUserScreen> {
                 decoration: InputDecoration(
                   hintText: 'Search by name',
                   border: InputBorder.none,
-                  hintStyle: TextStyle(
-                      color: ColorPalette.accentWhite,
-                      fontFamily: 'Manrope',
-                      fontSize: 13),
+                  hintStyle:
+                      TextStyle(color: ColorPalette.accentWhite, fontSize: 13),
                 ),
                 style: TextStyle(
                   color: ColorPalette.accentWhite,
-                  fontFamily: 'Manrope',
                   fontSize: 13,
                 ),
               )
             : const Text(
                 'Messages',
                 style: TextStyle(
-                  fontFamily: 'Manrope',
                   color: ColorPalette.accentWhite,
                   letterSpacing: 0.5,
                   fontSize: 15,
@@ -120,7 +116,6 @@ class SearchUserScreenState extends State<SearchUserScreen> {
                 ? const Center(
                     child: Text(
                       'No users found.',
-                      style: TextStyle(fontFamily: 'Manrope'),
                     ),
                   )
                 : ListView.builder(
@@ -148,7 +143,6 @@ class SearchUserScreenState extends State<SearchUserScreen> {
                           title: Text(
                             '${user.firstName} ${user.middleName} ${user.lastName}',
                             style: TextStyle(
-                              fontFamily: 'Manrope',
                               fontSize: 14,
                               fontWeight: FontWeight.w700,
                             ),
@@ -156,7 +150,6 @@ class SearchUserScreenState extends State<SearchUserScreen> {
                           subtitle: Text(
                             user.email.toString(),
                             style: TextStyle(
-                                fontFamily: 'Manrope',
                                 fontSize: 12,
                                 fontWeight: FontWeight.w400,
                                 color: Colors.grey[500]),

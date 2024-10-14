@@ -29,11 +29,9 @@ class CustomPasswordField extends StatelessWidget {
         labelText: labelText,
         labelStyle: const TextStyle(
           color: Colors.grey,
-          fontFamily: 'Manrope',
           fontSize: 13,
         ),
         floatingLabelStyle: const TextStyle(
-          fontFamily: 'Manrope',
           fontSize: 13,
           fontWeight: FontWeight.bold,
           color: Color(0xFF00A4E4),

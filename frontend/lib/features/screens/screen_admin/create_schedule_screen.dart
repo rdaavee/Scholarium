@@ -182,7 +182,6 @@ class SetScheduleScreenState extends State<SetScheduleScreen> {
                           : 'Select',
                       style: TextStyle(
                         color: ColorPalette.accentBlack,
-                        fontFamily: 'Manrope',
                         fontSize: 11,
                       ),
                     ),
@@ -206,7 +205,6 @@ class SetScheduleScreenState extends State<SetScheduleScreen> {
                     slot,
                     style: TextStyle(
                       color: ColorPalette.accentBlack,
-                      fontFamily: 'Manrope',
                       fontSize: 11,
                     ),
                   ),
@@ -230,8 +228,6 @@ class SetScheduleScreenState extends State<SetScheduleScreen> {
               hint: Text(
                 "Select Professor",
                 style: TextStyle(
-                  fontFamily: 'Manrope',
-                  fontSize: 12,
                 ),
               ),
               items: professors.map((professor) {
@@ -254,7 +250,6 @@ class SetScheduleScreenState extends State<SetScheduleScreen> {
               hint: Text(
                 "Select Student",
                 style: TextStyle(
-                  fontFamily: 'Manrope',
                   fontSize: 12,
                 ),
               ),
@@ -309,7 +304,6 @@ class SetScheduleScreenState extends State<SetScheduleScreen> {
                     'Confirm',
                     style: const TextStyle(
                       color: Colors.white,
-                      fontFamily: 'Manrope',
                       fontSize: 11.5,
                     ),
                   ),

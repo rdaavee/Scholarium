@@ -37,7 +37,7 @@ class ProfessorShimmer extends StatelessWidget {
                 highlightColor: Colors.grey[100]!,
                 child: Text(
                   'Post something',
-                  style: TextStyle(fontFamily: 'Manrope'),
+                  
                 ),
               ),
             ],

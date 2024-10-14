@@ -76,7 +76,6 @@ class _ProfileModalBottomSheetState extends State<ProfileModalBottomSheet> {
                       '${state.users[0].firstName} ${state.users[0].lastName}',
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontFamily: 'Manrope',
                         fontSize: 24,
                         color: Color(0xFF6D7278),
                       ),
@@ -86,7 +85,6 @@ class _ProfileModalBottomSheetState extends State<ProfileModalBottomSheet> {
                     child: Text(
                       state.users[0].schoolID ?? '',
                       style: const TextStyle(
-                        fontFamily: 'Manrope',
                         fontSize: 13,
                         color: Color(0xFF6D7278),
                       ),
@@ -101,7 +99,6 @@ class _ProfileModalBottomSheetState extends State<ProfileModalBottomSheet> {
                             ? 'Active'
                             : 'Inactive',
                         style: const TextStyle(
-                          fontFamily: 'Manrope',
                           fontSize: 9,
                           color: Colors.white,
                           letterSpacing: 0.5,

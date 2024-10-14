@@ -51,7 +51,6 @@ class BottomNavWidget extends StatelessWidget {
         selectedItemColor: ColorPalette.primary,
         unselectedItemColor: Colors.grey,
         selectedLabelStyle: TextStyle(
-          fontFamily: 'Manrope',
           fontSize: 12,
           fontWeight: FontWeight.w500,
           letterSpacing: 0.5,

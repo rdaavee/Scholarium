@@ -29,13 +29,12 @@ class UserDataTable extends StatelessWidget {
         columnSpacing: 17,
         // ignore: deprecated_member_use
         dataRowHeight: 70,
-        dataTextStyle: const TextStyle(fontFamily: 'Manrope', fontSize: 10),
+        dataTextStyle: const TextStyle(fontSize: 10),
         columns: const <DataColumn>[
           DataColumn(
             label: Text(
               '',
               style: TextStyle(
-                  fontFamily: 'Manrope',
                   fontSize: 13,
                   fontWeight: FontWeight.bold),
             ),
@@ -44,7 +43,6 @@ class UserDataTable extends StatelessWidget {
             label: Text(
               'Name',
               style: TextStyle(
-                  fontFamily: 'Manrope',
                   fontSize: 13,
                   fontWeight: FontWeight.bold),
             ),
@@ -53,7 +51,6 @@ class UserDataTable extends StatelessWidget {
             label: Text(
               'Role',
               style: TextStyle(
-                  fontFamily: 'Manrope',
                   fontSize: 13,
                   fontWeight: FontWeight.bold),
             ),
@@ -62,7 +59,6 @@ class UserDataTable extends StatelessWidget {
             label: Text(
               'Status',
               style: TextStyle(
-                  fontFamily: 'Manrope',
                   fontSize: 13,
                   fontWeight: FontWeight.bold),
             ),
@@ -71,7 +67,6 @@ class UserDataTable extends StatelessWidget {
             label: Text(
               'Actions',
               style: TextStyle(
-                  fontFamily: 'Manrope',
                   fontSize: 13,
                   fontWeight: FontWeight.bold),
             ),
@@ -202,7 +197,6 @@ class UserDataTable extends StatelessWidget {
                                   child: Text(
                                     'Profile',
                                     style: TextStyle(
-                                      fontFamily: 'Manrope',
                                       fontSize: 11,
                                     ),
                                   ),
@@ -212,7 +206,6 @@ class UserDataTable extends StatelessWidget {
                                   child: Text(
                                     'Edit',
                                     style: TextStyle(
-                                      fontFamily: 'Manrope',
                                       fontSize: 11,
                                     ),
                                   ),
@@ -222,7 +215,6 @@ class UserDataTable extends StatelessWidget {
                                   child: Text(
                                     'Delete',
                                     style: TextStyle(
-                                      fontFamily: 'Manrope',
                                       fontSize: 11,
                                     ),
                                   ),

@@ -37,7 +37,6 @@ class CustomElevatedButton extends StatelessWidget {
       child: Text(
         text,
         style: TextStyle(
-          fontFamily: 'Manrope',
           fontSize: fontSize,
           color: textColor,
         ),

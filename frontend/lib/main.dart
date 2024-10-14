@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:isHKolarium/config/routes/routes.dart';
 import 'package:isHKolarium/features/screens/screen_login/login_page.dart';
@@ -13,22 +14,22 @@ void main() async {
   runApp(App(isOnboardCompleted: isOnboardCompleted));
 }
 
-
-
 class App extends StatelessWidget {
   final bool isOnboardCompleted;
   const App({super.key, required this.isOnboardCompleted});
 
   @override
   Widget build(BuildContext context) {
+    //detects platform and choose the font family
+    String fontFamily = Platform.isIOS ? 'Helvetica' : 'Manrope';
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'isHKolarium',
-      // themeMode: ThemeMode.system,
-      // theme: TAppTheme.lightTheme,
-      // darkTheme: TAppTheme.darkTheme,
+      theme: ThemeData(
+        fontFamily: fontFamily,
+      ),
       //initial is the first screen to pop up when u open the app
-      // initialRoute: LoginPage.routeName,
       initialRoute:
           isOnboardCompleted ? LoginPage.routeName : OnboardScreen.routeName,
       //defined the routes file here in order to access the routes any where all over the app

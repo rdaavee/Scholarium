@@ -78,7 +78,6 @@ class _OTPScreenState extends State<OTPScreen> {
                 const Text(
                   'Enter OTP',
                   style: TextStyle(
-                      fontFamily: 'Manrope',
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
                       color: ColorPalette.accentBlack),
@@ -86,7 +85,6 @@ class _OTPScreenState extends State<OTPScreen> {
                 Text(
                   "An 6-digit code has been sent to ${widget.email}",
                   style: TextStyle(
-                    fontFamily: 'Manrope',
                     fontSize: 11,
                     color: Colors.grey[400],
                   ),

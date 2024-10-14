@@ -44,7 +44,6 @@ class TimelineItem extends StatelessWidget {
                     _formatDate(duty['date'].toString()),
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontFamily: 'Manrope',
                       color: Colors.grey[600],
                     ),
                   ),

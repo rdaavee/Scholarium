@@ -96,7 +96,6 @@ class MessageScreenState extends State<MessageScreen> {
         title: Text(
           'Chat with ${widget.receiverName}',
           style: TextStyle(
-            fontFamily: 'Manrope',
             fontSize: 15,
             letterSpacing: 0.5,
             color: ColorPalette.accentWhite,
@@ -137,7 +136,6 @@ class MessageScreenState extends State<MessageScreen> {
                         isSender ? 'You' : widget.receiverName,
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
-                          fontFamily: 'Manrope',
                           fontSize: 10,
                           color: isSender ? Colors.blueAccent : Colors.black,
                         ),
@@ -165,7 +163,6 @@ class MessageScreenState extends State<MessageScreen> {
                           message.content,
                           style: TextStyle(
                               color: isSender ? Colors.white : Colors.black87,
-                              fontFamily: 'Manrope',
                               fontSize: 12),
                         ),
                       ),
@@ -196,13 +193,11 @@ class MessageScreenState extends State<MessageScreen> {
                               decoration: const InputDecoration(
                                 hintText: 'Type your message...',
                                 hintStyle: TextStyle(
-                                    fontFamily: 'Manrope',
                                     fontSize: 12,
                                     color: Colors.grey),
                                 border: InputBorder.none,
                               ),
                               style: TextStyle(
-                                fontFamily: 'Manrope',
                                 fontSize: 12,
                               ),
                               onSubmitted: (value) {

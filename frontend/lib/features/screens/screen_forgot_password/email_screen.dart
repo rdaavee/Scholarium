@@ -75,7 +75,6 @@ class _EmailScreenState extends State<EmailScreen> {
                 const Text(
                   'Forgot Password?',
                   style: TextStyle(
-                      fontFamily: 'Manrope',
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
                       color: ColorPalette.accentBlack),
@@ -86,7 +85,6 @@ class _EmailScreenState extends State<EmailScreen> {
                 Text(
                   'Enter the email address associated with your account',
                   style: TextStyle(
-                    fontFamily: 'Manrope',
                     fontSize: 11,
                     color: Colors.grey[400],
                   ),
