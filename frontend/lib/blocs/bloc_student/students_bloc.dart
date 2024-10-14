@@ -14,8 +14,22 @@ class StudentsBloc extends Bloc<StudentsEvent, StudentsState> {
   final StudentRepositoryImpl _studentRepositoryImpl;
   final GlobalRepositoryImpl _globalRepositoryImpl;
 
-  StudentsBloc(this._studentRepositoryImpl, this._globalRepositoryImpl) : super(StudentsLoadingState()) {
+  StudentsBloc(this._studentRepositoryImpl, this._globalRepositoryImpl) : super(StudentsInitial()) {
+    on<StudentsInitialEvent>(studentInitialEvents);
     on<FetchLatestEvent>(_onFetchLatestEvent);
+  }
+
+  Future<void> studentInitialEvents(
+      StudentsInitialEvent event, Emitter<StudentsState> emit) async {
+    emit(StudentsLoadingState());
+    emit(
+      StudentsLoadedSuccessState(
+          users: const [],
+          todaySchedule: const [],
+          nextSchedule: const [],
+          announcements: const [],
+          hours: const []),
+    );
   }
 
   Future<void> _onFetchLatestEvent(
