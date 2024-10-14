@@ -17,7 +17,7 @@ class ProfessorsBloc extends Bloc<ProfessorsEvent, ProfessorsState> {
   final GlobalRepositoryImpl _globalRepositoryImpl;
 
   ProfessorsBloc(this._professorRepositoryImpl, this._globalRepositoryImpl)
-      : super(ProfessorsInitialState()) {
+      : super(ProfessorsLoadingState()) {
     on<ProfessorsInitialEvent>(professorsInitialEvent);
     on<FetchLatestEvent>(fetchLatestEvent);
     on<ProfessorsCreatePostEvent>(createPost);
@@ -28,19 +28,6 @@ class ProfessorsBloc extends Bloc<ProfessorsEvent, ProfessorsState> {
     emit(ProfessorsLoadingState());
     emit(ProfessorsLoadedSuccessState(
         users: [], announcements: [], schedules: []));
-  }
-
-  Future<void> createPost(
-      ProfessorsCreatePostEvent event, Emitter<ProfessorsState> emit) async {
-    try {
-      final notification = NotificationsModel(
-        title: event.title,
-        message: event.message,
-      );
-      await _professorRepositoryImpl.createPost(notification);
-    } catch (e) {
-      emit(PostErrorState());
-    }
   }
 
   Future<void> fetchLatestEvent(
@@ -62,6 +49,20 @@ class ProfessorsBloc extends Bloc<ProfessorsEvent, ProfessorsState> {
     } catch (error) {
       print(error);
       emit(ProfessorsErrorState(message: error.toString()));
+    }
+  }
+
+  Future<void> createPost(
+      ProfessorsCreatePostEvent event, Emitter<ProfessorsState> emit) async {
+    try {
+      final notification = NotificationsModel(
+        title: event.title,
+        message: event.message,
+      );
+      await _professorRepositoryImpl.createPost(notification);
+      add(FetchLatestEvent());
+    } catch (e) {
+      emit(PostErrorState());
     }
   }
 }

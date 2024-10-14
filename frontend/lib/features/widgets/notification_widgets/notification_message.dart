@@ -179,6 +179,7 @@ class NotificationMessageState extends State<NotificationMessageWidget> {
                       onPressed: () {
                         notificationsBloc.add(DeleteScheduleNotificationEvent(
                             widget.scheduleId, widget.sender));
+                        notificationsBloc.add(FetchNotificationsEvent());
                         Navigator.pop(context, false);
                       },
                     ),

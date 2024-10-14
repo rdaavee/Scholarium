@@ -1,10 +1,7 @@
 part of 'professors_bloc.dart';
 abstract class ProfessorsState {}
 
-final class ProfessorsInitialState extends ProfessorsState {}
-
 final class ProfessorsLoadingState extends ProfessorsState {}
-
 final class ProfessorsLoadedSuccessState extends ProfessorsState {
   final List<UserModel> users;
   final List<ProfessorScheduleModel> schedules;

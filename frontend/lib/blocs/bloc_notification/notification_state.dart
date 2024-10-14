@@ -5,10 +5,7 @@ abstract class NotificationsState {}
 
 abstract class NotificationsActionState extends NotificationsState {}
 
-class NotificationsInitial extends NotificationsState {}
-
 class NotificationsLoadingState extends NotificationsState {}
-
 class NotificationsLoadedSuccessState extends NotificationsState {
   final List<NotificationsModel> notifications;
   final List<UserModel> users;

@@ -15,21 +15,14 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
   final StudentRepositoryImpl _studentRepository;
 
   NotificationsBloc(this._globalRepository, this._studentRepository)
-      : super(NotificationsInitial()) {
-    on<NotificationsInitialEvent>(notificationsInitialEvent);
-    on<FetchNotificationsEvent>(onFetchNotificationsEvent);
-    on<UpdateNotificationStatusEvent>(onUpdateNotificationsEvent);
-    on<UpdateScheduleStatusEvent>(onUpdateScheduleEvent);
-    on<DeleteScheduleNotificationEvent>(onDeleteScheduleNotificationEvent);
+      : super(NotificationsLoadingState()) {
+    on<FetchNotificationsEvent>(fetchNotificationsEvent);
+    on<UpdateNotificationStatusEvent>(updateNotificationsEvent);
+    on<UpdateScheduleStatusEvent>(updateScheduleEvent);
+    on<DeleteScheduleNotificationEvent>(deleteScheduleNotificationEvent);
   }
 
-  FutureOr<void> notificationsInitialEvent(
-      NotificationsInitialEvent event, Emitter<NotificationsState> emit) async {
-    emit(NotificationsLoadingState());
-    emit(NotificationsLoadedSuccessState(notifications: const [], users: []));
-  }
-
-  FutureOr<void> onFetchNotificationsEvent(
+  FutureOr<void> fetchNotificationsEvent(
       FetchNotificationsEvent event, Emitter<NotificationsState> emit) async {
     try {
       emit(NotificationsLoadingState());
@@ -43,7 +36,7 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
     }
   }
 
-  FutureOr<void> onUpdateNotificationsEvent(UpdateNotificationStatusEvent event,
+  FutureOr<void> updateNotificationsEvent(UpdateNotificationStatusEvent event,
       Emitter<NotificationsState> emit) async {
     try {
       await _globalRepository.updateNotificationStatus(event.notificationId);
@@ -54,7 +47,7 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
     }
   }
 
-  FutureOr<void> onUpdateScheduleEvent(
+  FutureOr<void> updateScheduleEvent(
       UpdateScheduleStatusEvent event, Emitter<NotificationsState> emit) async {
     try {
       await _studentRepository.confirmSchedule(scheduleId: event.scheduleId);
@@ -65,12 +58,13 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
     }
   }
 
-  FutureOr<void> onDeleteScheduleNotificationEvent(
+  FutureOr<void> deleteScheduleNotificationEvent(
       DeleteScheduleNotificationEvent event,
       Emitter<NotificationsState> emit) async {
     try {
       await _globalRepository.deleteNotificationAndScheduleStatus(
           event.scheduleId, event.schoolId);
+      add(FetchNotificationsEvent());
     } catch (e) {
       emit(NotificationsErrorState(
           message: 'Failed to delete schedule and notification: $e'));

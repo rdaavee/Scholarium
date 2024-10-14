@@ -12,15 +12,8 @@ part 'dtr_state.dart';
 class DtrBloc extends Bloc<DtrEvent, DtrState> {
   final StudentRepositoryImpl _apiService;
 
-  DtrBloc(this._apiService) : super(DtrInitialState()) {
-    on<DtrInitialEvent>(dtrInitialEvent);
+  DtrBloc(this._apiService) : super(DtrLoadingState()) {
     on<FetchDtrEvent>(fetchDtrEvent);
-  }
-
-  FutureOr<void> dtrInitialEvent(
-      DtrInitialEvent event, Emitter<DtrState> emit) async {
-    emit(DtrLoadingState());
-    emit(DtrLoadedSuccessState(hours: const [], dtr: const []));
   }
 
   FutureOr<void> fetchDtrEvent(

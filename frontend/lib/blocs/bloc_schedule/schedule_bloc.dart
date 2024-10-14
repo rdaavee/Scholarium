@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:isHKolarium/api/implementations/professor_repository_impl.dart';
 import 'package:isHKolarium/api/implementations/student_repository_impl.dart';
@@ -11,23 +10,14 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
   final ProfessorRepositoryImpl professorRepository;
 
   ScheduleBloc(this.studentRepository, this.professorRepository)
-      : super(ScheduleInitialState()) {
-    on<ScheduleInitialEvent>(scheduleInitialEvent);
-    on<LoadScheduleEvent>(_onLoadScheduleEvent);
+      : super(ScheduleLoadingState()) {
+    on<FetchScheduleEvent>(fetchScheduleEvent);
     on<UpdateDutySchedule>(updateDutySchedule);
     on<CreateDTREvent>(createDTREvent);
   }
 
-  FutureOr<void> scheduleInitialEvent(
-      ScheduleInitialEvent event, Emitter<ScheduleState> emit) async {
-    emit(ScheduleLoadingState());
-    emit(
-      ScheduleLoadedSuccessState(schedule: const []),
-    );
-  }
-
-  Future<void> _onLoadScheduleEvent(
-    LoadScheduleEvent event,
+  Future<void> fetchScheduleEvent(
+    FetchScheduleEvent event,
     Emitter<ScheduleState> emit,
   ) async {
     emit(ScheduleLoadingState());
@@ -53,6 +43,7 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
     emit(ScheduleLoadingState());
     try {
       await professorRepository.updateStudentSchedule(event.id);
+      add(FetchScheduleEvent(selectedMonth: event.selectedMonth, role: event.role));
     } catch (e) {
       emit(ScheduleErrorState(e.toString()));
     }
@@ -63,6 +54,7 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
     emit(ScheduleLoadingState());
     try {
       await professorRepository.createDTR(event.dtr);
+      add(FetchScheduleEvent(selectedMonth: event.selectedMonth, role: event.role));
     } catch (e) {
       emit(ScheduleErrorState(e.toString()));
     }

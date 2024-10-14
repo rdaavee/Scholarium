@@ -14,21 +14,25 @@ import 'package:isHKolarium/blocs/bloc_schedule/schedule_state.dart';
 import 'package:signature/signature.dart';
 
 class DialogAlertBox extends StatefulWidget {
-  final String? scheduleId;
-  final String? schoolId;
-  final String? date;
-  final String? timeIn;
-  final String? hkType;
-  final String? professorName;
+  final String scheduleId;
+  final String role;
+  final String selectedMonth;
+  final String schoolId;
+  final String date;
+  final String timeIn;
+  final String hkType;
+  final String professorName;
 
   const DialogAlertBox({
     super.key,
     required this.scheduleId,
-    this.schoolId,
-    this.date,
-    this.timeIn,
-    this.hkType,
-    this.professorName,
+    required this.role,
+    required this.selectedMonth,
+    required this.schoolId,
+    required this.date,
+    required this.timeIn,
+    required this.hkType,
+    required this.professorName,
   });
 
   @override
@@ -97,7 +101,9 @@ class _DialogAlertBoxState extends State<DialogAlertBox> {
                           setState(() {});
                           try {
                             _scheduleBloc.add(UpdateDutySchedule(
-                                id: widget.scheduleId.toString()));
+                                id: widget.scheduleId,
+                                selectedMonth: widget.selectedMonth,
+                                role: widget.role));
                             final totalDuration =
                                 _parseTime(widget.timeIn.toString()) +
                                     _parseTime("01:30:00");
@@ -123,7 +129,10 @@ class _DialogAlertBoxState extends State<DialogAlertBox> {
                                   ? base64Encode(_signatureImage!)
                                   : null,
                             );
-                            _scheduleBloc.add(CreateDTREvent(dtr: dtrModel));
+                            _scheduleBloc.add(CreateDTREvent(
+                                dtr: dtrModel,
+                                selectedMonth: widget.selectedMonth,
+                                role: widget.role));
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                   content: Text('Student Duty Completed')),
