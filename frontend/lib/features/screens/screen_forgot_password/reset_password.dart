@@ -78,7 +78,6 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 const Text(
                   'Create new password',
                   style: TextStyle(
-                      fontFamily: 'Manrope',
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
                       color: ColorPalette.accentBlack),
@@ -89,7 +88,6 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 Text(
                   'Set your new password so you can login and access isHKolarium',
                   style: TextStyle(
-                    fontFamily: 'Manrope',
                     fontSize: 11,
                     color: Colors.grey[400],
                   ),

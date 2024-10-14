@@ -18,7 +18,6 @@ class StatusDropdown extends StatelessWidget {
       decoration: const InputDecoration(
         labelText: 'Select Status',
         labelStyle: TextStyle(
-          fontFamily: 'Manrope',
           fontSize: 11,
         ),
         border: OutlineInputBorder(),

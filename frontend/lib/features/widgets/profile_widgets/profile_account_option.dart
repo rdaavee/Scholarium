@@ -65,7 +65,7 @@ class AccountOptions extends StatelessWidget {
         ),
         child: Text(
           'Cancel',
-          style: TextStyle(fontFamily: 'Manrope', color: Colors.white),
+          style: TextStyle(color: Colors.white),
         ),
       ),
       btnOk: ElevatedButton(
@@ -78,7 +78,7 @@ class AccountOptions extends StatelessWidget {
         ),
         child: Text(
           'Confirm',
-          style: TextStyle(fontFamily: 'Manrope', color: Colors.white),
+          style: TextStyle(color: Colors.white),
         ),
       ),
     ).show();
@@ -98,7 +98,6 @@ class AccountOptions extends StatelessWidget {
           style: const TextStyle(
             color: Color(0xFF3C3C3C),
             fontSize: 16.5,
-            fontFamily: 'Manrope',
             fontWeight: FontWeight.w700,
             height: 0,
           ),

@@ -34,7 +34,6 @@ class CustomVerifyButton extends StatelessWidget {
       child: Text(
         buttonText,
         style: TextStyle(
-          fontFamily: 'Manrope',
           fontSize: fontSize,
           color: textColor,
         ),

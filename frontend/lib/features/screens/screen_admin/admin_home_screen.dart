@@ -55,7 +55,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
         appBar: AppBar(
           title: const Text(
             "Dashboard",
-            style: TextStyle(fontFamily: 'Manrope', fontSize: 15),
+            style: TextStyle(fontSize: 15),
           ),
           backgroundColor: ColorPalette.primary,
           foregroundColor: Colors.white,
@@ -193,7 +193,6 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                                           fontSize: 10,
                                           fontWeight: FontWeight.bold,
                                           color: Colors.white,
-                                          fontFamily: 'Manrope',
                                         ),
                                       ),
                                       PieChartSectionData(
@@ -205,7 +204,6 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                                           fontSize: 10,
                                           fontWeight: FontWeight.bold,
                                           color: Colors.white,
-                                          fontFamily: 'Manrope',
                                         ),
                                       ),
                                     ],

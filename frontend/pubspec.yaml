@@ -85,7 +85,9 @@ flutter:
 
   assets:
     - assets/
-    - assets/fonts/Roboto-Regular.ttf
+    - assets/fonts/Helvetica-Light.ttf
+    - assets/fonts/Helvetica-Regular.ttf
+    - assets/fonts/Helvetica-Bold.ttf
     - assets/images/
     - assets/animation/loading.json
     - assets/images/onboarding-img-1.png
@@ -156,11 +158,13 @@ fonts:
         weight: 700
       - asset: assets/fonts/Manrope-ExtraBold.ttf
         weight: 800
-  - family: Roboto
+  - family: Helvetica
     fonts:
-      - asset: assets/fonts/Roboto-Regular.ttf
+      - asset: assets/fonts/Helvetica-Light.ttf
+        weight: 300
+      - asset: assets/fonts/Helvetica-Regular.ttf
         weight: 400
-      - asset: assets/fonts/Roboto-Bold.ttf
+      - asset: assets/fonts/Helvetica-Bold.ttf
         weight: 700
 
 flutter_native_splash:

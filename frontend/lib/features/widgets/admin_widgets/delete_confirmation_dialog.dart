@@ -20,7 +20,7 @@ class DeleteConfirmationDialog {
         ),
         child: Text(
           'Cancel',
-          style: TextStyle(fontFamily: 'Manrope', color: Colors.white),
+          style: TextStyle(color: Colors.white),
         ),
       ),
       btnOk: ElevatedButton(
@@ -33,7 +33,7 @@ class DeleteConfirmationDialog {
         ),
         child: Text(
           'Confirm',
-          style: TextStyle(fontFamily: 'Manrope', color: Colors.white),
+          style: TextStyle(color: Colors.white),
         ),
       ),
     ).show();

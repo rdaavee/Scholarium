@@ -56,7 +56,6 @@ class DtrStatusCard extends StatelessWidget {
                       title,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontFamily: 'Manrope',
                         fontSize: 19,
                         color: Colors.purple,
                       ),
@@ -72,7 +71,6 @@ class DtrStatusCard extends StatelessWidget {
                               'Completed',
                               style: TextStyle(
                                 fontSize: 17,
-                                fontFamily: 'Manrope',
                                 color: Color(0xFF6D7278),
                               ),
                             ),
@@ -81,7 +79,6 @@ class DtrStatusCard extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: 24,
                                 fontWeight: FontWeight.bold,
-                                fontFamily: 'Manrope',
                               ),
                             ),
                           ],

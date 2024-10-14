@@ -58,7 +58,6 @@ class DutyStatusCard extends StatelessWidget {
                       title,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontFamily: 'Manrope',
                         fontSize: 16,
                         color: Colors.orange,
                       ),
@@ -74,7 +73,6 @@ class DutyStatusCard extends StatelessWidget {
                               'Ongoing',
                               style: TextStyle(
                                 fontSize: 17,
-                                fontFamily: 'Manrope',
                                 color: Color(0xFF6D7278),
                               ),
                             ),
@@ -83,7 +81,6 @@ class DutyStatusCard extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: 24,
                                 fontWeight: FontWeight.bold,
-                                fontFamily: 'Manrope',
                               ),
                             ),
                           ],
@@ -96,7 +93,6 @@ class DutyStatusCard extends StatelessWidget {
                               'Completed',
                               style: TextStyle(
                                 fontSize: 17,
-                                fontFamily: 'Manrope',
                                 color: Color(0xFF6D7278),
                               ),
                             ),
@@ -105,7 +101,6 @@ class DutyStatusCard extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: 24,
                                 fontWeight: FontWeight.bold,
-                                fontFamily: 'Manrope',
                               ),
                             ),
                           ],

@@ -45,7 +45,6 @@ class LoginForm extends StatelessWidget {
               'Forgot Password?',
               style: TextStyle(
                 color: Colors.white60,
-                fontFamily: 'Manrope',
                 fontSize: 12,
                 fontWeight: FontWeight.normal,
               ),
@@ -97,7 +96,6 @@ class LoginForm extends StatelessWidget {
         style: const TextStyle(
           color: Colors.white,
           fontSize: 12.0,
-          fontFamily: 'Manrope',
           fontWeight: FontWeight.w100,
         ),
       ),
@@ -146,7 +144,6 @@ class LoginForm extends StatelessWidget {
         style: const TextStyle(
           color: Colors.white,
           fontSize: 12.0,
-          fontFamily: 'Manrope',
           fontWeight: FontWeight.w100,
         ),
         onSubmitted: (value) {

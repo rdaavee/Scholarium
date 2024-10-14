@@ -85,7 +85,6 @@ class NotificationMessageState extends State<NotificationMessageWidget> {
                           style: TextStyle(
                             fontWeight: FontWeight.w500,
                             color: Color(0xFF6D7278),
-                            fontFamily: 'Manrope',
                             fontSize: 12,
                           ),
                         ),
@@ -94,7 +93,6 @@ class NotificationMessageState extends State<NotificationMessageWidget> {
                           style: TextStyle(
                             fontWeight: FontWeight.w900,
                             color: ColorPalette.accentBlack,
-                            fontFamily: 'Manrope',
                             fontSize: 15.5,
                             letterSpacing: .8,
                           ),
@@ -108,7 +106,6 @@ class NotificationMessageState extends State<NotificationMessageWidget> {
                       fontWeight: FontWeight.normal,
                       color: Color(0xFFC1C1C1),
                       fontSize: 10,
-                      fontFamily: 'Manrope',
                     ),
                   ),
                 ],
@@ -124,7 +121,6 @@ class NotificationMessageState extends State<NotificationMessageWidget> {
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Color(0xFF6D7278),
-                  fontFamily: 'Manrope',
                   fontSize: 18,
                 ),
               ),
@@ -132,7 +128,6 @@ class NotificationMessageState extends State<NotificationMessageWidget> {
                 widget.message,
                 style: TextStyle(
                   color: Colors.black,
-                  fontFamily: 'Manrope',
                   fontSize: 13,
                 ),
               ),
@@ -153,7 +148,6 @@ class NotificationMessageState extends State<NotificationMessageWidget> {
                         "Accept",
                         style: TextStyle(
                           color: Colors.white,
-                          fontFamily: 'Manrope',
                           fontSize: 12,
                         ),
                       ),
@@ -179,7 +173,6 @@ class NotificationMessageState extends State<NotificationMessageWidget> {
                         "Reject",
                         style: TextStyle(
                           color: Colors.white,
-                          fontFamily: 'Manrope',
                           fontSize: 12,
                         ),
                       ),

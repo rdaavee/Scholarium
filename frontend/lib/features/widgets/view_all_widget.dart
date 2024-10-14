@@ -10,7 +10,6 @@ class ViewAllText extends StatelessWidget {
       "View All",
       style: TextStyle(
         fontSize: 11,
-        fontFamily: 'Manrope',
         fontWeight: FontWeight.bold,
         color: ColorPalette.viewAllColor,
         letterSpacing: 0.5,

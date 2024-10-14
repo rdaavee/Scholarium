@@ -94,7 +94,6 @@ class NotificationCard extends StatelessWidget {
                                 senderName,
                                 style: const TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  fontFamily: 'Manrope',
                                   fontSize: 15,
                                   color: Colors.black,
                                 ),
@@ -104,7 +103,6 @@ class NotificationCard extends StatelessWidget {
                               time,
                               style: const TextStyle(
                                 color: Colors.grey,
-                                fontFamily: 'Manrope',
                                 fontSize: 11,
                               ),
                             ),
@@ -116,7 +114,6 @@ class NotificationCard extends StatelessWidget {
                             fontSize: 11,
                             color: ColorPalette.primary,
                             fontWeight: FontWeight.w500,
-                            fontFamily: 'Manrope',
                           ),
                         ),
                         SizedBox(
@@ -130,14 +127,12 @@ class NotificationCard extends StatelessWidget {
                               style: const TextStyle(
                                 fontSize: 12,
                                 color: ColorPalette.accentBlack,
-                                fontFamily: 'Manrope',
                               ),
                             ),
                             Text(
                               date,
                               style: const TextStyle(
                                 color: Colors.grey,
-                                fontFamily: 'Manrope',
                                 fontSize: 9,
                               ),
                             ),

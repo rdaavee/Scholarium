@@ -60,7 +60,6 @@ class HkDiscountStatusCard extends StatelessWidget {
                       title,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontFamily: 'Manrope',
                         fontSize: 16,
                         color: Colors.red,
                       ),
@@ -76,7 +75,6 @@ class HkDiscountStatusCard extends StatelessWidget {
                               '25%',
                               style: TextStyle(
                                 fontSize: 17,
-                                fontFamily: 'Manrope',
                                 color: Color(0xFF6D7278),
                               ),
                             ),
@@ -85,7 +83,7 @@ class HkDiscountStatusCard extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: 24,
                                 fontWeight: FontWeight.bold,
-                                fontFamily: 'Manrope',
+                                fontFamily: '',
                               ),
                             ),
                           ],
@@ -98,7 +96,7 @@ class HkDiscountStatusCard extends StatelessWidget {
                               '50%',
                               style: TextStyle(
                                 fontSize: 17,
-                                fontFamily: 'Manrope',
+                                fontFamily: '',
                                 color: Color(0xFF6D7278),
                               ),
                             ),
@@ -107,7 +105,7 @@ class HkDiscountStatusCard extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: 24,
                                 fontWeight: FontWeight.bold,
-                                fontFamily: 'Manrope',
+                                fontFamily: '',
                               ),
                             ),
                           ],
@@ -120,7 +118,7 @@ class HkDiscountStatusCard extends StatelessWidget {
                               '75%',
                               style: TextStyle(
                                 fontSize: 17,
-                                fontFamily: 'Manrope',
+                                fontFamily: '',
                                 color: Color(0xFF6D7278),
                               ),
                             ),
@@ -129,7 +127,7 @@ class HkDiscountStatusCard extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: 24,
                                 fontWeight: FontWeight.bold,
-                                fontFamily: 'Manrope',
+                                fontFamily: '',
                               ),
                             ),
                           ],

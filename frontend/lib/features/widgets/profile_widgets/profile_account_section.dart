@@ -19,7 +19,6 @@ class AccountSection extends StatelessWidget {
         style: TextStyle(
           color: ColorPalette.primary,
           fontSize: 15,
-          fontFamily: 'Manrope',
           fontWeight: FontWeight.w700,
           letterSpacing: 1.2,
         ),

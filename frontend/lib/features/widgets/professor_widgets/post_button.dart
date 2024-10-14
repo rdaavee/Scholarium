@@ -31,7 +31,6 @@ class PostButton extends StatelessWidget {
       child: const Text(
         'Post',
         style: TextStyle(
-          fontFamily: 'Manrope',
           fontSize: 11.5,
           color: Colors.white,
         ),

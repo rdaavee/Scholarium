@@ -26,7 +26,6 @@ class LoginFormWidget extends StatelessWidget {
                   text: 'is',
                   style: TextStyle(
                     fontSize: 12,
-                    fontFamily: 'Manrope',
                     fontWeight: FontWeight.normal,
                     color: Colors.white,
                     letterSpacing: 5,
@@ -36,7 +35,6 @@ class LoginFormWidget extends StatelessWidget {
                   text: 'HK',
                   style: TextStyle(
                     fontSize: 15,
-                    fontFamily: 'Manrope',
                     fontWeight: FontWeight.bold,
                     color: ColorPalette.textAccent,
                     letterSpacing: 5,
@@ -46,7 +44,6 @@ class LoginFormWidget extends StatelessWidget {
                   text: 'olarium',
                   style: TextStyle(
                     fontSize: 12,
-                    fontFamily: 'Manrope',
                     fontWeight: FontWeight.normal,
                     color: Colors.white,
                     letterSpacing: 5,
@@ -67,7 +64,6 @@ class LoginFormWidget extends StatelessWidget {
                     'Login your account',
                     style: TextStyle(
                       fontSize: 17,
-                      fontFamily: 'Manrope',
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                       letterSpacing: 1.1,

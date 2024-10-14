@@ -104,7 +104,6 @@ class UserFormWidgetState extends State<UserFormWidget> {
       padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: TextField(
         style: const TextStyle(
-          fontFamily: 'Manrope',
           fontSize: 13,
         ),
         controller: controller,
@@ -121,7 +120,6 @@ class UserFormWidgetState extends State<UserFormWidget> {
       padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: TextField(
         style: const TextStyle(
-          fontFamily: 'Manrope',
           fontSize: 13,
         ),
         controller: controller,
@@ -140,7 +138,6 @@ class UserFormWidgetState extends State<UserFormWidget> {
       padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: TextField(
         style: const TextStyle(
-          fontFamily: 'Manrope',
           fontSize: 13,
         ),
         controller: controller,
@@ -258,7 +255,6 @@ class UserFormWidgetState extends State<UserFormWidget> {
         'Submit',
         style: TextStyle(
           color: Colors.white,
-          fontFamily: 'Manrope',
           fontSize: 12,
         ),
       ),

@@ -15,11 +15,9 @@ class MessageTextField extends StatelessWidget {
         hintText: 'Write Something',
         labelStyle: const TextStyle(
           color: Colors.grey,
-          fontFamily: 'Manrope',
           fontSize: 13,
         ),
         floatingLabelStyle: const TextStyle(
-          fontFamily: 'Manrope',
           fontSize: 13,
           fontWeight: FontWeight.bold,
           color: ColorPalette.primary,
@@ -44,7 +42,6 @@ class MessageTextField extends StatelessWidget {
       style: const TextStyle(
         color: Colors.black,
         fontSize: 12.0,
-        fontFamily: 'Manrope',
         fontWeight: FontWeight.w100,
       ),
     );

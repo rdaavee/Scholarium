@@ -30,7 +30,6 @@ class YourDtrHoursCard extends StatelessWidget {
                 'Make sure to fill up this bar so you can renew your scholar.\nWork hard Flames!',
                 style: TextStyle(
                   fontSize: 12,
-                  fontFamily: 'Manrope',
                   fontWeight: FontWeight.normal,
                   color: Color(0xFFC1C1C1),
                   letterSpacing: 0.5,
@@ -41,7 +40,6 @@ class YourDtrHoursCard extends StatelessWidget {
                 'Progress',
                 style: TextStyle(
                   fontSize: 12,
-                  fontFamily: 'Manrope',
                   fontWeight: FontWeight.bold,
                   color: Color(0xFF6D7278),
                 ),

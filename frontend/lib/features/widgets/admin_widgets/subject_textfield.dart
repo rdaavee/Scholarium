@@ -39,12 +39,10 @@ class SubjectTextfield extends StatelessWidget {
         labelStyle: labelStyle ??
             const TextStyle(
               color: Colors.grey,
-              fontFamily: 'Manrope',
               fontSize: 13,
             ),
         floatingLabelStyle: floatingLabelStyle ??
             const TextStyle(
-              fontFamily: 'Manrope',
               fontSize: 13,
               fontWeight: FontWeight.bold,
               color: Color(0xFF00A4E4),
@@ -69,7 +67,6 @@ class SubjectTextfield extends StatelessWidget {
       style: textStyle ??
           const TextStyle(
             color: Colors.black,
-            fontFamily: 'Manrope',
             fontSize: 13,
           ),
     );

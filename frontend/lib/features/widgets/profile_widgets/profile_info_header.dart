@@ -21,7 +21,6 @@ class InfoHeader extends StatelessWidget {
         style: const TextStyle(
           color: ColorPalette.primary,
           fontSize: 15,
-          fontFamily: 'Manrope',
           fontWeight: FontWeight.w700,
           letterSpacing: 1.2,
         ),

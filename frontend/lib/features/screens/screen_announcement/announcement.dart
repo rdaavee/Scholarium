@@ -110,7 +110,6 @@ class _AnnouncementsScreenState extends State<AnnouncementsScreen> {
                           textLabel: Text(
                             announcement.title.toString(),
                             style: const TextStyle(
-                              fontFamily: 'Manrope',
                               fontWeight: FontWeight.bold,
                               color: Color(0xFF6D7278),
                               letterSpacing: 0.5,
@@ -119,7 +118,6 @@ class _AnnouncementsScreenState extends State<AnnouncementsScreen> {
                           textBody: Text(
                             announcement.body.toString(),
                             style: const TextStyle(
-                              fontFamily: 'Manrope',
                             ),
                           ),
                           date: Text(announcement.date.toString()),

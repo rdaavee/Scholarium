@@ -16,7 +16,6 @@ class ScheduleHeader extends StatelessWidget {
           "Schedule",
           style: TextStyle(
             fontSize: 17,
-            fontFamily: 'Manrope',
             fontWeight: FontWeight.bold,
             letterSpacing: 1.1,
           ),

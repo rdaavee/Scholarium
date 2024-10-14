@@ -102,11 +102,9 @@ class AnnouncementFormScreenState extends State<AnnouncementFormScreen> {
           labelText: labelText,
           labelStyle: const TextStyle(
             color: Colors.grey,
-            fontFamily: 'Manrope',
             fontSize: 13,
           ),
           floatingLabelStyle: const TextStyle(
-              fontFamily: 'Manrope',
               fontSize: 13,
               fontWeight: FontWeight.bold,
               color: ColorPalette.primary),
@@ -126,7 +124,6 @@ class AnnouncementFormScreenState extends State<AnnouncementFormScreen> {
         ),
         style: const TextStyle(
           color: Colors.black,
-          fontFamily: 'Manrope',
           fontSize: 13,
         ),
       ),
@@ -180,7 +177,6 @@ class AnnouncementFormScreenState extends State<AnnouncementFormScreen> {
         widget.announcementId == null ? 'Create' : 'Update',
         style: TextStyle(
           color: Colors.white,
-          fontFamily: 'Manrope',
           fontSize: 11.5,
         ),
       ),

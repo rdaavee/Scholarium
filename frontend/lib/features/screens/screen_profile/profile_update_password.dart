@@ -23,7 +23,6 @@ class ProfileChangePassword extends StatelessWidget {
         title: const Text(
           'Change Password',
           style: TextStyle(
-            fontFamily: 'Manrope',
             color: ColorPalette.accentWhite,
             letterSpacing: 0.5,
             fontSize: 15,
@@ -80,7 +79,6 @@ class ProfileChangePassword extends StatelessWidget {
                     'Change Password',
                     style: TextStyle(
                       color: Colors.white,
-                      fontFamily: 'Manrope',
                       fontWeight: FontWeight.normal,
                       fontSize: 12,
                     ),
@@ -130,11 +128,9 @@ class ProfileChangePassword extends StatelessWidget {
         hintText: hint,
         labelStyle: const TextStyle(
           color: Colors.grey,
-          fontFamily: 'Manrope',
           fontSize: 13,
         ),
         floatingLabelStyle: const TextStyle(
-            fontFamily: 'Manrope',
             fontSize: 13,
             fontWeight: FontWeight.bold,
             color: ColorPalette.primary),
@@ -155,7 +151,6 @@ class ProfileChangePassword extends StatelessWidget {
       style: const TextStyle(
         color: Colors.black,
         fontSize: 12.0,
-        fontFamily: 'Manrope',
         fontWeight: FontWeight.w100,
       ),
       validator: (value) {

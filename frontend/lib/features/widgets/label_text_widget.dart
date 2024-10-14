@@ -18,7 +18,6 @@ class LabelTextWidget extends StatelessWidget {
       title,
       style: TextStyle(
         fontSize: fontSize,
-        fontFamily: 'Manrope',
         fontWeight: FontWeight.bold,
         color: color,
         letterSpacing: 0.5,

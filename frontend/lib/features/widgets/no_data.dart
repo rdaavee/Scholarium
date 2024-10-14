@@ -27,7 +27,6 @@ class NoData extends StatelessWidget {
                 Text(
                   title,
                   style: TextStyle(
-                    fontFamily: 'Manrope',
                     fontWeight: FontWeight.bold,
                   ),
                 ),
