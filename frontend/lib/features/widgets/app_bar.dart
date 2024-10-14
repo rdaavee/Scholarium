@@ -58,32 +58,32 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
                   ),
                 ),
               ),
-              actions: [
-                Container(
-                  margin: const EdgeInsets.only(top: 1, right: 20),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: ColorPalette.accentWhite.withOpacity(0.2),
-                      shape: BoxShape.circle,
-                    ),
-                    child: IconButton(
-                      icon: Icon(
-                        CupertinoIcons.chat_bubble_fill,
-                        color: ColorPalette.accentWhite,
-                        size: 20,
-                      ),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => SearchUserScreen(),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ),
-              ],
+              // actions: [
+              //   Container(
+              //     margin: const EdgeInsets.only(top: 1, right: 20),
+              //     child: Container(
+              //       decoration: BoxDecoration(
+              //         color: ColorPalette.accentWhite.withOpacity(0.2),
+              //         shape: BoxShape.circle,
+              //       ),
+              //       child: IconButton(
+              //         icon: Icon(
+              //           CupertinoIcons.chat_bubble_fill,
+              //           color: ColorPalette.accentWhite,
+              //           size: 20,
+              //         ),
+              //         onPressed: () {
+              //           Navigator.push(
+              //             context,
+              //             MaterialPageRoute(
+              //               builder: (context) => SearchUserScreen(),
+              //             ),
+              //           );
+              //         },
+              //       ),
+              //     ),
+              //   ),
+              // ],
             ),
           ),
         ],

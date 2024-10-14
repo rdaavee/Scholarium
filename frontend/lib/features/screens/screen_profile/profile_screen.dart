@@ -158,13 +158,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         value:
                                             state.users[0].address.toString()),
                                     const SizedBox(height: 15),
-                                    const DividerWidget(),
-                                    const SizedBox(height: 15),
-                                    InfoRow(
+                                    if (state.users[0].role == "Student") ...[
+                                      const DividerWidget(),
+                                      const SizedBox(height: 15),
+                                      InfoRow(
                                         label: 'HK Type',
-                                        value:
-                                            state.users[0].hkType.toString()),
-                                    const SizedBox(height: 15),
+                                        value: state.users[0].hkType.toString(),
+                                      ),
+                                      const SizedBox(height: 15),
+                                    ],
                                     const DividerWidget(),
                                     const SizedBox(height: 15),
                                     InfoRow(
