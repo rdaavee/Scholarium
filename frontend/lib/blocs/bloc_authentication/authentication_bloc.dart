@@ -13,7 +13,7 @@ class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
   final GlobalRepositoryImpl _globalService;
 
-  AuthenticationBloc(this._globalService) : super(LoginLoadingState()) {
+  AuthenticationBloc(this._globalService) : super(LoginInitial()) {
     on<PasswordInitialEvent>(passwordInitialEvent);
     on<LoginButtonClickedEvent>(loginButtonClickedEvent);
     on<LoginAutomaticEvent>(automaticLogin);

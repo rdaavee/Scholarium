@@ -60,7 +60,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   Future<void> _onLogout(LogoutEvent event, Emitter<ProfileState> emit) async {
     try {
       await _apiService.logout(event.context);
-      emit(ProfileInitial());
     } catch (e) {
       emit(LogoutErrorState(message: 'Failed to logout: $e'));
     }
