@@ -342,7 +342,9 @@ class _ProfessorHomeScreenState extends State<ProfessorHomeScreen> {
             );
           } else if (state is ProfessorsErrorState) {
             return const Scaffold(
-              body: NoData(),
+              body: NoData(
+                title: 'No Data Available',
+              ),
             );
           } else {
             return Scaffold(

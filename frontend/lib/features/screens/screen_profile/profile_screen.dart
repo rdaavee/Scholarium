@@ -196,7 +196,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
               Navigator.pushReplacementNamed(context, '/login');
               return Container();
             } else if (state is LogoutErrorState) {
-              return NoData();
+              return NoData(
+                title: 'No Information Available!',
+              );
             } else {
               return LoadingCircular();
             }

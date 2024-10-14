@@ -4,6 +4,8 @@ const User = require("../models/user_model");
 const Schedule = require("../models/schedule_model");
 const Announcement = require("../models/announcement_model");
 const Notifications = require("../models/notifications_model");
+const currentDate = moment().format("YYYY-MM-DD");
+const currentTime = moment().format("HH:mm:ss");
 
 //-------------------------------------------- STUDENT CRUD ----------------------------------------------------------------------
 // Get all users
@@ -53,7 +55,7 @@ exports.createUser = async (req, res) => {
 exports.createScheduleAndNotification = async (req, res) => {
   try {
     const { schedule, notification } = req.body;
-    console.log(req.body);
+    const profInfo = await User.findOne({ school_id: schedule.prof_id });
 
     const newSchedule = new Schedule({
       school_id: schedule.school_id,
@@ -61,7 +63,7 @@ exports.createScheduleAndNotification = async (req, res) => {
       block: schedule.block,
       subject: schedule.subject,
       prof_id: schedule.prof_id,
-      professor: schedule.professor,
+      professor: `${profInfo.first_name} ${profInfo.last_name}`,
       department: schedule.department,
       time: schedule.time,
       date: schedule.date,
@@ -78,7 +80,9 @@ exports.createScheduleAndNotification = async (req, res) => {
       receiverName: notification.receiverName,
       role: notification.role,
       title: notification.title,
-      message: notification.message,
+      message:
+        `You have been assigned a schedule to professor ${profInfo.first_name} ${profInfo.last_name}'s` +
+        `${notification.message}`,
       scheduleId: savedSchedule._id,
       date: currentDate,
       time: currentTime,
@@ -105,14 +109,13 @@ exports.createScheduleAndNotification = async (req, res) => {
 // Delete a schedule
 exports.deleteScheduleAndNotification = async (req, res) => {
   const { scheduleId, school_id } = req.body;
-  console.log(req.body);
+  console.log(`SCHEDULE ID LOG ${req.body.scheduleId}`);
   try {
     let result;
-    const schedule = await Schedule.findOne({ _id: scheduleId});
-    console.log(schedule);
+    const schedule = await Schedule.findOne({ _id: scheduleId });
     const admin = await User.findOne({ school_id: school_id });
     const bot = await User.findOne({ school_id: "00-0000-00000" });
-    
+
     const user = await User.findOne({ school_id: schedule.school_id });
     const prof = await User.findOne({ school_id: schedule.prof_id });
     if (scheduleId == null || scheduleId == "") {
@@ -130,7 +133,11 @@ exports.deleteScheduleAndNotification = async (req, res) => {
         status: false,
         profile_picture: bot.profile_picture,
       });
-
+      result = await Notifications.updateOne(
+        { scheduleId: scheduleId },
+        { $set: { scheduleId: "" } },
+        { new: true, runValidators: true }
+      );
       await profNotification.save();
       console.log(profNotification);
 
@@ -152,7 +159,11 @@ exports.deleteScheduleAndNotification = async (req, res) => {
       await adminNotification.save();
       console.log(adminNotification);
     } else {
-      result = await Schedule.deleteOne({ _id: scheduleId });
+      result = await Notifications.updateOne(
+        { scheduleId: scheduleId },
+        { $set: { scheduleId: "" } },
+        { new: true, runValidators: true }
+      );
       const profNotification = new Notifications({
         sender: bot.school_id,
         senderName: bot.first_name + " " + bot.last_name,
@@ -321,8 +332,8 @@ exports.createNotification = async (req, res) => {
 
 //-------------------------------------------- ANNOUNCEMENT CRUD ----------------------------------------------------------------------
 
-const currentDate = moment().format("YYYY-MM-DD");
-const currentTime = moment().format("HH:mm:ss");
+console.log(`Date: ${currentDate}`);
+console.log(`Time: ${currentTime}`);
 
 // Get all Announcements
 exports.getAllAnnouncements = async (req, res) => {

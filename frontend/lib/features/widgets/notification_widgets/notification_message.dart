@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:isHKolarium/api/implementations/admin_repository_impl.dart';
 import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
 import 'package:isHKolarium/api/implementations/student_repository_impl.dart';
-import 'package:isHKolarium/api/models/notifications_model.dart';
 import 'package:isHKolarium/blocs/bloc_admin/admin_bloc.dart';
 import 'package:isHKolarium/blocs/bloc_notification/notification_bloc.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
@@ -87,7 +86,7 @@ class NotificationMessageState extends State<NotificationMessageWidget> {
                             fontWeight: FontWeight.w500,
                             color: Color(0xFF6D7278),
                             fontFamily: 'Manrope',
-                            fontSize: 13,
+                            fontSize: 12,
                           ),
                         ),
                         TextSpan(
@@ -107,7 +106,7 @@ class NotificationMessageState extends State<NotificationMessageWidget> {
                     widget.time,
                     style: TextStyle(
                       fontWeight: FontWeight.normal,
-                      color: Color(0xFF6D7278),
+                      color: Color(0xFFC1C1C1),
                       fontSize: 10,
                       fontFamily: 'Manrope',
                     ),
@@ -124,7 +123,7 @@ class NotificationMessageState extends State<NotificationMessageWidget> {
                 widget.title,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  color: Colors.black,
+                  color: Color(0xFF6D7278),
                   fontFamily: 'Manrope',
                   fontSize: 18,
                 ),
@@ -134,7 +133,7 @@ class NotificationMessageState extends State<NotificationMessageWidget> {
                 style: TextStyle(
                   color: Colors.black,
                   fontFamily: 'Manrope',
-                  fontSize: 11,
+                  fontSize: 13,
                 ),
               ),
               Spacer(),
@@ -148,7 +147,7 @@ class NotificationMessageState extends State<NotificationMessageWidget> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        minimumSize: const Size(160, 60),
+                        minimumSize: const Size(150, 60),
                       ),
                       child: const Text(
                         "Accept",
@@ -165,13 +164,16 @@ class NotificationMessageState extends State<NotificationMessageWidget> {
                         Navigator.pop(context, true);
                       },
                     ),
+                    SizedBox(
+                      width: 5,
+                    ),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.red,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        minimumSize: const Size(160, 60),
+                        minimumSize: const Size(150, 60),
                       ),
                       child: const Text(
                         "Reject",
