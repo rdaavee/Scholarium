@@ -1,5 +1,6 @@
 // duty_card.dart
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:isHKolarium/api/models/user_model.dart';
 import 'package:isHKolarium/features/widgets/profile_widgets/profile_modal_bottom_sheet.dart';
 
@@ -19,6 +20,11 @@ class DutyCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String formatTimeToAmPm(String time) {
+    DateTime dateTime = DateFormat('HH:mm:ss').parse(time);
+    return DateFormat('hh:mm a').format(dateTime);
+  }
+    String formattedTime = formatTimeToAmPm(time.toString());
     return Card(
       color: cardColor,
       shape: RoundedRectangleBorder(
@@ -41,7 +47,7 @@ class DutyCard extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             Text(
-              time,
+              formattedTime,
               style: const TextStyle(
                 fontSize: 18,
                 fontFamily: 'Manrope',
