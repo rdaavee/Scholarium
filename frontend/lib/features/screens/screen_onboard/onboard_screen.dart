@@ -20,6 +20,12 @@ class _OnboardScreenState extends State<OnboardScreen> {
   int currentIndex = 0;
 
   @override
+  void dispose() {
+    pageController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
@@ -29,9 +35,16 @@ class _OnboardScreenState extends State<OnboardScreen> {
             pageController: pageController,
             currentIndex: currentIndex,
             controller: controller,
+            onPageChanged: (index) {
+              setState(() {
+                currentIndex = index;
+              });
+            },
           ),
           OnboardDots(
-              currentIndex: currentIndex, totalItems: controller.items.length),
+            currentIndex: currentIndex,
+            totalItems: controller.items.length,
+          ),
           OnboardButton(
             currentIndex: currentIndex,
             onNextPage: () {

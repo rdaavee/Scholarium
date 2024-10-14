@@ -26,7 +26,6 @@ class OnboardButton extends StatelessWidget {
       child: TextButton(
         onPressed: () async {
           if (currentIndex == 2) {
-            // Adjust based on your items count
             SharedPreferences prefs = await SharedPreferences.getInstance();
             await prefs.setBool('hasCompletedOnboarding', true);
 
