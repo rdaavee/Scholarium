@@ -11,6 +11,7 @@ class SubjectTextfield extends StatelessWidget {
   final Color focusedBorderColor;
   final Color hoverColor;
   final double borderRadius;
+  final TextEditingController subjectController;
 
   const SubjectTextfield({
     super.key,
@@ -24,11 +25,13 @@ class SubjectTextfield extends StatelessWidget {
     this.focusedBorderColor = const Color(0xFF00A4E4),
     this.hoverColor = const Color(0xFF00A4E4),
     this.borderRadius = 8.0,
+    required this.subjectController,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+      controller: subjectController,
       keyboardType: keyboardType,
       obscureText: obscureText,
       decoration: InputDecoration(

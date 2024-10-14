@@ -256,7 +256,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
               );
             } else if (state is NotificationsErrorState) {
               return Center(
-                child: NoData(),
+                child: NoData(
+                  title: 'No Notification Available',
+                ),
               );
             } else {
               return const Center(child: LoadingCircular());

@@ -11,6 +11,7 @@ class RoomTextfield extends StatelessWidget {
   final Color focusedBorderColor;
   final Color hoverColor;
   final double borderRadius;
+  final TextEditingController roomController;
 
   const RoomTextfield({
     super.key,
@@ -24,11 +25,13 @@ class RoomTextfield extends StatelessWidget {
     this.focusedBorderColor = const Color(0xFF00A4E4),
     this.hoverColor = const Color(0xFF00A4E4),
     this.borderRadius = 8.0,
+    required this.roomController,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+      controller: roomController,
       keyboardType: keyboardType,
       obscureText: obscureText,
       decoration: InputDecoration(

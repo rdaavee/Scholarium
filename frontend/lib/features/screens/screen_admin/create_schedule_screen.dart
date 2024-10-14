@@ -27,10 +27,12 @@ class SetScheduleScreenState extends State<SetScheduleScreen> {
   String? selectedProfessor;
   String? selectedProfessorId;
   String? selectedStudent;
-  late UserModel userProfile;
   List<UserModel>? users;
-  final adminRepositoryImpl = AdminRepositoryImpl();
+  late UserModel userProfile;
   late AdminBloc adminBloc;
+  final adminRepositoryImpl = AdminRepositoryImpl();
+  final TextEditingController roomController = TextEditingController();
+  final TextEditingController subjectController = TextEditingController();
   final List<Map<String, String>> professors = [];
   final List<Map<String, String>> students = [];
 
@@ -96,7 +98,11 @@ class SetScheduleScreenState extends State<SetScheduleScreen> {
   }
 
   Future<void> uploadSchedule() async {
-    String formattedTime = timeTo24HourMap[selectedTimeSlot] ?? '';
+    String time = timeTo24HourMap[selectedTimeSlot] ?? '';
+    DateTime dateTime = DateFormat("HH:mm:ss").parse(time);
+
+    // Format it into 12-hour AM/PM format
+    String formattedTime = DateFormat("h:mm a").format(dateTime);
     String formattedDate = selectedDate != null
         ? DateFormat('yyyy-MM-dd').format(selectedDate!)
         : '';
@@ -106,11 +112,11 @@ class SetScheduleScreenState extends State<SetScheduleScreen> {
     print("Selected Time Slot: $formattedTime");
     final schedule = ScheduleModel(
       schoolID: selectedStudent,
-      room: "room",
+      room: roomController.text,
       block: "block",
-      subject: "subject",
+      subject: subjectController.text,
       profID: selectedProfessor,
-      professor: "David Aldrin",
+      professor: "",
       department: "department",
       time: formattedTime,
       date: formattedDate,
@@ -125,7 +131,7 @@ class SetScheduleScreenState extends State<SetScheduleScreen> {
         title: "Schedule Duty",
         role: "Admin",
         message:
-            "A Schedule has been assign to you. \n You have been assigned a schedule to: Professor $selectedProfessor, \n Room: room, \n Subject: subject,\n time: $formattedTime \n date: $formattedDate ",
+            " ${subjectController.text} class at room ${roomController.text}, on $formattedDate at $formattedTime",
         status: false,
         profilePicture: userProfile.profilePicture);
     try {
@@ -268,11 +274,17 @@ class SetScheduleScreenState extends State<SetScheduleScreen> {
             Row(
               children: [
                 Expanded(
-                  child: RoomTextfield(labelText: 'Enter a room'),
+                  child: RoomTextfield(
+                    labelText: 'Enter a room',
+                    roomController: roomController,
+                  ),
                 ),
                 SizedBox(width: 10),
                 Expanded(
-                  child: SubjectTextfield(labelText: 'Enter a subject'),
+                  child: SubjectTextfield(
+                    labelText: 'Enter a subject',
+                    subjectController: subjectController,
+                  ),
                 ),
               ],
             ),

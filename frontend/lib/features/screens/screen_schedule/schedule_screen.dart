@@ -155,8 +155,9 @@ class ScheduleScreenState extends State<ScheduleScreen> {
                                     }).toList();
                                     if (duties.isEmpty) {
                                       return const Center(
-                                          child:
-                                              Text('No schedules available'));
+                                          child: NoData(
+                                        title: 'No Schedule Available',
+                                      ));
                                     }
                                     return ListView.builder(
                                       itemCount: duties.length,
@@ -215,7 +216,9 @@ class ScheduleScreenState extends State<ScheduleScreen> {
                                       },
                                     );
                                   } else if (state is ScheduleErrorState) {
-                                    return NoData();
+                                    return NoData(
+                                      title: 'No Schedule Available',
+                                    );
                                   } else {
                                     return const Scaffold(
                                       body: Center(

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class NoData extends StatelessWidget {
-  const NoData({super.key});
+  final String title;
+
+  const NoData({super.key, required this.title});
 
   @override
   Widget build(BuildContext context) {
@@ -22,8 +24,8 @@ class NoData extends StatelessWidget {
                   height: 230,
                   width: 230,
                 ),
-                const Text(
-                  'No notifications available',
+                Text(
+                  title,
                   style: TextStyle(
                     fontFamily: 'Manrope',
                     fontWeight: FontWeight.bold,

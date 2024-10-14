@@ -402,7 +402,7 @@ class GlobalRepositoryImpl extends GlobalRepository implements Endpoint {
     final url = Uri.parse('$baseUrl/admin/deleteSchedule');
     print(schoolId);
     try {
-      final response = await http.delete(
+      final response = await http.put(
         url,
         headers: {
           'Content-Type': 'application/json',

@@ -6,12 +6,7 @@ const Schedule = require("../models/schedule_model");
 const DTR = require("../models/dtr_model");
 const Notification = require("../models/notifications_model");
 
-// Middleware to validate token and extract user ID
-const validateToken = async (req, res, next) => {
-  // Implement your token validation logic here to set req.userId
-};
-const currentDate = moment().format("YYYY-MM-DD");
-const currentTime = moment().format("HH:mm:ss");
+
 // Get Announcement
 exports.getAnnouncements = async (req, res) => {
   try {
