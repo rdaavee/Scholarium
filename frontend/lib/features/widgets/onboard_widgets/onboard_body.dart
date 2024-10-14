@@ -6,12 +6,14 @@ class OnboardBody extends StatelessWidget {
   final PageController pageController;
   final int currentIndex;
   final OnboardData controller;
+  final Function(int) onPageChanged;
 
   const OnboardBody({
     super.key,
     required this.pageController,
     required this.currentIndex,
     required this.controller,
+    required this.onPageChanged,
   });
 
   @override
@@ -20,9 +22,7 @@ class OnboardBody extends StatelessWidget {
       child: PageView.builder(
         controller: pageController,
         itemCount: controller.items.length,
-        onPageChanged: (index) {
-          // Update the current index
-        },
+        onPageChanged: onPageChanged,
         itemBuilder: (context, index) {
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30.0),
