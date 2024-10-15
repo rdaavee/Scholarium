@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
+import 'package:isHKolarium/config/assets/app_images.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 
@@ -50,7 +51,7 @@ class ProfileChangePassword extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Image.asset(
-                  'assets/images/change-pass-img.png',
+                  AppImages.changePasswordImg,
                   width: 250,
                   height: 250,
                 ),

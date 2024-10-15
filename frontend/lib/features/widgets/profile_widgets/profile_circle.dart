@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:isHKolarium/config/assets/app_images.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
 
 class ProfileCircle extends StatelessWidget {
@@ -23,7 +24,7 @@ class ProfileCircle extends StatelessWidget {
           image: DecorationImage(
             image: profilePicture.isNotEmpty
                 ? NetworkImage(profilePicture)
-                : AssetImage('assets/images/avatar.png') as ImageProvider,
+                : AssetImage(AppImages.defaultPfp) as ImageProvider,
             scale: 1.0,
             fit: BoxFit.contain,
           ),

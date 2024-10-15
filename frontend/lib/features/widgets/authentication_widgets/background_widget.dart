@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:isHKolarium/config/assets/app_images.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
 
 class BackgroundWidget extends StatelessWidget {
@@ -9,9 +10,9 @@ class BackgroundWidget extends StatelessWidget {
     return Stack(
       children: [
         Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             image: DecorationImage(
-              image: AssetImage('assets/images/image.jpg'),
+              image: AssetImage(AppImages.loginImg),
               fit: BoxFit.cover,
             ),
           ),

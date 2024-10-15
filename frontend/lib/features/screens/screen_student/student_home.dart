@@ -6,6 +6,7 @@ import 'package:isHKolarium/api/implementations/student_repository_impl.dart';
 import 'package:isHKolarium/blocs/bloc_bottom_nav/bottom_nav_bloc.dart';
 import 'package:isHKolarium/blocs/bloc_schedule/schedule_bloc.dart';
 import 'package:isHKolarium/blocs/bloc_student/students_bloc.dart';
+import 'package:isHKolarium/config/assets/app_images.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
 import 'package:isHKolarium/features/screens/screen_announcement/announcement.dart';
 import 'package:isHKolarium/features/screens/screen_dtr/dtr_screen.dart';
@@ -95,9 +96,6 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
         builder: (context, state) {
           if (state is StudentsLoadingState) {
             return Scaffold(
-              appBar: AppBar(
-                automaticallyImplyLeading: false,
-              ),
               body: const StudentShimmer(),
             );
           } else if (state is StudentsLoadedSuccessState) {
@@ -203,8 +201,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                                           ),
                                         ),
                                         cardColor: Colors.white,
-                                        imageUrl:
-                                            'assets/images/boy-duty-img.png',
+                                        imageUrl: AppImages.boyDutyImg,
                                       ),
                                       const SizedBox(width: 5),
                                       ScheduleCard(
@@ -250,8 +247,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                                           ),
                                         ),
                                         cardColor: Colors.white,
-                                        imageUrl:
-                                            'assets/images/boy-duty-img.png',
+                                        imageUrl: AppImages.boyDutyImg,
                                       ),
                                     ],
                                   ),
@@ -347,7 +343,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                                       letterSpacing: 1.2,
                                     ),
                                   ),
-                                  imageUrl: 'assets/images/card-bg.png',
+                                  imageUrl: AppImages.cardBgImg,
                                 ),
                                 // Events Section
                                 Padding(
@@ -374,17 +370,16 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                                   ),
                                 ),
                                 const EventsCard(
-                                  textLabel: Text(
-                                    'Leadership Camp',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
+                                    textLabel: Text(
+                                      'Leadership Camp',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
-                                  ),
-                                  cardColor: Colors.white,
-                                  imageAssetPath: 'assets/images/img1.png',
-                                ),
+                                    cardColor: Colors.white,
+                                    imageAssetPath: AppImages.eventTwo),
                               ],
                             ),
                           ),

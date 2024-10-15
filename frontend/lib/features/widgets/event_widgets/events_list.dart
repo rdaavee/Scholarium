@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:isHKolarium/config/assets/app_images.dart';
 import 'package:isHKolarium/features/widgets/event_widgets/events_card.dart';
 
 class EventsList extends StatelessWidget {
   final List<String> eventsImages = [
-    'assets/images/img1.png',
-    'assets/images/img2.png',
-    'assets/images/img3.png',
-    'assets/images/img4.png',
-    'assets/images/img5.png',
-    'assets/images/img6.png',
-    'assets/images/img7.png',
-    'assets/images/img8.png',
-    'assets/images/img9.png',
-    'assets/images/img10.png',
+    AppImages.eventOne,
+    AppImages.eventTwo,
+    AppImages.eventThree,
+    AppImages.eventFour,
+    AppImages.eventFive,
+    AppImages.eventSix,
+    AppImages.eventSeven,
+    AppImages.eventEight,
+    AppImages.eventNine,
+    AppImages.eventTen,
   ];
 
   final List<String> eventsNames = [
@@ -53,7 +54,7 @@ class EventsList extends StatelessWidget {
           child: EventsCard(
             imagePath: eventsImages[index],
             eventName: eventsNames[index],
-            description: eventsDescriptions[index], // Providing the description
+            description: eventsDescriptions[index],
             cardColor: Colors.white,
           ),
         );
