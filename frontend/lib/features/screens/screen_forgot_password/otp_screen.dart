@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
 import 'package:isHKolarium/blocs/bloc_authentication/authentication_bloc.dart';
+import 'package:isHKolarium/config/assets/app_images.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
 import 'package:isHKolarium/features/screens/screen_forgot_password/reset_password.dart';
 import 'package:isHKolarium/features/widgets/forgot_password_widgets/custom_otp_textfield.dart';
@@ -68,7 +69,7 @@ class _OTPScreenState extends State<OTPScreen> {
             child: Column(
               children: [
                 Image.asset(
-                  'assets/images/enter-otp-img.png',
+                  AppImages.enterOtpImg,
                   width: 230,
                   height: 230,
                 ),

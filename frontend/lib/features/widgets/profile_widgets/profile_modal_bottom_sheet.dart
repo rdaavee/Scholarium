@@ -5,6 +5,7 @@ import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
 import 'package:isHKolarium/blocs/bloc_profile/profile_bloc.dart';
 import 'package:isHKolarium/blocs/bloc_profile/profile_event.dart';
 import 'package:isHKolarium/blocs/bloc_profile/profile_state.dart';
+import 'package:isHKolarium/config/assets/app_images.dart';
 import 'package:isHKolarium/features/widgets/profile_widgets/profile_divider.dart';
 import 'package:isHKolarium/features/widgets/profile_widgets/profile_info_data.dart';
 import 'package:isHKolarium/features/widgets/profile_widgets/profile_info_section.dart';
@@ -60,13 +61,12 @@ class _ProfileModalBottomSheetState extends State<ProfileModalBottomSheet> {
                     child: CircleAvatar(
                       radius: 75.0,
                       backgroundColor: const Color(0xFFEDEDED),
-                      backgroundImage: state.users[0].profilePicture
-                              .toString()
-                              .isNotEmpty
-                          ? NetworkImage(
-                              state.users[0].profilePicture.toString())
-                          : const AssetImage('assets/images/profile_image.png')
-                              as ImageProvider,
+                      backgroundImage:
+                          state.users[0].profilePicture.toString().isNotEmpty
+                              ? NetworkImage(
+                                  state.users[0].profilePicture.toString())
+                              : const AssetImage(AppImages.defaultPfp)
+                                  as ImageProvider,
                     ),
                   ),
                   const SizedBox(height: 20),

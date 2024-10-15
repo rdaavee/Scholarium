@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:isHKolarium/config/assets/app_images.dart';
 
 class NoData extends StatelessWidget {
   final String title;
@@ -20,7 +21,7 @@ class NoData extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image.asset(
-                  'assets/images/no-data-img.png',
+                  AppImages.noDataImg,
                   height: 230,
                   width: 230,
                 ),
