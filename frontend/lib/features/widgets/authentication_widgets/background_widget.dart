@@ -20,8 +20,8 @@ class BackgroundWidget extends StatelessWidget {
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
-                ColorPalette.primary.withOpacity(0.8),
-                Colors.black.withOpacity(0.9),
+                ColorPalette.accentWhite.withOpacity(0.6),
+                Colors.white.withOpacity(1),
               ],
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,

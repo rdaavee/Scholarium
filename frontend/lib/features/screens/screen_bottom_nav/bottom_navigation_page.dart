@@ -8,8 +8,8 @@ import 'package:isHKolarium/blocs/bloc_admin/admin_bloc.dart';
 import 'package:isHKolarium/blocs/bloc_bottom_nav/bottom_nav_bloc.dart';
 import 'package:isHKolarium/blocs/bloc_professor/professors_bloc.dart';
 import 'package:isHKolarium/blocs/bloc_student/students_bloc.dart';
-import 'package:isHKolarium/features/widgets/authentication_widgets/loading_widget.dart';
 import 'package:isHKolarium/features/widgets/botton_nav/bottom_nav_widget.dart';
+import 'package:isHKolarium/features/widgets/loading_circular.dart';
 
 class BottomNavigationPage extends StatefulWidget {
   final String isRole;
@@ -36,8 +36,7 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
       studentBloc.add(StudentsInitialEvent());
     } else if (widget.isRole == "Professor") {
       final professorsRepository = ProfessorRepositoryImpl();
-      professorBloc =
-          ProfessorsBloc(professorsRepository, globalRepository);
+      professorBloc = ProfessorsBloc(professorsRepository, globalRepository);
       professorBloc.add(ProfessorsInitialEvent());
     } else {
       final adminRepository = AdminRepositoryImpl();
@@ -72,7 +71,7 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
               listener: (context, state) {},
               builder: (context, studentState) {
                 if (studentState is StudentsLoadingState) {
-                  return const LoadingWidget();
+                  return const LoadingCircular();
                 } else if (studentState is StudentsLoadedSuccessState) {
                   return const BottomNavWidget(isRole: "Student");
                 } else if (studentState is StudentsErrorState) {
@@ -90,7 +89,7 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
                   listener: (context, state) {},
                   builder: (context, professorState) {
                     if (professorState is ProfessorsLoadingState) {
-                      return const LoadingWidget();
+                      return const LoadingCircular();
                     } else if (professorState is ProfessorsLoadedSuccessState) {
                       return const BottomNavWidget(isRole: "Professor");
                     } else if (professorState is ProfessorsErrorState) {
@@ -108,7 +107,7 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
                   listener: (context, state) {},
                   builder: (context, adminState) {
                     if (adminState is AdminLoadingState) {
-                      return const LoadingWidget();
+                      return const LoadingCircular();
                     } else if (adminState is AdminLoadedSuccessState) {
                       return const BottomNavWidget(isRole: "Admin");
                     } else if (adminState is AdminErrorState) {

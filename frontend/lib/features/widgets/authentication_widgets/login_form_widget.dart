@@ -27,16 +27,16 @@ class LoginFormWidget extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.normal,
-                    color: Colors.white,
+                    color: ColorPalette.accentBlack,
                     letterSpacing: 5,
                   ),
                 ),
                 TextSpan(
                   text: 'HK',
                   style: TextStyle(
-                    fontSize: 15,
+                    fontSize: 16,
                     fontWeight: FontWeight.bold,
-                    color: ColorPalette.textAccent,
+                    color: ColorPalette.primary,
                     letterSpacing: 5,
                   ),
                 ),
@@ -45,7 +45,7 @@ class LoginFormWidget extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.normal,
-                    color: Colors.white,
+                    color: ColorPalette.accentBlack,
                     letterSpacing: 5,
                   ),
                 ),
@@ -63,16 +63,13 @@ class LoginFormWidget extends StatelessWidget {
                   const Text(
                     'Login your account',
                     style: TextStyle(
-                      fontSize: 17,
+                      fontSize: 20,
                       fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      letterSpacing: 1.1,
+                      color: ColorPalette.accentBlack,
                     ),
                   ),
                   const SizedBox(height: 30),
-                  LoginForm(
-                      loginBloc:
-                          loginBloc), // Ensure this points to your existing LoginForm
+                  LoginForm(loginBloc: loginBloc),
                   const SizedBox(height: 50),
                 ],
               ),
