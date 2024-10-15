@@ -109,6 +109,7 @@ flutter:
     - assets/images/change-pass-img.png
     - assets/images/enter-email-img.png
     - assets/images/enter-otp-img.png
+    - assets/images/create-user-img.png
     - assets/images/enter-password-img.png
     - assets/images/bg_img.png
     - assets/images/ishkolarium.png
