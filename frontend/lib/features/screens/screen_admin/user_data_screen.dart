@@ -1,10 +1,12 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
 import 'package:isHKolarium/blocs/bloc_admin/admin_bloc.dart';
 import 'package:isHKolarium/blocs/bloc_bottom_nav/bottom_nav_bloc.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
-import 'package:isHKolarium/features/widgets/admin_widgets/user_form_modal.dart';
+import 'package:isHKolarium/features/screens/screen_admin/user_form_screen.dart';
 import 'package:isHKolarium/features/widgets/admin_widgets/role_dropdown.dart';
 import 'package:isHKolarium/features/widgets/admin_widgets/status_dropdown.dart';
 import 'package:isHKolarium/features/widgets/admin_widgets/user_data_table.dart';
@@ -47,55 +49,22 @@ class UserDataScreenState extends State<UserDataScreen> {
         floatingActionButton: FloatingActionButton(
           backgroundColor: ColorPalette.primary.withOpacity(0.6),
           onPressed: () async {
-            // Await the result from the dialog
-            final bool? isCompleted = await showDialog<bool>(
-              context: context,
-              builder: (context) {
-                return Dialog(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20.0),
+            final bool? isCompleted = await Navigator.of(context).push<bool>(
+              MaterialPageRoute(
+                builder: (context) => BlocProvider.value(
+                  value: adminBloc,
+                  child: const UserFormScreen(
+                    filteredUsers: [],
+                    index: 0,
+                    isRole: "Student",
                   ),
-                  child: SizedBox(
-                    width:
-                        double.infinity, // Adjusts to the width of the screen
-                    height: MediaQuery.of(context).size.height *
-                        .93, // 80% of screen height
-                    child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Column(
-                        children: [
-                          const Text(
-                            'Create User',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: ColorPalette.primary,
-                            ),
-                          ),
-                          const SizedBox(height: 15),
-                          Expanded(
-                            child: BlocProvider.value(
-                              value: adminBloc,
-                              child: UserFormWidget(
-                                filteredUsers: [],
-                                index: 0,
-                                isRole: "Student",
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                );
-              },
+                ),
+              ),
             );
-
-            // Handle the result
             if (isCompleted == true) {
-              adminBloc.add(FetchUsersEvent(selectedRole, statusFilter));
-            } else {
-              print('User creation failed or was canceled.');
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('User creation completed!')),
+              );
             }
           },
           child: const Icon(

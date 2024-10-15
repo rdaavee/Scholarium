@@ -124,6 +124,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                       Container(
                         padding: const EdgeInsets.all(12.0),
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
                             Wrap(
                               spacing: 8.0,
