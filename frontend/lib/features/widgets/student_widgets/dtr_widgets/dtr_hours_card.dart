@@ -35,13 +35,26 @@ class DtrHoursCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 10),
-              const Text(
-                'Progress',
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF6D7278),
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    'Progress',
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF6D7278),
+                    ),
+                  ),
+                  Text(
+                    '${(progress * 100).toStringAsFixed(0)}%',
+                    style: const TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF6D7278),
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(height: 5),
               GradientProgressIndicator(
