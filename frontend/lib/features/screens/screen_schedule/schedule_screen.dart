@@ -52,7 +52,6 @@ class ScheduleScreenState extends State<ScheduleScreen> {
     String monthNumber = monthMap[selectedMonth] ?? "";
     scheduleBloc.add(
         FetchScheduleEvent(selectedMonth: monthNumber, role: role.toString()));
-    print(monthNumber);
   }
 
   Future<String?> _getRole() async {
@@ -105,142 +104,145 @@ class ScheduleScreenState extends State<ScheduleScreen> {
         body: BlocConsumer<ScheduleBloc, ScheduleState>(
           listener: (context, state) {},
           builder: (context, state) {
-            return Stack(
-              children: [
-                Container(
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage('assets/images/image.jpg'),
-                      fit: BoxFit.cover,
+            return RefreshIndicator.adaptive(
+              onRefresh: () => _initialize(selectedMonth),
+              child: Stack(
+                children: [
+                  Container(
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage('assets/images/image.jpg'),
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
-                ),
-                Container(
-                  color: ColorPalette.primary.withOpacity(0.6),
-                ),
-                Column(
-                  children: [
-                    Expanded(
-                      child: Container(
-                        decoration: const BoxDecoration(
-                          color: Color(0xFFF0F3F4),
-                          borderRadius:
-                              BorderRadius.vertical(top: Radius.circular(10)),
-                        ),
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child: ScheduleDropdown(
-                                selectedMonth: selectedMonth,
-                                months: months,
-                                onChanged: (String? newValue) {
-                                  setState(() {
-                                    selectedMonth = newValue!;
-                                    _initialize(selectedMonth);
-                                  });
-                                },
+                  Container(
+                    color: ColorPalette.primary.withOpacity(0.6),
+                  ),
+                  Column(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          decoration: const BoxDecoration(
+                            color: Color(0xFFF0F3F4),
+                            borderRadius:
+                                BorderRadius.vertical(top: Radius.circular(10)),
+                          ),
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: ScheduleDropdown(
+                                  selectedMonth: selectedMonth,
+                                  months: months,
+                                  onChanged: (String? newValue) {
+                                    setState(() {
+                                      selectedMonth = newValue!;
+                                      _initialize(selectedMonth);
+                                    });
+                                  },
+                                ),
                               ),
-                            ),
-                            Expanded(
-                              child: BlocBuilder<ScheduleBloc, ScheduleState>(
-                                bloc: scheduleBloc,
-                                builder: (context, state) {
-                                  if (state is ScheduleLoadingState) {
-                                    return const Center(
-                                        child: LoadingCircular());
-                                  } else if (state
-                                      is ScheduleLoadedSuccessState) {
-                                    final duties = state.schedule.where((duty) {
-                                      return duty['isActive'] == true;
-                                    }).toList();
-                                    if (duties.isEmpty) {
+                              Expanded(
+                                child: BlocBuilder<ScheduleBloc, ScheduleState>(
+                                  bloc: scheduleBloc,
+                                  builder: (context, state) {
+                                    if (state is ScheduleLoadingState) {
                                       return const Center(
-                                          child: NoData(
-                                        title: 'No Schedule Available',
-                                      ));
-                                    }
-                                    return ListView.builder(
-                                      itemCount: duties.length,
-                                      itemBuilder: (context, index) {
-                                        final duty = Map<String, dynamic>.from(
-                                            duties[index]);
-                                        final isCompleted =
-                                            duty['completed'] == 'true';
-                                        if (widget.role == "Student") {
-                                          return TimelineItem(
-                                            duty: duty,
-                                            roleFuture: _getRole(),
-                                            color: isCompleted
-                                                ? Colors.green
-                                                : Colors.grey,
-                                          );
-                                        } else {
-                                          return GestureDetector(
-                                            onTap: isCompleted
-                                                ? null
-                                                : () async {
-                                                    final result =
-                                                        await showDialog(
-                                                      context: context,
-                                                      builder: (context) {
-                                                        print(selectedMonth);
-                                                        return DialogAlertBox(
-                                                          scheduleId:
-                                                              duty['_id'],
-                                                          role: widget.role,
-                                                          selectedMonth:
-                                                              selectedMonth,
-                                                          schoolId:
-                                                              duty['user_info']
-                                                                  ['school_id'],
-                                                          date: duty['date'],
-                                                          timeIn: duty['time'],
-                                                          hkType:
-                                                              duty['user_info']
-                                                                  ['hk_type'],
-                                                          professorName:
-                                                              duty['professor'],
-                                                        );
-                                                      },
-                                                    );
-                                                    if (result == true) {
-                                                      _initialize(
-                                                          selectedMonth);
-                                                    }
-                                                  },
-                                            child: TimelineItem(
+                                          child: LoadingCircular());
+                                    } else if (state
+                                        is ScheduleLoadedSuccessState) {
+                                      final duties = state.schedule.where((duty) {
+                                        return duty['isActive'] == true;
+                                      }).toList();
+                                      if (duties.isEmpty) {
+                                        return const Center(
+                                            child: NoData(
+                                          title: 'No Schedule Available',
+                                        ));
+                                      }
+                                      return ListView.builder(
+                                        itemCount: duties.length,
+                                        itemBuilder: (context, index) {
+                                          final duty = Map<String, dynamic>.from(
+                                              duties[index]);
+                                          final isCompleted =
+                                              duty['completed'] == 'true';
+                                          if (widget.role == "Student") {
+                                            return TimelineItem(
                                               duty: duty,
                                               roleFuture: _getRole(),
                                               color: isCompleted
                                                   ? Colors.green
                                                   : Colors.grey,
-                                            ),
-                                          );
-                                        }
-                                      },
-                                    );
-                                  } else if (state is ScheduleErrorState) {
-                                    return NoData(
-                                      title: 'No Schedule Available',
-                                    );
-                                  } else {
-                                    return const Scaffold(
-                                      body: Center(
-                                        child: LoadingCircular(),
-                                      ),
-                                    );
-                                  }
-                                },
+                                            );
+                                          } else {
+                                            return GestureDetector(
+                                              onTap: isCompleted
+                                                  ? null
+                                                  : () async {
+                                                      final result =
+                                                          await showDialog(
+                                                        context: context,
+                                                        builder: (context) {
+                                                          print(selectedMonth);
+                                                          return DialogAlertBox(
+                                                            scheduleId:
+                                                                duty['_id'],
+                                                            role: widget.role,
+                                                            selectedMonth:
+                                                                selectedMonth,
+                                                            schoolId:
+                                                                duty['user_info']
+                                                                    ['school_id'],
+                                                            date: duty['date'],
+                                                            timeIn: duty['time'],
+                                                            hkType:
+                                                                duty['user_info']
+                                                                    ['hk_type'],
+                                                            professorName:
+                                                                duty['professor'],
+                                                          );
+                                                        },
+                                                      );
+                                                      if (result == true) {
+                                                        _initialize(
+                                                            selectedMonth);
+                                                      }
+                                                    },
+                                              child: TimelineItem(
+                                                duty: duty,
+                                                roleFuture: _getRole(),
+                                                color: isCompleted
+                                                    ? Colors.green
+                                                    : Colors.grey,
+                                              ),
+                                            );
+                                          }
+                                        },
+                                      );
+                                    } else if (state is ScheduleErrorState) {
+                                      return NoData(
+                                        title: 'No Schedule Available',
+                                      );
+                                    } else {
+                                      return const Scaffold(
+                                        body: Center(
+                                          child: LoadingCircular(),
+                                        ),
+                                      );
+                                    }
+                                  },
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              ],
+                    ],
+                  ),
+                ],
+              ),
             );
           },
         ),

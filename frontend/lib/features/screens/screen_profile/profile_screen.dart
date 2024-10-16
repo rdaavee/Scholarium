@@ -33,12 +33,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
     super.initState();
     final apiService = GlobalRepositoryImpl();
     profileBloc = ProfileBloc(apiService);
-    profileBloc.add(FetchProfileEvent());
-    context.read<BottomNavBloc>().add(FetchUnreadCountEvent());
+    _initialize();
   }
 
-  void _onProfileUpdated() {
+  Future<void> _initialize() async {
     profileBloc.add(FetchProfileEvent());
+    context.read<BottomNavBloc>().add(FetchUnreadCountEvent());
   }
 
   void _pickImage() async {
@@ -80,119 +80,122 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 body: Center(child: CircularProgressIndicator()),
               );
             } else if (state is ProfileLoadedSuccessState) {
-              return Stack(
-                children: [
-                  Container(
-                    color: ColorPalette.primary.withOpacity(0.6),
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        decoration: const BoxDecoration(
-                          image: DecorationImage(
-                            image: AssetImage('assets/images/image.jpg'),
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: Container(
+              return RefreshIndicator.adaptive(
+                onRefresh: _initialize,  
+                child: Stack(
+                  children: [
+                    Container(
+                      color: ColorPalette.primary.withOpacity(0.6),
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
                           decoration: const BoxDecoration(
-                            color: Color(0xFFF0F3F4),
-                            borderRadius: BorderRadius.vertical(
-                              top: Radius.circular(10),
+                            image: DecorationImage(
+                              image: AssetImage('assets/images/image.jpg'),
+                              fit: BoxFit.cover,
                             ),
                           ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: ListView(
-                              children: [
-                                const SizedBox(height: 50),
-                                ProfileCircle(
-                                  profilePicture:
-                                      state.users[0].profilePicture.toString(),
-                                  onTap: _pickImage,
-                                ),
-                                const SizedBox(height: 80),
-                                InfoSection(
-                                  title: 'BASIC INFORMATION',
-                                  infoRows: [
-                                    const SizedBox(height: 20),
-                                    InfoRow(
-                                        label: 'Name',
-                                        value:
-                                            "${state.users[0].firstName} ${state.users[0].middleName} ${state.users[0].lastName}"),
-                                    const SizedBox(height: 15),
-                                    const DividerWidget(),
-                                    const SizedBox(height: 15),
-                                    InfoRow(
-                                        label: 'Email',
-                                        value: state.users[0].email.toString()),
-                                    const SizedBox(height: 15),
-                                    const DividerWidget(),
-                                    const SizedBox(height: 15),
-                                    InfoRow(
-                                        label: 'School ID',
-                                        value:
-                                            state.users[0].schoolID.toString()),
-                                    const SizedBox(height: 15),
-                                    const DividerWidget(),
-                                    const SizedBox(height: 15),
-                                    InfoRow(
-                                        label: 'Gender',
-                                        value:
-                                            state.users[0].gender.toString()),
-                                    const SizedBox(height: 15),
-                                    const DividerWidget(),
-                                    const SizedBox(height: 15),
-                                    InfoRow(
-                                        label: 'Contact #',
-                                        value:
-                                            state.users[0].contact.toString()),
-                                    const SizedBox(height: 15),
-                                    const DividerWidget(),
-                                    const SizedBox(height: 15),
-                                    InfoRow(
-                                        label: 'Address',
-                                        value:
-                                            state.users[0].address.toString()),
-                                    const SizedBox(height: 15),
-                                    if (state.users[0].role == "Student") ...[
+                        ),
+                        Expanded(
+                          child: Container(
+                            decoration: const BoxDecoration(
+                              color: Color(0xFFF0F3F4),
+                              borderRadius: BorderRadius.vertical(
+                                top: Radius.circular(10),
+                              ),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: ListView(
+                                children: [
+                                  const SizedBox(height: 50),
+                                  ProfileCircle(
+                                    profilePicture:
+                                        state.users[0].profilePicture.toString(),
+                                    onTap: _pickImage,
+                                  ),
+                                  const SizedBox(height: 80),
+                                  InfoSection(
+                                    title: 'BASIC INFORMATION',
+                                    infoRows: [
+                                      const SizedBox(height: 20),
+                                      InfoRow(
+                                          label: 'Name',
+                                          value:
+                                              "${state.users[0].firstName} ${state.users[0].middleName} ${state.users[0].lastName}"),
+                                      const SizedBox(height: 15),
                                       const DividerWidget(),
                                       const SizedBox(height: 15),
                                       InfoRow(
-                                        label: 'HK Type',
-                                        value: state.users[0].hkType.toString(),
-                                      ),
+                                          label: 'Email',
+                                          value: state.users[0].email.toString()),
                                       const SizedBox(height: 15),
+                                      const DividerWidget(),
+                                      const SizedBox(height: 15),
+                                      InfoRow(
+                                          label: 'School ID',
+                                          value:
+                                              state.users[0].schoolID.toString()),
+                                      const SizedBox(height: 15),
+                                      const DividerWidget(),
+                                      const SizedBox(height: 15),
+                                      InfoRow(
+                                          label: 'Gender',
+                                          value:
+                                              state.users[0].gender.toString()),
+                                      const SizedBox(height: 15),
+                                      const DividerWidget(),
+                                      const SizedBox(height: 15),
+                                      InfoRow(
+                                          label: 'Contact #',
+                                          value:
+                                              state.users[0].contact.toString()),
+                                      const SizedBox(height: 15),
+                                      const DividerWidget(),
+                                      const SizedBox(height: 15),
+                                      InfoRow(
+                                          label: 'Address',
+                                          value:
+                                              state.users[0].address.toString()),
+                                      const SizedBox(height: 15),
+                                      if (state.users[0].role == "Student") ...[
+                                        const DividerWidget(),
+                                        const SizedBox(height: 15),
+                                        InfoRow(
+                                          label: 'HK Type',
+                                          value: state.users[0].hkType.toString(),
+                                        ),
+                                        const SizedBox(height: 15),
+                                      ],
+                                      const DividerWidget(),
+                                      const SizedBox(height: 15),
+                                      InfoRow(
+                                          label: 'Status',
+                                          value:
+                                              state.users[0].status.toString()),
                                     ],
-                                    const DividerWidget(),
-                                    const SizedBox(height: 15),
-                                    InfoRow(
-                                        label: 'Status',
-                                        value:
-                                            state.users[0].status.toString()),
-                                  ],
-                                ),
-                                const SizedBox(height: 30),
-                                const AccountSection(),
-                                const SizedBox(height: 20),
-                                AccountOptions(
-                                  onProfileUpdated: _onProfileUpdated,
-                                  onLogout: () {
-                                    BlocProvider.of<ProfileBloc>(context)
-                                        .add(LogoutEvent(context: context));
-                                  },
-                                ),
-                              ],
+                                  ),
+                                  const SizedBox(height: 30),
+                                  const AccountSection(),
+                                  const SizedBox(height: 20),
+                                  AccountOptions(
+                                    onProfileUpdated: _initialize,
+                                    onLogout: () {
+                                      BlocProvider.of<ProfileBloc>(context)
+                                          .add(LogoutEvent(context: context));
+                                    },
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+                      ],
+                    ),
+                  ],
+                ),
               );
             } else if (state is LogoutLoadedSuccessState) {
               Navigator.pushReplacementNamed(context, '/login');

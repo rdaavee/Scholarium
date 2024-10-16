@@ -1,5 +1,3 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
@@ -33,9 +31,14 @@ class UserDataScreenState extends State<UserDataScreen> {
     final adminRepository = AdminRepositoryImpl();
     final globalRepository = GlobalRepositoryImpl();
     adminBloc = AdminBloc(adminRepository, globalRepository);
+    _initialize();
+  }
+
+  Future<void> _initialize() async {
     adminBloc.add(FetchUsersEvent(selectedRole, statusFilter));
     context.read<BottomNavBloc>().add(FetchUnreadCountEvent());
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -62,9 +65,7 @@ class UserDataScreenState extends State<UserDataScreen> {
               ),
             );
             if (isCompleted == true) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('User creation completed!')),
-              );
+              _initialize();
             }
           },
           child: const Icon(
@@ -91,8 +92,7 @@ class UserDataScreenState extends State<UserDataScreen> {
                         setState(() {
                           selectedRole = newValue;
                         });
-                        adminBloc
-                            .add(FetchUsersEvent(selectedRole, statusFilter));
+                        adminBloc.add(FetchUsersEvent(selectedRole, statusFilter));
                       },
                     ),
                   ),
@@ -104,8 +104,7 @@ class UserDataScreenState extends State<UserDataScreen> {
                         setState(() {
                           statusFilter = newValue!;
                         });
-                        adminBloc
-                            .add(FetchUsersEvent(selectedRole, statusFilter));
+                        adminBloc.add(FetchUsersEvent(selectedRole, statusFilter));
                       },
                     ),
                   ),
@@ -114,29 +113,35 @@ class UserDataScreenState extends State<UserDataScreen> {
             ),
             const SizedBox(height: 16),
             Expanded(
-              child: BlocBuilder<AdminBloc, AdminState>(
-                builder: (context, state) {
-                  if (state is AdminLoadingState) {
-                    return LoadingCircular();
-                  } else if (state is AdminListScreenSuccessState) {
-                    List<UserModel> allUsers = state.filteredUsers;
-                    List<UserModel> filteredUsers = allUsers.where((user) {
-                      bool matchesRole = (selectedRole == null ||
-                          selectedRole == 'All Users' ||
-                          user.role == selectedRole);
-                      bool matchesStatus = (statusFilter == 'Any' ||
-                          user.status == statusFilter);
-                      return matchesRole && matchesStatus;
-                    }).toList();
-                    return UserDataTable(
-                      filteredUsers: filteredUsers,
-                      adminBloc: adminBloc,
-                    );
-                  } else if (state is AdminErrorState) {
-                    return Center(child: Text('Error: ${state.message}'));
-                  }
-                  return const Center(child: Text('No users found.'));
-                },
+              child: RefreshIndicator(
+                onRefresh: _initialize,
+                child: BlocBuilder<AdminBloc, AdminState>(
+                  builder: (context, state) {
+                    if (state is AdminLoadingState) {
+                      return LoadingCircular();
+                    } else if (state is AdminListScreenSuccessState) {
+                      List<UserModel> allUsers = state.filteredUsers;
+                      List<UserModel> filteredUsers = allUsers.where((user) {
+                        bool matchesRole = (selectedRole == null ||
+                            selectedRole == 'All Users' ||
+                            user.role == selectedRole);
+                        bool matchesStatus = (statusFilter == 'Any' ||
+                            user.status == statusFilter);
+                        return matchesRole && matchesStatus;
+                      }).toList();
+                      return UserDataTable(
+                        filteredUsers: filteredUsers,
+                        adminBloc: adminBloc,
+                        onUpdated: () {
+                          _initialize();
+                        },
+                      );
+                    } else if (state is AdminErrorState) {
+                      return Center(child: Text('Error: ${state.message}'));
+                    }
+                    return const Center(child: Text('No users found.'));
+                  },
+                ),
               ),
             ),
           ],

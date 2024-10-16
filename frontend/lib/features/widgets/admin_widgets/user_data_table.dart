@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:isHKolarium/api/models/user_model.dart';
 import 'package:isHKolarium/blocs/bloc_admin/admin_bloc.dart';
-import 'package:isHKolarium/config/constants/colors.dart';
 import 'package:isHKolarium/features/screens/screen_admin/user_form_screen.dart';
 import 'package:isHKolarium/features/widgets/admin_widgets/delete_confirmation_dialog.dart';
 import 'package:isHKolarium/features/widgets/admin_widgets/profile_modal_bottom_sheet.dart';
-import 'package:isHKolarium/features/widgets/admin_widgets/user_form_modal.dart';
 
 class UserDataTable extends StatelessWidget {
+  final VoidCallback onUpdated;
   final List<UserModel> filteredUsers;
   final AdminBloc adminBloc;
 
@@ -16,6 +14,7 @@ class UserDataTable extends StatelessWidget {
     super.key,
     required this.filteredUsers,
     required this.adminBloc,
+    required this.onUpdated,
   });
 
   @override
@@ -102,9 +101,9 @@ class UserDataTable extends StatelessWidget {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             PopupMenuButton<String>(
-                              onSelected: (String result) {
+                              onSelected: (String result) async {
                                 if (result == 'Profile') {
-                                  showModalBottomSheet(
+                                  final result = await showModalBottomSheet(
                                     context: context,
                                     shape: const RoundedRectangleBorder(
                                       borderRadius: BorderRadius.vertical(
@@ -123,8 +122,12 @@ class UserDataTable extends StatelessWidget {
                                       );
                                     },
                                   );
+
+                                  if (result == true) {
+                                    onUpdated();
+                                  }
                                 } else if (result == 'Edit') {
-                                  Navigator.push(
+                                  final isUpdated = await Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) {
@@ -137,12 +140,19 @@ class UserDataTable extends StatelessWidget {
                                       },
                                     ),
                                   );
+                                  if (isUpdated == true) {
+                                    onUpdated();
+                                  }
                                 } else if (result == 'Delete') {
-                                  DeleteConfirmationDialog.show(
+                                  final isUpdated =
+                                      await DeleteConfirmationDialog.show(
                                     context,
                                     adminBloc,
                                     user.schoolID.toString(),
                                   );
+                                  if (isUpdated == true) {
+                                    onUpdated();
+                                  }
                                 }
                               },
                               itemBuilder: (BuildContext context) =>
