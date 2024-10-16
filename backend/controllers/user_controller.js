@@ -196,41 +196,53 @@ async function updatePastSchedules(school_id) {
   const currentDate = moment().startOf("day").format("YYYY-MM-DD"); 
   const pastSchedules = await Schedule.find({
     school_id: school_id,
-    date: { $lt: currentDate }
+    completed: "pending",
+    date: { $lt: currentDate },
   });
 
   const updatePromises = pastSchedules.map(async (schedule) => {
+
     if (schedule.completed !== "true") {
       await Schedule.updateOne({ _id: schedule._id }, { completed: "false" });
     }
 
     const user = await User.findOne({ school_id: school_id });
     const bot = await User.findOne({ school_id: "00-0000-00000" });
+    const timeFormat = moment(schedule.time, "HH:mm:ss").format("hh:mm A");
 
-    const newNotification = new Notification({
-      sender: bot.school_id,
-      senderName: `${bot.first_name} ${bot.last_name}`, 
+    const existingNotification = await Notification.findOne({
       receiver: user.school_id,
-      receiverName: `${user.first_name} ${user.last_name}`, 
-      role: "Bot",
+      message: `Dear ${user.first_name}, you have not completed your duty on ${schedule.date} at ${timeFormat}. Please check your records for more details.`,
       title: "Duty Alert",
-      message: `Dear ${user.first_name}, you have not completed your duty on ${schedule.date} at ${schedule.time_in}. Please check your records for more details.`,
-      scheduleId: schedule._id,
-      date: moment(), 
-      time: moment().format("HH:mm:ss"), 
-      status: false,
-      profile_picture: bot.profile_picture,
     });
 
-    await newNotification.save();
+    if (!existingNotification) {
+      const newNotification = new Notification({
+        sender: bot.school_id,
+        senderName: `${bot.first_name} ${bot.last_name}`, 
+        receiver: user.school_id,
+        receiverName: `${user.first_name} ${user.last_name}`, 
+        role: "Bot",
+        title: "Duty Alert",
+        message: `Dear ${user.first_name}, you have not completed your duty on ${schedule.date} at ${timeFormat}. Please check your records for more details.`,
+        scheduleId: null,
+        date: moment().format("YYYY-MM-DD"), 
+        time: moment().format("HH:mm:ss"), 
+        status: false,
+        profile_picture: bot.profile_picture,
+      });
+
+      await newNotification.save();
+    }
   });
+
   await Promise.all(updatePromises);
 }
+
 
 exports.getUserNotifications = async (req, res) => {
   try {
     const user = await User.findById(req.userId);
-    console.log("User ID:", req.userId);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -293,7 +305,6 @@ exports.getUserNotifications = async (req, res) => {
 exports.getUserUnreadNotifications = async (req, res) => {
   try {
     const user = await User.findById(req.userId);
-    console.log("User ID:", req.userId);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -391,8 +402,6 @@ exports.notificationConfirmSched = async (req, res) => {
       { scheduleId: scheduleId },
       { $set: { scheduleId: "" } }
     );    
-
-    console.log("NOTIFICATIONS DONE");
 
     res.status(200).json({ message: "Schedule updated successfully.", schedule: result });
   } catch (error) {
