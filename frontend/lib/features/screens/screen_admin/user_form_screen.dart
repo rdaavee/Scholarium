@@ -242,12 +242,17 @@ class _UserFormScreenState extends State<UserFormScreen> {
         firstNameController.text.isEmpty ||
         emailController.text.isEmpty ||
         accountStatus == "Select Account Status" ||
-        selectedRole == "Select User Role" ||
         selectedHkType == "Select HK Type" ||
         selectedGender == "Select Gender") {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please fill in all required fields.')),
       );
+      return;
+    }
+    if (selectedRole != "Student") {
+      selectedHkType = "";
+    } else {
+      const SnackBar(content: Text('Please indicate HK type.'));
       return;
     }
     final newUser = UserModel(
