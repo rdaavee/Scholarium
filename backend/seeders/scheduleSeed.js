@@ -22,7 +22,7 @@ const seedClassSchedules = async () => {
         professor: "David Aldrin Mondero",
         department: "CITE",
         isActive: true,
-        time: "18:00:00",
+        time: "14:00:00",
         date: "2024-10-16",
         completed: "pending",      },
       {
