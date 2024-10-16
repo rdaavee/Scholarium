@@ -103,291 +103,294 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
               appBar: AppBarWidget(
                   title: "Hello, ${state.users[0].firstName}!",
                   isBackButton: false),
-              body: Stack(
-                children: [
-                  Container(
-                    color: ColorPalette.primary.withOpacity(0.6),
-                  ),
-                  Column(
-                    children: [
-                      Expanded(
-                        child: Container(
-                          decoration: const BoxDecoration(
-                            color: Color(0xFFF0F3F4),
-                            borderRadius: BorderRadius.vertical(
-                              top: Radius.circular(10),
+              body: RefreshIndicator.adaptive(
+                onRefresh: () => _initialize(),
+                child: Stack(
+                  children: [
+                    Container(
+                      color: ColorPalette.primary.withOpacity(0.6),
+                    ),
+                    Column(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            decoration: const BoxDecoration(
+                              color: Color(0xFFF0F3F4),
+                              borderRadius: BorderRadius.vertical(
+                                top: Radius.circular(10),
+                              ),
                             ),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: ListView(
-                              children: [
-                                const SizedBox(
-                                  height: 45,
-                                ),
-                                // Upcoming Duties Section
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      right: 15, left: 15),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      const LabelTextWidget(
-                                          title: "Upcoming Duties"),
-                                      GestureDetector(
-                                        onTap: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  ScheduleScreen(
-                                                role: "Student",
-                                                isAppBarBack: true,
+                            child: Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: ListView(
+                                children: [
+                                  const SizedBox(
+                                    height: 45,
+                                  ),
+                                  // Upcoming Duties Section
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        right: 15, left: 15),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        const LabelTextWidget(
+                                            title: "Upcoming Duties"),
+                                        GestureDetector(
+                                          onTap: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ScheduleScreen(
+                                                  role: "Student",
+                                                  isAppBarBack: true,
+                                                ),
                                               ),
+                                            );
+                                          },
+                                          child: const ViewAllText(),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  SingleChildScrollView(
+                                    scrollDirection: Axis.horizontal,
+                                    child: Row(
+                                      children: [
+                                        ScheduleCard(
+                                          scheduleDate: Text(
+                                            state.todaySchedule[0].date
+                                                        .toString() ==
+                                                    "No Upcoming Schedule"
+                                                ? state.todaySchedule[0].date
+                                                    .toString()
+                                                : _formatDate(state
+                                                    .todaySchedule[0].date
+                                                    .toString()),
+                                            style: const TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w900,
+                                              color: ColorPalette.accentBlack,
+                                              letterSpacing: 0.5,
                                             ),
-                                          );
-                                        },
-                                        child: const ViewAllText(),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                SingleChildScrollView(
-                                  scrollDirection: Axis.horizontal,
-                                  child: Row(
-                                    children: [
-                                      ScheduleCard(
-                                        scheduleDate: Text(
-                                          state.todaySchedule[0].date
-                                                      .toString() ==
-                                                  "No Upcoming Schedule"
-                                              ? state.todaySchedule[0].date
-                                                  .toString()
-                                              : _formatDate(state
-                                                  .todaySchedule[0].date
-                                                  .toString()),
-                                          style: const TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w900,
-                                            color: ColorPalette.accentBlack,
-                                            letterSpacing: 0.5,
                                           ),
-                                        ),
-                                        scheduleTime: Text(
-                                          state.todaySchedule[0].time
-                                                      .toString() ==
-                                                  ""
-                                              ? state.todaySchedule[0].time
-                                                  .toString()
-                                              : _formatTime(state
-                                                  .todaySchedule[0].time
-                                                  .toString()),
-                                          style: const TextStyle(
-                                            fontSize: 11,
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.normal,
-                                            letterSpacing: 0.8,
-                                          ),
-                                        ),
-                                        roomName: Text(
-                                          state.todaySchedule[0].room
-                                              .toString(),
-                                          style: const TextStyle(
-                                            fontSize: 18,
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.bold,
-                                            letterSpacing: 1.2,
-                                          ),
-                                        ),
-                                        cardColor: Colors.white,
-                                        imageUrl: AppImages.boyDutyImg,
-                                      ),
-                                      const SizedBox(width: 5),
-                                      ScheduleCard(
-                                        scheduleDate: Text(
-                                          state.nextSchedule[0].date
-                                                      .toString() ==
-                                                  "No Upcoming Schedule"
-                                              ? state.nextSchedule[0].date
-                                                  .toString()
-                                              : _formatDate(state
-                                                  .nextSchedule[0].date
-                                                  .toString()),
-                                          style: const TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w900,
-                                            color: Colors.black,
-                                            letterSpacing: 0.5,
-                                          ),
-                                        ),
-                                        scheduleTime: Text(
-                                          state.nextSchedule[0].time
-                                                      .toString() ==
-                                                  ""
-                                              ? state.nextSchedule[0].time
-                                                  .toString()
-                                              : _formatTime(state
-                                                  .nextSchedule[0].time
-                                                  .toString()),
-                                          style: const TextStyle(
-                                            fontSize: 11,
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.normal,
-                                            letterSpacing: 0.8,
-                                          ),
-                                        ),
-                                        roomName: Text(
-                                          state.nextSchedule[0].room.toString(),
-                                          style: const TextStyle(
-                                            fontSize: 17,
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.bold,
-                                            letterSpacing: 1.2,
-                                          ),
-                                        ),
-                                        cardColor: Colors.white,
-                                        imageUrl: AppImages.boyDutyImg,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                // Your DTR Section
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      right: 15, left: 15, top: 15),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      const LabelTextWidget(title: "Your DTR"),
-                                      GestureDetector(
-                                        onTap: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const DtrScreen(),
+                                          scheduleTime: Text(
+                                            state.todaySchedule[0].time
+                                                        .toString() ==
+                                                    ""
+                                                ? state.todaySchedule[0].time
+                                                    .toString()
+                                                : _formatTime(state
+                                                    .todaySchedule[0].time
+                                                    .toString()),
+                                            style: const TextStyle(
+                                              fontSize: 11,
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.normal,
+                                              letterSpacing: 0.8,
                                             ),
-                                          );
-                                        },
-                                        child: const ViewAllText(),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                DtrHoursCard(
-                                  progress: (state.hours[0].totalhours /
-                                          state.hours[0].targethours)
-                                      .clamp(0.0, 1.0),
-                                  cardColor: Colors.white,
-                                ),
-                                // Announcements Section
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      right: 15, left: 15, top: 15),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      const LabelTextWidget(
-                                          title: "Announcements"),
-                                      GestureDetector(
-                                        onTap: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const AnnouncementsScreen(
-                                                      isBackButtonTrue: true),
+                                          ),
+                                          roomName: Text(
+                                            state.todaySchedule[0].room
+                                                .toString(),
+                                            style: const TextStyle(
+                                              fontSize: 18,
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold,
+                                              letterSpacing: 1.2,
                                             ),
-                                          );
-                                        },
-                                        child: const ViewAllText(),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                AnnouncementCard(
-                                  textLabel: Text(
-                                    state.announcements[0].title.toString(),
-                                    style: const TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                      color: Color(0xFF6D7278),
-                                      letterSpacing: 0.5,
-                                    ),
-                                  ),
-                                  textBody: Text(
-                                    state.announcements[0].body.toString(),
-                                    style: const TextStyle(
-                                      fontSize: 13,
-                                      color: Color(0xFFC1C1C1),
-                                      fontWeight: FontWeight.w400,
-                                      letterSpacing: 0.8,
-                                    ),
-                                  ),
-                                  date: Text(
-                                    state.announcements[0].date.toString(),
-                                    style: const TextStyle(
-                                      color: Color(0xFFC1C1C1),
-                                      fontWeight: FontWeight.w500,
-                                      letterSpacing: 1.2,
-                                    ),
-                                  ),
-                                  time: Text(
-                                    state.announcements[0].time.toString(),
-                                    style: const TextStyle(
-                                      color: Color(0xFFC1C1C1),
-                                      fontWeight: FontWeight.w500,
-                                      letterSpacing: 1.2,
-                                    ),
-                                  ),
-                                  imageUrl: AppImages.cardBgImg,
-                                ),
-                                // Events Section
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      right: 15, left: 15, top: 15),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      const LabelTextWidget(title: "Events"),
-                                      GestureDetector(
-                                        onTap: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const EventsScreen(),
+                                          ),
+                                          cardColor: Colors.white,
+                                          imageUrl: AppImages.boyDutyImg,
+                                        ),
+                                        const SizedBox(width: 5),
+                                        ScheduleCard(
+                                          scheduleDate: Text(
+                                            state.nextSchedule[0].date
+                                                        .toString() ==
+                                                    "No Upcoming Schedule"
+                                                ? state.nextSchedule[0].date
+                                                    .toString()
+                                                : _formatDate(state
+                                                    .nextSchedule[0].date
+                                                    .toString()),
+                                            style: const TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w900,
+                                              color: Colors.black,
+                                              letterSpacing: 0.5,
                                             ),
-                                          );
-                                        },
-                                        child: const ViewAllText(),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                const EventsCard(
-                                    textLabel: Text(
-                                      'Leadership Camp',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                                          ),
+                                          scheduleTime: Text(
+                                            state.nextSchedule[0].time
+                                                        .toString() ==
+                                                    ""
+                                                ? state.nextSchedule[0].time
+                                                    .toString()
+                                                : _formatTime(state
+                                                    .nextSchedule[0].time
+                                                    .toString()),
+                                            style: const TextStyle(
+                                              fontSize: 11,
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.normal,
+                                              letterSpacing: 0.8,
+                                            ),
+                                          ),
+                                          roomName: Text(
+                                            state.nextSchedule[0].room.toString(),
+                                            style: const TextStyle(
+                                              fontSize: 17,
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold,
+                                              letterSpacing: 1.2,
+                                            ),
+                                          ),
+                                          cardColor: Colors.white,
+                                          imageUrl: AppImages.boyDutyImg,
+                                        ),
+                                      ],
                                     ),
+                                  ),
+                                  // Your DTR Section
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        right: 15, left: 15, top: 15),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        const LabelTextWidget(title: "Your DTR"),
+                                        GestureDetector(
+                                          onTap: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const DtrScreen(),
+                                              ),
+                                            );
+                                          },
+                                          child: const ViewAllText(),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  DtrHoursCard(
+                                    progress: (state.hours[0].totalhours /
+                                            state.hours[0].targethours)
+                                        .clamp(0.0, 1.0),
                                     cardColor: Colors.white,
-                                    imageAssetPath: AppImages.eventTwo),
-                              ],
+                                  ),
+                                  // Announcements Section
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        right: 15, left: 15, top: 15),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        const LabelTextWidget(
+                                            title: "Announcements"),
+                                        GestureDetector(
+                                          onTap: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const AnnouncementsScreen(
+                                                        isBackButtonTrue: true),
+                                              ),
+                                            );
+                                          },
+                                          child: const ViewAllText(),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  AnnouncementCard(
+                                    textLabel: Text(
+                                      state.announcements[0].title.toString(),
+                                      style: const TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                        color: Color(0xFF6D7278),
+                                        letterSpacing: 0.5,
+                                      ),
+                                    ),
+                                    textBody: Text(
+                                      state.announcements[0].body.toString(),
+                                      style: const TextStyle(
+                                        fontSize: 13,
+                                        color: Color(0xFFC1C1C1),
+                                        fontWeight: FontWeight.w400,
+                                        letterSpacing: 0.8,
+                                      ),
+                                    ),
+                                    date: Text(
+                                      state.announcements[0].date.toString(),
+                                      style: const TextStyle(
+                                        color: Color(0xFFC1C1C1),
+                                        fontWeight: FontWeight.w500,
+                                        letterSpacing: 1.2,
+                                      ),
+                                    ),
+                                    time: Text(
+                                      state.announcements[0].time.toString(),
+                                      style: const TextStyle(
+                                        color: Color(0xFFC1C1C1),
+                                        fontWeight: FontWeight.w500,
+                                        letterSpacing: 1.2,
+                                      ),
+                                    ),
+                                    imageUrl: AppImages.cardBgImg,
+                                  ),
+                                  // Events Section
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        right: 15, left: 15, top: 15),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        const LabelTextWidget(title: "Events"),
+                                        GestureDetector(
+                                          onTap: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const EventsScreen(),
+                                              ),
+                                            );
+                                          },
+                                          child: const ViewAllText(),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  const EventsCard(
+                                      textLabel: Text(
+                                        'Leadership Camp',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      cardColor: Colors.white,
+                                      imageAssetPath: AppImages.eventTwo),
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+                      ],
+                    ),
+                  ],
+                ),
               ),
             );
           } else {
