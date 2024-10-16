@@ -138,7 +138,8 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
       await _adminRepositoryImpl.updateUser(event.schoolId, event.user);
       add(FetchDataEvent());
     } catch (e) {
-      emit(AdminErrorState(message: 'Failed to update user: $e'));
+      print('UpdateUserEvent error: $e');
+      emit(AdminErrorState(message: 'Failed to update user: ${e.toString()}'));
     }
   }
 
@@ -229,7 +230,8 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
       CreateNotificationEvent event, Emitter<AdminState> emit) async {
     emit(AdminLoadingState());
     try {
-      await _globalRepositoryImpl.createNotification(notification: event.notification);
+      await _globalRepositoryImpl.createNotification(
+          notification: event.notification);
     } catch (e) {
       emit(AdminErrorState(message: 'Failed to create schedule: $e'));
     }

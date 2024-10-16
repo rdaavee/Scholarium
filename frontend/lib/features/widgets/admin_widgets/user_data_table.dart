@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:isHKolarium/api/models/user_model.dart';
 import 'package:isHKolarium/blocs/bloc_admin/admin_bloc.dart';
+import 'package:isHKolarium/config/constants/colors.dart';
+import 'package:isHKolarium/features/screens/screen_admin/user_form_screen.dart';
 import 'package:isHKolarium/features/widgets/admin_widgets/delete_confirmation_dialog.dart';
 import 'package:isHKolarium/features/widgets/admin_widgets/profile_modal_bottom_sheet.dart';
+import 'package:isHKolarium/features/widgets/admin_widgets/user_form_modal.dart';
 
 class UserDataTable extends StatelessWidget {
   final List<UserModel> filteredUsers;
@@ -120,55 +124,19 @@ class UserDataTable extends StatelessWidget {
                                     },
                                   );
                                 } else if (result == 'Edit') {
-                                  // showDialog(
-                                  //   context: context,
-                                  //   builder: (context) {
-                                  //     return Dialog(
-                                  //       shape: RoundedRectangleBorder(
-                                  //         borderRadius:
-                                  //             BorderRadius.circular(20.0),
-                                  //       ),
-                                  //       child: SizedBox(
-                                  //         width: double
-                                  //             .infinity, // Adjusts to the width of the screen
-                                  //         height: MediaQuery.of(context)
-                                  //                 .size
-                                  //                 .height *
-                                  //             .93, // 80% of screen height
-                                  //         child: Padding(
-                                  //           padding: const EdgeInsets.all(10.0),
-                                  //           child: Column(
-                                  //             children: [
-                                  //               const Text(
-                                  //                 'Edit User',
-                                  //                 style: TextStyle(
-                                  //                   fontSize: 20,
-                                  //                   fontWeight: FontWeight.bold,
-                                  //                   color: ColorPalette.primary,
-                                  //                 ),
-                                  //               ),
-                                  //               const SizedBox(height: 15),
-                                  //               Expanded(
-                                  //                 child: BlocProvider.value(
-                                  //                   value: adminBloc,
-                                  //                   child: UserFormWidget(
-                                  //                     schoolId: user.schoolID
-                                  //                         .toString(),
-                                  //                     index: index,
-                                  //                     filteredUsers:
-                                  //                         filteredUsers,
-                                  //                     isRole:
-                                  //                         user.role.toString(),
-                                  //                   ),
-                                  //                 ),
-                                  //               ),
-                                  //             ],
-                                  //           ),
-                                  //         ),
-                                  //       ),
-                                  //     );
-                                  //   },
-                                  // );
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) {
+                                        return UserFormScreen(
+                                          schoolId: user.schoolID.toString(),
+                                          index: index,
+                                          filteredUsers: filteredUsers,
+                                          isRole: user.role.toString(),
+                                        );
+                                      },
+                                    ),
+                                  );
                                 } else if (result == 'Delete') {
                                   DeleteConfirmationDialog.show(
                                     context,

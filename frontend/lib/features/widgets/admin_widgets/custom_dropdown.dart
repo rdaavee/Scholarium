@@ -1,21 +1,28 @@
 import 'package:flutter/material.dart';
 
 class CustomDropdown extends StatelessWidget {
-  final String labelText;
-  final List<String> options;
+  final String? labelText;
+  final List<String>? options;
   final String? selectedValue;
-  final ValueChanged<String?> onChanged;
+  final ValueChanged<String?>? onChanged;
 
   const CustomDropdown({
     super.key,
-    required this.labelText,
-    required this.options,
-    required this.selectedValue,
-    required this.onChanged,
+    this.labelText,
+    this.options,
+    this.selectedValue,
+    this.onChanged,
   });
 
   @override
   Widget build(BuildContext context) {
+    // Set default value if selectedValue is null or not in options
+    String? finalValue = options != null && options!.contains(selectedValue)
+        ? selectedValue
+        : options != null && options!.isNotEmpty
+            ? options!.first // Set to the first option if available
+            : null; // Or null if options are empty
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: DropdownButtonFormField<String>(
@@ -49,8 +56,8 @@ class CustomDropdown extends StatelessWidget {
             ),
           ),
         ),
-        value: selectedValue,
-        items: options.map((String option) {
+        value: finalValue,
+        items: options?.map((String option) {
           return DropdownMenuItem<String>(
             value: option,
             child: Text(option),
