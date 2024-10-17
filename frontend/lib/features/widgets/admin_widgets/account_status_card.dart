@@ -15,7 +15,7 @@ class AccountStatusCard extends StatelessWidget {
     required this.inactiveCount,
     required this.cardColor,
     this.width = 160,
-    this.height = 220,
+    this.height = 235,
   });
 
   @override
@@ -23,96 +23,79 @@ class AccountStatusCard extends StatelessWidget {
     return SizedBox(
       width: width,
       height: height,
-      child: Stack(
-        children: <Widget>[
-          Card(
-            clipBehavior: Clip.antiAliasWithSaveLayer,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.0),
+      child: Card(
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        elevation: 5,
+        margin: const EdgeInsets.all(10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: double.infinity,
+              height: 5,
+              color: cardColor,
             ),
-            elevation: 5,
-            margin: EdgeInsets.all(10),
-            child: Column(
-              children: [
-                SizedBox(
-                  width: double.infinity,
-                  height: 5,
-                  child: Container(
-                    color: cardColor,
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      color: Colors.green,
+                    ),
                   ),
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Positioned(
-              bottom: 0,
-              left: 10,
-              child: SizedBox(
-                height: 170,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      title,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                        color: Colors.green,
+                  const SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        'Active',
+                        style: TextStyle(
+                          fontSize: 17,
+                          color: Color(0xFF6D7278),
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 35),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Text(
-                              'Active',
-                              style: TextStyle(
-                                fontSize: 17,
-                                color: Color(0xFF6D7278),
-                              ),
-                            ),
-                            Text(
-                              '$activeCount',
-                              style: TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
+                      Text(
+                        '$activeCount',
+                        style: const TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
                         ),
-                        SizedBox(height: 4),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Text(
-                              'Inactive',
-                              style: TextStyle(
-                                fontSize: 17,
-                                color: Color(0xFF6D7278),
-                              ),
-                            ),
-                            Text(
-                              '$inactiveCount',
-                              style: TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        'Inactive',
+                        style: TextStyle(
+                          fontSize: 17,
+                          color: Color(0xFF6D7278),
                         ),
-                      ],
-                    ),
-                  ],
-                ),
+                      ),
+                      Text(
+                        '$inactiveCount',
+                        style: const TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
