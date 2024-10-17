@@ -122,45 +122,54 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                         ),
                       ),
                       Container(
-                        padding: const EdgeInsets.all(12.0),
+                        padding: const EdgeInsets.all(10.0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
                             Wrap(
-                              spacing: 8.0,
-                              runSpacing: 8.0,
+                              spacing: 13.0,
+                              runSpacing: 13.0,
                               children: [
-                                AccountStatusCard(
-                                  title: 'Account Status',
-                                  activeCount: state.activeCount,
-                                  inactiveCount: state.inactiveCount,
-                                  cardColor: Colors.green,
+                                SizedBox(
                                   width: MediaQuery.of(context).size.width / 2 -
                                       20,
+                                  child: AccountStatusCard(
+                                    title: 'Account Status',
+                                    activeCount: state.activeCount,
+                                    inactiveCount: state.inactiveCount,
+                                    cardColor: Colors.green,
+                                  ),
                                 ),
-                                HkDiscountStatusCard(
-                                  title: 'HK Discounts',
-                                  discount25: state.hk25,
-                                  discount50: state.hk50,
-                                  discount75: state.hk75,
-                                  cardColor: Colors.red,
+                                SizedBox(
                                   width: MediaQuery.of(context).size.width / 2 -
                                       20,
+                                  child: HkDiscountStatusCard(
+                                    title: 'HK Discounts',
+                                    discount25: state.hk25,
+                                    discount50: state.hk50,
+                                    discount75: state.hk75,
+                                    cardColor: Colors.red,
+                                  ),
                                 ),
-                                DutyStatusCard(
-                                  title: 'Duty Status',
-                                  ongoingCount: state.todaySchedulesCount,
-                                  completedCount: state.completedSchedulesCount,
-                                  cardColor: Colors.orange,
+                                SizedBox(
                                   width: MediaQuery.of(context).size.width / 2 -
                                       20,
+                                  child: DutyStatusCard(
+                                    title: 'Duty Status',
+                                    ongoingCount: state.todaySchedulesCount,
+                                    completedCount:
+                                        state.completedSchedulesCount,
+                                    cardColor: Colors.orange,
+                                  ),
                                 ),
-                                DtrStatusCard(
-                                  title: 'DTR Status',
-                                  completedCount: state.completedDtr,
-                                  cardColor: Colors.purple,
+                                SizedBox(
                                   width: MediaQuery.of(context).size.width / 2 -
                                       20,
+                                  child: DtrStatusCard(
+                                    title: 'DTR Status',
+                                    completedCount: state.completedDtr,
+                                    cardColor: Colors.purple,
+                                  ),
                                 ),
                               ],
                             ),

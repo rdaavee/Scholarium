@@ -17,7 +17,7 @@ class HkDiscountStatusCard extends StatelessWidget {
     required this.discount75,
     required this.cardColor,
     this.width = 160,
-    this.height = 220,
+    this.height = 235,
   });
 
   @override
@@ -25,121 +25,77 @@ class HkDiscountStatusCard extends StatelessWidget {
     return SizedBox(
       width: width,
       height: height,
-      child: Stack(
-        children: <Widget>[
-          Card(
-            clipBehavior: Clip.antiAliasWithSaveLayer,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.0),
-            ),
-            elevation: 5,
-            margin: EdgeInsets.all(10),
-            child: Column(
-              children: [
-                SizedBox(
-                  width: double.infinity,
-                  height: 5,
-                  child: Container(
-                    color: cardColor,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Positioned(
-              bottom: 0,
-              left: 10,
-              child: SizedBox(
-                height: 240,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      title,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                        color: Colors.red,
-                      ),
-                    ),
-                    SizedBox(height: 35),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Text(
-                              '25%',
-                              style: TextStyle(
-                                fontSize: 17,
-                                color: Color(0xFF6D7278),
-                              ),
-                            ),
-                            Text(
-                              '$discount25',
-                              style: TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: '',
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 4),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Text(
-                              '50%',
-                              style: TextStyle(
-                                fontSize: 17,
-                                fontFamily: '',
-                                color: Color(0xFF6D7278),
-                              ),
-                            ),
-                            Text(
-                              '$discount50',
-                              style: TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: '',
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 4),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Text(
-                              '75%',
-                              style: TextStyle(
-                                fontSize: 17,
-                                fontFamily: '',
-                                color: Color(0xFF6D7278),
-                              ),
-                            ),
-                            Text(
-                              '$discount75',
-                              style: TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: '',
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+      child: Card(
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        elevation: 5,
+        margin: EdgeInsets.all(10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              width: double.infinity,
+              height: 5,
+              child: Container(
+                color: cardColor,
               ),
             ),
-          ),
-        ],
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      color: Colors.red,
+                    ),
+                  ),
+                  const SizedBox(height: 35),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text('25%',
+                          style: TextStyle(
+                              fontSize: 17, color: Color(0xFF6D7278))),
+                      Text('$discount25',
+                          style: const TextStyle(
+                              fontSize: 24, fontWeight: FontWeight.bold)),
+                    ],
+                  ),
+                  const SizedBox(height: 4),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text('50%',
+                          style: TextStyle(
+                              fontSize: 17, color: Color(0xFF6D7278))),
+                      Text('$discount50',
+                          style: const TextStyle(
+                              fontSize: 24, fontWeight: FontWeight.bold)),
+                    ],
+                  ),
+                  const SizedBox(height: 4),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text('75%',
+                          style: TextStyle(
+                              fontSize: 17, color: Color(0xFF6D7278))),
+                      Text('$discount75',
+                          style: const TextStyle(
+                              fontSize: 24, fontWeight: FontWeight.bold)),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

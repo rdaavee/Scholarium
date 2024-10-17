@@ -15,7 +15,7 @@ class DutyStatusCard extends StatelessWidget {
     required this.completedCount,
     required this.cardColor,
     this.width = 160,
-    this.height = 230,
+    this.height = 235,
   });
 
   @override
@@ -23,96 +23,65 @@ class DutyStatusCard extends StatelessWidget {
     return SizedBox(
       width: width,
       height: height,
-      child: Stack(
-        children: <Widget>[
-          Card(
-            clipBehavior: Clip.antiAliasWithSaveLayer,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.0),
-            ),
-            elevation: 5,
-            margin: EdgeInsets.all(10),
-            child: Column(
-              children: [
-                SizedBox(
-                  width: double.infinity,
-                  height: 5,
-                  child: Container(
-                    color: cardColor,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Positioned(
-              bottom: 0,
-              left: 10,
-              child: SizedBox(
-                height: 180,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      title,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                        color: Colors.orange,
-                      ),
-                    ),
-                    SizedBox(height: 35),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Text(
-                              'Ongoing',
-                              style: TextStyle(
-                                fontSize: 17,
-                                color: Color(0xFF6D7278),
-                              ),
-                            ),
-                            Text(
-                              '$ongoingCount',
-                              style: TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 4),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Text(
-                              'Completed',
-                              style: TextStyle(
-                                fontSize: 17,
-                                color: Color(0xFF6D7278),
-                              ),
-                            ),
-                            Text(
-                              '$completedCount',
-                              style: TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+      child: Card(
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        elevation: 5,
+        margin: EdgeInsets.all(10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              width: double.infinity,
+              height: 5,
+              child: Container(
+                color: cardColor,
               ),
             ),
-          ),
-        ],
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      color: Colors.orange,
+                    ),
+                  ),
+                  const SizedBox(height: 35),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text('Ongoing',
+                          style: TextStyle(
+                              fontSize: 17, color: Color(0xFF6D7278))),
+                      Text('$ongoingCount',
+                          style: const TextStyle(
+                              fontSize: 24, fontWeight: FontWeight.bold)),
+                    ],
+                  ),
+                  const SizedBox(height: 4),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text('Completed',
+                          style: TextStyle(
+                              fontSize: 17, color: Color(0xFF6D7278))),
+                      Text('$completedCount',
+                          style: const TextStyle(
+                              fontSize: 24, fontWeight: FontWeight.bold)),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
