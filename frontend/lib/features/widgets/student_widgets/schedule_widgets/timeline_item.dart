@@ -74,7 +74,7 @@ class TimelineItem extends StatelessWidget {
                     professorName:
                         role == 'Professor' ? studentName : duty['professor'],
                     roomName: duty['room'].toString(),
-                    timeInAndOut: duty['time_in'].toString(),
+                    timeInAndOut: "${duty['time_in']} to ${duty[ 'time_out']}",
                     isCompleted: completionStatus == "true",
                     isNotCompleted: completionStatus == "false",
                     cardColor: Colors.white,

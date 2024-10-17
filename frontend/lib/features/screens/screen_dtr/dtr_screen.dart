@@ -9,7 +9,7 @@ import 'package:isHKolarium/features/widgets/app_bar.dart';
 import 'package:isHKolarium/features/widgets/loading_circular.dart';
 import 'package:isHKolarium/features/widgets/student_widgets/dtr_widgets/your_dtr_card.dart';
 import 'package:isHKolarium/features/widgets/student_widgets/dtr_widgets/your_dtr_hours_card.dart';
-import 'package:http/http.dart' as http; // Import for HTTP requests
+import 'package:http/http.dart' as http; 
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
@@ -48,8 +48,6 @@ class _DtrScreenState extends State<DtrScreen> {
     final List<List<dynamic>> tableData = [];
 
     for (var dtr in dtrList) {
-      String formattedTimeIn = formatTimeToAmPm(dtr.timeIn.toString());
-      String formattedTimeOut = formatTimeToAmPm(dtr.timeOut.toString());
       String formattedDate =
           DateFormat('yyyy-MM-dd').format(DateTime.parse(dtr.date.toString()));
 
@@ -58,8 +56,8 @@ class _DtrScreenState extends State<DtrScreen> {
 
       tableData.add([
         formattedDate,
-        formattedTimeIn,
-        formattedTimeOut,
+        dtr.timeIn,
+        dtr.timeOut,
         dtr.hoursRendered.toString(),
         dtr.professor,
         imageProvider,
@@ -111,11 +109,6 @@ class _DtrScreenState extends State<DtrScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Download Completed')),
     );
-  }
-
-  String formatTimeToAmPm(String time) {
-    DateTime dateTime = DateFormat('HH:mm:ss').parse(time);
-    return DateFormat('hh:mm a').format(dateTime);
   }
 
   @override
@@ -208,18 +201,14 @@ class _DtrScreenState extends State<DtrScreen> {
                               itemCount: state.dtr.length,
                               itemBuilder: (context, index) {
                                 final dtr = state.dtr[index];
-                                String formattedTimeIn =
-                                    formatTimeToAmPm(dtr.timeIn.toString());
-                                String formattedTimeOut =
-                                    formatTimeToAmPm(dtr.timeOut.toString());
                                 return Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     YourDtrCard(
                                       date: DateTime.parse(dtr.date.toString()),
-                                      timeIn: formattedTimeIn,
-                                      timeOut: formattedTimeOut,
+                                      timeIn: dtr.timeIn.toString(),
+                                      timeOut: dtr.timeOut.toString(),
                                       hoursRendered:
                                           dtr.hoursRendered.toString(),
                                       cardColor: Colors.white,

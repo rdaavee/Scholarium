@@ -196,7 +196,8 @@ class ScheduleScreenState extends State<ScheduleScreen> {
                                                                 duty['user_info']
                                                                     ['school_id'],
                                                             date: duty['date'],
-                                                            timeIn: duty['time'],
+                                                            timeIn: duty['time_in'],
+                                                            timeOut: duty['time_out'],
                                                             hkType:
                                                                 duty['user_info']
                                                                     ['hk_type'],

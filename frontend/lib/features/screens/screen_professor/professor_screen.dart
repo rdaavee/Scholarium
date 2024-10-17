@@ -75,7 +75,7 @@ class _ProfessorHomeScreenState extends State<ProfessorHomeScreen> {
           if (state is ProfessorsLoadedSuccessState) {
             return Scaffold(
               appBar: AppBarWidget(
-                title: "Hello, ${state.users[0].firstName}!",
+                title: "Hello, ${state.users[0].firstName ?? 'Professor'}!",
                 isBackButton: false,
               ),
               body: SingleChildScrollView(
@@ -127,7 +127,9 @@ class _ProfessorHomeScreenState extends State<ProfessorHomeScreen> {
                                               null
                                           ? NetworkImage(
                                               state.users[0].profilePicture!)
-                                          : null,
+                                          : AssetImage(
+                                                  'assets/images/default_avatar.png')
+                                              as ImageProvider,
                                     ),
                                     const SizedBox(width: 15),
                                     const Expanded(
@@ -157,8 +159,7 @@ class _ProfessorHomeScreenState extends State<ProfessorHomeScreen> {
                                       DutyCard(
                                         cardColor: ColorPalette.primary
                                             .withOpacity(0.6),
-                                        time: schedule.time,
-                                        roomName: schedule.room,
+                                        schedule: schedule,
                                         students: schedule.students,
                                       ),
                                       const SizedBox(
@@ -198,7 +199,10 @@ class _ProfessorHomeScreenState extends State<ProfessorHomeScreen> {
                             ),
                             AnnouncementCard(
                               textLabel: Text(
-                                state.announcements[0].title.toString(),
+                                state.announcements.isNotEmpty
+                                    ? (state.announcements[0].title ??
+                                        'No Title')
+                                    : 'No Announcements',
                                 style: const TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
@@ -207,7 +211,9 @@ class _ProfessorHomeScreenState extends State<ProfessorHomeScreen> {
                                 ),
                               ),
                               textBody: Text(
-                                state.announcements[0].body.toString(),
+                                state.announcements.isNotEmpty
+                                    ? (state.announcements[0].body ?? 'No Body')
+                                    : 'No Body',
                                 style: const TextStyle(
                                   fontSize: 13,
                                   color: Color(0xFFC1C1C1),
@@ -216,7 +222,9 @@ class _ProfessorHomeScreenState extends State<ProfessorHomeScreen> {
                                 ),
                               ),
                               date: Text(
-                                state.announcements[0].date.toString(),
+                                state.announcements.isNotEmpty
+                                    ? (state.announcements[0].date ?? 'No Date')
+                                    : 'No Date',
                                 style: const TextStyle(
                                   color: Color(0xFFC1C1C1),
                                   fontWeight: FontWeight.w500,
@@ -224,7 +232,9 @@ class _ProfessorHomeScreenState extends State<ProfessorHomeScreen> {
                                 ),
                               ),
                               time: Text(
-                                state.announcements[0].time.toString(),
+                                state.announcements.isNotEmpty
+                                    ? (state.announcements[0].time ?? 'No Time')
+                                    : 'No Time',
                                 style: const TextStyle(
                                   color: Color(0xFFC1C1C1),
                                   fontWeight: FontWeight.w500,
@@ -233,6 +243,7 @@ class _ProfessorHomeScreenState extends State<ProfessorHomeScreen> {
                               ),
                               imageUrl: 'assets/images/card-bg.png',
                             ),
+
                             // Events Section
                             Padding(
                               padding: const EdgeInsets.only(
