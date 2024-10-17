@@ -3,33 +3,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:isHKolarium/api/implementations/admin_repository_impl.dart';
 import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
 import 'package:isHKolarium/api/implementations/student_repository_impl.dart';
+import 'package:isHKolarium/api/models/notifications_model.dart';
 import 'package:isHKolarium/blocs/bloc_admin/admin_bloc.dart';
 import 'package:isHKolarium/blocs/bloc_notification/notification_bloc.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
 
 class NotificationMessageWidget extends StatefulWidget {
-  final String sender;
-  final String senderName;
-  final String receiver;
-  final String role;
-  final String title;
-  final String message;
-  final String status;
-  final String scheduleId;
-  final String date;
-  final String time;
+  final NotificationsModel notifications;
   const NotificationMessageWidget({
     super.key,
-    required this.sender,
-    required this.senderName,
-    required this.receiver,
-    required this.role,
-    required this.title,
-    required this.message,
-    required this.status,
-    required this.scheduleId,
-    required this.date,
-    required this.time,
+    required this.notifications,
   });
 
   @override
@@ -47,8 +30,6 @@ class NotificationMessageState extends State<NotificationMessageWidget> {
   void initState() {
     super.initState();
     initialize();
-    print(widget.sender);
-    print(widget.receiver);
   }
 
   Future<void> initialize() async {
@@ -89,7 +70,7 @@ class NotificationMessageState extends State<NotificationMessageWidget> {
                           ),
                         ),
                         TextSpan(
-                          text: widget.senderName,
+                          text: widget.notifications.senderName.toString(),
                           style: TextStyle(
                             fontWeight: FontWeight.w900,
                             color: ColorPalette.accentBlack,
@@ -101,7 +82,7 @@ class NotificationMessageState extends State<NotificationMessageWidget> {
                     ),
                   ),
                   Text(
-                    widget.time,
+                    widget.notifications.time.toString(),
                     style: TextStyle(
                       fontWeight: FontWeight.normal,
                       color: Color(0xFFC1C1C1),
@@ -117,7 +98,7 @@ class NotificationMessageState extends State<NotificationMessageWidget> {
               ),
               const SizedBox(height: 5.0),
               Text(
-                widget.title,
+                widget.notifications.title.toString(),
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Color(0xFF6D7278),
@@ -125,14 +106,14 @@ class NotificationMessageState extends State<NotificationMessageWidget> {
                 ),
               ),
               Text(
-                widget.message,
+                widget.notifications.message.toString(),
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 13,
                 ),
               ),
               Spacer(),
-              if (widget.scheduleId.isNotEmpty) ...[
+              if (widget.notifications.scheduleId.toString().isNotEmpty) ...[
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -152,8 +133,8 @@ class NotificationMessageState extends State<NotificationMessageWidget> {
                         ),
                       ),
                       onPressed: () async {
-                        notificationsBloc
-                            .add(UpdateScheduleStatusEvent(widget.scheduleId));
+                        notificationsBloc.add(UpdateScheduleStatusEvent(
+                            widget.notifications.scheduleId.toString()));
                         notificationsBloc.add(FetchNotificationsEvent());
                         Navigator.pop(context, true);
                       },
@@ -178,7 +159,8 @@ class NotificationMessageState extends State<NotificationMessageWidget> {
                       ),
                       onPressed: () {
                         notificationsBloc.add(DeleteScheduleNotificationEvent(
-                            widget.scheduleId, widget.sender));
+                            widget.notifications.scheduleId.toString(),
+                            widget.notifications.sender.toString()));
                         notificationsBloc.add(FetchNotificationsEvent());
                         Navigator.pop(context, false);
                       },

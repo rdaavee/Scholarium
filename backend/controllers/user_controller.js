@@ -5,7 +5,8 @@ const Post = require("../models/posts_model");
 const Schedule = require("../models/schedule_model");
 const DTR = require("../models/dtr_model");
 const Notification = require("../models/notifications_model");
-
+const currentDate = moment().format("YYYY-MM-DD");
+const currentTime = moment().format("HH:mm:ss");
 
 // Get Announcement
 exports.getAnnouncements = async (req, res) => {
@@ -27,7 +28,6 @@ exports.getLatestAnnouncement = async (req, res) => {
 
     if (latestAnnouncement.length > 0) {
       const announcementDate = moment(latestAnnouncement[0].date);
-      const currentDate = moment().format("YYYY-MM-DD");
 
       if (announcementDate.isSame(currentDate)) {
         res.status(200).json(latestAnnouncement[0]);
@@ -193,9 +193,6 @@ exports.getUserSchedule = async (req, res) => {
 };
 
 async function updatePastSchedules(school_id) {
-  const currentDate = moment().startOf("day").format("YYYY-MM-DD"); 
-  const currentTime = moment().format("HH:mm:ss");
-
   const pastSchedules = await Schedule.find({
     school_id: school_id,
     completed: "pending",

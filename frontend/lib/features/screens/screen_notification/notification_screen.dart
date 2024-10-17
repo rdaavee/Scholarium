@@ -112,7 +112,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
               return const Center(child: LoadingCircular());
             } else if (state is NotificationsLoadedSuccessState) {
               return RefreshIndicator.adaptive(
-                onRefresh: _onRefresh, 
+                onRefresh: _onRefresh,
                 child: Stack(
                   children: [
                     Container(
@@ -135,7 +135,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
                               itemBuilder: (context, index) {
                                 if (index == state.notifications.length &&
                                     _isFetchingMore) {
-                                  // Show a loading indicator at the bottom while fetching more
                                   return const Padding(
                                     padding:
                                         EdgeInsets.symmetric(vertical: 10.0),
@@ -171,34 +170,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                                   Expanded(
                                                     child:
                                                         NotificationMessageWidget(
-                                                      sender: notification
-                                                          .sender
-                                                          .toString(),
-                                                      senderName: notification
-                                                          .senderName
-                                                          .toString(),
-                                                      receiver: notification
-                                                          .receiver
-                                                          .toString(),
-                                                      role: notification.role
-                                                          .toString(),
-                                                      title: notification.title
-                                                          .toString(),
-                                                      message: notification
-                                                          .message
-                                                          .toString(),
-                                                      status: notification
-                                                          .status
-                                                          .toString(),
-                                                      scheduleId: notification
-                                                          .scheduleId
-                                                          .toString(),
-                                                      date: _formatDate(
-                                                          notification.date
-                                                              .toString()),
-                                                      time: _formatTime(
-                                                          notification.time
-                                                              .toString()),
+                                                      notifications:
+                                                          notification,
                                                     ),
                                                   ),
                                                 ],
@@ -220,20 +193,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                     color: notification.status == false
                                         ? const Color(0xFFECEFF1)
                                         : const Color(0xFFD5DEE0),
-                                    sender: notification.sender.toString(),
-                                    senderName:
-                                        notification.senderName.toString(),
-                                    receiver: notification.receiver.toString(),
-                                    role: notification.role.toString(),
-                                    title: notification.title.toString(),
-                                    message: notification.message.toString(),
-                                    status: notification.status.toString(),
-                                    date: _formatDate(
-                                        notification.date.toString()),
-                                    time: _formatTime(
-                                        notification.time.toString()),
-                                    profilePicture:
-                                        notification.profilePicture.toString(),
+                                    notifications: notification,
                                   ),
                                 );
                               },

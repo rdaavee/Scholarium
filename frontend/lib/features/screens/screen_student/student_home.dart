@@ -69,11 +69,6 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
     return formattedDate;
   }
 
-  String _formatTime(String time) {
-    final DateTime parsedTime = DateFormat('HH:mm:ss').parse(time);
-    return DateFormat('h:mm a').format(parsedTime);
-  }
-
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -161,14 +156,11 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                                       children: [
                                         ScheduleCard(
                                           scheduleDate: Text(
-                                            state.todaySchedule[0].date
-                                                        .toString() ==
-                                                    "No Upcoming Schedule"
-                                                ? state.todaySchedule[0].date
-                                                    .toString()
-                                                : _formatDate(state
+                                            state.todaySchedule[0].isActive == true
+                                                ? _formatDate(state
                                                     .todaySchedule[0].date
-                                                    .toString()),
+                                                    .toString()) 
+                                                : "No Schedule Today",
                                             style: const TextStyle(
                                               fontSize: 20,
                                               fontWeight: FontWeight.w900,
@@ -177,14 +169,9 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                                             ),
                                           ),
                                           scheduleTime: Text(
-                                            state.todaySchedule[0].time
-                                                        .toString() ==
-                                                    ""
-                                                ? state.todaySchedule[0].time
-                                                    .toString()
-                                                : _formatTime(state
-                                                    .todaySchedule[0].time
-                                                    .toString()),
+                                            state.todaySchedule[0].isActive == true
+                                                ? state.todaySchedule[0].timeIn.toString()
+                                                : "",
                                             style: const TextStyle(
                                               fontSize: 11,
                                               color: Colors.black,
@@ -193,8 +180,9 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                                             ),
                                           ),
                                           roomName: Text(
-                                            state.todaySchedule[0].room
-                                                .toString(),
+                                            state.todaySchedule[0].isActive == true
+                                                ? state.todaySchedule[0].room.toString()
+                                                : "",
                                             style: const TextStyle(
                                               fontSize: 18,
                                               color: Colors.black,
@@ -208,14 +196,11 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                                         const SizedBox(width: 5),
                                         ScheduleCard(
                                           scheduleDate: Text(
-                                            state.nextSchedule[0].date
-                                                        .toString() ==
-                                                    "No Upcoming Schedule"
-                                                ? state.nextSchedule[0].date
-                                                    .toString()
-                                                : _formatDate(state
+                                            state.nextSchedule[0].isActive == true
+                                                ? _formatDate(state
                                                     .nextSchedule[0].date
-                                                    .toString()),
+                                                    .toString()) 
+                                                : "No Upcomming Schedule",
                                             style: const TextStyle(
                                               fontSize: 20,
                                               fontWeight: FontWeight.w900,
@@ -224,14 +209,9 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                                             ),
                                           ),
                                           scheduleTime: Text(
-                                            state.nextSchedule[0].time
-                                                        .toString() ==
-                                                    ""
-                                                ? state.nextSchedule[0].time
-                                                    .toString()
-                                                : _formatTime(state
-                                                    .nextSchedule[0].time
-                                                    .toString()),
+                                            state.nextSchedule[0].isActive == true
+                                                ? state.nextSchedule[0].timeIn.toString()
+                                                : "",
                                             style: const TextStyle(
                                               fontSize: 11,
                                               color: Colors.black,
@@ -240,7 +220,9 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                                             ),
                                           ),
                                           roomName: Text(
-                                            state.nextSchedule[0].room.toString(),
+                                            state.nextSchedule[0].isActive == true
+                                                ? state.nextSchedule[0].room.toString()
+                                                : "",
                                             style: const TextStyle(
                                               fontSize: 17,
                                               color: Colors.black,
@@ -262,7 +244,8 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        const LabelTextWidget(title: "Your DTR"),
+                                        const LabelTextWidget(
+                                            title: "Your DTR"),
                                         GestureDetector(
                                           onTap: () {
                                             Navigator.push(

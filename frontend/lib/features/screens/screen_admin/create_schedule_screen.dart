@@ -23,7 +23,8 @@ class SetScheduleScreen extends StatefulWidget {
 
 class SetScheduleScreenState extends State<SetScheduleScreen> {
   DateTime? selectedDate;
-  String? selectedTimeSlot;
+  TimeOfDay? selectedStartTime;
+  TimeOfDay? selectedEndTime;
   String? selectedProfessor;
   String? selectedProfessorId;
   String? selectedStudent;
@@ -32,7 +33,7 @@ class SetScheduleScreenState extends State<SetScheduleScreen> {
   late AdminBloc adminBloc;
   final adminRepositoryImpl = AdminRepositoryImpl();
   final TextEditingController roomController = TextEditingController();
-  final TextEditingController subjectController = TextEditingController();
+  final TextEditingController taskController = TextEditingController();
   final List<Map<String, String>> professors = [];
   final List<Map<String, String>> students = [];
 
@@ -41,35 +42,6 @@ class SetScheduleScreenState extends State<SetScheduleScreen> {
     super.initState();
     initialize();
   }
-
-  final List<String> timeSlots = [
-    '7 AM',
-    '8 AM',
-    '9 AM',
-    '10 AM',
-    '11 AM',
-    '12 PM',
-    '1 PM',
-    '2 PM',
-    '3 PM',
-    '4 PM',
-    '5 PM',
-  ];
-
-  // Mapper for 12-hour to 24-hour time conversion
-  final Map<String, String> timeTo24HourMap = {
-    '7 AM': '07:00:00',
-    '8 AM': '08:00:00',
-    '9 AM': '09:00:00',
-    '10 AM': '10:00:00',
-    '11 AM': '11:00:00',
-    '12 PM': '12:00:00',
-    '1 PM': '13:00:00',
-    '2 PM': '14:00:00',
-    '3 PM': '15:00:00',
-    '4 PM': '16:00:00',
-    '5 PM': '17:00:00',
-  };
 
   Future<void> initialize() async {
     try {
@@ -97,32 +69,58 @@ class SetScheduleScreenState extends State<SetScheduleScreen> {
     }
   }
 
-  Future<void> uploadSchedule() async {
-    String time = timeTo24HourMap[selectedTimeSlot] ?? '';
-    DateTime dateTime = DateFormat("HH:mm:ss").parse(time);
+  final DateFormat timeFormatter = DateFormat('hh:mm a'); // Formatter for AM/PM
 
-    // Format it into 12-hour AM/PM format
-    String formattedTime = DateFormat("h:mm a").format(dateTime);
+  // Function to format TimeOfDay to a string
+  String formatTimeOfDay(TimeOfDay? time) {
+    if (time == null) return '';
+    final now = DateTime.now();
+    final formattedTime =
+        DateTime(now.year, now.month, now.day, time.hour, time.minute);
+    return timeFormatter.format(formattedTime);
+  }
+
+  // Function to pick time
+  Future<void> selectTime(BuildContext context, bool isStart) async {
+    final TimeOfDay? pickedTime = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+    );
+    if (pickedTime != null) {
+      setState(() {
+        if (isStart) {
+          selectedStartTime = pickedTime;
+          selectedEndTime = null;
+        } else {
+          selectedEndTime = pickedTime;
+        }
+      });
+    }
+  }
+
+  Future<void> uploadSchedule() async {
     String formattedDate = selectedDate != null
         ? DateFormat('yyyy-MM-dd').format(selectedDate!)
         : '';
     print("Selected Student: $selectedStudent");
     print("Selected Date: $formattedDate");
     print("Selected Professor: $selectedProfessor");
-    print("Selected Time Slot: $formattedTime");
+    print("Selected Time Slot: $selectedStartTime");
     final schedule = ScheduleModel(
       schoolID: selectedStudent,
       room: roomController.text,
       block: "block",
-      subject: subjectController.text,
+      task: taskController.text,
       profID: selectedProfessor,
       professor: "",
       department: "department",
-      time: time,
+      timeIn: formatTimeOfDay(selectedStartTime),
+      timeOut: formatTimeOfDay(selectedEndTime),
       date: formattedDate,
       isActive: false,
       isCompleted: "pending",
     );
+    print(formatTimeOfDay(selectedStartTime));
 
     final notification = NotificationsModel(
         sender: userProfile.schoolID,
@@ -131,7 +129,7 @@ class SetScheduleScreenState extends State<SetScheduleScreen> {
         title: "Schedule Duty",
         role: "Admin",
         message:
-            " ${subjectController.text} class at room ${roomController.text}, on $formattedDate at $formattedTime",
+            "  class at room ${roomController.text}, on $formattedDate at ${formatTimeOfDay(selectedStartTime)} to ${formatTimeOfDay(selectedEndTime)} as ${taskController.text}",
         status: false,
         profilePicture: userProfile.profilePicture);
     try {
@@ -193,31 +191,44 @@ class SetScheduleScreenState extends State<SetScheduleScreen> {
             SizedBox(height: 20),
             LabelTextWidget(title: 'Select Time'),
             SizedBox(height: 10),
-            Wrap(
-              spacing: 10,
-              runSpacing: 10,
-              children: timeSlots.map((slot) {
-                return ChoiceChip(
-                  labelPadding:
-                      EdgeInsets.symmetric(horizontal: 20, vertical: 4),
-                  shape: RoundedRectangleBorder(side: BorderSide.none),
-                  label: Text(
-                    slot,
-                    style: TextStyle(
-                      color: ColorPalette.accentBlack,
-                      fontSize: 11,
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  TextFormField(
+                    readOnly: true,
+                    decoration: InputDecoration(
+                      hintText: selectedStartTime != null
+                          ? formatTimeOfDay(selectedStartTime)
+                          : "Select start time",
+                      suffixIcon: Icon(Icons.access_time),
                     ),
+                    onTap: () => selectTime(context, true),
                   ),
-                  selected: selectedTimeSlot == slot,
-                  onSelected: (bool selected) {
-                    setState(() {
-                      selectedTimeSlot = selected ? slot : null;
-                    });
-                  },
-                  backgroundColor: Colors.grey[50],
-                  selectedColor: ColorPalette.accent,
-                );
-              }).toList(),
+                  const SizedBox(height: 16),
+                  // End Time Field
+                  TextFormField(
+                    readOnly: true,
+                    decoration: InputDecoration(
+                      hintText: selectedEndTime != null
+                          ? formatTimeOfDay(selectedEndTime)
+                          : "Select end time",
+                      suffixIcon: Icon(Icons.access_time),
+                    ),
+                    onTap: selectedStartTime != null
+                        ? () => selectTime(context, false)
+                        : null,
+                  ),
+                  const SizedBox(height: 20),
+                  if (selectedStartTime != null && selectedEndTime != null)
+                    Text(
+                      "Selected time: ${formatTimeOfDay(selectedStartTime)} to ${formatTimeOfDay(selectedEndTime)}",
+                      style: const TextStyle(
+                          fontSize: 14, fontWeight: FontWeight.w600),
+                    ),
+                ],
+              ),
             ),
             SizedBox(height: 30),
             LabelTextWidget(title: 'Select Professor'),
@@ -227,8 +238,7 @@ class SetScheduleScreenState extends State<SetScheduleScreen> {
               value: selectedProfessor,
               hint: Text(
                 "Select Professor",
-                style: TextStyle(
-                ),
+                style: TextStyle(),
               ),
               items: professors.map((professor) {
                 return DropdownMenuItem<String>(
@@ -276,9 +286,9 @@ class SetScheduleScreenState extends State<SetScheduleScreen> {
                 ),
                 SizedBox(width: 10),
                 Expanded(
-                  child: SubjectTextfield(
-                    labelText: 'Enter a subject',
-                    subjectController: subjectController,
+                  child: TaskTextfield(
+                    labelText: 'Enter a task',
+                    taskController: taskController,
                   ),
                 ),
               ],
@@ -294,7 +304,7 @@ class SetScheduleScreenState extends State<SetScheduleScreen> {
                 ),
                 child: TextButton(
                   onPressed: selectedDate != null &&
-                          selectedTimeSlot != null &&
+                          selectedStartTime != null &&
                           selectedProfessor != null
                       ? () async {
                           uploadSchedule();

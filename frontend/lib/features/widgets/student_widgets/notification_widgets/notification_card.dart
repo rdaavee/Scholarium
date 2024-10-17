@@ -1,36 +1,14 @@
-// ignore_for_file: unnecessary_null_comparison
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:isHKolarium/api/models/notifications_model.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
 
 class NotificationCard extends StatelessWidget {
   final Color color;
-  final String sender;
-  final String senderName;
-  final String receiver;
-  final String role;
-  final String title;
-  final String message;
-  final String status;
-  final String date;
-  final String time;
-  final String profilePicture;
+  final NotificationsModel notifications;
 
-  const NotificationCard({
-    super.key,
-    required this.color,
-    required this.sender,
-    required this.senderName,
-    required this.receiver,
-    required this.role,
-    required this.title,
-    required this.message,
-    required this.status,
-    required this.date,
-    required this.time,
-    required this.profilePicture,
-  });
+  const NotificationCard(
+      {super.key, required this.color, required this.notifications});
 
   String _formatDate(String date) {
     final DateTime parsedDate = DateTime.parse(date);
@@ -48,9 +26,7 @@ class NotificationCard extends StatelessWidget {
       'Nov',
       'Dec'
     ];
-    final String formattedDate =
-        '${months[parsedDate.month - 1]}. ${parsedDate.day}, ${parsedDate.year}';
-    return formattedDate;
+    return '${months[parsedDate.month - 1]}. ${parsedDate.day}, ${parsedDate.year}';
   }
 
   String _formatTime(String time) {
@@ -60,12 +36,14 @@ class NotificationCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool isUnread = notifications.status == false;
+
     return Column(
       children: [
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Container(
-            color: Color(0xFFF0F3F4),
+            color: isUnread ? const Color(0xFFECEFF1) : Color(0xFFF0F3F4),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -74,8 +52,8 @@ class NotificationCard extends StatelessWidget {
                   child: CircleAvatar(
                     radius: 28,
                     backgroundColor: Colors.grey,
-                    backgroundImage: profilePicture != null
-                        ? NetworkImage(profilePicture)
+                    backgroundImage: notifications.profilePicture != null
+                        ? NetworkImage(notifications.profilePicture.toString())
                         : null,
                   ),
                 ),
@@ -91,46 +69,64 @@ class NotificationCard extends StatelessWidget {
                           children: [
                             Expanded(
                               child: Text(
-                                senderName,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
+                                notifications.senderName.toString(),
+                                style: TextStyle(
+                                  fontWeight: isUnread
+                                      ? FontWeight.bold
+                                      : FontWeight.normal,
                                   fontSize: 15,
                                   color: Colors.black,
                                 ),
                               ),
                             ),
-                            Text(
-                              time,
-                              style: const TextStyle(
-                                color: Colors.grey,
-                                fontSize: 11,
-                              ),
+                            Row(
+                              children: [
+                                Text(
+                                  _formatTime(notifications.time.toString()),
+                                  style: const TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 11,
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
                         ),
-                        Text(
-                          role,
-                          style: const TextStyle(
-                            fontSize: 11,
-                            color: ColorPalette.primary,
-                            fontWeight: FontWeight.w500,
-                          ),
+                        Row(
+                          children: [
+                            Text(
+                              notifications.role.toString(),
+                              style: const TextStyle(
+                                fontSize: 11,
+                                color: ColorPalette.primary,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            if (isUnread)
+                              const Spacer(),
+                            if (isUnread)
+                              Icon(
+                                Icons.circle,
+                                size: 10,
+                                color: Colors.blue,
+                              ),
+                          ],
                         ),
-                        SizedBox(
-                          height: 10,
-                        ),
+                        const SizedBox(height: 10),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              title,
-                              style: const TextStyle(
+                              notifications.title.toString(),
+                              style: TextStyle(
                                 fontSize: 12,
-                                color: ColorPalette.accentBlack,
+                                color: isUnread
+                                    ? Colors.black
+                                    : ColorPalette.accentBlack,
                               ),
                             ),
                             Text(
-                              date,
+                              _formatDate(notifications.date.toString()),
                               style: const TextStyle(
                                 color: Colors.grey,
                                 fontSize: 9,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class SubjectTextfield extends StatelessWidget {
+class TaskTextfield extends StatelessWidget {
   final String labelText;
   final TextInputType keyboardType;
   final bool obscureText;
@@ -11,9 +11,9 @@ class SubjectTextfield extends StatelessWidget {
   final Color focusedBorderColor;
   final Color hoverColor;
   final double borderRadius;
-  final TextEditingController subjectController;
+  final TextEditingController taskController;
 
-  const SubjectTextfield({
+  const TaskTextfield({
     super.key,
     required this.labelText,
     this.keyboardType = TextInputType.text,
@@ -25,13 +25,13 @@ class SubjectTextfield extends StatelessWidget {
     this.focusedBorderColor = const Color(0xFF00A4E4),
     this.hoverColor = const Color(0xFF00A4E4),
     this.borderRadius = 8.0,
-    required this.subjectController,
+    required this.taskController,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextField(
-      controller: subjectController,
+      controller: taskController,
       keyboardType: keyboardType,
       obscureText: obscureText,
       decoration: InputDecoration(

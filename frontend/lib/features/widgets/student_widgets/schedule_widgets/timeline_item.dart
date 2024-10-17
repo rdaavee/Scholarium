@@ -6,31 +6,31 @@ import 'package:isHKolarium/features/widgets/student_widgets/schedule_widgets/ti
 class TimelineItem extends StatelessWidget {
   final Map<String, dynamic> duty;
   final Color color;
-  final Future<String?> roleFuture; // Change from String to Future<String?>
+  final Future<String?> roleFuture; 
 
   const TimelineItem({
     super.key,
     required this.duty,
     required this.color,
-    required this.roleFuture, // Now a Future
+    required this.roleFuture,
   });
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<String?>(
-      future: roleFuture, // Pass the Future here
+      future: roleFuture, 
       builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator(); // While waiting, show a loading spinner
+          return CircularProgressIndicator(); 
         } else if (snapshot.hasError) {
-          return Text('Error: ${snapshot.error}'); // Handle error case
+          return Text('Error: ${snapshot.error}'); 
         } else {
-          final String? role = snapshot.data; // Get the resolved role
+          final String? role = snapshot.data; 
 
           final String? completionStatus = duty['completed'] as String?;
           final String studentName = duty['user_info'] != null
               ? "${duty['user_info']['first_name']} ${duty['user_info']['last_name']}"
-              : "No Student Info"; // Handle case where student info is missing
+              : "No Student Info"; 
 
           return Row(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -70,11 +70,11 @@ class TimelineItem extends StatelessWidget {
                     thickness: 1.0,
                   ),
                   endChild: TimelineCard(
-                    dutyTitle: duty['subject'].toString(),
+                    dutyTitle: duty['task'].toString(),
                     professorName:
                         role == 'Professor' ? studentName : duty['professor'],
                     roomName: duty['room'].toString(),
-                    timeInAndOut: _formatTime(duty['time'].toString()),
+                    timeInAndOut: duty['time_in'].toString(),
                     isCompleted: completionStatus == "true",
                     isNotCompleted: completionStatus == "false",
                     cardColor: Colors.white,

@@ -20,11 +20,12 @@ class ScheduleModel {
   final String? schoolID;
   final String? room;
   final String? block;
-  final String? subject;
+  final String? task;
   final String? profID;
   final String? professor;
   final String? department;
-  final String? time;
+  final String? timeIn;
+  final String? timeOut;
   final String? date;
   final bool? isActive;
   final String? isCompleted;
@@ -35,11 +36,12 @@ class ScheduleModel {
       required this.schoolID,
       required this.room,
       required this.block,
-      required this.subject,
+      required this.task,
       required this.profID,
       this.professor,
       required this.department,
-      required this.time,
+      required this.timeIn,
+      required this.timeOut,
       required this.date,
       this.isActive,
       required this.isCompleted,
@@ -51,11 +53,12 @@ class ScheduleModel {
       schoolID: map['school_id'] as String?,
       room: map['room'] as String?,
       block: map['block'] as String?,
-      subject: map['subject'] as String?,
+      task: map['task'] as String?,
       profID: map['prof_id'] as String?,
       professor: map['professor'] as String?,
       department: map['department'] as String?,
-      time: map['time'] as String?,
+      timeIn: map['time_in'] as String?,
+      timeOut: map['time_out'] as String?,
       date: map['date'] as String?,
       isActive: map['isActive'] as bool?,
       isCompleted: map['completed'] as String?,
@@ -70,11 +73,12 @@ class ScheduleModel {
       'school_id': schoolID,
       'room': room,
       'block': block,
-      'subject': subject,
+      'task': task,
       'prof_id': profID,
       'professor': professor,
       'department': department,
-      'time': time,
+      'time_in': timeIn,
+      'time_out': timeOut,
       'date': date,
       'isActive': isActive
     };
