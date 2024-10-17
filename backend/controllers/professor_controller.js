@@ -11,6 +11,7 @@ const Notifications = require("../models/notifications_model");
 
 const currentDate = moment().format("YYYY-MM-DD");
 const currentTime = moment().format("HH:mm:ss");
+
 exports.getProfTodaySchedule = async (req, res) => {
   const { prof_id } = req.params;
   const today = moment().format("YYYY-MM-DD");
@@ -28,24 +29,28 @@ exports.getProfTodaySchedule = async (req, res) => {
     const groupedSchedules = {};
 
     for (const schedule of schedules) {
-      const { time, room } = schedule;
+      const { time_in, time_out, room } = schedule;
+      const timeKey = `${time_in}-${time_out}`;
 
-      if (!groupedSchedules[time]) {
-        groupedSchedules[time] = {
+      if (!groupedSchedules[timeKey]) {
+        groupedSchedules[timeKey] = {
           room: room,
           date: schedule.date,
+          time_in: time_in,
+          time_out: time_out,
           students: [],
         };
       }
 
       const matchingSchedules = await Schedule.find({
-        time: schedule.time,
+        time_in: schedule.time_in,
+        time_out: schedule.time_out,
         date: schedule.date,
         room: schedule.room,
       });
 
       for (const match of matchingSchedules) {
-        const existingStudent = groupedSchedules[time].students.find(
+        const existingStudent = groupedSchedules[timeKey].students.find(
           (student) => student.school_id === match.school_id
         );
 
@@ -56,7 +61,7 @@ exports.getProfTodaySchedule = async (req, res) => {
           );
 
           if (user) {
-            groupedSchedules[time].students.push({
+            groupedSchedules[timeKey].students.push({
               school_id: user.school_id,
               profile_picture: user.profile_picture,
             });
@@ -65,9 +70,11 @@ exports.getProfTodaySchedule = async (req, res) => {
       }
     }
 
+    // Map the grouped schedules to the required format
     const responseSchedules = Object.entries(groupedSchedules).map(
-      ([time, details]) => ({
-        time,
+      ([timeKey, details]) => ({
+        time_in: details.time_in,
+        time_out: details.time_out,
         room: details.room,
         date: details.date,
         students: details.students,
@@ -80,6 +87,7 @@ exports.getProfTodaySchedule = async (req, res) => {
     return res.status(500).json({ message: "Internal server error." });
   }
 };
+
 
 //Get Announcement
 exports.getAnnouncements = (req, res) => {
@@ -247,10 +255,11 @@ exports.getProfSchedule = async (req, res) => {
           _id: 1,
           room: 1,
           block: 1,
-          subject: 1,
+          task: 1,
           professor: 1,
           department: 1,
-          time: 1,
+          time_in: 1,
+          time_out: 1,
           date: 1,
           isActive: 1,
           completed: 1,

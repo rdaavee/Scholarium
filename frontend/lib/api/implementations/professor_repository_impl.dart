@@ -70,7 +70,11 @@ class ProfessorRepositoryImpl extends ProfessorRepository implements Endpoint {
     } else {
       return [
         ProfessorScheduleModel(
-            time: "", room: "No Schedule Today", date: "", students: [])
+            timeIn: "",
+            timeOut: "",
+            room: "No Schedule Today",
+            date: "",
+            students: [])
       ];
     }
   }

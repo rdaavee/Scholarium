@@ -2,13 +2,15 @@
 import 'package:isHKolarium/api/models/user_model.dart';
 
 class ProfessorScheduleModel {
-  final String time;
+  final String timeIn;
+  final String timeOut;
   final String room;
   final String date;
   final List<UserModel> students;
 
   ProfessorScheduleModel({
-    required this.time,
+    required this.timeIn,
+    required this.timeOut,
     required this.room,
     required this.date,
     required this.students,
@@ -18,7 +20,8 @@ class ProfessorScheduleModel {
     var studentsJson = json['students'] as List;
     List<UserModel> studentsList = studentsJson.map((i) => UserModel.fromJson(i)).toList();
     return ProfessorScheduleModel(
-      time: json['time'],
+      timeIn: json['time_in'],
+      timeOut: json['time_out'],
       room: json['room'],
       date: json['date'],
       students: studentsList,

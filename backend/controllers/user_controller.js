@@ -197,11 +197,11 @@ async function updatePastSchedules(school_id) {
     school_id: school_id,
     completed: "pending",
     date: { $lte: currentDate }, 
-    time: { $lt: currentTime } 
+    time_in: { $lt: currentTime } 
   });
 
   const updatePromises = pastSchedules.map(async (schedule) => {
-    const scheduleTime = moment(schedule.time, "HH:mm:ss", true); 
+    const scheduleTime = moment(schedule.time_in, "HH:mm:ss", true); 
     const scheduleDate = moment(schedule.date, "YYYY-MM-DD", true); 
     
     const scheduleMoment = moment(scheduleDate).set({

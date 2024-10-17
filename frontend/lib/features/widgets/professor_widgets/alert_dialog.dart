@@ -20,6 +20,7 @@ class DialogAlertBox extends StatefulWidget {
   final String schoolId;
   final String date;
   final String timeIn;
+  final String timeOut;
   final String hkType;
   final String professorName;
 
@@ -31,6 +32,7 @@ class DialogAlertBox extends StatefulWidget {
     required this.schoolId,
     required this.date,
     required this.timeIn,
+    required this.timeOut,
     required this.hkType,
     required this.professorName,
   });
@@ -46,6 +48,12 @@ class _DialogAlertBoxState extends State<DialogAlertBox> {
       SignatureController(penStrokeWidth: 5, penColor: Colors.black);
 
   Uint8List? _signatureImage;
+
+  @override
+  void dispose() {
+    _signatureController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -104,11 +112,6 @@ class _DialogAlertBoxState extends State<DialogAlertBox> {
                                 id: widget.scheduleId,
                                 selectedMonth: widget.selectedMonth,
                                 role: widget.role));
-                            final totalDuration =
-                                _parseTime(widget.timeIn.toString()) +
-                                    _parseTime("01:30:00");
-                            String formattedTime =
-                                _formatDuration(totalDuration);
                             double hoursToRendered = 0.0;
                             if (widget.hkType == "HK 25") {
                               hoursToRendered = 50;
@@ -121,9 +124,9 @@ class _DialogAlertBoxState extends State<DialogAlertBox> {
                               schoolID: widget.schoolId.toString(),
                               date: widget.date.toString(),
                               timeIn: widget.timeIn.toString(),
-                              timeOut: formattedTime,
+                              timeOut: widget.timeOut.toString(),
                               hoursToRendered: hoursToRendered,
-                              hoursRendered: 1.5,
+                              hoursRendered: convertTimeToDecimal(widget.timeOut) - convertTimeToDecimal(widget.timeIn),
                               professor: widget.professorName.toString(),
                               professorSignature: _signatureImage != null
                                   ? base64Encode(_signatureImage!)
@@ -172,21 +175,27 @@ class _DialogAlertBoxState extends State<DialogAlertBox> {
     );
   }
 
-  Duration _parseTime(String time) {
-    List<String> parts = time.split(':');
-    int hours = int.parse(parts[0]);
-    int minutes = int.parse(parts[1]);
-    int seconds = int.parse(parts[2]);
+  double convertTimeToDecimal(String time) {
+    // Split the time string into the time part and AM/PM part
+    List<String> parts = time.split(' ');
+    String timePart = parts[0];
+    String period = parts[1];
 
-    return Duration(hours: hours, minutes: minutes, seconds: seconds);
-  }
+    // Split the time part into hours and minutes
+    List<String> timeParts = timePart.split(':');
+    int hours = int.parse(timeParts[0]);
+    int minutes = int.parse(timeParts[1]);
 
-  String _formatDuration(Duration duration) {
-    String twoDigits(int n) => n.toString().padLeft(2, '0');
-    String twoDigitHours = twoDigits(duration.inHours.remainder(24));
-    String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
-    String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
+    // Convert to 24-hour format if necessary
+    if (period == 'PM' && hours != 12) {
+      hours += 12;
+    } else if (period == 'AM' && hours == 12) {
+      hours = 0;
+    }
 
-    return "$twoDigitHours:$twoDigitMinutes:$twoDigitSeconds";
+    // Convert the time into decimal hours
+    double decimalTime = hours + (minutes / 60.0);
+
+    return decimalTime;
   }
 }
