@@ -38,12 +38,12 @@ class _UserFormScreenState extends State<UserFormScreen> {
   final TextEditingController contactController = TextEditingController();
   late AdminBloc _adminBloc;
   final adminRepositoryImpl = AdminRepositoryImpl();
+  final List<Map<String, String>> professors = [];
   String? selectedHkType;
   String? selectedRole;
   String? accountStatus;
   String? selectedGender;
   String? selectedProfessor;
-  final List<Map<String, String>> professors = [];
 
   @override
   void initState() {
@@ -51,6 +51,7 @@ class _UserFormScreenState extends State<UserFormScreen> {
     final adminRepository = AdminRepositoryImpl();
     final globalRepository = GlobalRepositoryImpl();
     _adminBloc = AdminBloc(adminRepository, globalRepository);
+    _initialize();
     if (widget.filteredUsers.isNotEmpty) {
       final user = widget.filteredUsers[widget.index];
       schoolIdController.text = user.schoolID.toString();
@@ -73,24 +74,25 @@ class _UserFormScreenState extends State<UserFormScreen> {
       selectedProfessor = 'Select Professor';
       selectedGender = 'Select Gender';
     }
-    _initialize();
   }
 
   Future<void> _initialize() async {
     final users = await adminRepositoryImpl.fetchAllUsers();
-    professors.add({
-      'school_id': "",
-      'name': "Select Professor",
-    });
-    for (var user in users) {
-      if (user.role == 'Professor') {
-        print(user);
-        professors.add({
-          'school_id': user.schoolID.toString(),
-          'name': "${user.firstName} ${user.lastName}",
-        });
+    setState(() {
+      professors.clear();
+      professors.add({
+        'school_id': "",
+        'name': "Select Professor",
+      });
+      for (var user in users) {
+        if (user.role == 'Professor') {
+          professors.add({
+            'school_id': user.schoolID.toString(),
+            'name': "${user.firstName} ${user.lastName}",
+          });
+        }
       }
-    }
+    });
   }
 
   @override
@@ -260,20 +262,24 @@ class _UserFormScreenState extends State<UserFormScreen> {
                 if (widget.isRole == 'Student')
                   DropdownButton<String>(
                     isExpanded: true,
-                    value: selectedProfessor,
+                    value: selectedProfessor == 'Select Professor'
+                        ? null
+                        : selectedProfessor,
                     hint: const Text(
                       "Select Professor",
                       style: TextStyle(fontSize: 12),
                     ),
                     items: professors.map((professor) {
                       return DropdownMenuItem<String>(
-                        value: professor['school_id'],
+                        value: professor['school_id'] == ""
+                            ? null
+                            : professor['school_id'],
                         child: Text(professor['name']!),
                       );
                     }).toList(),
                     onChanged: (value) {
                       setState(() {
-                        selectedProfessor = value;
+                        selectedProfessor = value ?? 'Select Professor';
                       });
                     },
                   ),
@@ -325,7 +331,6 @@ class _UserFormScreenState extends State<UserFormScreen> {
       hkType: selectedRole == "Student" ? selectedHkType : '',
       status: accountStatus,
     );
-
 
     if (widget.schoolId == null) {
       _adminBloc.add(CreateUserEvent(newUser));
