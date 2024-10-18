@@ -102,24 +102,24 @@ class _NotificationScreenState extends State<NotificationScreen> {
           title: "Notifications",
           isBackButton: false,
         ),
-        body: BlocConsumer<NotificationsBloc, NotificationsState>(
-          listener: (context, state) {
-            if (state is NotificationsLoadedSuccessState) {
-              if (_displayedNotifications.isEmpty) {
-                setState(() {
-                  _displayedNotifications =
-                      state.notifications.take(_pageSize).toList();
-                });
+        body: RefreshIndicator.adaptive(
+          onRefresh: _onRefresh,
+          child: BlocConsumer<NotificationsBloc, NotificationsState>(
+            listener: (context, state) {
+              if (state is NotificationsLoadedSuccessState) {
+                if (_displayedNotifications.isEmpty) {
+                  setState(() {
+                    _displayedNotifications =
+                        state.notifications.take(_pageSize).toList();
+                  });
+                }
               }
-            }
-          },
-          builder: (context, state) {
-            if (state is NotificationsLoadingState && _currentPage == 1) {
-              return LoadingCircular();
-            } else if (state is NotificationsLoadedSuccessState) {
-              return RefreshIndicator.adaptive(
-                onRefresh: _onRefresh,
-                child: Stack(
+            },
+            builder: (context, state) {
+              if (state is NotificationsLoadingState && _currentPage == 1) {
+                return LoadingCircular();
+              } else if (state is NotificationsLoadedSuccessState) {
+                return Stack(
                   children: [
                     Container(
                       color: ColorPalette.primary.withOpacity(0.6),
@@ -147,7 +147,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                     child: Center(child: LoadingCircular()),
                                   );
                                 }
-
+                
                                 final notification =
                                     _displayedNotifications[index];
                                 return GestureDetector(
@@ -155,7 +155,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                     context
                                         .read<BottomNavBloc>()
                                         .add(FetchUnreadCountEvent());
-
+                
                                     bool? result = await showDialog(
                                       context: context,
                                       builder: (context) {
@@ -226,18 +226,18 @@ class _NotificationScreenState extends State<NotificationScreen> {
                         ),
                       ),
                   ],
-                ),
-              );
-            } else if (state is NotificationsErrorState) {
-              return Center(
-                child: NoData(
-                  title: 'No Notification Available',
-                ),
-              );
-            } else {
-              return const Center(child: LoadingCircular());
-            }
-          },
+                );
+              } else if (state is NotificationsErrorState) {
+                return Center(
+                  child: NoData(
+                    title: 'No Notification Available',
+                  ),
+                );
+              } else {
+                return const Center(child: LoadingCircular());
+              }
+            },
+          ),
         ),
       ),
     );

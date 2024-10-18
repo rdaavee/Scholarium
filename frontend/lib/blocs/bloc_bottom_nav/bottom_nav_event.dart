@@ -9,3 +9,4 @@ class BottomNavItemSelected extends BottomNavEvent {
   final int index;
   BottomNavItemSelected(this.index);
 }
+class RefreshBottomNavEvent extends BottomNavEvent {} 
