@@ -1,8 +1,6 @@
 // duty_card.dart
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:isHKolarium/api/models/professor_schedule_model.dart';
-import 'package:isHKolarium/api/models/schedule_model.dart';
 import 'package:isHKolarium/api/models/user_model.dart';
 import 'package:isHKolarium/features/widgets/profile_widgets/profile_modal_bottom_sheet.dart';
 
