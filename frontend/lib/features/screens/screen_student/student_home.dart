@@ -10,7 +10,6 @@ import 'package:isHKolarium/config/constants/colors.dart';
 import 'package:isHKolarium/features/screens/screen_announcement/announcement.dart';
 import 'package:isHKolarium/features/screens/screen_dtr/dtr_screen.dart';
 import 'package:isHKolarium/features/screens/screen_event/events_screen.dart';
-import 'package:isHKolarium/features/screens/screen_schedule/schedule_screen.dart';
 import 'package:isHKolarium/features/widgets/app_bar.dart';
 import 'package:isHKolarium/features/widgets/label_text_widget.dart';
 import 'package:isHKolarium/features/widgets/student_widgets/announcement_widgets/announcement_card.dart';
