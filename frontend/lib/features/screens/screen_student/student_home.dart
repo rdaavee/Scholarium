@@ -251,7 +251,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                                               context,
                                               MaterialPageRoute(
                                                 builder: (context) =>
-                                                    const DtrScreen(),
+                                                    DtrScreen(user: state.users[0],),
                                               ),
                                             );
                                           },

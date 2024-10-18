@@ -219,10 +219,8 @@ async function updatePastSchedules(school_id) {
 
       const user = await User.findOne({ school_id: school_id });
       const bot = await User.findOne({ school_id: "00-0000-00000" });
-      const timeFormat = scheduleTime.format("hh:mm A");
-      const formattedDate = scheduleMoment.format("YYYY-MM-DD");
 
-      const message = `Dear ${user.first_name}, you have not completed your duty on ${formattedDate} at ${timeFormat}. Please check your records for more details.`;
+      const message = `Dear ${user.first_name}, you have not completed your duty on ${schedule.date} at ${schedule.time_in}. Please check your records for more details.`;
 
       const existingNotification = await Notification.findOne({
         receiver: user.school_id,
@@ -442,6 +440,8 @@ exports.getUserProfile = async (req, res) => {
         contact: user.contact,
         address: user.address,
         role: user.role,
+        professor: user.professor,
+        prof_id: user.prof_id,
         hk_type: user.hk_type,
         status: user.status,
         token: user.token,
