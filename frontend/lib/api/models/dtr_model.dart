@@ -6,6 +6,7 @@ class DtrModel {
   final String? timeOut;
   final double? hoursToRendered;
   final double? hoursRendered;
+  final String? remarks;
   final String? professor;
   final String? professorSignature;
 
@@ -17,6 +18,7 @@ class DtrModel {
     required this.timeOut,
     required this.hoursToRendered,
     required this.hoursRendered,
+    required this.remarks,
     required this.professor,
     required this.professorSignature,
   });
@@ -30,6 +32,7 @@ class DtrModel {
       timeOut: map['time_out'] as String?,
       hoursToRendered: (map['hours_to_rendered'] as num).toDouble(),
       hoursRendered: (map['hours_rendered'] as num).toDouble(),
+      remarks: map['remarks'] as String?,
       professor: map['professor'] as String?,
       professorSignature: map['professor_signature'] as String?,
     );
@@ -43,6 +46,7 @@ class DtrModel {
       'time_out': timeOut,
       'hours_to_rendered': hoursToRendered,
       'hours_rendered': hoursRendered,
+      'remarks': remarks,
       'professor': professor,
       'professor_signature': professorSignature,
     };

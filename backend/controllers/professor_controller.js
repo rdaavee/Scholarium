@@ -353,6 +353,7 @@ exports.createDTR = async (req, res) => {
     time_out,
     hours_rendered,
     hours_to_rendered,
+    remarks,
     professor,
     professor_signature,
   } = req.body;
@@ -380,6 +381,7 @@ exports.createDTR = async (req, res) => {
       time_out,
       hours_rendered,
       hours_to_rendered,
+      remarks,
       professor,
       professor_signature: imageUrl,
     });

@@ -56,7 +56,7 @@ class _DtrScreenState extends State<DtrScreen> {
 
   Future<void> generatePdf(List<DtrModel> dtrList) async {
     final pdfDocument = pw.Document();
-    final Uint8List logoBytes = await loadAssetImage(AppImages.uPangLogo);
+    final Uint8List logoBytes = await loadAssetImage('assets/images/logo.png');
     final pw.ImageProvider logoImage = pw.MemoryImage(logoBytes);
     // Table data
     print(widget.user.professor.toString());
@@ -72,7 +72,7 @@ class _DtrScreenState extends State<DtrScreen> {
         dtr.timeIn,
         dtr.timeOut,
         dtr.hoursRendered.toString(),
-        '', // Assuming 'remarks' field exists in DtrModel
+        dtr.remarks,
         imageProvider,
       ]);
     }

@@ -12,6 +12,7 @@ class UserModel {
   final String? address;
   final String? role;
   final String? professor;
+  final String? profId;
   final String? hkType;
   final String? status;
   final String? token;
@@ -30,6 +31,7 @@ class UserModel {
     this.address,
     this.role,
     this.professor,
+    this.profId,
     this.hkType,
     this.status,
     this.token,
@@ -49,6 +51,7 @@ class UserModel {
       address: map['address'] ?? '',
       role: map['role'] ?? '',
       professor: map['professor'] ?? '',
+      profId: map['prof_id'] ?? '',
       hkType: map['hk_type'],
       status: map['status'] ?? '',
       token: map['token'] ?? '',
@@ -70,6 +73,7 @@ class UserModel {
       'address': address,
       'role': role,
       'professor': professor,
+      'prof_id': profId,
       'hk_type': hkType,
       'status': status,
       'token': token,
@@ -78,6 +82,6 @@ class UserModel {
 
   @override
   String toString() {
-    return 'UserModel(id: $id, schoolID: $schoolID, email: $email, firstName: $firstName, middleName: $middleName, lastName: $lastName, role: $role, professor: $professor, status: $status)';
+    return 'UserModel(id: $id, schoolID: $schoolID, email: $email, firstName: $firstName, middleName: $middleName, lastName: $lastName, role: $role, professor: $professor, profId: $profId,status: $status)';
   }
 }

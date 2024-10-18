@@ -16,7 +16,6 @@ class CustomDropdown extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Set default value if selectedValue is null or not in options
     String? finalValue = options != null && options!.contains(selectedValue)
         ? selectedValue
         : options != null && options!.isNotEmpty
