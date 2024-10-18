@@ -97,6 +97,9 @@ class ScheduleScreenState extends State<ScheduleScreen> {
       providers: [
         BlocProvider<ScheduleBloc>(
           create: (context) => scheduleBloc,
+        ),
+        BlocProvider<BottomNavBloc>(
+          create: (context) => bottomNavBloc,
         )
       ],
       child: Scaffold(

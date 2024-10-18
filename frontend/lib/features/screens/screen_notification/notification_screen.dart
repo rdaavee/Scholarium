@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
 import 'package:isHKolarium/api/implementations/student_repository_impl.dart';
+import 'package:isHKolarium/api/models/notifications_model.dart';
 import 'package:isHKolarium/blocs/bloc_bottom_nav/bottom_nav_bloc.dart';
 import 'package:isHKolarium/blocs/bloc_notification/notification_bloc.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
@@ -24,8 +25,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
   late NotificationsBloc notificationsBloc;
   final ScrollController _scrollController = ScrollController();
   int _currentPage = 1;
-  // final int _pageSize = 5;
+  int _pageSize = 7; // Number of notifications to load per page
   bool _isFetchingMore = false;
+  List<NotificationsModel> _displayedNotifications = [];
 
   @override
   void initState() {
@@ -42,25 +44,23 @@ class _NotificationScreenState extends State<NotificationScreen> {
     context.read<BottomNavBloc>().add(FetchUnreadCountEvent());
   }
 
-  void _onScroll() {
-    if (_scrollController.position.pixels >=
-            _scrollController.position.maxScrollExtent &&
-        !_scrollController.position.outOfRange) {
-      if (!_isFetchingMore) {
-        _loadMoreNotifications();
-      }
-    }
-  }
-
-  void _loadMoreNotifications() {
+  void _loadMoreNotifications(List<NotificationsModel> allNotifications) {
     setState(() {
       _isFetchingMore = true;
     });
 
-    _currentPage++;
-    notificationsBloc.add(FetchNotificationsEvent());
+    Future.delayed(const Duration(milliseconds: 500), () {
+      final int startIndex = _currentPage * _pageSize;
+      final int endIndex = startIndex + _pageSize;
+      if (startIndex < allNotifications.length) {
+        setState(() {
+          _displayedNotifications.addAll(
+            allNotifications.sublist(startIndex, endIndex > allNotifications.length ? allNotifications.length : endIndex),
+          );
+          _currentPage++;
+        });
+      }
 
-    Future.delayed(Duration(milliseconds: 500), () {
       setState(() {
         _isFetchingMore = false;
       });
@@ -68,33 +68,27 @@ class _NotificationScreenState extends State<NotificationScreen> {
   }
 
   Future<void> _onRefresh() async {
+    _currentPage = 1;
+    _displayedNotifications.clear(); 
     notificationsBloc.add(FetchNotificationsEvent());
     context.read<BottomNavBloc>().add(FetchUnreadCountEvent());
   }
 
-  String _formatDate(String date) {
-    final DateTime parsedDate = DateTime.parse(date);
-    final List<String> months = [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec'
-    ];
-    return '${months[parsedDate.month - 1]}. ${parsedDate.day}, ${parsedDate.year}';
+  void _onScroll() {
+  if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent &&
+      !_scrollController.position.outOfRange) {
+    if (!_isFetchingMore) {
+      final currentState = notificationsBloc.state;
+      if (currentState is NotificationsLoadedSuccessState) {
+        final allNotifications = currentState.notifications;
+        if (_displayedNotifications.length < allNotifications.length) {
+          _loadMoreNotifications(allNotifications);
+        }
+      }
+    }
   }
+}
 
-  String _formatTime(String time) {
-    final DateTime parsedTime = DateFormat('HH:mm:ss').parse(time);
-    return DateFormat('h:mm a').format(parsedTime);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -106,7 +100,15 @@ class _NotificationScreenState extends State<NotificationScreen> {
           isBackButton: false,
         ),
         body: BlocConsumer<NotificationsBloc, NotificationsState>(
-          listener: (context, state) {},
+          listener: (context, state) {
+            if (state is NotificationsLoadedSuccessState) {
+              if (_displayedNotifications.isEmpty) {
+                setState(() {
+                  _displayedNotifications = state.notifications.take(_pageSize).toList();
+                });
+              }
+            }
+          },
           builder: (context, state) {
             if (state is NotificationsLoadingState && _currentPage == 1) {
               return const Center(child: LoadingCircular());
@@ -130,10 +132,10 @@ class _NotificationScreenState extends State<NotificationScreen> {
                             ),
                             child: ListView.builder(
                               controller: _scrollController,
-                              itemCount: state.notifications.length +
+                              itemCount: _displayedNotifications.length +
                                   (_isFetchingMore ? 1 : 0),
                               itemBuilder: (context, index) {
-                                if (index == state.notifications.length &&
+                                if (index == _displayedNotifications.length &&
                                     _isFetchingMore) {
                                   return const Padding(
                                     padding:
@@ -143,7 +145,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                   );
                                 }
 
-                                final notification = state.notifications[index];
+                                final notification =
+                                    _displayedNotifications[index];
                                 return GestureDetector(
                                   onTap: () async {
                                     context
@@ -203,7 +206,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                         if (_isFetchingMore)
                           const Padding(
                             padding: EdgeInsets.symmetric(vertical: 10),
-                            child: Center(child: CircularProgressIndicator()),
+                            child: Center(child: CircularProgressIndicator()),// paedit ples
                           ),
                       ],
                     ),
