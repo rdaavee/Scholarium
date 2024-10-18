@@ -14,6 +14,9 @@ class AppImages {
   //default pfp
   static const defaultPfp = '${basePathImg}avatar$formatPng';
 
+  //logo for dtr
+  static const uPangLogo = '${basePathImg}logo$formatPng';
+
   //no data image
   static const noDataImg = '${basePathImg}no-data-img$formatPng';
 
