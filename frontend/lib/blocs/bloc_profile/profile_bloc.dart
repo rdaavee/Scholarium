@@ -3,14 +3,17 @@ import 'dart:io';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
+import 'package:isHKolarium/api/implementations/student_repository_impl.dart';
+import 'package:isHKolarium/api/models/dtr_total_hours_model.dart';
 import 'package:isHKolarium/api/models/user_model.dart';
 import 'profile_event.dart';
 import 'profile_state.dart';
 
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
-  final GlobalRepositoryImpl _apiService;
+  final GlobalRepositoryImpl _globalService;
+  final StudentRepositoryImpl _studentService;
 
-  ProfileBloc(this._apiService) : super(ProfileInitial()) {
+  ProfileBloc(this._globalService, this._studentService) : super(ProfileInitial()) {
     on<ProfileInitialEvent>(profileInitialEvent);
     on<FetchProfileEvent>(fetchProfile);
     on<FetchUserDataEvent>(fetchUserData);
@@ -22,7 +25,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       PickImageEvent event, Emitter<ProfileState> emit) async {
     emit(ProfileLoadingState());
     try {
-      await _apiService.uploadProfileImage(File(event.imagePath));
+      await _globalService.uploadProfileImage(File(event.imagePath));
       await fetchProfile(FetchProfileEvent(), emit);
     } catch (error) {
       emit(ProfileErrorState(message: 'Failed to upload image: $error'));
@@ -33,15 +36,15 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       ProfileInitialEvent event, Emitter<ProfileState> emit) async {
     emit(ProfileLoadingState());
     emit(
-      ProfileLoadedSuccessState(users: const []),
+      ProfileLoadedSuccessState(users: const [], hours: []),
     );
   }
 
   Future<void> fetchProfile(
       FetchProfileEvent event, Emitter<ProfileState> emit) async {
     try {
-      UserModel user = await _apiService.fetchUserProfile();
-      emit(ProfileLoadedSuccessState(users: [user]));
+      UserModel user = await _globalService.fetchUserProfile();
+      emit(ProfileLoadedSuccessState(users: [user], hours: []));
     } catch (e) {
       emit(ProfileErrorState(message: 'Failed to load profile data: $e'));
     }
@@ -50,8 +53,10 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   FutureOr<void> fetchUserData(
       FetchUserDataEvent event, Emitter<ProfileState> emit) async {
     try {
-      UserModel user = await _apiService.fetchUserData(event.schoolId);
-      emit(ProfileLoadedSuccessState(users: [user]));
+      DtrHoursModel totalhours =
+          await _studentService.fetchDtrTotalHoursData();
+      UserModel user = await _globalService.fetchUserData(event.schoolId);
+      emit(ProfileLoadedSuccessState(users: [user], hours: [totalhours]));
     } catch (e) {
       emit(ProfileErrorState(message: 'Failed to load profile data: $e'));
     }
@@ -59,7 +64,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
   Future<void> _onLogout(LogoutEvent event, Emitter<ProfileState> emit) async {
     try {
-      await _apiService.logout(event.context);
+      await _globalService.logout(event.context);
     } catch (e) {
       emit(LogoutErrorState(message: 'Failed to logout: $e'));
     }

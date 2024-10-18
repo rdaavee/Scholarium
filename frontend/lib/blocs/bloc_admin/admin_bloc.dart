@@ -95,7 +95,6 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
   Future<void> _onFetchUsersEvent(
       FetchUsersEvent event, Emitter<AdminState> emit) async {
     emit(AdminLoadingState());
-
     try {
       List<UserModel> allUsers = await _adminRepositoryImpl.fetchAllUsers();
 

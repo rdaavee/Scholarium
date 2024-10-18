@@ -3,7 +3,7 @@ import 'package:isHKolarium/api/models/user_model.dart';
 import 'package:isHKolarium/blocs/bloc_admin/admin_bloc.dart';
 import 'package:isHKolarium/features/screens/screen_admin/user_form_screen.dart';
 import 'package:isHKolarium/features/widgets/admin_widgets/delete_confirmation_dialog.dart';
-import 'package:isHKolarium/features/widgets/admin_widgets/profile_modal_bottom_sheet.dart';
+import 'package:isHKolarium/features/widgets/profile_widgets/profile_modal_bottom_sheet.dart';
 
 class UserDataTable extends StatelessWidget {
   final VoidCallback onUpdated;
@@ -113,13 +113,7 @@ class UserDataTable extends StatelessWidget {
                                     isScrollControlled: true,
                                     backgroundColor: Colors.white,
                                     builder: (BuildContext context) {
-                                      return ProfileModalBottomSheet(
-                                        name:
-                                            '${user.firstName} ${user.lastName}',
-                                        schoolId: user.schoolID.toString(),
-                                        role: user.role.toString(),
-                                        isActive: user.status == 'Active',
-                                      );
+                                      return ProfileModalBottomSheet(schoolId: user.schoolID.toString(),);
                                     },
                                   );
 

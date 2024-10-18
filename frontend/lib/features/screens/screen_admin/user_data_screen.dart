@@ -35,10 +35,11 @@ class UserDataScreenState extends State<UserDataScreen> {
   }
 
   Future<void> _initialize() async {
-    adminBloc.add(FetchUsersEvent(selectedRole, statusFilter));
-    context.read<BottomNavBloc>().add(FetchUnreadCountEvent());
+    setState(() {
+      adminBloc.add(FetchUsersEvent(selectedRole, statusFilter));
+      context.read<BottomNavBloc>().add(FetchUnreadCountEvent());
+    });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +93,8 @@ class UserDataScreenState extends State<UserDataScreen> {
                         setState(() {
                           selectedRole = newValue;
                         });
-                        adminBloc.add(FetchUsersEvent(selectedRole, statusFilter));
+                        adminBloc
+                            .add(FetchUsersEvent(selectedRole, statusFilter));
                       },
                     ),
                   ),
@@ -104,7 +106,8 @@ class UserDataScreenState extends State<UserDataScreen> {
                         setState(() {
                           statusFilter = newValue!;
                         });
-                        adminBloc.add(FetchUsersEvent(selectedRole, statusFilter));
+                        adminBloc
+                            .add(FetchUsersEvent(selectedRole, statusFilter));
                       },
                     ),
                   ),

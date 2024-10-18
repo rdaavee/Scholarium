@@ -66,7 +66,7 @@ class _UserFormScreenState extends State<UserFormScreen> {
       selectedRole = user.role?.toString();
       accountStatus = user.status?.toString();
       selectedHkType = user.hkType?.toString() ?? 'Select HK Type';
-      selectedProfessor = user.profId?.toString();
+      selectedProfessor = user.profId ?? 'Select Professor';
     } else {
       selectedHkType = 'Select HK Type';
       selectedRole = 'Select User Role';
@@ -333,7 +333,7 @@ class _UserFormScreenState extends State<UserFormScreen> {
     );
 
     if (widget.schoolId == null) {
-      _adminBloc.add(CreateUserEvent(newUser));
+      _adminBloc.add(CreateUserEvent(newUser, ));
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('User created successfully!')),
       );

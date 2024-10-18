@@ -131,21 +131,6 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                                       children: [
                                         const LabelTextWidget(
                                             title: "Upcoming Duties"),
-                                        GestureDetector(
-                                          onTap: () {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    ScheduleScreen(
-                                                  role: "Student",
-                                                  isAppBarBack: true,
-                                                ),
-                                              ),
-                                            );
-                                          },
-                                          child: const ViewAllText(),
-                                        ),
                                       ],
                                     ),
                                   ),

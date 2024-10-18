@@ -8,7 +8,9 @@ abstract class NotificationsEvent extends Equatable {
 }
 
 class NotificationsInitialEvent extends NotificationsEvent {}
+
 class FetchNotificationsEvent extends NotificationsEvent {}
+
 class UpdateNotificationStatusEvent extends NotificationsEvent {
   final String notificationId;
 
