@@ -49,7 +49,7 @@ class AnnouncementCard extends StatelessWidget {
                     const SizedBox(height: 16),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [date, Text(_formatTime("$stringTime:00"))],
+                      children: [date, Text(_formatTime(stringTime))],
                     ),
                   ],
                 ),
@@ -62,6 +62,9 @@ class AnnouncementCard extends StatelessWidget {
   }
 
   String _formatTime(String time) {
+    if (time.isEmpty) {
+      return ""; // Return an empty string or any default value like "No Time"
+    }
     final DateTime parsedTime = DateFormat('HH:mm:ss').parse(time);
     return DateFormat('h:mm a').format(parsedTime);
   }

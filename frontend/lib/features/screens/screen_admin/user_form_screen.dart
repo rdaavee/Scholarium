@@ -299,6 +299,10 @@ class _UserFormScreenState extends State<UserFormScreen> {
   void _handleSubmit() {
     if (schoolIdController.text.isEmpty ||
         firstNameController.text.isEmpty ||
+        lastNameController.text.isEmpty ||
+        addressController.text.isEmpty ||
+        contactController.text.isEmpty ||
+        passwordController.text.isEmpty ||
         emailController.text.isEmpty ||
         accountStatus == "Select Account Status" ||
         selectedGender == "Select Gender") {
@@ -333,17 +337,31 @@ class _UserFormScreenState extends State<UserFormScreen> {
     );
 
     if (widget.schoolId == null) {
-      _adminBloc.add(CreateUserEvent(newUser, ));
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('User created successfully!')),
-      );
-      Navigator.pop(context, true);
+      try {
+        _adminBloc.add(CreateUserEvent(
+          newUser,
+        ));
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('User created successfully!')),
+        );
+        Navigator.pop(context, true);
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error creating user: $e')),
+        );
+      }
     } else {
-      _adminBloc.add(UpdateUserEvent(widget.schoolId!, newUser));
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('User updated successfully!')),
-      );
-      Navigator.pop(context, true);
+      try {
+        _adminBloc.add(UpdateUserEvent(widget.schoolId!, newUser));
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('User updated successfully!')),
+        );
+        Navigator.pop(context, true);
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error updating user: $e')),
+        );
+      }
     }
   }
 }

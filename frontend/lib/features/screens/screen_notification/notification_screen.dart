@@ -113,6 +113,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                         state.notifications.take(_pageSize).toList();
                   });
                 }
+                _initialize();
               }
             },
             builder: (context, state) {
@@ -147,16 +148,12 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                     child: Center(child: LoadingCircular()),
                                   );
                                 }
-                
+
                                 final notification =
                                     _displayedNotifications[index];
                                 return GestureDetector(
                                   onTap: () async {
-                                    context
-                                        .read<BottomNavBloc>()
-                                        .add(FetchUnreadCountEvent());
-                
-                                    bool? result = await showDialog(
+                                    showDialog(
                                       context: context,
                                       builder: (context) {
                                         return Dialog(
@@ -187,13 +184,15 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                         );
                                       },
                                     );
-                                    if (result == true) {
-                                      _onRefresh();
-                                    }
                                     notificationsBloc.add(
                                       UpdateNotificationStatusEvent(
                                           notification.id.toString()),
                                     );
+                                    notificationsBloc
+                                        .add(FetchNotificationsEvent());
+                                    context
+                                        .read<BottomNavBloc>()
+                                        .add(FetchUnreadCountEvent());
                                   },
                                   child: NotificationCard(
                                     color: notification.status == false
@@ -209,7 +208,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                         // Removed the second CircularProgressIndicator here
                       ],
                     ),
-                    if (widget.isRole != "Student")
+                    if (widget.isRole == "")
                       Align(
                         alignment: Alignment.bottomRight,
                         child: Padding(
@@ -218,10 +217,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
                             backgroundColor:
                                 ColorPalette.primary.withOpacity(0.6),
                             onPressed: () async {
-                              // Floating action button logic for adding new notification
                               print('Add notification');
                             },
-                            child: const Icon(Icons.add, color: Colors.white),
+                            child: const Text("Need Faci", style: TextStyle(fontSize: 10, color: Colors.white),),
                           ),
                         ),
                       ),

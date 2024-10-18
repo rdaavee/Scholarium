@@ -74,11 +74,6 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                     icon: CupertinoIcons.rectangle_stack_fill,
                   ),
                   AdminMenuItem(
-                    title: 'View Schedule',
-                    route: '/view_schedule',
-                    icon: CupertinoIcons.calendar,
-                  ),
-                  AdminMenuItem(
                     title: 'Create Announcement',
                     route: '/create_announcement',
                     icon: CupertinoIcons.rectangle_stack_fill_badge_plus,

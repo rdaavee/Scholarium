@@ -68,10 +68,10 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
     return formattedDate;
   }
 
-  //   String _formatTime(String time) {
-  //   final DateTime parsedTime = DateFormat('HH:mm:ss').parse(time);
-  //   return DateFormat('h:mm a').format(parsedTime);
-  // }
+    String _formatTime(String time) {
+    final DateTime parsedTime = DateFormat('HH:mm:ss').parse(time);
+    return DateFormat('h:mm a').format(parsedTime);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -98,7 +98,6 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
               body: const StudentShimmer(),
             );
           } else if (state is StudentsLoadedSuccessState) {
-            print(state.announcements[0]);
             return Scaffold(
               appBar: AppBarWidget(
                   title: "Hello, ${state.users[0].firstName}!",

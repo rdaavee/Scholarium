@@ -22,9 +22,23 @@ exports.getAllUsers = async (req, res) => {
 // Create a user
 exports.createUser = async (req, res) => {
   const params = req.body;
-  const prof = await User.findOne({ school_id: params.prof_id });
+
   try {
-    console.log(params);
+    const existingUser = await User.findOne({ school_id: params.school_id });
+    if (existingUser) {
+      return res.status(400).json({ message: "User with this school ID already exists." });
+    }
+
+    let professorName = "";
+    let professorId = "";
+    if (params.prof_id) {
+      const prof = await User.findOne({ school_id: params.prof_id });
+      if (prof) {
+        professorName = `${prof.first_name ?? ''} ${prof.last_name ?? ''}`.trim();
+        professorId = params.prof_id;
+      }
+    }
+
     const user = new User({
       school_id: params.school_id,
       email: params.email,
@@ -37,14 +51,16 @@ exports.createUser = async (req, res) => {
       contact: params.contact,
       address: params.address,
       role: params.role,
-      professor: `${prof.first_name} ${prof.last_name}`,
-      prof_id: params.prof_id,
+      professor: professorName,
+      prof_id: professorId,   
       hk_type: params.hk_type,
       status: params.status,
       token: params.token,
     });
 
     await user.save();
+
+
     res.status(200).json({
       message: `Record of ${user.last_name}, ${user.first_name} has been added.`,
     });
@@ -53,6 +69,7 @@ exports.createUser = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
 
 exports.createScheduleAndNotification = async (req, res) => {
   try {
@@ -252,7 +269,7 @@ exports.updateUser = async (req, res) => {
         contact: params.contact,
         address: params.address,
         role: params.role,
-        professor: prof.first_name + prof.last_name,
+        professor: prof ? `${prof.first_name} ${prof.last_name}` : "",
         prof_id: params.prof_id,
         hk_type: params.hk_type,
         status: params.status,

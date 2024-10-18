@@ -13,7 +13,6 @@ Map<String, WidgetBuilder> routes = {
   //admin
   '/dashboard': (context) => AdminHomeScreen(),
   '/view_announcement': (context) => AnnouncementsScreen(isBackButtonTrue: true),
-  '/view_schedule': (context) => SetScheduleScreen(),
   '/create_announcement': (context) => AnnouncementFormScreen(role: 'admin'),
-  '/create_schedule': (context) => SetScheduleScreen(),
+  '/create_schedule': (context) => SetScheduleScreen(isRole: 'Admin',),
 };

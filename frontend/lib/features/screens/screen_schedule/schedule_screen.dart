@@ -121,6 +121,19 @@ class ScheduleScreenState extends State<ScheduleScreen> {
       child: Scaffold(
         appBar:
             AppBarWidget(title: "Schedule", isBackButton: widget.isAppBarBack),
+        floatingActionButton: widget.role == "Professor"
+            ? FloatingActionButton(
+                backgroundColor: ColorPalette.primary.withOpacity(0.6),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => SetScheduleScreen(isRole: widget.role,)),
+                  );
+                },
+                child: const Icon(Icons.add, color: Colors.white),
+              )
+            : null,
         body: BlocConsumer<ScheduleBloc, ScheduleState>(
           listener: (context, state) {},
           builder: (context, state) {
@@ -262,28 +275,6 @@ class ScheduleScreenState extends State<ScheduleScreen> {
                                   },
                                 ),
                               ),
-                              if (widget.role != "Student")
-                                Align(
-                                  alignment: Alignment.bottomRight,
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        right: 15, bottom: 15),
-                                    child: FloatingActionButton(
-                                      backgroundColor:
-                                          ColorPalette.primary.withOpacity(0.6),
-                                      onPressed: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  SetScheduleScreen()),
-                                        );
-                                      },
-                                      child: const Icon(Icons.add,
-                                          color: Colors.white),
-                                    ),
-                                  ),
-                                ),
                             ],
                           ),
                         ),
