@@ -107,6 +107,18 @@ class SetScheduleScreenState extends State<SetScheduleScreen> {
     print("Selected Date: $formattedDate");
     print("Selected Professor: $selectedProfessor");
     print("Selected Time Slot: $selectedStartTime");
+    if (roomController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please input a room.')),
+      );
+      return;
+    }
+    if (taskController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please input a task.')),
+      );
+      return;
+    }
     final schedule = ScheduleModel(
       schoolID: selectedStudent,
       room: roomController.text,
