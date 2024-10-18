@@ -298,6 +298,8 @@ class _ProfessorHomeScreenState extends State<ProfessorHomeScreen> {
                                 ),
                               ),
                               imageUrl: 'assets/images/card-bg.png',
+                              stringTime:
+                                  state.announcements[0].time.toString(),
                             ),
 
                             // Events Section

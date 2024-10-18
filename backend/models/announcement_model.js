@@ -5,7 +5,7 @@ const announcementSchema = new mongoose.Schema({
   title: { type: String, required: true },           
   body: { type: String, required: true },           
   time: { type: String, required: true },         
-  date: { type: String }                                
+  date: { type: String, required: true}                                
 }, { timestamps: true });  
 
 const Announcement = mongoose.model('Announcement', announcementSchema);
