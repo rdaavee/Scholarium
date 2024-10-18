@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
+import 'package:isHKolarium/api/implementations/student_repository_impl.dart';
 import 'package:isHKolarium/blocs/bloc_profile/profile_bloc.dart';
 import 'package:isHKolarium/blocs/bloc_profile/profile_event.dart';
 import 'package:isHKolarium/blocs/bloc_profile/profile_state.dart';
@@ -33,8 +34,9 @@ class _ProfileModalBottomSheetState extends State<ProfileModalBottomSheet> {
   }
 
   Future<void> _initialize() async {
-    final globalRepositoryImpl = GlobalRepositoryImpl();
-    profileBloc = ProfileBloc(globalRepositoryImpl);
+    final globalRepository = GlobalRepositoryImpl();
+    final studentRepository = StudentRepositoryImpl();
+    profileBloc = ProfileBloc(globalRepository, studentRepository);
     print(widget.schoolId);
     profileBloc.add(FetchUserDataEvent(schoolId: widget.schoolId));
   }
@@ -124,13 +126,17 @@ class _ProfileModalBottomSheetState extends State<ProfileModalBottomSheet> {
                     color: Colors.grey,
                   ),
                   const SizedBox(height: 20),
-                  DtrHoursCard(
-                    progress: (0 / 0).clamp(0.0, 1.0),
-                    cardColor: Colors.white,
-                  ),
-                  SizedBox(
-                    height: 30,
-                  ),
+                  if (state.users[0].role == "Student") ...[
+                    DtrHoursCard(
+                      progress: (state.hours[0].totalhours /
+                              state.hours[0].targethours)
+                          .clamp(0.0, 1.0),
+                      cardColor: Colors.white,
+                    ),
+                    SizedBox(
+                      height: 30,
+                    ),
+                  ],
                   InfoSection(
                     title: 'BASIC INFORMATION',
                     infoRows: [
@@ -156,12 +162,14 @@ class _ProfileModalBottomSheetState extends State<ProfileModalBottomSheet> {
                       InfoRow(
                           label: 'Address',
                           value: state.users[0].address.toString()),
-                      const SizedBox(height: 15),
-                      const DividerWidget(),
-                      const SizedBox(height: 15),
-                      InfoRow(
-                          label: 'HK Type',
-                          value: state.users[0].hkType.toString()),
+                      if (state.users[0].role == "Student") ...[
+                        const SizedBox(height: 15),
+                        const DividerWidget(),
+                        const SizedBox(height: 15),
+                        InfoRow(
+                            label: 'HK Type',
+                            value: state.users[0].hkType.toString()),
+                      ]
                     ],
                   ),
                 ],

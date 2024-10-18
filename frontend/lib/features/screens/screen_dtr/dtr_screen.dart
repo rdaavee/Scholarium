@@ -342,7 +342,7 @@ class _DtrScreenState extends State<DtrScreen> {
                                     CellWidget(
                                       text: dtr.hoursRendered.toString(),
                                     ),
-                                    CellWidget(text: 'Dummy'),
+                                    CellWidget(text: dtr.remarks.toString()),
                                   ],
                                 );
                               }),

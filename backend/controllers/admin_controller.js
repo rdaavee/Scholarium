@@ -21,10 +21,10 @@ exports.getAllUsers = async (req, res) => {
 
 // Create a user
 exports.createUser = async (req, res) => {
+  const params = req.body;
+  const prof = await User.findOne({ school_id: params.prof_id });
   try {
-    const params = req.body;
     console.log(params);
-    const prof = User.findOne({ school_id: params.prof_id});
     const user = new User({
       school_id: params.school_id,
       email: params.email,
@@ -37,7 +37,7 @@ exports.createUser = async (req, res) => {
       contact: params.contact,
       address: params.address,
       role: params.role,
-      professor: prof.first_name + prof.last_name,
+      professor: `${prof.first_name} ${prof.last_name}`,
       prof_id: params.prof_id,
       hk_type: params.hk_type,
       status: params.status,
@@ -237,7 +237,7 @@ exports.getCurrentYearSchedules = async (req, res) => {
 exports.updateUser = async (req, res) => {
   const school_id = req.params.school_id;
   const params = req.body;
-  const prof = User.findOne({ school_id: params.prof_id});
+  const prof = User.findOne({ school_id: params.prof_id });
 
   try {
     const user = await User.findOneAndUpdate(
