@@ -189,7 +189,7 @@ class ScheduleScreenState extends State<ScheduleScreen> {
                                                           await showDialog(
                                                         context: context,
                                                         builder: (context) {
-                                                          print(selectedMonth);
+                                                          print(duty['task']);
                                                           return DialogAlertBox(
                                                             scheduleId:
                                                                 duty['_id'],
@@ -204,6 +204,7 @@ class ScheduleScreenState extends State<ScheduleScreen> {
                                                                 duty['time_in'],
                                                             timeOut: duty[
                                                                 'time_out'],
+                                                            remarks: duty['task'],
                                                             hkType: duty[
                                                                     'user_info']
                                                                 ['hk_type'],

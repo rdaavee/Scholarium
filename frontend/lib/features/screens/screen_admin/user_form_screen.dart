@@ -36,12 +36,14 @@ class _UserFormScreenState extends State<UserFormScreen> {
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController addressController = TextEditingController();
   final TextEditingController contactController = TextEditingController();
-  final TextEditingController professorController = TextEditingController();
   late AdminBloc _adminBloc;
+  final adminRepositoryImpl = AdminRepositoryImpl();
   String? selectedHkType;
   String? selectedRole;
   String? accountStatus;
   String? selectedGender;
+  String? selectedProfessor;
+  final List<Map<String, String>> professors = [];
 
   @override
   void initState() {
@@ -60,15 +62,34 @@ class _UserFormScreenState extends State<UserFormScreen> {
       selectedGender = user.gender?.toString();
       addressController.text = user.address.toString();
       contactController.text = user.contact.toString();
-      professorController.text = user.professor?.toString() ?? '';
       selectedRole = user.role?.toString();
       accountStatus = user.status?.toString();
       selectedHkType = user.hkType?.toString() ?? 'Select HK Type';
+      selectedProfessor = user.profId?.toString();
     } else {
       selectedHkType = 'Select HK Type';
       selectedRole = 'Select User Role';
       accountStatus = 'Select Account Status';
+      selectedProfessor = 'Select Professor';
       selectedGender = 'Select Gender';
+    }
+    _initialize();
+  }
+
+  Future<void> _initialize() async {
+    final users = await adminRepositoryImpl.fetchAllUsers();
+    professors.add({
+      'school_id': "",
+      'name': "Select Professor",
+    });
+    for (var user in users) {
+      if (user.role == 'Professor') {
+        print(user);
+        professors.add({
+          'school_id': user.schoolID.toString(),
+          'name': "${user.firstName} ${user.lastName}",
+        });
+      }
     }
   }
 
@@ -237,9 +258,24 @@ class _UserFormScreenState extends State<UserFormScreen> {
                 ),
                 const SizedBox(height: 10),
                 if (widget.isRole == 'Student')
-                  CustomTextField(
-                    labelText: 'Professor',
-                    controller: professorController,
+                  DropdownButton<String>(
+                    isExpanded: true,
+                    value: selectedProfessor,
+                    hint: const Text(
+                      "Select Professor",
+                      style: TextStyle(fontSize: 12),
+                    ),
+                    items: professors.map((professor) {
+                      return DropdownMenuItem<String>(
+                        value: professor['school_id'],
+                        child: Text(professor['name']!),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        selectedProfessor = value;
+                      });
+                    },
                   ),
                 const SizedBox(height: 20),
                 SubmitButton(
@@ -284,10 +320,12 @@ class _UserFormScreenState extends State<UserFormScreen> {
       contact: contactController.text,
       address: addressController.text,
       role: selectedRole,
-      professor: professorController.text,
+      professor: selectedProfessor,
+      profId: selectedProfessor,
       hkType: selectedRole == "Student" ? selectedHkType : '',
       status: accountStatus,
     );
+
 
     if (widget.schoolId == null) {
       _adminBloc.add(CreateUserEvent(newUser));

@@ -21,6 +21,7 @@ class DialogAlertBox extends StatefulWidget {
   final String date;
   final String timeIn;
   final String timeOut;
+  final String remarks;
   final String hkType;
   final String professorName;
 
@@ -33,6 +34,7 @@ class DialogAlertBox extends StatefulWidget {
     required this.date,
     required this.timeIn,
     required this.timeOut,
+    required this.remarks,
     required this.hkType,
     required this.professorName,
   });
@@ -126,7 +128,11 @@ class _DialogAlertBoxState extends State<DialogAlertBox> {
                               timeIn: widget.timeIn.toString(),
                               timeOut: widget.timeOut.toString(),
                               hoursToRendered: hoursToRendered,
-                              hoursRendered: convertTimeToDecimal(widget.timeOut) - convertTimeToDecimal(widget.timeIn),
+                              hoursRendered: double.parse(
+                                  (convertTimeToDecimal(widget.timeOut) -
+                                          convertTimeToDecimal(widget.timeIn))
+                                      .toStringAsFixed(2)),
+                              remarks: widget.remarks.toString(),
                               professor: widget.professorName.toString(),
                               professorSignature: _signatureImage != null
                                   ? base64Encode(_signatureImage!)
