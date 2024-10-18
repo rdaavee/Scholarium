@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
 import 'package:isHKolarium/api/implementations/student_repository_impl.dart';
 import 'package:isHKolarium/api/models/notifications_model.dart';
@@ -25,7 +24,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
   late NotificationsBloc notificationsBloc;
   final ScrollController _scrollController = ScrollController();
   int _currentPage = 1;
-  int _pageSize = 7; // Number of notifications to load per page
+  final int _pageSize = 8;
   bool _isFetchingMore = false;
   List<NotificationsModel> _displayedNotifications = [];
 
@@ -55,7 +54,11 @@ class _NotificationScreenState extends State<NotificationScreen> {
       if (startIndex < allNotifications.length) {
         setState(() {
           _displayedNotifications.addAll(
-            allNotifications.sublist(startIndex, endIndex > allNotifications.length ? allNotifications.length : endIndex),
+            allNotifications.sublist(
+                startIndex,
+                endIndex > allNotifications.length
+                    ? allNotifications.length
+                    : endIndex),
           );
           _currentPage++;
         });
@@ -69,26 +72,26 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
   Future<void> _onRefresh() async {
     _currentPage = 1;
-    _displayedNotifications.clear(); 
+    _displayedNotifications.clear();
     notificationsBloc.add(FetchNotificationsEvent());
     context.read<BottomNavBloc>().add(FetchUnreadCountEvent());
   }
 
   void _onScroll() {
-  if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent &&
-      !_scrollController.position.outOfRange) {
-    if (!_isFetchingMore) {
-      final currentState = notificationsBloc.state;
-      if (currentState is NotificationsLoadedSuccessState) {
-        final allNotifications = currentState.notifications;
-        if (_displayedNotifications.length < allNotifications.length) {
-          _loadMoreNotifications(allNotifications);
+    if (_scrollController.position.pixels >=
+            _scrollController.position.maxScrollExtent &&
+        !_scrollController.position.outOfRange) {
+      if (!_isFetchingMore) {
+        final currentState = notificationsBloc.state;
+        if (currentState is NotificationsLoadedSuccessState) {
+          final allNotifications = currentState.notifications;
+          if (_displayedNotifications.length < allNotifications.length) {
+            _loadMoreNotifications(allNotifications);
+          }
         }
       }
     }
   }
-}
-
 
   @override
   Widget build(BuildContext context) {
@@ -104,14 +107,15 @@ class _NotificationScreenState extends State<NotificationScreen> {
             if (state is NotificationsLoadedSuccessState) {
               if (_displayedNotifications.isEmpty) {
                 setState(() {
-                  _displayedNotifications = state.notifications.take(_pageSize).toList();
+                  _displayedNotifications =
+                      state.notifications.take(_pageSize).toList();
                 });
               }
             }
           },
           builder: (context, state) {
             if (state is NotificationsLoadingState && _currentPage == 1) {
-              return const Center(child: LoadingCircular());
+              return LoadingCircular();
             } else if (state is NotificationsLoadedSuccessState) {
               return RefreshIndicator.adaptive(
                 onRefresh: _onRefresh,
@@ -140,8 +144,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                   return const Padding(
                                     padding:
                                         EdgeInsets.symmetric(vertical: 10.0),
-                                    child: Center(
-                                        child: CircularProgressIndicator()),
+                                    child: Center(child: LoadingCircular()),
                                   );
                                 }
 
@@ -203,11 +206,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                             ),
                           ),
                         ),
-                        if (_isFetchingMore)
-                          const Padding(
-                            padding: EdgeInsets.symmetric(vertical: 10),
-                            child: Center(child: CircularProgressIndicator()),// paedit ples
-                          ),
+                        // Removed the second CircularProgressIndicator here
                       ],
                     ),
                     if (widget.isRole != "Student")

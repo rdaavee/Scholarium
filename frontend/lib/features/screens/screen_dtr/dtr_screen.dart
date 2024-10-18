@@ -1,5 +1,4 @@
 import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -56,7 +55,7 @@ class _DtrScreenState extends State<DtrScreen> {
 
   Future<void> generatePdf(List<DtrModel> dtrList) async {
     final pdfDocument = pw.Document();
-    final Uint8List logoBytes = await loadAssetImage('assets/images/logo.png');
+    final Uint8List logoBytes = await loadAssetImage(AppImages.uPangLogo);
     final pw.ImageProvider logoImage = pw.MemoryImage(logoBytes);
     // Table data
     print(widget.user.professor.toString());
