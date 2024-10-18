@@ -10,6 +10,9 @@ import 'package:isHKolarium/features/screens/screen_event/events_screen.dart';
 import 'package:isHKolarium/features/widgets/app_bar.dart';
 import 'package:isHKolarium/features/widgets/label_text_widget.dart';
 import 'package:isHKolarium/features/widgets/no_data.dart';
+import 'package:isHKolarium/features/widgets/professor_widgets/message_textfield.dart';
+import 'package:isHKolarium/features/widgets/professor_widgets/post_button.dart';
+import 'package:isHKolarium/features/widgets/professor_widgets/post_textfield.dart';
 import 'package:isHKolarium/features/widgets/professor_widgets/professor_shimmer.dart';
 import 'package:isHKolarium/features/widgets/student_widgets/announcement_widgets/announcement_card.dart';
 import 'package:isHKolarium/features/widgets/student_widgets/dtr_widgets/duty_card.dart';
@@ -107,7 +110,60 @@ class _ProfessorHomeScreenState extends State<ProfessorHomeScreen> {
                           children: [
                             GestureDetector(
                               onTap: () {
-                                // Your bottom sheet code here
+                                showModalBottomSheet(
+                                  context: context,
+                                  shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.vertical(
+                                        top: Radius.circular(20)),
+                                  ),
+                                  isScrollControlled: true,
+                                  backgroundColor: Colors.white,
+                                  builder: (BuildContext context) {
+                                    return Padding(
+                                      padding: const EdgeInsets.all(16.0),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          const Center(
+                                            child: SizedBox(
+                                              width: 100,
+                                              child: Divider(
+                                                height: 20,
+                                                thickness: 0.8,
+                                                color: Color(0xFFC1C1C1),
+                                              ),
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 20,
+                                          ),
+                                          const LabelTextWidget(
+                                            title: 'Post something',
+                                            fontSize: 18,
+                                          ),
+                                          const SizedBox(height: 10),
+                                          PostTextField(
+                                              controller: titleController),
+                                          const SizedBox(height: 20),
+                                          MessageTextField(
+                                              controller: messageController),
+                                          const SizedBox(height: 20),
+                                          Align(
+                                            alignment: Alignment.centerRight,
+                                            child: PostButton(
+                                              onPressed: () {
+                                                createPost();
+                                                Navigator.of(context).pop();
+                                              },
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                );
                               },
                               child: Container(
                                 margin: const EdgeInsets.only(bottom: 16.0),
