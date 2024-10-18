@@ -132,9 +132,15 @@ class BottomNavWidget extends StatelessWidget {
       case 0:
         return const StudentHomeScreen();
       case 1:
-        return const ScheduleScreen(role: 'Student', isAppBarBack: false,);
+        return const ScheduleScreen(
+          role: 'Student',
+          isAppBarBack: false,
+          isAdmin: 'No',
+        );
       case 2:
-        return const NotificationScreen(isRole: 'Student',);
+        return const NotificationScreen(
+          isRole: 'Student',
+        );
       case 3:
         return const ProfileScreen();
       default:
@@ -147,9 +153,15 @@ class BottomNavWidget extends StatelessWidget {
       case 0:
         return const ProfessorHomeScreen();
       case 1:
-        return const ScheduleScreen(role: 'Professor', isAppBarBack: false,);
+        return const ScheduleScreen(
+          role: 'Professor',
+          isAppBarBack: false,
+          isAdmin: 'No',
+        );
       case 2:
-        return const NotificationScreen(isRole: 'Professor',);
+        return const NotificationScreen(
+          isRole: 'Professor',
+        );
       case 3:
         return const ProfileScreen();
       default:
@@ -164,7 +176,9 @@ class BottomNavWidget extends StatelessWidget {
       case 1:
         return const UserDataScreen();
       case 2:
-        return const NotificationScreen(isRole: 'Admin',);
+        return const NotificationScreen(
+          isRole: 'Admin',
+        );
       case 3:
         return const ProfileScreen();
       default:

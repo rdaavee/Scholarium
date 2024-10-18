@@ -13,7 +13,6 @@ class StudentRepositoryImpl extends StudentRepository implements Endpoint {
   int currentYear = DateTime.now().year;
   final String baseUrl = Endpoint().baseUrl;
 
-
   Future<String?> _getToken() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString('token');
@@ -78,6 +77,44 @@ class StudentRepositoryImpl extends StudentRepository implements Endpoint {
       if (response.statusCode == 200) {
         final List<dynamic> data = jsonDecode(response.body);
         return data.map((item) => item as Map<String, dynamic>).toList();
+      } else {
+        throw Exception('Failed to load schedule: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error fetching schedule: $e');
+      throw Exception('Error fetching schedule: $e');
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> getScheduleAdmin({
+    required String selectedMonth,
+    required String schoolId,
+  }) async {
+    print('Selected Month: $selectedMonth');
+    print('School ID: $schoolId'); // Log the school ID
+    final token = await _getToken();
+    final url =
+        Uri.parse('$baseUrl/admin/schedule/$currentYear-$selectedMonth');
+
+    try {
+      final response = await http.get(
+        url,
+        headers: {
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final List<dynamic> data = jsonDecode(response.body);
+
+        // Filter schedules based on school_id
+        final filteredSchedules =
+            data.where((item) => item['school_id'] == schoolId).toList();
+
+        // Return the filtered results as a list of maps
+        return filteredSchedules
+            .map((item) => item as Map<String, dynamic>)
+            .toList();
       } else {
         throw Exception('Failed to load schedule: ${response.statusCode}');
       }
@@ -157,7 +194,7 @@ class StudentRepositoryImpl extends StudentRepository implements Endpoint {
       );
     }
   }
-  
+
   @override
   Future<void> confirmSchedule({required String scheduleId}) async {
     final String? token = await _getToken();

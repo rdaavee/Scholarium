@@ -68,10 +68,10 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
     return formattedDate;
   }
 
-    String _formatTime(String time) {
-    final DateTime parsedTime = DateFormat('HH:mm:ss').parse(time);
-    return DateFormat('h:mm a').format(parsedTime);
-  }
+  //   String _formatTime(String time) {
+  //   final DateTime parsedTime = DateFormat('HH:mm:ss').parse(time);
+  //   return DateFormat('h:mm a').format(parsedTime);
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -162,7 +162,11 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                                           scheduleTime: Text(
                                             state.todaySchedule[0].isActive ==
                                                     true
-                                                ? _formatTime("${state.todaySchedule[0].timeIn}:00")
+                                                // ? _formatTime(
+                                                //         "${state.todaySchedule[0].timeIn}:00")
+                                                //     .toString()
+                                                // : "",
+                                                ? ("${state.todaySchedule[0].timeIn}")
                                                     .toString()
                                                 : "",
                                             style: const TextStyle(
@@ -207,7 +211,11 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                                           scheduleTime: Text(
                                             state.nextSchedule[0].isActive ==
                                                     true
-                                                ? _formatTime("${state.nextSchedule[0].timeIn}:00")
+                                                // ? _formatTime(
+                                                //         "${state.nextSchedule[0].timeIn}:00")
+                                                //     .toString()
+                                                // : "",
+                                                ? ("${state.nextSchedule[0].timeIn}")
                                                     .toString()
                                                 : "",
                                             style: const TextStyle(

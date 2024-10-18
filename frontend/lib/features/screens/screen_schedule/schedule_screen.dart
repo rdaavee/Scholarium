@@ -21,8 +21,14 @@ import '../../widgets/student_widgets/schedule_widgets/timeline_item.dart';
 class ScheduleScreen extends StatefulWidget {
   final String role;
   final bool isAppBarBack;
+  final String? isAdmin;
+  final String? schoolID;
   const ScheduleScreen(
-      {super.key, required this.role, required this.isAppBarBack});
+      {super.key,
+      required this.role,
+      required this.isAppBarBack,
+      this.schoolID,
+      this.isAdmin});
   @override
   ScheduleScreenState createState() => ScheduleScreenState();
 }
@@ -31,6 +37,8 @@ class ScheduleScreenState extends State<ScheduleScreen> {
   late ScheduleBloc scheduleBloc;
   late BottomNavBloc bottomNavBloc;
   late String currentMonth;
+  String? isAdmin;
+  String? schoolID;
   final ProfessorRepositoryImpl profService = ProfessorRepositoryImpl();
 
   @override
@@ -45,14 +53,22 @@ class ScheduleScreenState extends State<ScheduleScreen> {
     });
     _initialize(currentMonth);
     bottomNavBloc = BottomNavBloc(GlobalRepositoryImpl());
-    context.read<BottomNavBloc>().add(FetchUnreadCountEvent());
+    // context.read<BottomNavBloc>().add(FetchUnreadCountEvent());
   }
 
   Future<void> _initialize(String selectedMonth) async {
     final role = await _getRole();
     String monthNumber = monthMap[selectedMonth] ?? "";
-    scheduleBloc.add(
-        FetchScheduleEvent(selectedMonth: monthNumber, role: role.toString()));
+    isAdmin = widget.isAdmin;
+    schoolID = widget.schoolID;
+
+    if (isAdmin.toString() == "Yes") {
+      scheduleBloc.add(FetchScheduleFromAdminEvent(
+          selectedMonth: monthNumber, schoolID: schoolID.toString()));
+    } else {
+      scheduleBloc.add(FetchScheduleEvent(
+          selectedMonth: monthNumber, role: role.toString()));
+    }
   }
 
   Future<String?> _getRole() async {

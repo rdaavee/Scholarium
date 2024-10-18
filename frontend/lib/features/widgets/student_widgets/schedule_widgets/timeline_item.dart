@@ -6,7 +6,7 @@ import 'package:isHKolarium/features/widgets/student_widgets/schedule_widgets/ti
 class TimelineItem extends StatelessWidget {
   final Map<String, dynamic> duty;
   final Color color;
-  final Future<String?> roleFuture; 
+  final Future<String?> roleFuture;
 
   const TimelineItem({
     super.key,
@@ -18,19 +18,19 @@ class TimelineItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<String?>(
-      future: roleFuture, 
+      future: roleFuture,
       builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator(); 
+          return CircularProgressIndicator();
         } else if (snapshot.hasError) {
-          return Text('Error: ${snapshot.error}'); 
+          return Text('Error: ${snapshot.error}');
         } else {
-          final String? role = snapshot.data; 
+          final String? role = snapshot.data;
 
           final String? completionStatus = duty['completed'] as String?;
           final String studentName = duty['user_info'] != null
               ? "${duty['user_info']['first_name']} ${duty['user_info']['last_name']}"
-              : "No Student Info"; 
+              : "No Student Info";
 
           return Row(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -74,7 +74,9 @@ class TimelineItem extends StatelessWidget {
                     professorName:
                         role == 'Professor' ? studentName : duty['professor'],
                     roomName: duty['room'].toString(),
-                    timeInAndOut: "${_formatTime((duty['time_in'] + ":00"))} to ${_formatTime((duty['time_out'] + ":00"))}",
+                    // timeInAndOut: "${_formatTime((duty['time_in'] + ":00"))} to ${_formatTime((duty['time_out'] + ":00"))}",
+                    timeInAndOut:
+                        "${((duty['time_in']))} to ${((duty['time_out']))}",
                     isCompleted: completionStatus == "true",
                     isNotCompleted: completionStatus == "false",
                     cardColor: Colors.white,
@@ -87,7 +89,6 @@ class TimelineItem extends StatelessWidget {
       },
     );
   }
-  
 
   // Helper function to get the color of the indicator based on completion status
   Color _getIndicatorColor(String? completionStatus) {
@@ -139,8 +140,8 @@ class TimelineItem extends StatelessWidget {
     return formattedDate;
   }
 
-  String _formatTime(String time) {
-    final DateTime parsedTime = DateFormat('HH:mm:ss').parse(time);
-    return DateFormat('h:mm a').format(parsedTime);
-  }
+  // String _formatTime(String time) {
+  //   final DateTime parsedTime = DateFormat('HH:mm:ss').parse(time);
+  //   return DateFormat('h:mm a').format(parsedTime);
+  // }
 }

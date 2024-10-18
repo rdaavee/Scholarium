@@ -7,6 +7,7 @@ import 'package:isHKolarium/blocs/bloc_profile/profile_bloc.dart';
 import 'package:isHKolarium/blocs/bloc_profile/profile_event.dart';
 import 'package:isHKolarium/blocs/bloc_profile/profile_state.dart';
 import 'package:isHKolarium/config/assets/app_images.dart';
+import 'package:isHKolarium/features/screens/screen_schedule/schedule_screen.dart';
 import 'package:isHKolarium/features/widgets/profile_widgets/profile_divider.dart';
 import 'package:isHKolarium/features/widgets/profile_widgets/profile_info_data.dart';
 import 'package:isHKolarium/features/widgets/profile_widgets/profile_info_section.dart';
@@ -121,6 +122,26 @@ class _ProfileModalBottomSheetState extends State<ProfileModalBottomSheet> {
                     ),
                   ),
                   const SizedBox(height: 20),
+                  if (state.users[0].role == "Student") ...[
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return ScheduleScreen(
+                                role: "Student",
+                                isAdmin: "Yes",
+                                schoolID: state.users[0].schoolID,
+                                isAppBarBack: true,
+                              );
+                            },
+                          ),
+                        );
+                      },
+                      child: const Text('Schedule'),
+                    ),
+                  ],
                   const Divider(
                     thickness: 0.2,
                     color: Colors.grey,

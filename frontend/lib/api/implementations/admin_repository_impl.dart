@@ -203,4 +203,5 @@ class AdminRepositoryImpl extends AdminRepository implements Endpoint {
       throw Exception('Failed to delete announcement');
     }
   }
+  
 }
