@@ -8,6 +8,7 @@ import 'package:isHKolarium/api/models/notifications_model.dart';
 import 'package:isHKolarium/api/models/schedule_model.dart';
 import 'package:isHKolarium/api/models/user_model.dart';
 import 'package:isHKolarium/api/models/announcement_model.dart';
+import 'package:isHKolarium/blocs/bloc_bottom_nav/bottom_nav_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 part 'admin_event.dart';
@@ -136,6 +137,7 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
     try {
       await _adminRepositoryImpl.updateUser(event.schoolId, event.user);
       add(FetchDataEvent());
+      
     } catch (e) {
       print('UpdateUserEvent error: $e');
       emit(AdminErrorState(message: 'Failed to update user: ${e.toString()}'));
