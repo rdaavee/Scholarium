@@ -12,8 +12,23 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
   ScheduleBloc(this.studentRepository, this.professorRepository)
       : super(ScheduleLoadingState()) {
     on<FetchScheduleEvent>(fetchScheduleEvent);
+    on<FetchScheduleFromAdminEvent>(fetchScheduleAdminEvent);
     on<UpdateDutySchedule>(updateDutySchedule);
     on<CreateDTREvent>(createDTREvent);
+  }
+
+  Future<void> fetchScheduleAdminEvent(
+    FetchScheduleFromAdminEvent event,
+    Emitter<ScheduleState> emit,
+  ) async {
+    emit(ScheduleLoadingState());
+    try {
+      final schedule = await studentRepository.getScheduleAdmin(
+          selectedMonth: event.selectedMonth, schoolId: event.schoolID);
+      emit(ScheduleLoadedSuccessState(schedule: schedule));
+    } catch (e) {
+      emit(ScheduleErrorState(e.toString()));
+    }
   }
 
   Future<void> fetchScheduleEvent(
@@ -43,7 +58,8 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
     emit(ScheduleLoadingState());
     try {
       await professorRepository.updateStudentSchedule(event.id);
-      add(FetchScheduleEvent(selectedMonth: event.selectedMonth, role: event.role));
+      add(FetchScheduleEvent(
+          selectedMonth: event.selectedMonth, role: event.role));
     } catch (e) {
       emit(ScheduleErrorState(e.toString()));
     }
@@ -54,7 +70,8 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
     emit(ScheduleLoadingState());
     try {
       await professorRepository.createDTR(event.dtr);
-      add(FetchScheduleEvent(selectedMonth: event.selectedMonth, role: event.role));
+      add(FetchScheduleEvent(
+          selectedMonth: event.selectedMonth, role: event.role));
     } catch (e) {
       emit(ScheduleErrorState(e.toString()));
     }

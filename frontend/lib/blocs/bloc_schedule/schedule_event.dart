@@ -9,6 +9,14 @@ class FetchScheduleEvent extends ScheduleEvent {
   FetchScheduleEvent({required this.selectedMonth, required this.role});
 }
 
+class FetchScheduleFromAdminEvent extends ScheduleEvent {
+  final String selectedMonth;
+  final String schoolID;
+
+  FetchScheduleFromAdminEvent(
+      {required this.selectedMonth, required this.schoolID});
+}
+
 class UpdateDutySchedule extends ScheduleEvent {
   final String id;
   final String selectedMonth;
