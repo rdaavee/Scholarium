@@ -20,7 +20,6 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //detects platform and choose the font family
     String fontFamily = Platform.isIOS ? 'Helvetica' : 'Manrope';
 
     return MaterialApp(
@@ -29,10 +28,8 @@ class App extends StatelessWidget {
       theme: ThemeData(
         fontFamily: fontFamily,
       ),
-      //initial is the first screen to pop up when u open the app
       initialRoute:
           isOnboardCompleted ? LoginPage.routeName : OnboardScreen.routeName,
-      //defined the routes file here in order to access the routes any where all over the app
       routes: routes,
     );
   }
