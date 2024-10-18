@@ -14,6 +14,7 @@ import 'package:isHKolarium/features/widgets/admin_widgets/subject_textfield.dar
 import 'package:isHKolarium/features/widgets/app_bar.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
 import 'package:isHKolarium/features/widgets/label_text_widget.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SetScheduleScreen extends StatefulWidget {
   const SetScheduleScreen({super.key});
@@ -29,6 +30,8 @@ class SetScheduleScreenState extends State<SetScheduleScreen> {
   String? selectedProfessor;
   String? selectedProfessorId;
   String? selectedStudent;
+  String? role;
+  String? id;
   List<UserModel>? users;
   late UserModel userProfile;
   late AdminBloc adminBloc;
@@ -44,7 +47,19 @@ class SetScheduleScreenState extends State<SetScheduleScreen> {
     initialize();
   }
 
+  Future<String?> _getRole() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('role');
+  }
+
+  Future<String?> _getID() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('schoolID');
+  }
+
   Future<void> initialize() async {
+    role = await _getRole();
+    id = await _getID();
     try {
       final adminRepository = AdminRepositoryImpl();
       final globalRepository = GlobalRepositoryImpl();
@@ -52,17 +67,33 @@ class SetScheduleScreenState extends State<SetScheduleScreen> {
       final users = await adminRepositoryImpl.fetchAllUsers();
       userProfile = await globalRepository.fetchUserProfile();
 
-      for (var user in users) {
-        if (user.role == 'Professor') {
-          professors.add({
-            'school_id': user.schoolID.toString(),
-            'name': "${user.firstName} ${user.lastName}",
-          });
-        } else if (user.role == 'Student') {
-          students.add({
-            'school_id': user.schoolID.toString(),
-            'name': "${user.firstName} ${user.lastName}",
-          });
+      if (role == "Professor") {
+        print(userProfile.schoolID.toString());
+        professors.add({
+          'school_id': userProfile.schoolID.toString(),
+          'name': "${userProfile.firstName} ${userProfile.lastName}"
+        });
+        for (var user in users) {
+          if (user.role == "Student") {
+            students.add({
+              'school_id': user.schoolID.toString(),
+              'name': "${user.firstName} ${user.lastName}"
+            });
+          }
+        }
+      } else {
+        for (var user in users) {
+          if (user.role == 'Professor') {
+            professors.add({
+              'school_id': user.schoolID.toString(),
+              'name': "${user.firstName} ${user.lastName}",
+            });
+          } else if (user.role == 'Student') {
+            students.add({
+              'school_id': user.schoolID.toString(),
+              'name': "${user.firstName} ${user.lastName}",
+            });
+          }
         }
       }
     } catch (e) {
@@ -70,9 +101,8 @@ class SetScheduleScreenState extends State<SetScheduleScreen> {
     }
   }
 
-  final DateFormat timeFormatter = DateFormat('hh:mm a'); // Formatter for AM/PM
+  final DateFormat timeFormatter = DateFormat('hh:mm a');
 
-  // Function to format TimeOfDay to a string
   String formatTimeOfDay(TimeOfDay? time) {
     if (time == null) return '';
     final now = DateTime.now();
@@ -81,7 +111,6 @@ class SetScheduleScreenState extends State<SetScheduleScreen> {
     return timeFormatter.format(formattedTime);
   }
 
-  // Function to pick time
   Future<void> selectTime(BuildContext context, bool isStart) async {
     final TimeOfDay? pickedTime = await showTimePicker(
       context: context,
@@ -103,10 +132,6 @@ class SetScheduleScreenState extends State<SetScheduleScreen> {
     String formattedDate = selectedDate != null
         ? DateFormat('yyyy-MM-dd').format(selectedDate!)
         : '';
-    print("Selected Student: $selectedStudent");
-    print("Selected Date: $formattedDate");
-    print("Selected Professor: $selectedProfessor");
-    print("Selected Time Slot: $selectedStartTime");
     if (roomController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please input a room.')),

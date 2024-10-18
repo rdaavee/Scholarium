@@ -4,11 +4,13 @@ import 'package:intl/intl.dart';
 import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
 import 'package:isHKolarium/api/implementations/professor_repository_impl.dart';
 import 'package:isHKolarium/api/implementations/student_repository_impl.dart';
+import 'package:isHKolarium/blocs/bloc_admin/admin_bloc.dart';
 import 'package:isHKolarium/blocs/bloc_bottom_nav/bottom_nav_bloc.dart';
 import 'package:isHKolarium/blocs/bloc_schedule/schedule_bloc.dart';
 import 'package:isHKolarium/blocs/bloc_schedule/schedule_event.dart';
 import 'package:isHKolarium/blocs/bloc_schedule/schedule_state.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
+import 'package:isHKolarium/features/screens/screen_admin/create_schedule_screen.dart';
 import 'package:isHKolarium/features/widgets/app_bar.dart';
 import 'package:isHKolarium/features/widgets/loading_circular.dart';
 import 'package:isHKolarium/features/widgets/no_data.dart';
@@ -152,7 +154,8 @@ class ScheduleScreenState extends State<ScheduleScreen> {
                                           child: LoadingCircular());
                                     } else if (state
                                         is ScheduleLoadedSuccessState) {
-                                      final duties = state.schedule.where((duty) {
+                                      final duties =
+                                          state.schedule.where((duty) {
                                         return duty['isActive'] == true;
                                       }).toList();
                                       if (duties.isEmpty) {
@@ -164,8 +167,9 @@ class ScheduleScreenState extends State<ScheduleScreen> {
                                       return ListView.builder(
                                         itemCount: duties.length,
                                         itemBuilder: (context, index) {
-                                          final duty = Map<String, dynamic>.from(
-                                              duties[index]);
+                                          final duty =
+                                              Map<String, dynamic>.from(
+                                                  duties[index]);
                                           final isCompleted =
                                               duty['completed'] == 'true';
                                           if (widget.role == "Student") {
@@ -192,17 +196,19 @@ class ScheduleScreenState extends State<ScheduleScreen> {
                                                             role: widget.role,
                                                             selectedMonth:
                                                                 selectedMonth,
-                                                            schoolId:
-                                                                duty['user_info']
-                                                                    ['school_id'],
+                                                            schoolId: duty[
+                                                                    'user_info']
+                                                                ['school_id'],
                                                             date: duty['date'],
-                                                            timeIn: duty['time_in'],
-                                                            timeOut: duty['time_out'],
-                                                            hkType:
-                                                                duty['user_info']
-                                                                    ['hk_type'],
-                                                            professorName:
-                                                                duty['professor'],
+                                                            timeIn:
+                                                                duty['time_in'],
+                                                            timeOut: duty[
+                                                                'time_out'],
+                                                            hkType: duty[
+                                                                    'user_info']
+                                                                ['hk_type'],
+                                                            professorName: duty[
+                                                                'professor'],
                                                           );
                                                         },
                                                       );
@@ -236,6 +242,28 @@ class ScheduleScreenState extends State<ScheduleScreen> {
                                   },
                                 ),
                               ),
+                              if (widget.role != "Student")
+                                Align(
+                                  alignment: Alignment.bottomRight,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        right: 15, bottom: 15),
+                                    child: FloatingActionButton(
+                                      backgroundColor:
+                                          ColorPalette.primary.withOpacity(0.6),
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  SetScheduleScreen()),
+                                        );
+                                      },
+                                      child: const Icon(Icons.add,
+                                          color: Colors.white),
+                                    ),
+                                  ),
+                                ),
                             ],
                           ),
                         ),

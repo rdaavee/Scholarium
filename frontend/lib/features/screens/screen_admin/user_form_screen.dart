@@ -266,7 +266,6 @@ class _UserFormScreenState extends State<UserFormScreen> {
       return;
     }
 
-    // Check for student role and HK Type selection
     if (selectedRole == "Student" && selectedHkType == "Select HK Type") {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please indicate HK type.')),
