@@ -4,7 +4,6 @@ import 'package:intl/intl.dart';
 import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
 import 'package:isHKolarium/api/implementations/professor_repository_impl.dart';
 import 'package:isHKolarium/api/implementations/student_repository_impl.dart';
-import 'package:isHKolarium/blocs/bloc_admin/admin_bloc.dart';
 import 'package:isHKolarium/blocs/bloc_bottom_nav/bottom_nav_bloc.dart';
 import 'package:isHKolarium/blocs/bloc_schedule/schedule_bloc.dart';
 import 'package:isHKolarium/blocs/bloc_schedule/schedule_event.dart';
@@ -204,7 +203,8 @@ class ScheduleScreenState extends State<ScheduleScreen> {
                                                                 duty['time_in'],
                                                             timeOut: duty[
                                                                 'time_out'],
-                                                            remarks: duty['task'],
+                                                            remarks:
+                                                                duty['task'],
                                                             hkType: duty[
                                                                     'user_info']
                                                                 ['hk_type'],
