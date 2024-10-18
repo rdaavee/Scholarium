@@ -74,7 +74,7 @@ class TimelineItem extends StatelessWidget {
                     professorName:
                         role == 'Professor' ? studentName : duty['professor'],
                     roomName: duty['room'].toString(),
-                    timeInAndOut: "${duty['time_in']} to ${duty[ 'time_out']}",
+                    timeInAndOut: "${_formatTime((duty['time_in'] + ":00"))} to ${_formatTime((duty['time_out'] + ":00"))}",
                     isCompleted: completionStatus == "true",
                     isNotCompleted: completionStatus == "false",
                     cardColor: Colors.white,
@@ -87,6 +87,7 @@ class TimelineItem extends StatelessWidget {
       },
     );
   }
+  
 
   // Helper function to get the color of the indicator based on completion status
   Color _getIndicatorColor(String? completionStatus) {

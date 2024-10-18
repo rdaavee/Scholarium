@@ -271,8 +271,14 @@ class GlobalRepositoryImpl extends GlobalRepository implements Endpoint {
 
   @override
   Future<AnnouncementModel> fetchLatestAnnouncementData() async {
-    final response =
-        await http.get(Uri.parse('$baseUrl/user/getLatestAnnouncement'));
+    final token = await _getToken();
+    final response = await http.get(
+      Uri.parse('$baseUrl/user/getLatestAnnouncement'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> data = jsonDecode(response.body);

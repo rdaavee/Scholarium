@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class AnnouncementCard extends StatelessWidget {
   final Text textLabel;
   final Text textBody;
   final Text date;
   final Text time;
+  final String stringTime;
   final String imageUrl;
 
   const AnnouncementCard({
@@ -14,6 +16,7 @@ class AnnouncementCard extends StatelessWidget {
     required this.date,
     required this.time,
     required this.imageUrl,
+    required this.stringTime,
   });
 
   @override
@@ -46,7 +49,7 @@ class AnnouncementCard extends StatelessWidget {
                     const SizedBox(height: 16),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [date, time],
+                      children: [date, Text(_formatTime("$stringTime:00"))],
                     ),
                   ],
                 ),
@@ -56,5 +59,10 @@ class AnnouncementCard extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  String _formatTime(String time) {
+    final DateTime parsedTime = DateFormat('HH:mm:ss').parse(time);
+    return DateFormat('h:mm a').format(parsedTime);
   }
 }

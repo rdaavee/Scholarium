@@ -19,29 +19,30 @@ exports.getAnnouncements = async (req, res) => {
   }
 };
 
-// Get Latest Announcement
+
 exports.getLatestAnnouncement = async (req, res) => {
   try {
-    const latestAnnouncement = await Announcement.find()
-      .sort({ date: -1 })
-      .limit(1);
+    const startOfToday = moment().startOf('day');
+    const endOfToday = moment().endOf('day');
 
+    const latestAnnouncement = await Announcement.find({
+      createdAt: {
+        $gte: startOfToday.toDate(),
+        $lte: endOfToday.toDate(),
+      },
+    }).sort({ createdAt: -1 }); 
+    console.log(latestAnnouncement);
     if (latestAnnouncement.length > 0) {
-      const announcementDate = moment(latestAnnouncement[0].date);
-
-      if (announcementDate.isSame(currentDate)) {
-        res.status(200).json(latestAnnouncement[0]);
-      } else {
-        res.status(204).json({ message: "No data today" });
-      }
+      res.status(200).json(latestAnnouncement[0]); 
     } else {
-      res.status(404).json({ message: "No announcements found" });
+      res.status(204).json({ message: "No announcements for today" });
     }
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
 
 // Get Posts
 exports.getPosts = async (req, res) => {

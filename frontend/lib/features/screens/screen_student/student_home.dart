@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
 import 'package:isHKolarium/api/implementations/student_repository_impl.dart';
 import 'package:isHKolarium/blocs/bloc_bottom_nav/bottom_nav_bloc.dart';
@@ -67,6 +68,11 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
     return formattedDate;
   }
 
+    String _formatTime(String time) {
+    final DateTime parsedTime = DateFormat('HH:mm:ss').parse(time);
+    return DateFormat('h:mm a').format(parsedTime);
+  }
+
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -92,6 +98,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
               body: const StudentShimmer(),
             );
           } else if (state is StudentsLoadedSuccessState) {
+            print(state.announcements[0]);
             return Scaffold(
               appBar: AppBarWidget(
                   title: "Hello, ${state.users[0].firstName}!",
@@ -139,10 +146,11 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                                       children: [
                                         ScheduleCard(
                                           scheduleDate: Text(
-                                            state.todaySchedule[0].isActive == true
+                                            state.todaySchedule[0].isActive ==
+                                                    true
                                                 ? _formatDate(state
                                                     .todaySchedule[0].date
-                                                    .toString()) 
+                                                    .toString())
                                                 : "No Schedule Today",
                                             style: const TextStyle(
                                               fontSize: 20,
@@ -152,8 +160,10 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                                             ),
                                           ),
                                           scheduleTime: Text(
-                                            state.todaySchedule[0].isActive == true
-                                                ? state.todaySchedule[0].timeIn.toString()
+                                            state.todaySchedule[0].isActive ==
+                                                    true
+                                                ? _formatTime("${state.todaySchedule[0].timeIn}:00")
+                                                    .toString()
                                                 : "",
                                             style: const TextStyle(
                                               fontSize: 11,
@@ -163,8 +173,10 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                                             ),
                                           ),
                                           roomName: Text(
-                                            state.todaySchedule[0].isActive == true
-                                                ? state.todaySchedule[0].room.toString()
+                                            state.todaySchedule[0].isActive ==
+                                                    true
+                                                ? state.todaySchedule[0].room
+                                                    .toString()
                                                 : "",
                                             style: const TextStyle(
                                               fontSize: 18,
@@ -179,10 +191,11 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                                         const SizedBox(width: 5),
                                         ScheduleCard(
                                           scheduleDate: Text(
-                                            state.nextSchedule[0].isActive == true
+                                            state.nextSchedule[0].isActive ==
+                                                    true
                                                 ? _formatDate(state
                                                     .nextSchedule[0].date
-                                                    .toString()) 
+                                                    .toString())
                                                 : "No Upcomming Schedule",
                                             style: const TextStyle(
                                               fontSize: 20,
@@ -192,8 +205,10 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                                             ),
                                           ),
                                           scheduleTime: Text(
-                                            state.nextSchedule[0].isActive == true
-                                                ? state.nextSchedule[0].timeIn.toString()
+                                            state.nextSchedule[0].isActive ==
+                                                    true
+                                                ? _formatTime("${state.nextSchedule[0].timeIn}:00")
+                                                    .toString()
                                                 : "",
                                             style: const TextStyle(
                                               fontSize: 11,
@@ -203,8 +218,10 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                                             ),
                                           ),
                                           roomName: Text(
-                                            state.nextSchedule[0].isActive == true
-                                                ? state.nextSchedule[0].room.toString()
+                                            state.nextSchedule[0].isActive ==
+                                                    true
+                                                ? state.nextSchedule[0].room
+                                                    .toString()
                                                 : "",
                                             style: const TextStyle(
                                               fontSize: 17,
@@ -234,8 +251,9 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                                             Navigator.push(
                                               context,
                                               MaterialPageRoute(
-                                                builder: (context) =>
-                                                    DtrScreen(user: state.users[0],),
+                                                builder: (context) => DtrScreen(
+                                                  user: state.users[0],
+                                                ),
                                               ),
                                             );
                                           },
@@ -276,6 +294,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                                       ],
                                     ),
                                   ),
+
                                   AnnouncementCard(
                                     textLabel: Text(
                                       state.announcements[0].title.toString(),
@@ -312,6 +331,8 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                                       ),
                                     ),
                                     imageUrl: AppImages.cardBgImg,
+                                    stringTime:
+                                        state.announcements[0].time.toString(),
                                   ),
                                   // Events Section
                                   Padding(

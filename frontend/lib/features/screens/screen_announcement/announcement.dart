@@ -117,12 +117,12 @@ class _AnnouncementsScreenState extends State<AnnouncementsScreen> {
                           ),
                           textBody: Text(
                             announcement.body.toString(),
-                            style: const TextStyle(
-                            ),
+                            style: const TextStyle(),
                           ),
                           date: Text(announcement.date.toString()),
                           time: Text(_formatTime(announcement.time.toString())),
                           imageUrl: 'assets/images/card-bg.png',
+                          stringTime: announcement.time.toString(),
                         ),
                       ),
                     ],
@@ -135,26 +135,27 @@ class _AnnouncementsScreenState extends State<AnnouncementsScreen> {
       ],
     );
   }
-  
+
   Widget _buildShimmerEffect() {
-  return Shimmer.fromColors(
-    baseColor: Colors.grey[300]!,
-    highlightColor: Colors.grey[100]!,
-    child: ListView.builder(
-      itemCount: 5, // Number of shimmer items to show
-      itemBuilder: (context, index) {
-        return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 10.0),
-          child: Container(
-            height: 80, // Height of the shimmer card
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
+    return Shimmer.fromColors(
+      baseColor: Colors.grey[300]!,
+      highlightColor: Colors.grey[100]!,
+      child: ListView.builder(
+        itemCount: 5, // Number of shimmer items to show
+        itemBuilder: (context, index) {
+          return Padding(
+            padding:
+                const EdgeInsets.symmetric(vertical: 8.0, horizontal: 10.0),
+            child: Container(
+              height: 80, // Height of the shimmer card
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+              ),
             ),
-          ),
-        );
-      },
-    ),
-  );
-}
+          );
+        },
+      ),
+    );
+  }
 }
