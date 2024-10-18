@@ -8,6 +8,7 @@ import 'package:isHKolarium/api/implementations/student_repository_impl.dart';
 import 'package:isHKolarium/api/models/dtr_model.dart';
 import 'package:isHKolarium/api/models/user_model.dart';
 import 'package:isHKolarium/blocs/bloc_dtr/dtr_bloc.dart';
+import 'package:isHKolarium/config/assets/app_images.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
 import 'package:isHKolarium/features/widgets/app_bar.dart';
 import 'package:isHKolarium/features/widgets/loading_circular.dart';
@@ -55,7 +56,7 @@ class _DtrScreenState extends State<DtrScreen> {
 
   Future<void> generatePdf(List<DtrModel> dtrList) async {
     final pdfDocument = pw.Document();
-    final Uint8List logoBytes = await loadAssetImage('assets/images/ishkolarium.png');
+    final Uint8List logoBytes = await loadAssetImage(AppImages.uPangLogo);
     final pw.ImageProvider logoImage = pw.MemoryImage(logoBytes);
     // Table data
     print(widget.user.professor.toString());
