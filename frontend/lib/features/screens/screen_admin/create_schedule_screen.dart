@@ -17,7 +17,8 @@ import 'package:isHKolarium/features/widgets/label_text_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SetScheduleScreen extends StatefulWidget {
-  const SetScheduleScreen({super.key});
+  final String isRole;
+  const SetScheduleScreen({super.key, required this.isRole});
 
   @override
   SetScheduleScreenState createState() => SetScheduleScreenState();
@@ -67,32 +68,47 @@ class SetScheduleScreenState extends State<SetScheduleScreen> {
       final users = await adminRepositoryImpl.fetchAllUsers();
       userProfile = await globalRepository.fetchUserProfile();
 
-      if (role == "Professor") {
-        print(userProfile.schoolID.toString());
-        professors.add({
-          'school_id': userProfile.schoolID.toString(),
-          'name': "${userProfile.firstName} ${userProfile.lastName}"
-        });
-        for (var user in users) {
-          if (user.role == "Student") {
-            students.add({
-              'school_id': user.schoolID.toString(),
-              'name': "${user.firstName} ${user.lastName}"
-            });
+      if (widget.isRole == "Admin") {
+        if (role == "Professor") {
+          print(userProfile.schoolID.toString());
+          professors.add({
+            'school_id': userProfile.schoolID.toString(),
+            'name': "${userProfile.firstName} ${userProfile.lastName}"
+          });
+          for (var user in users) {
+            if (user.role == "Student") {
+              students.add({
+                'school_id': user.schoolID.toString(),
+                'name': "${user.firstName} ${user.lastName}"
+              });
+            }
+          }
+        } else {
+          for (var user in users) {
+            if (user.role == 'Professor') {
+              professors.add({
+                'school_id': user.schoolID.toString(),
+                'name': "${user.firstName} ${user.lastName}",
+              });
+            } else if (user.role == 'Student') {
+              students.add({
+                'school_id': user.schoolID.toString(),
+                'name': "${user.firstName} ${user.lastName}",
+              });
+            }
           }
         }
-      } else {
+      } else if (widget.isRole == "Professor") {
+        final prefs = await SharedPreferences.getInstance();
+        final schoolId = prefs.getString('schoolID').toString();
         for (var user in users) {
-          if (user.role == 'Professor') {
-            professors.add({
-              'school_id': user.schoolID.toString(),
-              'name': "${user.firstName} ${user.lastName}",
-            });
-          } else if (user.role == 'Student') {
-            students.add({
-              'school_id': user.schoolID.toString(),
-              'name': "${user.firstName} ${user.lastName}",
-            });
+          if (user.role == "Student") {
+            if (user.profId == schoolId) {
+              students.add({
+                'school_id': user.schoolID.toString(),
+                'name': "${user.firstName} ${user.lastName}"
+              });
+            }
           }
         }
       }
@@ -144,12 +160,15 @@ class SetScheduleScreenState extends State<SetScheduleScreen> {
       );
       return;
     }
+    final prefs = await SharedPreferences.getInstance();
+    final schoolId = prefs.getString('schoolID').toString();
     final schedule = ScheduleModel(
       schoolID: selectedStudent,
       room: roomController.text,
       block: "block",
       task: taskController.text,
-      profID: selectedProfessor,
+      profID:
+          widget.isRole == "Professor" ? schoolId : selectedProfessor,
       professor: "",
       department: "department",
       timeIn: formatTimeOfDay(selectedStartTime),
@@ -165,7 +184,7 @@ class SetScheduleScreenState extends State<SetScheduleScreen> {
         senderName: "${userProfile.firstName} ${userProfile.lastName}",
         receiverName: selectedStudent,
         title: "Schedule Duty",
-        role: "Admin",
+        role: role,
         message:
             "  class at room ${roomController.text}, on $formattedDate at ${formatTimeOfDay(selectedStartTime)} to ${formatTimeOfDay(selectedEndTime)} as ${taskController.text}",
         status: false,
@@ -174,6 +193,9 @@ class SetScheduleScreenState extends State<SetScheduleScreen> {
       adminBloc.add(CreateScheduleAndNotificationEvent(schedule, notification));
       print("Schedule uploaded successfully");
       print("Notification uploaded successfully");
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Schedule created successfully')),
+      );
       Navigator.pop(context);
     } catch (e) {
       print("Error uploading schedule: $e");
@@ -264,28 +286,30 @@ class SetScheduleScreenState extends State<SetScheduleScreen> {
                   "The selected time of your duty is from ${formatTimeOfDay(selectedStartTime)} to ${formatTimeOfDay(selectedEndTime)}",
                   style: const TextStyle(fontSize: 10),
                 ),
-              const SizedBox(height: 30),
-              LabelTextWidget(title: 'Select Professor'),
-              const SizedBox(height: 10),
-              DropdownButton<String>(
-                isExpanded: true,
-                value: selectedProfessor,
-                hint: const Text(
-                  "Select Professor",
-                  style: TextStyle(fontSize: 12),
+              if (widget.isRole == "Admin") ...[
+                const SizedBox(height: 30),
+                LabelTextWidget(title: 'Select Professor'),
+                const SizedBox(height: 10),
+                DropdownButton<String>(
+                  isExpanded: true,
+                  value: selectedProfessor,
+                  hint: const Text(
+                    "Select Professor",
+                    style: TextStyle(fontSize: 12),
+                  ),
+                  items: professors.map((professor) {
+                    return DropdownMenuItem<String>(
+                      value: professor['school_id'],
+                      child: Text(professor['name']!),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      selectedProfessor = value;
+                    });
+                  },
                 ),
-                items: professors.map((professor) {
-                  return DropdownMenuItem<String>(
-                    value: professor['school_id'],
-                    child: Text(professor['name']!),
-                  );
-                }).toList(),
-                onChanged: (value) {
-                  setState(() {
-                    selectedProfessor = value;
-                  });
-                },
-              ),
+              ],
               const SizedBox(height: 20),
               LabelTextWidget(title: 'Select Student'),
               const SizedBox(height: 10),
@@ -339,7 +363,7 @@ class SetScheduleScreenState extends State<SetScheduleScreen> {
                   child: TextButton(
                     onPressed: selectedDate != null &&
                             selectedStartTime != null &&
-                            selectedProfessor != null
+                            (widget.isRole != "Professor" ? selectedProfessor != null : true)
                         ? () async {
                             uploadSchedule();
                           }

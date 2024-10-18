@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:isHKolarium/api/implementations/admin_repository_impl.dart';
 import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
 import 'package:isHKolarium/api/implementations/student_repository_impl.dart';
@@ -35,6 +36,10 @@ class NotificationMessageState extends State<NotificationMessageWidget> {
   Future<void> initialize() async {
     adminBloc = AdminBloc(adminRepository, globalRepository);
     notificationsBloc = NotificationsBloc(globalRepository, studentRepository);
+  }
+  String _formatTime(String time) {
+    final DateTime parsedTime = DateFormat('HH:mm:ss').parse(time);
+    return DateFormat('h:mm a').format(parsedTime);
   }
 
   @override
@@ -82,7 +87,7 @@ class NotificationMessageState extends State<NotificationMessageWidget> {
                     ),
                   ),
                   Text(
-                    widget.notifications.time.toString(),
+                    _formatTime(widget.notifications.time.toString()),
                     style: TextStyle(
                       fontWeight: FontWeight.normal,
                       color: Color(0xFFC1C1C1),
@@ -162,7 +167,7 @@ class NotificationMessageState extends State<NotificationMessageWidget> {
                             widget.notifications.scheduleId.toString(),
                             widget.notifications.sender.toString()));
                         notificationsBloc.add(FetchNotificationsEvent());
-                        Navigator.pop(context, false);
+                        Navigator.pop(context, true);
                       },
                     ),
                   ],

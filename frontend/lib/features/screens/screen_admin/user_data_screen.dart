@@ -38,7 +38,6 @@ class UserDataScreenState extends State<UserDataScreen> {
     setState(() {
       adminBloc.add(FetchUsersEvent(selectedRole, statusFilter));
       context.read<BottomNavBloc>().add(FetchUnreadCountEvent());
-
     });
   }
 
@@ -69,7 +68,8 @@ class UserDataScreenState extends State<UserDataScreen> {
                 ),
               );
               if (isCompleted == true) {
-                _initialize();
+                adminBloc.add(FetchUsersEvent(selectedRole, statusFilter));
+                context.read<BottomNavBloc>().add(FetchUnreadCountEvent());
               }
             },
             child: const Icon(
@@ -139,7 +139,11 @@ class UserDataScreenState extends State<UserDataScreen> {
                           filteredUsers: filteredUsers,
                           adminBloc: adminBloc,
                           onUpdated: () {
-                            adminBloc.add(FetchUsersEvent(selectedRole, statusFilter));
+                            adminBloc.add(
+                                FetchUsersEvent(selectedRole, statusFilter));
+                            context
+                                .read<BottomNavBloc>()
+                                .add(FetchUnreadCountEvent());
                           },
                         );
                       } else if (state is AdminErrorState) {
