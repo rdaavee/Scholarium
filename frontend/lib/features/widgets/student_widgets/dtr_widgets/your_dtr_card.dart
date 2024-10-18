@@ -6,6 +6,7 @@ class YourDtrCard extends StatelessWidget {
   final String timeIn;
   final String timeOut;
   final String hoursRendered;
+  final String remarks;
 
   final Color cardColor;
 
@@ -16,67 +17,48 @@ class YourDtrCard extends StatelessWidget {
     required this.timeOut,
     required this.hoursRendered,
     required this.cardColor,
+    required this.remarks,
   });
 
   @override
   Widget build(BuildContext context) {
     String formattedDate = DateFormat('yyyy-MM-dd').format(date);
 
-    return Container(
-      padding: const EdgeInsets.all(15.0),
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Table(
-          border: TableBorder.all(
-            color: Colors.white.withOpacity(0.1),
-            width: 1,
-          ),
-          columnWidths: const {
-            0: FixedColumnWidth(100),
-            1: FixedColumnWidth(100),
-            2: FixedColumnWidth(100),
-            3: FixedColumnWidth(120),
-          },
+    return Table(
+      border: TableBorder.all(
+        color: Colors.black.withOpacity(1),
+        width: .3,
+      ),
+      columnWidths: const {
+        0: FixedColumnWidth(75),
+        1: FixedColumnWidth(75),
+        2: FixedColumnWidth(70),
+        3: FixedColumnWidth(80),
+        4: FixedColumnWidth(100),
+      },
+      children: [
+        TableRow(
           children: [
-            TableRow(
-              children: [
-                _buildCell(formattedDate),
-                _buildCell(timeIn),
-                _buildCell(timeOut),
-                _buildCell(hoursRendered),
-              ],
-            ),
+            _buildCell(formattedDate),
+            _buildCell(timeIn),
+            _buildCell(timeOut),
+            _buildCell(hoursRendered),
+            _buildCell(remarks),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildHeader(String text) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Center(
-        child: Text(
-          text,
-          style: const TextStyle(
-            color: Colors.black,
-            fontSize: 12,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
+      ],
     );
   }
 
   Widget _buildCell(String text) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.only(top: 10.0, bottom: 10),
       child: Center(
         child: Text(
           text,
           style: const TextStyle(
             color: Colors.black,
-            fontSize: 12,
+            fontSize: 8.7,
           ),
         ),
       ),

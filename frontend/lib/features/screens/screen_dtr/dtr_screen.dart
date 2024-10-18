@@ -11,9 +11,10 @@ import 'package:isHKolarium/blocs/bloc_dtr/dtr_bloc.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
 import 'package:isHKolarium/features/widgets/app_bar.dart';
 import 'package:isHKolarium/features/widgets/loading_circular.dart';
-import 'package:isHKolarium/features/widgets/student_widgets/dtr_widgets/your_dtr_card.dart';
-import 'package:isHKolarium/features/widgets/student_widgets/dtr_widgets/your_dtr_hours_card.dart';
+import 'package:isHKolarium/features/widgets/student_widgets/dtr_widgets/cell_widget.dart';
+import 'package:isHKolarium/features/widgets/student_widgets/dtr_widgets/header_widget.dart';
 import 'package:http/http.dart' as http;
+import 'package:isHKolarium/features/widgets/student_widgets/dtr_widgets/your_dtr_hours_card.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
@@ -289,7 +290,6 @@ class _DtrScreenState extends State<DtrScreen> {
                         children: [
                           Container(
                             margin: const EdgeInsets.all(10.0),
-                            padding: const EdgeInsets.all(8.0),
                             child: YourDtrHoursCard(
                               progress: (state.hours[0].totalhours /
                                       state.hours[0].targethours)
@@ -297,61 +297,55 @@ class _DtrScreenState extends State<DtrScreen> {
                               cardColor: Colors.white,
                             ),
                           ),
-                          Container(
-                            padding: const EdgeInsets.all(10.0),
-                            child: SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              child: Table(
-                                border: TableBorder.all(
-                                  color: Colors.white.withOpacity(0.1),
-                                  width: 1,
+                          Table(
+                            border: TableBorder.all(
+                              color: Colors.black.withOpacity(1),
+                              width: 0.5,
+                            ),
+                            columnWidths: const {
+                              0: FixedColumnWidth(85),
+                              1: FixedColumnWidth(85),
+                              2: FixedColumnWidth(85),
+                              3: FixedColumnWidth(90),
+                              4: FixedColumnWidth(105),
+                            },
+                            children: [
+                              TableRow(
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[200],
                                 ),
-                                columnWidths: const {
-                                  0: FixedColumnWidth(100),
-                                  1: FixedColumnWidth(100),
-                                  2: FixedColumnWidth(100),
-                                  3: FixedColumnWidth(120),
-                                },
                                 children: [
-                                  TableRow(
-                                    decoration: BoxDecoration(
-                                      color: Colors.grey[200],
-                                    ),
-                                    children: [
-                                      _buildHeader('Date'),
-                                      _buildHeader('Time In'),
-                                      _buildHeader('Time Out'),
-                                      _buildHeader('Hours Rendered'),
-                                    ],
-                                  ),
+                                  HeaderWidget(text: 'Date'),
+                                  HeaderWidget(text: 'Time In'),
+                                  HeaderWidget(text: 'Time Out'),
+                                  HeaderWidget(text: 'Hrs Rendered'),
+                                  HeaderWidget(text: 'Remarks'),
                                 ],
                               ),
-                            ),
-                          ),
-                          Expanded(
-                            child: ListView.builder(
-                              itemCount: state.dtr.length,
-                              itemBuilder: (context, index) {
-                                final dtr = state.dtr[index];
-                                return Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
+                              ...state.dtr.map((dtr) {
+                                return TableRow(
                                   children: [
-                                    YourDtrCard(
-                                      date: DateTime.parse(dtr.date.toString()),
-                                      timeIn: dtr.timeIn.toString(),
-                                      timeOut: dtr.timeOut.toString(),
-                                      hoursRendered:
-                                          dtr.hoursRendered.toString(),
-                                      cardColor: Colors.white,
+                                    CellWidget(
+                                      text: DateFormat('yyyy-MM-dd').format(
+                                        DateTime.parse(
+                                          dtr.date.toString(),
+                                        ),
+                                      ),
                                     ),
-                                    const Divider(
-                                      thickness: 0.1,
+                                    CellWidget(
+                                      text: dtr.timeIn.toString(),
                                     ),
+                                    CellWidget(
+                                      text: dtr.timeOut.toString(),
+                                    ),
+                                    CellWidget(
+                                      text: dtr.hoursRendered.toString(),
+                                    ),
+                                    CellWidget(text: 'Dummy'),
                                   ],
                                 );
-                              },
-                            ),
+                              }),
+                            ],
                           ),
                         ],
                       ),
@@ -364,22 +358,6 @@ class _DtrScreenState extends State<DtrScreen> {
             return LoadingCircular();
           }
         },
-      ),
-    );
-  }
-
-  Widget _buildHeader(String text) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Center(
-        child: Text(
-          text,
-          style: const TextStyle(
-            color: Colors.black,
-            fontSize: 12,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
       ),
     );
   }
