@@ -440,6 +440,8 @@ exports.getUserProfile = async (req, res) => {
         contact: user.contact,
         address: user.address,
         role: user.role,
+        professor: user.professor,
+        prof_id: user.prof_id,
         hk_type: user.hk_type,
         status: user.status,
         token: user.token,
