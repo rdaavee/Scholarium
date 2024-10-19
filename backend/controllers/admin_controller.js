@@ -70,6 +70,26 @@ exports.createUser = async (req, res) => {
   }
 };
 
+exports.getScheduleAdmin = async (req,res) =>{
+  const {month} = req.params;
+  console.log(month);
+  try{
+    const startOfMonth = moment(month).startOf("month").format("YYYY-MM-DD");
+    const endOfMonth = moment(month).endOf("month").format("YYYY-MM-DD");
+    const schedules = await Schedule.find({
+      date: {$gte: startOfMonth, $lte: endOfMonth},
+    }).sort({date: 1});
+    console.log(schedules);
+    if(schedules.length>0){
+      res.status(200).json(schedules);
+    }else{
+      res.status(404).json({message: "No schedules found for this month"});
+    }
+  }catch(error){console.error(error);
+    res.status(500).json({message: " Server error occured"});
+  }
+}
+
 
 exports.createScheduleAndNotification = async (req, res) => {
   try {
