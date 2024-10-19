@@ -113,7 +113,9 @@ class UserDataTable extends StatelessWidget {
                                     isScrollControlled: true,
                                     backgroundColor: Colors.white,
                                     builder: (BuildContext context) {
-                                      return ProfileModalBottomSheet(schoolId: user.schoolID.toString(),);
+                                      return ProfileModalBottomSheet(
+                                        schoolId: user.schoolID.toString(),
+                                      );
                                     },
                                   );
 

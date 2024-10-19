@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
@@ -12,6 +14,9 @@ import 'package:isHKolarium/features/widgets/app_bar.dart';
 import 'package:isHKolarium/api/models/user_model.dart';
 import 'package:isHKolarium/api/implementations/admin_repository_impl.dart';
 import 'package:isHKolarium/features/widgets/loading_circular.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:excel/excel.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class UserDataScreen extends StatefulWidget {
   const UserDataScreen({super.key});
@@ -39,6 +44,60 @@ class UserDataScreenState extends State<UserDataScreen> {
       adminBloc.add(FetchUsersEvent(selectedRole, statusFilter));
       context.read<BottomNavBloc>().add(FetchUnreadCountEvent());
     });
+  }
+
+  Future<void> exportToExcel(List<UserModel> users) async {
+    final excel = Excel.createExcel(); // Create an Excel sheet
+    final sheet = excel['User List'];
+
+    // Add header row
+    sheet.appendRow([
+      'ID',
+      'First Name',
+      'Last Name',
+      'Email',
+      'Contact',
+      'Address',
+      'Role',
+      'HK Type',
+      'Status',
+    ]);
+
+    // Add user data rows
+    for (var user in users) {
+      sheet.appendRow([
+        user.schoolID,
+        user.firstName,
+        user.lastName,
+        user.email,
+        user.contact,
+        user.address,
+        user.role,
+        user.hkType,
+        user.status,
+      ]);
+    }
+
+    // Request storage permissions
+    var status = await Permission.storage.request();
+    if (status.isGranted) {
+      // Save the Excel file
+      final directory = Directory('/storage/emulated/0/Download');
+      String filePath = '${directory.path}/user_list.xlsx';
+      final excelFile = excel.encode();
+      if (excelFile != null) {
+        File(filePath)
+          ..createSync(recursive: true)
+          ..writeAsBytesSync(excelFile);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Excel file saved at $filePath')),
+        );
+      }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Storage permission denied')),
+      );
+    }
   }
 
   @override
@@ -102,17 +161,22 @@ class UserDataScreenState extends State<UserDataScreen> {
                       ),
                     ),
                     const SizedBox(width: 16),
-                    Expanded(
-                      child: StatusDropdown(
-                        statusFilter: statusFilter,
-                        onChanged: (newValue) {
-                          setState(() {
-                            statusFilter = newValue!;
-                          });
-                          adminBloc
-                              .add(FetchUsersEvent(selectedRole, statusFilter));
-                        },
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        TextButton.icon(
+                          onPressed: () async {
+                            if (adminBloc.state
+                                is AdminListScreenSuccessState) {
+                              final state = adminBloc.state
+                                  as AdminListScreenSuccessState;
+                              await exportToExcel(state.filteredUsers);
+                            }
+                          },
+                          icon: const Icon(Icons.download),
+                          label: const Text('Download Excel'),
+                        ),
+                      ],
                     ),
                   ],
                 ),
