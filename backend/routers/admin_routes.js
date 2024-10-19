@@ -11,7 +11,8 @@ router.post('/createSchedule', verifyToken, adminController.createScheduleAndNot
 router.put('/deleteSchedule', verifyToken, adminController.deleteScheduleAndNotification);
 router.put('/updateUser/:school_id',verifyToken, adminController.updateUser);
 router.delete('/deleteUser/:school_id',verifyToken, adminController.deleteUser);
-router.post('/createNotification', verifyToken, adminController.createNotification)
+router.post('/createNotification', verifyToken, adminController.createNotification);
+router.get('/schedule/:month', verifyToken, adminController.getScheduleAdmin);
 
 //Announcements controls
 router.get('/getAllAnnouncements', verifyToken, adminController.getAllAnnouncements);
