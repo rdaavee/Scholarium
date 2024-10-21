@@ -4,7 +4,6 @@ const Message = require("../models/message_system_model");
 const crypto = require("crypto");
 const { sendVerificationCode } = require("../services/mailService");
 const secretKey = process.env.SECRET_KEY;
-
 //=========================================PASSWORD AUTHENTICATION=====================================================================
 const verificationCodes = {};
 
@@ -36,10 +35,10 @@ exports.verifyCode = async (req, res) => {
   console.log(email);
   console.log(code);
   if (verificationCodes[email] == code) {
-    console.log("OTP successful.")
+    console.log("OTP successful.");
     res.status(200).json({ message: "OTP successful." });
   } else {
-    console.log("OTP mali.")
+    console.log("OTP mali.");
     return res.status(400).json({ message: "Invalid or expired code." });
   }
 };
@@ -101,6 +100,8 @@ exports.login = async (req, res) => {
 //========================================================MESSAGING SYSTEM============================================================
 exports.postMessage = async (req, res) => {
   try {
+    const io = req.app.get('io');
+
     const { sender, receiver, content } = req.body;
 
     const senderUser = await User.findOne({ school_id: sender });
@@ -117,6 +118,15 @@ exports.postMessage = async (req, res) => {
     });
 
     await message.save();
+
+    // Emit the message to the receiver through socket.io
+    io.to(receiverUser.school_id).emit("receiveMessage", {
+      sender: senderUser.school_id,
+      content: message.content,
+      timestamp: message.createdAt,
+    });
+    console.log(`Message sent from ${senderUser.school_id} to ${receiverUser.school_id}: ${message.content}`);
+
     res.status(200).json({ message: "Message sent successfully" });
   } catch (error) {
     console.error(error);
@@ -157,16 +167,21 @@ exports.getReceiversBySender = async (req, res) => {
   try {
     const loggedInProfId = req.userSchoolId; // Assuming req.userSchoolId is the logged-in user's ID
 
-    const uniqueReceivers = await Message.find({ sender: loggedInProfId })
-      .distinct('receiver');
+    const uniqueReceivers = await Message.find({
+      sender: loggedInProfId,
+    }).distinct("receiver");
 
     if (uniqueReceivers.length === 0) {
-      return res.status(404).json({ message: 'No receivers found for this professor.' });
+      return res
+        .status(404)
+        .json({ message: "No receivers found for this professor." });
     }
 
     res.status(200).json({ receivers: uniqueReceivers });
   } catch (error) {
-    console.error('Error fetching receivers:', error);
-    res.status(500).json({ message: 'Server error. Unable to fetch receivers.' });
+    console.error("Error fetching receivers:", error);
+    res
+      .status(500)
+      .json({ message: "Server error. Unable to fetch receivers." });
   }
 };

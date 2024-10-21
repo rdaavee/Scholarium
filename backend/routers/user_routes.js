@@ -23,6 +23,7 @@ router.put("/confirmSchedule/:id", verifyToken, userController.notificationConfi
 router.get("/getNotifications", verifyToken, userController.getUserNotifications);
 router.get("/getUnreadNotifications", verifyToken, userController.getUserUnreadNotifications);
 router.put("/updateNotificationsStatus/:id", verifyToken, userController.updateNotificationStatus);
+router.delete("/deleteNotification/:id", verifyToken, userController.deleteNotification);
 
 //--------------------------------FOR PROFILE PAGE---------------------------------------------------------------
 router.get("/profile",verifyToken, userController.getUserProfile);

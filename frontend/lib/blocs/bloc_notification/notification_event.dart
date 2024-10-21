@@ -20,6 +20,12 @@ class UpdateNotificationStatusEvent extends NotificationsEvent {
   List<Object> get props => [notificationId];
 }
 
+class DeleteNotificationEvent extends NotificationsEvent {
+  final String notificationId;
+
+  const DeleteNotificationEvent(this.notificationId);
+}
+
 class UpdateScheduleStatusEvent extends NotificationsEvent {
   final String scheduleId;
 

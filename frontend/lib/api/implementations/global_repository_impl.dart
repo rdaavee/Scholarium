@@ -430,6 +430,34 @@ class GlobalRepositoryImpl extends GlobalRepository implements Endpoint {
   }
 
   @override
+  Future<void> deleteNotification(String notificationId) async {
+    try {
+      final token = await _getToken();
+      if (token == null) {
+        throw Exception('Token not found');
+      }
+      final response = await http.delete(
+        Uri.parse('$baseUrl/user/deleteNotification/$notificationId'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final responseData = json.decode(response.body);
+        print('Notification delete: ${responseData['message']}');
+      } else if (response.statusCode == 404) {
+        print('Notification not found');
+      } else {
+        print('Failed to update notification: ${response.body}');
+      }
+    } catch (error) {
+      print('Error occurred: $error');
+    }
+  }
+
+  @override
   Future<List<AnnouncementModel>> fetchAnnoucementData() {
     throw UnimplementedError();
   }
