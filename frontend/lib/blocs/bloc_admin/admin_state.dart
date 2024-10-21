@@ -7,6 +7,8 @@ class AdminInitialState extends AdminState {}
 
 class AdminLoadingState extends AdminState {}
 
+class AdminCreateEventSuccessState extends AdminState {}
+
 class AdminLoadedSuccessState extends AdminState {
   final List<UserModel> users;
   final List<AnnouncementModel> announcements;

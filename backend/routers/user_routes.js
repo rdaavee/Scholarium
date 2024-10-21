@@ -13,6 +13,7 @@ router.get("/getLatestAnnouncement",verifyToken, userController.getLatestAnnounc
 router.get("/getPosts/:status",verifyToken, userController.getPosts);
 router.get("/getTotalHours",verifyToken, userController.getUserTotalHours);
 router.get("/getDTR",verifyToken, userController.getUserDTR);
+router.get("/fetchEvents", verifyToken, userController.fetchEvents);
 
 //--------------------------------FOR SCHEDULE PAGE--------------------------------------------------------------
 

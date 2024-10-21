@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const adminController = require('../controllers/admin_controller');
+const uploadController = require('../controllers/upload_controller');
 const { verifyToken }  = require('../middleware/auth');
 
 //User control
@@ -17,6 +18,7 @@ router.get('/schedule/:month', verifyToken, adminController.getScheduleAdmin);
 //Announcements controls
 router.get('/getAllAnnouncements', verifyToken, adminController.getAllAnnouncements);
 router.post('/createAnnouncement', verifyToken, adminController.createAnnouncement);
+router.post('/createEvent', verifyToken, uploadController.createEventWithImage);
 router.put('/updateAnnouncement',verifyToken, adminController.updateAnnouncement);
 router.delete('/deleteAnnouncement',verifyToken, adminController.deleteAnnouncement);
 

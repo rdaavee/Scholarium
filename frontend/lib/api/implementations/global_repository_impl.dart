@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:isHKolarium/api/implementations/endpoint.dart';
 import 'package:isHKolarium/api/models/announcement_model.dart';
+import 'package:isHKolarium/api/models/event_model.dart';
 import 'package:isHKolarium/api/models/message_model.dart';
 import 'package:isHKolarium/api/models/notifications_model.dart';
 import 'package:isHKolarium/api/models/password.dart';
@@ -565,6 +566,28 @@ class GlobalRepositoryImpl extends GlobalRepository implements Endpoint {
       }
     } catch (e) {
       throw Exception('Error: $e');
+    }
+  }
+
+  Future<List<EventModel>> fetchEvents() async {
+    final token = await _getToken();
+    try {
+      final response = await http.get(
+        Uri.parse("$baseUrl/user/fetchEvents"),
+        headers: {
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final List<dynamic> events = json.decode(response.body);
+        return events.map((event) => EventModel.fromJson(event)).toList();
+      } else {
+        throw Exception('Failed to load events: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error fetching events: $e');
+      throw Exception('Error fetching events: $e');
     }
   }
 }

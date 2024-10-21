@@ -83,6 +83,11 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                     route: '/create_schedule',
                     icon: CupertinoIcons.calendar_badge_plus,
                   ),
+                  AdminMenuItem(
+                    title: 'Create Event',
+                    route: '/create_event',
+                    icon: CupertinoIcons.plus,
+                  ),
                 ],
                 selectedRoute: '/',
                 onSelected: (item) {
