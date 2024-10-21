@@ -1,6 +1,7 @@
 import 'dart:io'; // For platform checking
 import 'package:flutter/material.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
+import 'package:isHKolarium/features/screens/screen_message/search_user_page.dart';
 
 class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   final String title;
@@ -41,6 +42,18 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
               ),
             )
           : null,
+      actions: [
+        IconButton(
+          icon: const Icon(
+            Icons.chat_bubble_outline,
+            size: 20,
+          ),
+          onPressed: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => SearchUserScreen()));
+          },
+        ),
+      ],
     );
   }
 

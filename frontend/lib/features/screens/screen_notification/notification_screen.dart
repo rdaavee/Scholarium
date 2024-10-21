@@ -74,7 +74,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
     _currentPage = 1;
     _displayedNotifications.clear();
     notificationsBloc.add(FetchNotificationsEvent());
-    context.read<BottomNavBloc>().add(FetchUnreadCountEvent());
   }
 
   void _onScroll() {
@@ -93,151 +92,182 @@ class _NotificationScreenState extends State<NotificationScreen> {
     }
   }
 
+  void _confirmSchedule(String scheduleId) {
+    notificationsBloc.add(UpdateScheduleStatusEvent(scheduleId.toString()));
+    notificationsBloc.add(FetchNotificationsEvent());
+  }
+
+  void _rejectSchedule(String scheduleId, String sender) {
+    print("Hellooooo");
+    notificationsBloc.add(DeleteScheduleNotificationEvent(
+        scheduleId.toString(), sender.toString()));
+    notificationsBloc.add(FetchNotificationsEvent());
+  }
+
+  void _deleteNotification(String notificationId) {
+    setState(() {
+      _displayedNotifications.removeWhere((n) => n.id == notificationId);
+    });
+    notificationsBloc.add(DeleteNotificationEvent(notificationId));
+    notificationsBloc.add(FetchNotificationsEvent());
+    context.read<BottomNavBloc>().add(FetchUnreadCountEvent());
+  }
+
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<NotificationsBloc>(
-      create: (context) => notificationsBloc,
-      child: Scaffold(
-        appBar: const AppBarWidget(
-          title: "Notifications",
-          isBackButton: false,
-        ),
-        body: RefreshIndicator.adaptive(
-          onRefresh: _onRefresh,
-          child: BlocConsumer<NotificationsBloc, NotificationsState>(
-            listener: (context, state) {
-              if (state is NotificationsLoadedSuccessState) {
-                if (_displayedNotifications.isEmpty) {
-                  setState(() {
-                    _displayedNotifications =
-                        state.notifications.take(_pageSize).toList();
-                  });
-                }
-                _initialize();
-              }
-            },
-            builder: (context, state) {
-              if (state is NotificationsLoadingState && _currentPage == 1) {
-                return LoadingCircular();
-              } else if (state is NotificationsLoadedSuccessState) {
-                return Stack(
-                  children: [
-                    Container(
-                      color: ColorPalette.primary.withOpacity(0.6),
-                    ),
-                    Column(
-                      children: [
-                        Expanded(
-                          child: Container(
-                            decoration: const BoxDecoration(
-                              color: Color(0xFFF0F3F4),
-                              borderRadius: BorderRadius.vertical(
-                                top: Radius.circular(10),
-                              ),
-                            ),
-                            child: ListView.builder(
-                              controller: _scrollController,
-                              itemCount: _displayedNotifications.length +
-                                  (_isFetchingMore ? 1 : 0),
-                              itemBuilder: (context, index) {
-                                if (index == _displayedNotifications.length &&
-                                    _isFetchingMore) {
-                                  return const Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(vertical: 10.0),
-                                    child: Center(child: LoadingCircular()),
-                                  );
-                                }
-
-                                final notification =
-                                    _displayedNotifications[index];
-                                return GestureDetector(
-                                  onTap: () async {
-                                    showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return Dialog(
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10.0),
-                                          ),
-                                          child: SizedBox(
-                                            width: double.infinity,
-                                            height: 400,
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(10.0),
-                                              child: Column(
-                                                children: [
-                                                  const SizedBox(height: 15),
-                                                  Expanded(
-                                                    child:
-                                                        NotificationMessageWidget(
-                                                      notifications:
-                                                          notification,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                    );
-                                    notificationsBloc.add(
-                                      UpdateNotificationStatusEvent(
-                                          notification.id.toString()),
-                                    );
-                                    notificationsBloc
-                                        .add(FetchNotificationsEvent());
-                                    context
-                                        .read<BottomNavBloc>()
-                                        .add(FetchUnreadCountEvent());
-                                  },
-                                  child: NotificationCard(
-                                    color: notification.status == false
-                                        ? const Color(0xFFECEFF1)
-                                        : const Color(0xFFD5DEE0),
-                                    notifications: notification,
-                                  ),
-                                );
-                              },
+    return BlocConsumer<NotificationsBloc, NotificationsState>(
+      bloc: notificationsBloc,
+      listener: (context, state) {
+        if (state is NotificationsLoadedSuccessState && _currentPage == 1) {
+          setState(() {
+            _displayedNotifications =
+                state.notifications.take(_pageSize).toList();
+          });
+        }
+      },
+      builder: (context, state) {
+        if (state is NotificationsLoadingState && _currentPage == 1) {
+          return const Center(child: LoadingCircular());
+        } else if (state is NotificationsLoadedSuccessState) {
+          return Scaffold(
+            backgroundColor: Colors.white,
+            appBar: const AppBarWidget(
+              title: "Notifications",
+              isBackButton: false,
+            ),
+            body: RefreshIndicator.adaptive(
+              onRefresh: _onRefresh,
+              child: Stack(
+                children: [
+                  Container(
+                    color: ColorPalette.primary.withOpacity(0.6),
+                  ),
+                  Column(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          decoration: const BoxDecoration(
+                            color: Color(0xFFF0F3F4),
+                            borderRadius: BorderRadius.vertical(
+                              top: Radius.circular(10),
                             ),
                           ),
-                        ),
-                        // Removed the second CircularProgressIndicator here
-                      ],
-                    ),
-                    if (widget.isRole == "")
-                      Align(
-                        alignment: Alignment.bottomRight,
-                        child: Padding(
-                          padding: const EdgeInsets.only(right: 15, bottom: 15),
-                          child: FloatingActionButton(
-                            backgroundColor:
-                                ColorPalette.primary.withOpacity(0.6),
-                            onPressed: () async {
-                              print('Add notification');
+                          child: ListView.builder(
+                            controller: _scrollController,
+                            itemCount: _displayedNotifications.length +
+                                (_isFetchingMore ? 1 : 0),
+                            itemBuilder: (context, index) {
+                              if (index == _displayedNotifications.length &&
+                                  _isFetchingMore) {
+                                return const Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 10.0),
+                                  child: Center(child: LoadingCircular()),
+                                );
+                              }
+
+                              final notification =
+                                  _displayedNotifications[index];
+                              return GestureDetector(
+                                onTap: () async {
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return Dialog(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                        ),
+                                        child: SizedBox(
+                                          width: double.infinity,
+                                          height: 400,
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(10.0),
+                                            child: Column(
+                                              children: [
+                                                const SizedBox(height: 15),
+                                                Expanded(
+                                                  child:
+                                                      NotificationMessageWidget(
+                                                    notifications: notification,
+                                                    confirmFunction:
+                                                        (BuildContext) {
+                                                      _confirmSchedule(
+                                                          notification
+                                                              .scheduleId
+                                                              .toString());
+                                                    },
+                                                    rejectFunction:
+                                                        (BuildContext) {
+                                                      _rejectSchedule(
+                                                          notification
+                                                              .scheduleId
+                                                              .toString(),
+                                                          notification.sender
+                                                              .toString());
+                                                    },
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  );
+                                  notificationsBloc.add(
+                                    UpdateNotificationStatusEvent(
+                                        notification.id.toString()),
+                                  );
+                                },
+                                child: NotificationCard(
+                                  color: notification.status == false
+                                      ? const Color(0xFFECEFF1)
+                                      : const Color(0xFFD5DEE0),
+                                  notifications: notification,
+                                  deleteFunction: (BuildContext) {
+                                    _deleteNotification(
+                                        notification.id.toString());
+                                  },
+                                ),
+                              );
                             },
-                            child: const Text("Need Faci", style: TextStyle(fontSize: 10, color: Colors.white),),
                           ),
                         ),
                       ),
-                  ],
-                );
-              } else if (state is NotificationsErrorState) {
-                return Center(
-                  child: NoData(
-                    title: 'No Notification Available',
+                    ],
                   ),
-                );
-              } else {
-                return const Center(child: LoadingCircular());
-              }
-            },
-          ),
-        ),
-      ),
+                  if (widget.isRole == "")
+                    Align(
+                      alignment: Alignment.bottomRight,
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 15, bottom: 15),
+                        child: FloatingActionButton(
+                          backgroundColor:
+                              ColorPalette.primary.withOpacity(0.6),
+                          onPressed: () async {
+                            print('Add notification');
+                          },
+                          child: const Text(
+                            "Need Faci",
+                            style: TextStyle(fontSize: 10, color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+            ),
+          );
+        } else if (state is NotificationsErrorState) {
+          return Center(
+            child: NoData(
+              title: 'No Notification Available',
+            ),
+          );
+        } else {
+          return const Center(child: LoadingCircular());
+        }
+      },
     );
   }
 }

@@ -11,9 +11,13 @@ import 'package:isHKolarium/config/constants/colors.dart';
 
 class NotificationMessageWidget extends StatefulWidget {
   final NotificationsModel notifications;
+  final Function(BuildContext)? confirmFunction;
+  final Function(BuildContext)? rejectFunction;
   const NotificationMessageWidget({
     super.key,
     required this.notifications,
+    required this.confirmFunction,
+    required this.rejectFunction,
   });
 
   @override
@@ -37,6 +41,7 @@ class NotificationMessageState extends State<NotificationMessageWidget> {
     adminBloc = AdminBloc(adminRepository, globalRepository);
     notificationsBloc = NotificationsBloc(globalRepository, studentRepository);
   }
+
   String _formatTime(String time) {
     final DateTime parsedTime = DateFormat('HH:mm:ss').parse(time);
     return DateFormat('h:mm a').format(parsedTime);
@@ -138,9 +143,9 @@ class NotificationMessageState extends State<NotificationMessageWidget> {
                         ),
                       ),
                       onPressed: () async {
-                        notificationsBloc.add(UpdateScheduleStatusEvent(
-                            widget.notifications.scheduleId.toString()));
-                        notificationsBloc.add(FetchNotificationsEvent());
+                        if (widget.confirmFunction != null) {
+                          widget.confirmFunction!(context);
+                        }
                         Navigator.pop(context, true);
                       },
                     ),
@@ -163,10 +168,9 @@ class NotificationMessageState extends State<NotificationMessageWidget> {
                         ),
                       ),
                       onPressed: () {
-                        notificationsBloc.add(DeleteScheduleNotificationEvent(
-                            widget.notifications.scheduleId.toString(),
-                            widget.notifications.sender.toString()));
-                        notificationsBloc.add(FetchNotificationsEvent());
+                        if (widget.rejectFunction != null) {
+                          widget.rejectFunction!(context);
+                        }
                         Navigator.pop(context, true);
                       },
                     ),
