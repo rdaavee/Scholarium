@@ -1,11 +1,16 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:isHKolarium/api/implementations/endpoint.dart';
+import 'package:isHKolarium/api/models/event_model.dart';
 import 'package:isHKolarium/api/models/notifications_model.dart';
 import 'package:isHKolarium/api/models/schedule_model.dart';
 import 'package:isHKolarium/api/models/user_model.dart';
 import 'package:isHKolarium/api/models/announcement_model.dart';
 import 'package:isHKolarium/api/repositories/admin_repository.dart';
+import 'package:isHKolarium/blocs/bloc_admin/admin_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AdminRepositoryImpl extends AdminRepository implements Endpoint {
@@ -87,35 +92,36 @@ class AdminRepositoryImpl extends AdminRepository implements Endpoint {
     }
   }
 
-  Future<void> createSchedule(ScheduleModel schedule, NotificationsModel notification) async {
-  final String? token = await _getToken();
-  final url = Uri.parse('$baseUrl/admin/createSchedule');
+  Future<void> createSchedule(
+      ScheduleModel schedule, NotificationsModel notification) async {
+    final String? token = await _getToken();
+    final url = Uri.parse('$baseUrl/admin/createSchedule');
 
-  final combinedData = {
-    'schedule': schedule.toMap(), 
-    'notification': notification.toMap(), 
-  };
+    final combinedData = {
+      'schedule': schedule.toMap(),
+      'notification': notification.toMap(),
+    };
 
-  try {
-    final response = await http.post(
-      url,
-      headers: {
-        'Authorization': 'Bearer $token',
-        'Content-Type': 'application/json',
-      },
-      body: json.encode(combinedData),
-    );
+    try {
+      final response = await http.post(
+        url,
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+        },
+        body: json.encode(combinedData),
+      );
 
-    if (response.statusCode == 200) {
-      print("Schedule and Notification created successfully");
-    } else {
-      throw Exception('Failed to create schedule and notification: ${response.statusCode}');
+      if (response.statusCode == 200) {
+        print("Schedule and Notification created successfully");
+      } else {
+        throw Exception(
+            'Failed to create schedule and notification: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Error: $e');
     }
-  } catch (e) {
-    throw Exception('Error: $e');
   }
-}
-
 
   @override
   Future<void> updateUser(String schoolId, UserModel user) async {
@@ -203,5 +209,39 @@ class AdminRepositoryImpl extends AdminRepository implements Endpoint {
       throw Exception('Failed to delete announcement');
     }
   }
-  
+
+  Future<EventModel> createEvent(EventModel event, XFile imageFile) async {
+    final token = await _getToken();
+    final String uploadUrl = '$baseUrl/admin/createEvent';
+
+    try {
+      var request = http.MultipartRequest('POST', Uri.parse(uploadUrl));
+      request.headers.addAll({
+        'Authorization': 'Bearer $token',
+      });
+
+      request.fields['event_name'] = event.eventName;
+      request.fields['description'] = event.description;
+      request.fields['date'] = event.date;
+      request.fields['time'] = event.time;
+
+      request.files.add(await http.MultipartFile.fromPath(
+        'event_image',
+        imageFile.path,
+      ));
+
+      var response = await request.send();
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+        var responseData = await http.Response.fromStream(response);
+        var jsonResponse = json.decode(responseData.body);
+        return EventModel.fromJson(jsonResponse);
+      } else {
+        throw Exception(
+            'Failed to create event. Status code: ${response.statusCode}');
+      }
+    } catch (error) {
+      throw Exception('Error creating event: $error');
+    }
+  }
 }

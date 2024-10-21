@@ -3,6 +3,8 @@ const path = require('path');
 const bucket = require('../firebase'); 
 const { v4: uuidv4 } = require('uuid'); 
 const User = require('../models/user_model'); 
+const Events = require('../models/events_model');
+
 
 
 const storage = multer.memoryStorage();
@@ -13,6 +15,14 @@ const upload = multer({
     checkFileType(file, cb);
   }
 }).single('profile_picture');
+
+const event = multer({
+  storage: storage,
+  limits: { fileSize: 5000000 }, // 5MB limit
+  fileFilter: (req, file, cb) => {
+    checkFileType(file, cb);
+  }
+}).single('event_image');
 
 
 function checkFileType(file, cb) {
@@ -28,10 +38,66 @@ function checkFileType(file, cb) {
   }
 }
 
+exports.createEventWithImage = async (req, res) => {
+  try {
+    event(req, res, async (err) => {
+      if (err) {
+        console.error('Multer Error:', err);
+        return res.status(400).json({ message: err.message });
+      }
+
+      const { event_name, description, date, time } = req.body;
+      if (!event_name || !date || !time) {
+        return res.status(400).json({ message: 'Event name, date, and time are required.' });
+      }
+
+      if (!req.file) {
+        return res.status(400).json({ message: 'No image file selected!' });
+      }
+
+      let newEvent = new Events({
+        event_name,
+        description,
+        date,
+        time,
+      });
+
+      await newEvent.save();
+
+      const blob = bucket.file(`${uuidv4()}_${req.file.originalname}`);
+      const blobStream = blob.createWriteStream({
+        metadata: {
+          contentType: req.file.mimetype,
+        },
+      });
+
+      blobStream.on('error', (err) => {
+        console.error('Upload error:', err);
+        return res.status(500).json({ message: 'Upload error: ' + err.message });
+      });
+
+      blobStream.on('finish', async () => {
+        const publicUrl = `https://storage.googleapis.com/${bucket.name}/${blob.name}`;
+        await blob.makePublic(); 
+
+        newEvent.image_link = publicUrl;
+        await newEvent.save();
+
+        res.status(200).json({
+          message: 'Event created and image uploaded successfully',
+          event: newEvent,
+        });
+      });
+
+      blobStream.end(req.file.buffer);
+    });
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ message: 'Server error occurred' });
+  }
+};
+
 exports.uploadImage = async (req, res) => {
-  console.log('User ID:', req.userId);
-  console.log('School ID:', req.userSchoolId);
-  console.log('File uploaded:', req.file);
 
   try {
     upload(req, res, async (err) => {

@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:isHKolarium/api/models/event_model.dart';
 
 class EventsCard extends StatelessWidget {
-  final String imagePath;
-  final String eventName;
-  final String description;
+  final EventModel event;
   final Color cardColor;
 
   const EventsCard({
     super.key,
-    required this.imagePath,
-    required this.eventName,
-    required this.description,
+    required this.event,
     required this.cardColor,
   });
 
@@ -36,8 +33,8 @@ class EventsCard extends StatelessWidget {
                   borderRadius: const BorderRadius.all(Radius.circular(5)),
                   child: Stack(
                     children: [
-                      Image.asset(
-                        imagePath,
+                      Image.network(
+                        event.imageLink,
                         fit: BoxFit.cover,
                         width: double.infinity,
                         height: double.infinity,
@@ -47,9 +44,9 @@ class EventsCard extends StatelessWidget {
                           gradient: RadialGradient(
                             colors: [
                               Colors.transparent,
-                              Colors.black.withOpacity(0.85),
+                              Colors.black.withOpacity(0.70),
                             ],
-                            radius: 0.75,
+                            radius: 1.2,
                             center: Alignment.center,
                             stops: [0.5, 1.0],
                           ),
@@ -73,7 +70,7 @@ class EventsCard extends StatelessWidget {
                     color: Colors.black.withOpacity(0.6),
                   ),
                   child: Text(
-                    eventName,
+                    event.eventName,
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 16.0,
@@ -99,7 +96,7 @@ class EventsCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(20),
           ),
           title: Text(
-            eventName,
+            event.eventName,
             style: const TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
@@ -113,8 +110,9 @@ class EventsCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10.0),
                   child: Stack(
                     children: [
-                      Image.asset(
-                        imagePath,
+                      // Use NetworkImage for loading images from the URL
+                      Image.network(
+                        event.imageLink,
                         fit: BoxFit.cover,
                         width: MediaQuery.of(context).size.width * 0.8,
                       ),
@@ -136,8 +134,13 @@ class EventsCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 10),
                 Text(
-                  description,
+                  event.description,
                   style: const TextStyle(fontSize: 16),
+                ),
+                const SizedBox(height: 5),
+                Text(
+                  "${event.date} at ${event.time}", // Display date and time
+                  style: const TextStyle(fontSize: 14, color: Colors.grey),
                 ),
               ],
             ),

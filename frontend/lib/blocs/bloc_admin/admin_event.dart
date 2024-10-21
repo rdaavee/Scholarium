@@ -69,3 +69,10 @@ class CreateNotificationEvent extends AdminEvent {
 
   CreateNotificationEvent(this.notification);
 }
+
+class CreateEvent extends AdminEvent {
+  final EventModel event;
+  final XFile imageFile;
+
+  CreateEvent(this.event, this.imageFile);
+}

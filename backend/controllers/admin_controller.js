@@ -70,6 +70,7 @@ exports.createUser = async (req, res) => {
   }
 };
 
+
 exports.getScheduleAdmin = async (req,res) =>{
   const {month} = req.params;
   console.log(month);

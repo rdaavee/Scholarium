@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:isHKolarium/features/screens/screen_admin/admin_home_screen.dart';
 import 'package:isHKolarium/features/screens/screen_admin/create_announcement_screen.dart';
+import 'package:isHKolarium/features/screens/screen_admin/create_event_screen.dart';
 import 'package:isHKolarium/features/screens/screen_admin/create_schedule_screen.dart';
 import 'package:isHKolarium/features/screens/screen_announcement/announcement.dart';
 import 'package:isHKolarium/features/screens/screen_login/login_page.dart';
@@ -12,7 +13,11 @@ Map<String, WidgetBuilder> routes = {
 
   //admin
   '/dashboard': (context) => AdminHomeScreen(),
-  '/view_announcement': (context) => AnnouncementsScreen(isBackButtonTrue: true),
+  '/view_announcement': (context) =>
+      AnnouncementsScreen(isBackButtonTrue: true),
   '/create_announcement': (context) => AnnouncementFormScreen(role: 'admin'),
-  '/create_schedule': (context) => SetScheduleScreen(isRole: 'Admin',),
+  '/create_schedule': (context) => SetScheduleScreen(
+        isRole: 'Admin',
+      ),
+  '/create_event': (context) => CreateEventScreen(isBackButtonTrue: true),
 };

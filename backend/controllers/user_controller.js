@@ -5,8 +5,20 @@ const Post = require("../models/posts_model");
 const Schedule = require("../models/schedule_model");
 const DTR = require("../models/dtr_model");
 const Notification = require("../models/notifications_model");
+const Events = require("../models/events_model");
 const currentDate = moment().format("YYYY-MM-DD");
 const currentTime = moment().format("HH:mm:ss");
+
+// Get Events
+exports.fetchEvents = async (req, res) => {
+  try {
+    const events = await Events.find();
+    res.status(200).json(events);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
 
 // Get Announcement
 exports.getAnnouncements = async (req, res) => {

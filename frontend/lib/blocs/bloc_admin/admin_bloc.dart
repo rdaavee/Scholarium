@@ -1,14 +1,16 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:isHKolarium/api/implementations/admin_repository_impl.dart';
 import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
+import 'package:isHKolarium/api/models/event_model.dart';
 import 'package:isHKolarium/api/models/notifications_model.dart';
 import 'package:isHKolarium/api/models/schedule_model.dart';
 import 'package:isHKolarium/api/models/user_model.dart';
 import 'package:isHKolarium/api/models/announcement_model.dart';
-import 'package:isHKolarium/blocs/bloc_bottom_nav/bottom_nav_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 part 'admin_event.dart';
@@ -26,6 +28,7 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
     on<CreateUserEvent>(_onCreateUserEvent);
     on<UpdateUserEvent>(_onUpdateUserEvent);
     on<DeleteUserEvent>(_onDeleteUserEvent);
+    on<CreateEvent>(_createEvent);
     on<FetchAnnouncementsEvent>(_onFetchAnnouncementEvent);
     on<CreateAnnouncementEvent>(_onCreateAnnouncementEvent);
     on<UpdateAnnouncementEvent>(_onUpdateAnnouncementEvent);
@@ -137,7 +140,6 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
     try {
       await _adminRepositoryImpl.updateUser(event.schoolId, event.user);
       add(FetchDataEvent());
-      
     } catch (e) {
       print('UpdateUserEvent error: $e');
       emit(AdminErrorState(message: 'Failed to update user: ${e.toString()}'));
@@ -235,6 +237,17 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
           notification: event.notification);
     } catch (e) {
       emit(AdminErrorState(message: 'Failed to create schedule: $e'));
+    }
+  }
+
+  FutureOr<void> _createEvent(
+      CreateEvent event, Emitter<AdminState> emit) async {
+    emit(AdminLoadingState());
+    try {
+      await _adminRepositoryImpl.createEvent(event.event, event.imageFile);
+      emit(AdminCreateEventSuccessState());
+    } catch (e) {
+      emit(AdminErrorState(message: 'Failed to create event: $e'));
     }
   }
 }
