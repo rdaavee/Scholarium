@@ -113,6 +113,8 @@ exports.createScheduleAndNotification = async (req, res) => {
     });
 
     const savedSchedule = await newSchedule.save();
+    const receiverId = savedSchedule.school_id; 
+
 
     const newNotification = new Notifications({
       sender: notification.sender,
@@ -133,7 +135,7 @@ exports.createScheduleAndNotification = async (req, res) => {
 
     await newNotification.save();
 
-    req.app.get('io').emit('newNotification', newNotification);
+    req.app.get('io').to(receiverId).emit('newNotification', newNotification);
 
     res.status(200).json({
       message: `Notification "${notification.title}" has been sent by ${
