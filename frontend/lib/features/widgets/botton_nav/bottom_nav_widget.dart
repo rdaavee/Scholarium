@@ -10,36 +10,43 @@ import 'package:isHKolarium/features/screens/screen_professor/professor_screen.d
 import 'package:isHKolarium/features/screens/screen_profile/profile_screen.dart';
 import 'package:isHKolarium/features/screens/screen_schedule/schedule_screen.dart';
 import 'package:isHKolarium/features/screens/screen_student/student_home.dart';
+import 'package:isHKolarium/features/widgets/loading_circular.dart';
 
 class BottomNavWidget extends StatelessWidget {
   final String isRole;
-
   const BottomNavWidget({super.key, required this.isRole});
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<BottomNavBloc, BottomNavState>(
-      builder: (context, state) {
-        if (state is BottomNavLoadingState) {
+    return Scaffold(
+      backgroundColor: ColorPalette.accentWhite,
+      body: BlocBuilder<BottomNavBloc, BottomNavState>(
+        builder: (context, state) {
+          if (state is BottomNavLoadingState) {
+            return const LoadingCircular();
+          }
+
+          if (state is BottomNavLoadedSuccessState) {
+            final selectedIndex = state.selectedIndex;
+            return _getRoleSpecificPage(selectedIndex);
+          }
+
+          context.read<BottomNavBloc>().add(BottomNavInitialEvent());
           return const Center(child: CircularProgressIndicator());
-        }
+        },
+      ),
+      bottomNavigationBar: BlocBuilder<BottomNavBloc, BottomNavState>(
+        builder: (context, state) {
+          if (state is BottomNavLoadedSuccessState) {
+            final selectedIndex = state.selectedIndex;
+            final unreadCount = state.unreadCount;
 
-        if (state is BottomNavLoadedSuccessState) {
-          final selectedIndex = state.selectedIndex;
-          final unreadCount = state.unreadCount;
+            return _buildBottomNavigationBar(context, selectedIndex, unreadCount);
+          }
 
-          return Scaffold(
-            backgroundColor: ColorPalette.accentBlack,
-            body: _getRoleSpecificPage(selectedIndex),
-            bottomNavigationBar:
-                _buildBottomNavigationBar(context, selectedIndex, unreadCount),
-          );
-        }
-
-        // Trigger initial event and fetch unread count on first build
-        context.read<BottomNavBloc>().add(BottomNavInitialEvent());
-        return const Center(child: CircularProgressIndicator());
-      },
+          return const SizedBox.shrink(); 
+        },
+      ),
     );
   }
 

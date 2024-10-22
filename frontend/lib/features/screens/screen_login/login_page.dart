@@ -64,57 +64,59 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AuthenticationBloc, AuthenticationState>(
-      bloc: _loginBloc,
-      listener: (context, state) {
-        if (state is LoginLoadingState) {
-          const Center(child: LoadingCircular());
-        } else if (state is LoginNavigateToStudentHomePageActionState) {
-          _showSnackBar(
-              'Success', 'Student Login Successfully', ContentType.success);
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) =>
-                  const BottomNavigationPage(isRole: "Student"),
-            ),
-          );
-        } else if (state is LoginNavigateToProfessorHomePageActionState) {
-          _showSnackBar(
-              'Success', 'Professor Login Successfully', ContentType.success);
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) =>
-                  const BottomNavigationPage(isRole: "Professor"),
-            ),
-          );
-        } else if (state is LoginNavigateToAdminHomePageActionState) {
-          _showSnackBar(
-              'Success', 'Admin Login Successfully', ContentType.success);
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const BottomNavigationPage(isRole: "Admin"),
-            ),
-          );
-        } else if (state is LoginErrorState) {
-          _showSnackBar('Error', state.errorMessage, ContentType.failure);
-        }
-      },
-      builder: (context, state) {
-        return Scaffold(
-          body: Stack(
-            children: [
-              const BackgroundWidget(),
-              if (state is LoginLoadingState)
-                const Center(child: LoadingCircular())
-              else
-                LoginFormWidget(loginBloc: _loginBloc),
-            ],
+    return Scaffold(
+      body: Stack(
+        children: [
+          const BackgroundWidget(),
+          BlocConsumer<AuthenticationBloc, AuthenticationState>(
+            bloc: _loginBloc,
+            listener: (context, state) {
+              if (state is LoginLoadingState) {
+                const Center(child: LoadingCircular());
+              } else if (state is LoginNavigateToStudentHomePageActionState) {
+                _showSnackBar('Success', 'Student Login Successfully',
+                    ContentType.success);
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        const BottomNavigationPage(isRole: "Student"),
+                  ),
+                );
+              } else if (state is LoginNavigateToProfessorHomePageActionState) {
+                _showSnackBar('Success', 'Professor Login Successfully',
+                    ContentType.success);
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        const BottomNavigationPage(isRole: "Professor"),
+                  ),
+                );
+              } else if (state is LoginNavigateToAdminHomePageActionState) {
+                _showSnackBar(
+                    'Success', 'Admin Login Successfully', ContentType.success);
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        const BottomNavigationPage(isRole: "Admin"),
+                  ),
+                );
+              } else if (state is LoginErrorState) {
+                _showSnackBar('Error', state.errorMessage, ContentType.failure);
+              }
+            },
+            builder: (context, state) {
+              if (state is LoginLoadingState) {
+                return const Center(child: LoadingCircular());
+              }  else {
+                return LoginFormWidget(loginBloc: _loginBloc);
+              }
+            },
           ),
-        );
-      },
+        ],
+      ),
     );
   }
 }
