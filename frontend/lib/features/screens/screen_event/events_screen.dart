@@ -31,48 +31,48 @@ class _EventsScreenState extends State<EventsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<EventsBloc, EventsState>(
-      bloc: eventsBloc,
-      listener: (context, state) {},
-      builder: (context, state) {
-        if (state is EventsLoadedState) {
-          final events = state.events;
-          return Scaffold(
-            appBar: const AppBarWidget(title: "Events", isBackButton: true),
-            backgroundColor: ColorPalette.primary.withOpacity(0.9),
-            body: Column(
-              children: [
-                Expanded(
-                  child: Container(
-                    height: MediaQuery.of(context).size.height - 100.0,
-                    decoration: const BoxDecoration(
-                      color: Color(0xFFF0F3F4),
-                      borderRadius: BorderRadius.vertical(
-                        top: Radius.circular(10),
+    return Scaffold(
+      appBar: const AppBarWidget(title: "Events", isBackButton: true),
+      backgroundColor: Color(0xFFF0F3F4),
+      body: BlocConsumer<EventsBloc, EventsState>(
+        bloc: eventsBloc,
+        listener: (context, state) {},
+        builder: (context, state) {
+          if (state is EventsLoadedState) {
+            final events = state.events;
+            return Column(
+                children: [
+                  Expanded(
+                    child: Container(
+                      height: MediaQuery.of(context).size.height - 100.0,
+                      decoration: const BoxDecoration(
+                        color: Color(0xFFF0F3F4),
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(10),
+                        ),
                       ),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ListView.builder(
-                        itemCount: events.length,
-                        itemBuilder: (context, index) {
-                          final event = events[index];
-                          return EventsCard(
-                            event: event,
-                            cardColor: Colors.blue,
-                          );
-                        },
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ListView.builder(
+                          itemCount: events.length,
+                          itemBuilder: (context, index) {
+                            final event = events[index];
+                            return EventsCard(
+                              event: event,
+                              cardColor: Colors.blue,
+                            );
+                          },
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
-          );
-        } else {
-          return const Center(child: LoadingCircular());
-        }
-      },
+                ],
+            );
+          } else {
+            return const Center(child: LoadingCircular());
+          }
+        },
+      ),
     );
   }
 }

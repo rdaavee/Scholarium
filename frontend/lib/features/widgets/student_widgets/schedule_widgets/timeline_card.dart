@@ -68,28 +68,24 @@ class TimelineCard extends StatelessWidget {
               Text(
                 professorName,
                 style: TextStyle(
+                  fontWeight: FontWeight.bold,
                   color: currentDetailTextColor,
                 ),
               ),
               const SizedBox(height: 8.0),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    roomName,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: currentTextColor,
-                    ),
-                  ),
-                  Text(
-                    timeInAndOut,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: currentDetailTextColor,
-                    ),
-                  ),
-                ],
+              Text(
+                roomName,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: currentTextColor,
+                ),
+              ),
+              Text(
+                timeInAndOut,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: currentDetailTextColor,
+                ),
               ),
             ],
           ),

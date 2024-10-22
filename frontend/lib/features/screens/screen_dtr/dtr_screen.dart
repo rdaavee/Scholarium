@@ -250,33 +250,22 @@ class _DtrScreenState extends State<DtrScreen> {
       providers: [
         BlocProvider<DtrBloc>(create: (context) => dtrBloc),
       ],
-      child: BlocConsumer<DtrBloc, DtrState>(
-        listener: (context, state) {
-          if (state is DtrErrorState) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.message)),
-            );
-          }
-        },
-        builder: (context, state) {
-          if (state is DtrLoadingState) {
-            return LoadingCircular();
-          } else if (state is DtrLoadedSuccessState) {
-            return Scaffold(
-              backgroundColor: ColorPalette.primary.withOpacity(0.9),
-              appBar: const AppBarWidget(title: "DTR", isBackButton: true),
-              floatingActionButton: FloatingActionButton(
-                backgroundColor: ColorPalette.primary,
-                onPressed: () {
-                  generatePdf(state.dtr);
-                },
-                tooltip: 'Generate PDF',
-                child: const Icon(
-                  Icons.file_download_outlined,
-                  color: Colors.white,
-                ),
-              ),
-              body: Column(
+      child: Scaffold(
+        backgroundColor: Color(0xFFF0F3F4),
+        appBar: const AppBarWidget(title: "DTR", isBackButton: true),
+        body: BlocConsumer<DtrBloc, DtrState>(
+          listener: (context, state) {
+            if (state is DtrErrorState) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(state.message)),
+              );
+            }
+          },
+          builder: (context, state) {
+            if (state is DtrLoadingState) {
+              return LoadingCircular();
+            } else if (state is DtrLoadedSuccessState) {
+              return Column(
                 children: [
                   Expanded(
                     child: Container(
@@ -351,13 +340,30 @@ class _DtrScreenState extends State<DtrScreen> {
                       ),
                     ),
                   ),
+                  Align(
+                    alignment: Alignment.bottomRight,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: FloatingActionButton(
+                        backgroundColor: ColorPalette.primary,
+                        onPressed: () {
+                          generatePdf(state.dtr);
+                        },
+                        tooltip: 'Generate PDF',
+                        child: const Icon(
+                          Icons.file_download_outlined,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
                 ],
-              ),
-            );
-          } else {
-            return LoadingCircular();
-          }
-        },
+              );
+            } else {
+              return LoadingCircular();
+            }
+          },
+        ),
       ),
     );
   }
