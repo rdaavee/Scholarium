@@ -1,7 +1,4 @@
-const { Server } = require("socket.io");
-const Notifications = require('../models/notifications_model');
 const connectedUsers = require('./connected_users');
-
 
 const setupNotificationSocket = (io) => {
   const notificationNamespace = io.of('/notifications');
@@ -15,38 +12,35 @@ const setupNotificationSocket = (io) => {
     });
 
     socket.on("receiveNotification", async (notificationData) => {
-      const { sender, senderName, receiver, receiverName, role, title, message, scheduleId, date, time } = notificationData;
+      console.log("trying to receive");
+      console.log('Received notification data:', notificationData);
       
-      const notification = new Notifications({
-        sender,
-        senderName,
-        receiver,
-        receiverName,
-        role,
-        title,
-        message,
-        scheduleId,
-        date,
-        time
-      });
-
+      const { sender, senderName, receiver, receiverName, role, title, message, scheduleId, date, time } = notificationData;
+    
       try {
-        await notification.save(); 
-        console.log("Notification saved to database:");
-
         if (connectedUsers[receiver]) {
+          console.log(`Sending notification to: ${receiver}`);
           notificationNamespace.to(connectedUsers[receiver]).emit("receiveNotification", { 
-            title, 
-            message 
+            sender,
+            senderName,
+            receiver,
+            receiverName,
+            role,
+            title,
+            message,
+            scheduleId,
+            date,
+            time
           });
           console.log(`Notification sent to ${receiver}: ${message}`);
         } else {
           console.error(`Receiver ${receiver} is not connected to notifications.`);
         }
       } catch (error) {
-        console.error("Error saving notification:", error);
+        console.error("Error processing notification:", error);
       }
     });
+    
 
     socket.on("disconnect", () => {
       for (const userId in connectedUsers) {
