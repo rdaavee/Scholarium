@@ -12,7 +12,7 @@ class NoData extends StatelessWidget {
       children: [
         Expanded(
           child: Container(
-            width: 480,
+            width: double.infinity,
             decoration: const BoxDecoration(
               color: Color(0xFFF0F3F4),
               borderRadius: BorderRadius.vertical(top: Radius.circular(10)),

@@ -115,27 +115,27 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<NotificationsBloc, NotificationsState>(
-      bloc: notificationsBloc,
-      listener: (context, state) {
-        if (state is NotificationsLoadedSuccessState && _currentPage == 1) {
-          setState(() {
-            _displayedNotifications =
-                state.notifications.take(_pageSize).toList();
-          });
-        }
-      },
-      builder: (context, state) {
-        if (state is NotificationsLoadingState && _currentPage == 1) {
-          return const Center(child: LoadingCircular());
-        } else if (state is NotificationsLoadedSuccessState) {
-          return Scaffold(
-            backgroundColor: Colors.white,
-            appBar: const AppBarWidget(
-              title: "Notifications",
-              isBackButton: false,
-            ),
-            body: RefreshIndicator.adaptive(
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: const AppBarWidget(
+        title: "Notifications",
+        isBackButton: false,
+      ),
+      body: BlocConsumer<NotificationsBloc, NotificationsState>(
+        bloc: notificationsBloc,
+        listener: (context, state) {
+          if (state is NotificationsLoadedSuccessState && _currentPage == 1) {
+            setState(() {
+              _displayedNotifications =
+                  state.notifications.take(_pageSize).toList();
+            });
+          }
+        },
+        builder: (context, state) {
+          if (state is NotificationsLoadingState && _currentPage == 1) {
+            return const Center(child: LoadingCircular());
+          } else if (state is NotificationsLoadedSuccessState) {
+            return RefreshIndicator.adaptive(
               onRefresh: _onRefresh,
               child: Stack(
                 children: [
@@ -256,18 +256,16 @@ class _NotificationScreenState extends State<NotificationScreen> {
                     ),
                 ],
               ),
-            ),
-          );
-        } else if (state is NotificationsErrorState) {
-          return Center(
-            child: NoData(
+            );
+          } else if (state is NotificationsErrorState) {
+            return NoData(
               title: 'No Notification Available',
-            ),
-          );
-        } else {
-          return const Center(child: LoadingCircular());
-        }
-      },
+            );
+          } else {
+            return const Center(child: LoadingCircular());
+          }
+        },
+      ),
     );
   }
 }
