@@ -48,7 +48,7 @@ class _AnnouncementsScreenState extends State<AnnouncementsScreen> {
             title: "Announcements",
             isBackButton: widget.isBackButtonTrue,
           ),
-          backgroundColor: ColorPalette.primary.withOpacity(0.9),
+          backgroundColor: Color(0xFFF0F3F4),
           body: BlocConsumer<AdminBloc, AdminState>(
             listener: (context, state) {
               if (state is AdminErrorState) {
