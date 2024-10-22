@@ -1,7 +1,7 @@
 const { Server } = require("socket.io");
 const Notifications = require('../models/notifications_model');
+const connectedUsers = require('./connected_users');
 
-const connectedUsers = {};
 
 const setupNotificationSocket = (io) => {
   const notificationNamespace = io.of('/notifications');
