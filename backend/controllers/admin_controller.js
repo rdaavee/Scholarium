@@ -140,13 +140,14 @@ exports.createScheduleAndNotification = async (req, res) => {
     }
 
     const notificationNamespace = io.of('/notifications');
+    const connectedUsers = [];
 
-    if (receiverId) {
-      notificationNamespace.to(receiverId).emit('newNotification', newNotification);
+    if (connectedUsers[receiverId]) {
+      notificationNamespace.to(connectedUsers[receiverId]).emit('newNotification', newNotification);
       console.log(`Notification successfully sent to ${receiverId}:`, newNotification);
-    } else {
+  } else {
       console.error(`Failed to send notification: Receiver ${receiverId} is not connected.`);
-    }
+  }
 
     res.status(200).json({
       message: `Notification "${notification.title}" has been sent by ${notification.senderName} to ${notification.receiverName || 'all'}.`,
