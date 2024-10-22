@@ -46,6 +46,12 @@ class AuthenticationBloc
       LoginButtonClickedEvent event, Emitter<AuthenticationState> emit) async {
     print("Login btn clicked!");
     emit(LoginLoadingState());
+    final socketService = SocketService();
+    try {
+      await socketService.connectChatSocket(event.schoolID);
+      await socketService.connectNotificationSocket(event.schoolID);
+    } catch (e) {}
+
     try {
       final result = await _globalService.loginUser(
         schoolID: event.schoolID,
@@ -58,10 +64,6 @@ class AuthenticationBloc
         final role = result['role'];
         final schoolID = event.schoolID;
         final password = event.password;
-
-        final socketService = SocketService();
-        await socketService.connectChatSocket(schoolID);
-        print("Socket connected with schoolID: $schoolID");
 
         storeToken(token, schoolID, password, role);
         print(schoolID + password);
@@ -101,6 +103,9 @@ class AuthenticationBloc
   Future<void> automaticLogin(
       LoginAutomaticEvent event, Emitter<AuthenticationState> emit) async {
     emit(LoginLoadingState());
+    final socketService = SocketService();
+    await socketService.connectChatSocket(event.schoolID);
+    await socketService.connectNotificationSocket(event.schoolID);
     try {
       final result = await _globalService.loginUser(
           schoolID: event.schoolID, password: event.password, role: '');

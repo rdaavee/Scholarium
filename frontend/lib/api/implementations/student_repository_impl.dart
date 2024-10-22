@@ -90,8 +90,6 @@ class StudentRepositoryImpl extends StudentRepository implements Endpoint {
     required String selectedMonth,
     required String schoolId,
   }) async {
-    print('Selected Month: $selectedMonth');
-    print('School ID: $schoolId'); // Log the school ID
     final token = await _getToken();
     final url =
         Uri.parse('$baseUrl/admin/schedule/$currentYear-$selectedMonth');

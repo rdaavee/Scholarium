@@ -5,6 +5,7 @@ import 'package:isHKolarium/api/implementations/admin_repository_impl.dart';
 import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
 import 'package:isHKolarium/api/implementations/student_repository_impl.dart';
 import 'package:isHKolarium/api/models/notifications_model.dart';
+import 'package:isHKolarium/api/socket/socket_service.dart';
 import 'package:isHKolarium/blocs/bloc_admin/admin_bloc.dart';
 import 'package:isHKolarium/blocs/bloc_notification/notification_bloc.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
@@ -30,6 +31,7 @@ class NotificationMessageState extends State<NotificationMessageWidget> {
   final adminRepository = AdminRepositoryImpl();
   final globalRepository = GlobalRepositoryImpl();
   final studentRepository = StudentRepositoryImpl();
+  final socketService = SocketService();
 
   @override
   void initState() {
@@ -39,7 +41,8 @@ class NotificationMessageState extends State<NotificationMessageWidget> {
 
   Future<void> initialize() async {
     adminBloc = AdminBloc(adminRepository, globalRepository);
-    notificationsBloc = NotificationsBloc(globalRepository, studentRepository);
+    notificationsBloc =
+        NotificationsBloc(globalRepository, studentRepository, socketService);
   }
 
   String _formatTime(String time) {
@@ -55,8 +58,8 @@ class NotificationMessageState extends State<NotificationMessageWidget> {
           create: (context) => AdminBloc(adminRepository, globalRepository),
         ),
         BlocProvider(
-          create: (context) =>
-              NotificationsBloc(globalRepository, studentRepository),
+          create: (context) => NotificationsBloc(
+              globalRepository, studentRepository, socketService),
         ),
       ],
       child: Padding(

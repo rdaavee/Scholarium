@@ -94,7 +94,6 @@ class ProfessorRepositoryImpl extends ProfessorRepository implements Endpoint {
       );
       if (response.statusCode == 200) {
         final List<dynamic> data = jsonDecode(response.body);
-        print(data);
         return data.map((item) => item as Map<String, dynamic>).toList();
       } else {
         throw Exception('Failed to load schedule: ${response.statusCode}');

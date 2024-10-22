@@ -23,6 +23,7 @@ class StudentsBloc extends Bloc<StudentsEvent, StudentsState> {
   Future<void> studentInitialEvents(
       StudentsInitialEvent event, Emitter<StudentsState> emit) async {
     emit(StudentsLoadingState());
+    
     emit(
       StudentsLoadedSuccessState(
           users: const [],
