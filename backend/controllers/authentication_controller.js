@@ -98,10 +98,11 @@ exports.login = async (req, res) => {
 };
 
 //========================================================MESSAGING SYSTEM============================================================
+// authentication_controller.js
+
 exports.postMessage = async (req, res) => {
   try {
     const io = req.app.get('io');
-
     const { sender, receiver, content } = req.body;
 
     const senderUser = await User.findOne({ school_id: sender });
@@ -120,12 +121,18 @@ exports.postMessage = async (req, res) => {
     await message.save();
 
     // Emit the message to the receiver through socket.io
-    io.to(receiverUser.school_id).emit("receiveMessage", {
-      sender: senderUser.school_id,
-      content: message.content,
-      timestamp: message.createdAt,
-    });
-    console.log(`Message sent from ${senderUser.school_id} to ${receiverUser.school_id}: ${message.content}`);
+    const receiverSocketId = connectedUsers[receiverUser.school_id];
+    if (receiverSocketId) {
+      io.to(receiverSocketId).emit("receiveMessage", {
+        sender: senderUser.school_id,
+        content: message.content,
+        timestamp: message.createdAt,
+      });
+      console.log(`Message sent from ${senderUser.school_id} to ${receiverUser.school_id}: ${message.content}`);
+    } else {
+      console.error(`Receiver ${receiverUser.school_id} is not connected.`);
+      return res.status(404).json({ message: "Receiver is not connected." });
+    }
 
     res.status(200).json({ message: "Message sent successfully" });
   } catch (error) {
@@ -133,6 +140,8 @@ exports.postMessage = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
+
 
 // Get messages between two users
 exports.getMessages = async (req, res) => {

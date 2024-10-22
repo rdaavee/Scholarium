@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
 import 'package:isHKolarium/api/models/message_model.dart';
+import 'package:isHKolarium/api/socket/socket_service.dart';
 import 'dart:async';
 
 import 'package:isHKolarium/config/constants/colors.dart';
@@ -25,14 +26,14 @@ class MessageScreenState extends State<MessageScreen> {
   final GlobalRepositoryImpl messageService = GlobalRepositoryImpl();
   final TextEditingController _contentController = TextEditingController();
   List<MessageModel> messages = [];
-  Timer? _timer;
   final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
+    SocketService().connectChatSocket();
     _fetchMessages();
-    _startMessageFetchTimer();
+    _initializeSocketListeners();
   }
 
   Future<void> _fetchMessages() async {
@@ -41,13 +42,27 @@ class MessageScreenState extends State<MessageScreen> {
           await messageService.getMessages(widget.senderId, widget.receiverId);
       if (mounted) {
         setState(() {
-          messages = fetchedMessages;
+          messages =
+              fetchedMessages; // Update the message list with fetched messages
         });
-        _scrollToBottom();
+        _scrollToBottom(); // Scroll to the bottom to show the latest message
       }
     } catch (e) {
       print('Error fetching messages: $e');
     }
+  }
+
+  void _initializeSocketListeners() {
+    SocketService().chatSocket.on('receiveMessage', (data) {
+      final newMessage = MessageModel.fromJson(data);
+
+      if (mounted) {
+        setState(() {
+          messages.add(newMessage);
+        });
+        _scrollToBottom();
+      }
+    });
   }
 
   void _scrollToBottom() {
@@ -56,24 +71,21 @@ class MessageScreenState extends State<MessageScreen> {
     }
   }
 
-  void _startMessageFetchTimer() {
-    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      _fetchMessages();
-    });
-  }
-
   Future<void> _sendMessage() async {
     final String content = _contentController.text;
 
     if (content.isNotEmpty) {
-      final message = MessageModel(
-        sender: widget.senderId,
-        receiver: widget.receiverId,
-        content: content,
-      );
-      await messageService.postMessage(message);
+      SocketService().sendMessage(widget.senderId, widget.receiverId, content);
+      setState(() {
+        messages.add(MessageModel(
+          sender: widget.senderId,
+          receiver: widget.receiverId,
+          content: content,
+          createdAt: DateTime.now(),
+        ));
+      });
+
       _contentController.clear();
-      await _fetchMessages();
       _scrollToBottom();
     } else {
       print('Message content cannot be empty');
@@ -82,7 +94,7 @@ class MessageScreenState extends State<MessageScreen> {
 
   @override
   void dispose() {
-    _timer?.cancel();
+    SocketService().disconnectSockets();
     _contentController.dispose();
     _scrollController.dispose();
     super.dispose();
@@ -192,9 +204,8 @@ class MessageScreenState extends State<MessageScreen> {
                               controller: _contentController,
                               decoration: const InputDecoration(
                                 hintText: 'Type your message...',
-                                hintStyle: TextStyle(
-                                    fontSize: 12,
-                                    color: Colors.grey),
+                                hintStyle:
+                                    TextStyle(fontSize: 12, color: Colors.grey),
                                 border: InputBorder.none,
                               ),
                               style: TextStyle(
