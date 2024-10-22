@@ -7,6 +7,8 @@ import 'package:isHKolarium/api/implementations/admin_repository_impl.dart';
 import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
 import 'package:isHKolarium/api/models/event_model.dart';
 import 'package:isHKolarium/blocs/bloc_admin/admin_bloc.dart';
+import 'package:isHKolarium/config/constants/colors.dart';
+import 'package:isHKolarium/features/widgets/app_bar.dart';
 import 'package:isHKolarium/features/widgets/loading_circular.dart';
 
 class CreateEventScreen extends StatefulWidget {
@@ -91,9 +93,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
             return const Center(child: LoadingCircular());
           } else {
             return Scaffold(
-              appBar: AppBar(
-                title: const Text('Create Event'),
-              ),
+              appBar: AppBarWidget(title: 'Create Event', isBackButton: true),
               body: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Form(
@@ -103,9 +103,41 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                       children: [
                         TextFormField(
                           controller: _eventNameController,
-                          decoration: const InputDecoration(
+                          decoration: InputDecoration(
                             labelText: 'Event Name',
-                            border: OutlineInputBorder(),
+                            labelStyle: const TextStyle(
+                              color: Colors.grey,
+                              fontSize: 13,
+                            ),
+                            floatingLabelStyle: const TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF00A4E4),
+                            ),
+                            filled: true,
+                            fillColor: Colors.white.withOpacity(0.2),
+                            contentPadding: const EdgeInsets.symmetric(
+                                vertical: 12.0, horizontal: 16.0),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                              borderSide: BorderSide(color: Colors.grey),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                              borderSide: BorderSide(color: Colors.grey),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12.0),
+                              borderSide: BorderSide(
+                                color: const Color(0xFF00A4E4),
+                                width: 2,
+                              ),
+                            ),
+                          ),
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 12.0,
+                            fontWeight: FontWeight.w300,
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -118,9 +150,41 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                         TextFormField(
                           controller: _descriptionController,
                           maxLines: 3,
-                          decoration: const InputDecoration(
+                          decoration: InputDecoration(
                             labelText: 'Description',
-                            border: OutlineInputBorder(),
+                            labelStyle: const TextStyle(
+                              color: Colors.grey,
+                              fontSize: 13,
+                            ),
+                            floatingLabelStyle: const TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF00A4E4),
+                            ),
+                            filled: true,
+                            fillColor: Colors.white.withOpacity(0.2),
+                            contentPadding: const EdgeInsets.symmetric(
+                                vertical: 12.0, horizontal: 16.0),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                              borderSide: BorderSide(color: Colors.grey),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                              borderSide: BorderSide(color: Colors.grey),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12.0),
+                              borderSide: BorderSide(
+                                color: const Color(0xFF00A4E4),
+                                width: 2,
+                              ),
+                            ),
+                          ),
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 12.0,
+                            fontWeight: FontWeight.w300,
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -132,9 +196,41 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                         const SizedBox(height: 16.0),
                         TextFormField(
                           controller: _dateController,
-                          decoration: const InputDecoration(
+                          decoration: InputDecoration(
                             labelText: 'Date (YYYY-MM-DD)',
-                            border: OutlineInputBorder(),
+                            labelStyle: const TextStyle(
+                              color: Colors.grey,
+                              fontSize: 13,
+                            ),
+                            floatingLabelStyle: const TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF00A4E4),
+                            ),
+                            filled: true,
+                            fillColor: Colors.white.withOpacity(0.2),
+                            contentPadding: const EdgeInsets.symmetric(
+                                vertical: 12.0, horizontal: 16.0),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                              borderSide: BorderSide(color: Colors.grey),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                              borderSide: BorderSide(color: Colors.grey),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12.0),
+                              borderSide: BorderSide(
+                                color: const Color(0xFF00A4E4),
+                                width: 2,
+                              ),
+                            ),
+                          ),
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 12.0,
+                            fontWeight: FontWeight.w300,
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -146,9 +242,41 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                         const SizedBox(height: 16.0),
                         TextFormField(
                           controller: _timeController,
-                          decoration: const InputDecoration(
+                          decoration: InputDecoration(
                             labelText: 'Time (HH:MM AM/PM)',
-                            border: OutlineInputBorder(),
+                            labelStyle: const TextStyle(
+                              color: Colors.grey,
+                              fontSize: 13,
+                            ),
+                            floatingLabelStyle: const TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF00A4E4),
+                            ),
+                            filled: true,
+                            fillColor: Colors.white.withOpacity(0.2),
+                            contentPadding: const EdgeInsets.symmetric(
+                                vertical: 12.0, horizontal: 16.0),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                              borderSide: BorderSide(color: Colors.grey),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                              borderSide: BorderSide(color: Colors.grey),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12.0),
+                              borderSide: BorderSide(
+                                color: const Color(0xFF00A4E4),
+                                width: 2,
+                              ),
+                            ),
+                          ),
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 12.0,
+                            fontWeight: FontWeight.w300,
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -169,7 +297,15 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                             ),
                             child: _image == null
                                 ? const Center(
-                                    child: Text('Tap to select an image'))
+                                    child: Text(
+                                      'Tap to select an image',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 12.0,
+                                        fontWeight: FontWeight.w300,
+                                      ),
+                                    ),
+                                  )
                                 : ClipRRect(
                                     borderRadius: BorderRadius.circular(8),
                                     child: Image.file(
@@ -182,7 +318,27 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                         const SizedBox(height: 16.0),
                         ElevatedButton(
                           onPressed: _submitForm,
-                          child: const Text('Create Event'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: ColorPalette.btnColor,
+                            side: const BorderSide(
+                              color: ColorPalette.btnColor,
+                            ),
+                            minimumSize: const Size(485, 55),
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 12.0, horizontal: 16.0),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          child: const Text(
+                            'Create',
+                            style: TextStyle(
+                              fontFamily: 'Inter',
+                              fontWeight: FontWeight.normal,
+                              color: Colors.white,
+                              fontSize: 12,
+                            ),
+                          ),
                         ),
                       ],
                     ),
