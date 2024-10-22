@@ -27,7 +27,7 @@ class MessageScreenState extends State<MessageScreen> {
   final TextEditingController _contentController = TextEditingController();
   List<MessageModel> messages = [];
   final ScrollController _scrollController = ScrollController();
-  late SocketService _socketService;
+  late final SocketService _socketService;
 
   @override
   void initState() {
@@ -38,7 +38,6 @@ class MessageScreenState extends State<MessageScreen> {
   }
 
   Future<void> _initializeSocket() async {
-    await _socketService.connectChatSocket(widget.senderId);
     _initializeSocketListeners();
   }
 
@@ -99,7 +98,6 @@ class MessageScreenState extends State<MessageScreen> {
 
   @override
   void dispose() {
-    SocketService().disconnectSockets();
     _contentController.dispose();
     _scrollController.dispose();
     super.dispose();

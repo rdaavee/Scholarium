@@ -9,9 +9,11 @@ const professorRoutes = require("./routers/professor_routes");
 const adminRoutes = require("./routers/admin_routes");
 const authRoutes = require("./routers/authentication_routes");
 const path = require("path");
-const setupChatSocket = require('./sockets/chat_socket'); // Import socket setup
 const app = express();
 const PORT = process.env.PORT || 3000;
+const setupChatSocket = require('./sockets/chat_socket');
+const setupNotificationSocket = require('./sockets/notification_socket'); 
+
 
 // Create HTTP server
 const server = http.createServer(app);
@@ -20,16 +22,16 @@ const server = http.createServer(app);
 connectDB();
 
 // Setup socket.io
-const io = setupChatSocket(server);
+const io = require("socket.io")(server); 
+
+setupChatSocket(io);  // Correctly passing the io instance
+setupNotificationSocket(io);
 
 // Middleware setup
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-
-// Store io in app for easy access in routes
-app.set('io', io);
 
 // Routes setup
 app.use("/api/user", userRoutes);

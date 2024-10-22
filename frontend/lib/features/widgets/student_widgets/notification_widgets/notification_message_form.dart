@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
 import 'package:isHKolarium/api/implementations/student_repository_impl.dart';
 import 'package:isHKolarium/api/models/notifications_model.dart';
+import 'package:isHKolarium/api/socket/socket_service.dart';
 import 'package:isHKolarium/blocs/bloc_notification/notification_bloc.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
 
@@ -34,6 +35,7 @@ class NotificationMessageWidgetState
   final TextEditingController messageController = TextEditingController();
   final globalRepository = GlobalRepositoryImpl();
   final studentRepositoty = StudentRepositoryImpl();
+  final socketService = SocketService();
 
   @override
   void initState() {
@@ -59,7 +61,8 @@ class NotificationMessageWidgetState
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => NotificationsBloc(globalRepository, studentRepositoty),
+          create: (context) => NotificationsBloc(
+              globalRepository, studentRepositoty, socketService),
         ),
       ],
       child: Scaffold(

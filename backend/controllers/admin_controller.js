@@ -133,6 +133,8 @@ exports.createScheduleAndNotification = async (req, res) => {
 
     await newNotification.save();
 
+    req.app.get('io').emit('newNotification', newNotification);
+
     res.status(200).json({
       message: `Notification "${notification.title}" has been sent by ${
         notification.senderName

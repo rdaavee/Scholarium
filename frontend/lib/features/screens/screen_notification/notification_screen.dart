@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
 import 'package:isHKolarium/api/implementations/student_repository_impl.dart';
 import 'package:isHKolarium/api/models/notifications_model.dart';
+import 'package:isHKolarium/api/socket/socket_service.dart';
 import 'package:isHKolarium/blocs/bloc_bottom_nav/bottom_nav_bloc.dart';
 import 'package:isHKolarium/blocs/bloc_notification/notification_bloc.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
@@ -38,7 +39,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
   void _initialize() {
     final globalRepository = GlobalRepositoryImpl();
     final studentRepository = StudentRepositoryImpl();
-    notificationsBloc = NotificationsBloc(globalRepository, studentRepository);
+    final socketService = SocketService();
+    notificationsBloc =
+        NotificationsBloc(globalRepository, studentRepository, socketService);
     notificationsBloc.add(FetchNotificationsEvent());
     context.read<BottomNavBloc>().add(FetchUnreadCountEvent());
   }
@@ -94,14 +97,13 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
   void _confirmSchedule(String scheduleId) {
     notificationsBloc.add(UpdateScheduleStatusEvent(scheduleId.toString()));
-    notificationsBloc.add(FetchNotificationsEvent());
+    context.read<BottomNavBloc>().add(FetchUnreadCountEvent());
   }
 
   void _rejectSchedule(String scheduleId, String sender) {
-    print("Hellooooo");
     notificationsBloc.add(DeleteScheduleNotificationEvent(
         scheduleId.toString(), sender.toString()));
-    notificationsBloc.add(FetchNotificationsEvent());
+    context.read<BottomNavBloc>().add(FetchUnreadCountEvent());
   }
 
   void _deleteNotification(String notificationId) {
@@ -109,7 +111,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
       _displayedNotifications.removeWhere((n) => n.id == notificationId);
     });
     notificationsBloc.add(DeleteNotificationEvent(notificationId));
-    notificationsBloc.add(FetchNotificationsEvent());
     context.read<BottomNavBloc>().add(FetchUnreadCountEvent());
   }
 
@@ -218,6 +219,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                     UpdateNotificationStatusEvent(
                                         notification.id.toString()),
                                   );
+                                  context
+                                      .read<BottomNavBloc>()
+                                      .add(FetchUnreadCountEvent());
                                 },
                                 child: NotificationCard(
                                   color: notification.status == false

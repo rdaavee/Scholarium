@@ -89,4 +89,36 @@ class NotificationsModel {
       'profile_picture': profilePicture,
     };
   }
+
+  NotificationsModel copyWith({
+    String? id,
+    String? sender,
+    String? senderName,
+    String? receiver,
+    String? receiverName,
+    String? role,
+    String? title,
+    String? message,
+    String? scheduleId,
+    bool? status,
+    String? date,
+    String? time,
+    String? profilePicture,
+  }) {
+    return NotificationsModel(
+      id: id ?? this.id,
+      sender: sender ?? this.sender,
+      senderName: senderName ?? this.senderName,
+      receiver: receiver ?? this.receiver,
+      receiverName: receiverName ?? this.receiverName,
+      role: role ?? this.role,
+      title: title ?? this.title,
+      message: message ?? this.message,
+      scheduleId: scheduleId ?? this.scheduleId,
+      status: status ?? this.status,
+      date: date ?? this.date,
+      time: time ?? this.time,
+      profilePicture: profilePicture ?? this.profilePicture,
+    );
+  }
 }
