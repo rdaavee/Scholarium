@@ -13,6 +13,7 @@ part 'authentication_state.dart';
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
   final GlobalRepositoryImpl _globalService;
+  final socketService = SocketService();
 
   AuthenticationBloc(this._globalService) : super(LoginInitial()) {
     on<PasswordInitialEvent>(passwordInitialEvent);
@@ -46,13 +47,6 @@ class AuthenticationBloc
       LoginButtonClickedEvent event, Emitter<AuthenticationState> emit) async {
     print("Login btn clicked!");
     emit(LoginLoadingState());
-    final socketService = SocketService();
-    try {
-      await socketService.connectChatSocket(event.schoolID);
-      await socketService.connectNotificationSocket(event.schoolID);
-    } catch (e) {
-      print("Oh no, something went wrong.");
-    }
 
     try {
       final result = await _globalService.loginUser(
@@ -60,6 +54,8 @@ class AuthenticationBloc
         password: event.password,
         role: '',
       );
+      await socketService.connectChatSocket(event.schoolID);
+      await socketService.connectNotificationSocket(event.schoolID);
 
       if (result['statusCode'] == 200) {
         final token = result['token'];
@@ -105,12 +101,12 @@ class AuthenticationBloc
   Future<void> automaticLogin(
       LoginAutomaticEvent event, Emitter<AuthenticationState> emit) async {
     emit(LoginLoadingState());
-    final socketService = SocketService();
-    await socketService.connectChatSocket(event.schoolID);
-    await socketService.connectNotificationSocket(event.schoolID);
+
     try {
       final result = await _globalService.loginUser(
           schoolID: event.schoolID, password: event.password, role: '');
+      await socketService.connectChatSocket(event.schoolID);
+      await socketService.connectNotificationSocket(event.schoolID);
 
       if (result['statusCode'] == 200) {
         final token = result['token'];

@@ -133,18 +133,12 @@ exports.createScheduleAndNotification = async (req, res) => {
     });
 
     await newNotification.save();
-
     const io = req.app.get('io');
-    if (!io) {
-      throw new Error('Socket.io instance not found');
-    }
-
     if (connectedUsers[receiverId]) {
-      io.of('/notifications').to(connectedUsers[receiverId]).emit('newNotification', newNotification);
-      console.log(connectedUsers);
+      io.of('/notifications').to(connectedUsers[receiverId]).emit('receiveNotification', newNotification);
+      console.log("Notify success");
     } else {
       console.error(`Failed to send notification: Receiver ${receiverId} is not connected.`);
-      console.log(connectedUsers);
     }
 
     res.status(200).json({

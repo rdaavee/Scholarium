@@ -25,11 +25,14 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
     on<UpdateScheduleStatusEvent>(updateScheduleEvent);
     on<DeleteScheduleNotificationEvent>(deleteScheduleNotificationEvent);
     on<DeleteNotificationEvent>(deleteNotificationEvent);
-    
 
     _socketService.messages.listen((message) {
-      NotificationsModel notification = NotificationsModel.fromJson(message);
-      add(NewNotificationEvent(notification));
+      try {
+        NotificationsModel notification = NotificationsModel.fromJson(message);
+        add(NewNotificationEvent(notification));
+      } catch (e) {
+        print('Error parsing notification: $e');
+      }
     });
   }
 

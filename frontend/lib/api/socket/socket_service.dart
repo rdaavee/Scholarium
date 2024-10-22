@@ -46,18 +46,15 @@ class SocketService {
 
     chatSocket.onDisconnect((_) {
       print('Disconnected from chat namespace');
-      // Notify application about disconnection if needed
     });
 
     chatSocket.onConnectError((error) {
-      print('Connection error: $error'); // Handle connection error
+      print('Connection error: $error');
     });
   }
 
   Future<void> connectNotificationSocket(String userId) async {
     print("Connecting to Notification Socket...");
-
-    // Initialize the notification socket connection
     notificationSocket = IO.io('$socketUrl/notifications', <String, dynamic>{
       'transports': ['websocket'],
       'autoConnect': false,
@@ -65,16 +62,19 @@ class SocketService {
 
     notificationSocket.connect();
 
-    await Future.delayed(Duration(seconds: 1));
-
     notificationSocket.onConnect((_) {
       print('Connected to notifications namespace');
       notificationSocket.emit('registerNotificationUser', userId);
     });
 
-    notificationSocket.on('newNotification', (data) {
-      print('New notification: ${data['title']}, Message: ${data['message']}');
-      _messagesController.add(data);
+    notificationSocket.on('receiveNotification', (notification) {
+      if (notification != null) {
+        print(
+            'New notification: ${notification['title']}, Message: ${notification['message']}');
+        _messagesController.add(notification); // Emit the notification
+      } else {
+        print('Received notification data is null or not in expected format.');
+      }
     });
 
     notificationSocket.onDisconnect((_) {
@@ -82,7 +82,11 @@ class SocketService {
     });
 
     notificationSocket.onConnectError((error) {
-      print('Connection error: $error');
+      print('Notification connection error: $error');
+    });
+
+    notificationSocket.onError((error) {
+      print('Notification socket error: $error');
     });
   }
 
