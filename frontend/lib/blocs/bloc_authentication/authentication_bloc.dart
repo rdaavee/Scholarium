@@ -50,7 +50,9 @@ class AuthenticationBloc
     try {
       await socketService.connectChatSocket(event.schoolID);
       await socketService.connectNotificationSocket(event.schoolID);
-    } catch (e) {}
+    } catch (e) {
+      print("Oh no, something went wrong.");
+    }
 
     try {
       final result = await _globalService.loginUser(

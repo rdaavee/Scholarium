@@ -9,11 +9,11 @@ const professorRoutes = require("./routers/professor_routes");
 const adminRoutes = require("./routers/admin_routes");
 const authRoutes = require("./routers/authentication_routes");
 const path = require("path");
-const app = express();
-const PORT = process.env.PORT || 3000;
 const setupChatSocket = require('./sockets/chat_socket');
 const setupNotificationSocket = require('./sockets/notification_socket'); 
 
+const app = express();
+const PORT = process.env.PORT || 3000;
 
 // Create HTTP server
 const server = http.createServer(app);
@@ -23,8 +23,9 @@ connectDB();
 
 // Setup socket.io
 const io = require("socket.io")(server); 
+app.set('io', io);
 
-setupChatSocket(io);  // Correctly passing the io instance
+setupChatSocket(io);  
 setupNotificationSocket(io);
 
 // Middleware setup

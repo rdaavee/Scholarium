@@ -7,6 +7,7 @@ const Notifications = require("../models/notifications_model");
 const currentDate = moment().format("YYYY-MM-DD");
 const currentTime = moment().format("HH:mm:ss");
 
+
 //-------------------------------------------- STUDENT CRUD ----------------------------------------------------------------------
 // Get all users
 exports.getAllUsers = async (req, res) => {
@@ -109,12 +110,11 @@ exports.createScheduleAndNotification = async (req, res) => {
       time_out: schedule.time_out,
       date: schedule.date,
       isActive: schedule.isActive,
-      isCompleted: schedule.isCompleted || "pending",
+      isCompleted: schedule.isCompleted || 'pending',
     });
 
     const savedSchedule = await newSchedule.save();
-    const receiverId = savedSchedule.school_id; 
-
+    const receiverId = savedSchedule.school_id;
 
     const newNotification = new Notifications({
       sender: notification.sender,
@@ -123,8 +123,7 @@ exports.createScheduleAndNotification = async (req, res) => {
       receiverName: notification.receiverName,
       role: notification.role,
       title: notification.title,
-      message:
-        `You have been assigned a schedule to professor ${profInfo.first_name} ${profInfo.last_name}'s` +
+      message: `You have been assigned a schedule to professor ${profInfo.first_name} ${profInfo.last_name}'s` +
         `${notification.message}`,
       scheduleId: savedSchedule._id,
       date: currentDate,
@@ -135,18 +134,27 @@ exports.createScheduleAndNotification = async (req, res) => {
 
     await newNotification.save();
 
-    req.app.get('io').to(receiverId).emit('newNotification', newNotification);
+    const io = req.app.get('io');
+    if (!io) {
+      throw new Error('Socket.io instance not found');
+    }
+
+    const notificationNamespace = io.of('/notifications');
+
+    if (receiverId) {
+      notificationNamespace.to(receiverId).emit('newNotification', newNotification);
+      console.log(`Notification successfully sent to ${receiverId}:`, newNotification);
+    } else {
+      console.error(`Failed to send notification: Receiver ${receiverId} is not connected.`);
+    }
 
     res.status(200).json({
-      message: `Notification "${notification.title}" has been sent by ${
-        notification.senderName
-      } to ${notification.receiverName || "all"}.`,
+      message: `Notification "${notification.title}" has been sent by ${notification.senderName} to ${notification.receiverName || 'all'}.`,
       schedule: savedSchedule,
       notification: newNotification,
     });
-    console.log(savedSchedule, newNotification);
   } catch (error) {
-    console.error("Error creating schedule or notification:", error);
+    console.error('Error creating schedule or notification:', error);
     res.status(500).json({ message: error.message });
   }
 };

@@ -4,7 +4,7 @@ const Notifications = require('../models/notifications_model');
 const connectedUsers = {};
 
 const setupNotificationSocket = (io) => {
-  const notificationNamespace = io.of('/notifications'); // Use the io instance to create the namespace
+  const notificationNamespace = io.of('/notifications');
 
   notificationNamespace.on("connection", (socket) => {
     console.log("New client connected to notifications namespace:", socket.id);
@@ -14,7 +14,7 @@ const setupNotificationSocket = (io) => {
       console.log(`User registered for notifications: ${userId} with socket ID: ${socket.id}`);
     });
 
-    socket.on("sendNotification", async (notificationData) => {
+    socket.on("receiveNotification", async (notificationData) => {
       const { sender, senderName, receiver, receiverName, role, title, message, scheduleId, date, time } = notificationData;
       
       const notification = new Notifications({
@@ -32,7 +32,7 @@ const setupNotificationSocket = (io) => {
 
       try {
         await notification.save(); 
-        console.log("Notification saved to database:", notification);
+        console.log("Notification saved to database:");
 
         if (connectedUsers[receiver]) {
           notificationNamespace.to(connectedUsers[receiver]).emit("receiveNotification", { 
