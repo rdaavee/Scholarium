@@ -6,7 +6,7 @@ const Announcement = require("../models/announcement_model");
 const Notifications = require("../models/notifications_model");
 const currentDate = moment().format("YYYY-MM-DD");
 const currentTime = moment().format("HH:mm:ss");
-
+const connectedUsers = require('../sockets/connected_users'); 
 
 //-------------------------------------------- STUDENT CRUD ----------------------------------------------------------------------
 // Get all users
@@ -126,8 +126,8 @@ exports.createScheduleAndNotification = async (req, res) => {
       message: `You have been assigned a schedule to professor ${profInfo.first_name} ${profInfo.last_name}'s` +
         `${notification.message}`,
       scheduleId: savedSchedule._id,
-      date: currentDate,
-      time: currentTime,
+      date: new Date().toISOString().split('T')[0], // Current date
+      time: new Date().toLocaleTimeString(), // Current time
       status: notification.status,
       profile_picture: notification.profile_picture,
     });
@@ -139,15 +139,13 @@ exports.createScheduleAndNotification = async (req, res) => {
       throw new Error('Socket.io instance not found');
     }
 
-    const notificationNamespace = io.of('/notifications');
-    const connectedUsers = [];
-
     if (connectedUsers[receiverId]) {
-      notificationNamespace.to(connectedUsers[receiverId]).emit('newNotification', newNotification);
-      console.log(`Notification successfully sent to ${receiverId}:`, newNotification);
-  } else {
+      io.of('/notifications').to(connectedUsers[receiverId]).emit('newNotification', newNotification);
+      console.log(connectedUsers);
+    } else {
       console.error(`Failed to send notification: Receiver ${receiverId} is not connected.`);
-  }
+      console.log(connectedUsers);
+    }
 
     res.status(200).json({
       message: `Notification "${notification.title}" has been sent by ${notification.senderName} to ${notification.receiverName || 'all'}.`,
@@ -159,6 +157,7 @@ exports.createScheduleAndNotification = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
 
 // Delete a schedule
 exports.deleteScheduleAndNotification = async (req, res) => {

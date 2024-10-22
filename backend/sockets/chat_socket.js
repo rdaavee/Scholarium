@@ -5,8 +5,7 @@ const Message = require('../models/message_system_model');
 const connectedUsers = {};
 
 const setupChatSocket = (io) => {
-  const chatNamespace = io.of('/chat'); // Get the namespace directly from the io instance
-
+  const chatNamespace = io.of('/chat'); 
   chatNamespace.on("connection", (socket) => {
     console.log("New client connected to chat namespace:", socket.id);
 
