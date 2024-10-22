@@ -27,33 +27,23 @@ class MessageScreenState extends State<MessageScreen> {
   final TextEditingController _contentController = TextEditingController();
   List<MessageModel> messages = [];
   final ScrollController _scrollController = ScrollController();
+  late SocketService _socketService;
 
   @override
   void initState() {
     super.initState();
-    SocketService().connectChatSocket();
+    _socketService = SocketService();
     _fetchMessages();
+    _initializeSocket();
+  }
+
+  Future<void> _initializeSocket() async {
+    await _socketService.connectChatSocket(widget.senderId);
     _initializeSocketListeners();
   }
 
-  Future<void> _fetchMessages() async {
-    try {
-      final fetchedMessages =
-          await messageService.getMessages(widget.senderId, widget.receiverId);
-      if (mounted) {
-        setState(() {
-          messages =
-              fetchedMessages; // Update the message list with fetched messages
-        });
-        _scrollToBottom(); // Scroll to the bottom to show the latest message
-      }
-    } catch (e) {
-      print('Error fetching messages: $e');
-    }
-  }
-
   void _initializeSocketListeners() {
-    SocketService().chatSocket.on('receiveMessage', (data) {
+    _socketService.chatSocket.on('receiveMessage', (data) {
       final newMessage = MessageModel.fromJson(data);
 
       if (mounted) {
@@ -63,6 +53,21 @@ class MessageScreenState extends State<MessageScreen> {
         _scrollToBottom();
       }
     });
+  }
+
+  Future<void> _fetchMessages() async {
+    try {
+      final fetchedMessages =
+          await messageService.getMessages(widget.senderId, widget.receiverId);
+      if (mounted) {
+        setState(() {
+          messages = fetchedMessages;
+        });
+        _scrollToBottom();
+      }
+    } catch (e) {
+      print('Error fetching messages: $e');
+    }
   }
 
   void _scrollToBottom() {
