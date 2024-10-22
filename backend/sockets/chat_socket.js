@@ -2,30 +2,31 @@ const { Server } = require("socket.io");
 const User = require('../models/user_model');
 const Message = require('../models/message_system_model');
 
-const connectedUsers = {}; // Store connected user IDs and their socket IDs
+const connectedUsers = {};
 
 const setupChatSocket = (server) => {
   const io = new Server(server);
-  const chatNamespace = io.of('/chat'); // Define a chat namespace
+  const chatNamespace = io.of('/chat');
 
   chatNamespace.on("connection", (socket) => {
+
     console.log("New client connected to chat namespace:", socket.id);
 
-    // Register user when they connect
     socket.on("registerUser", (userId) => {
-      connectedUsers[userId] = socket.id; // Map user ID to socket ID
-      console.log(`User registered: ${userId}`);
-    });
 
-    // Handle sending messages
+      connectedUsers[userId] = socket.id; 
+      console.log(`User registered: ${userId} with socket ID: ${socket.id}`);
+      console.log("Current connected users:", connectedUsers);
+    });
+    
+    
     socket.on("sendMessage", async (messageData) => {
       const { sender, receiver, content } = messageData;
 
       try {
         const senderUser = await User.findOne({ school_id: sender });
         const receiverUser = await User.findOne({ school_id: receiver });
-
-        // Ensure both sender and receiver are found
+        
         if (senderUser && receiverUser) {
           const message = new Message({
             sender: senderUser._id,

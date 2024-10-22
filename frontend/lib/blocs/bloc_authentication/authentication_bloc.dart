@@ -4,6 +4,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
+import 'package:isHKolarium/api/socket/socket_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 part 'authentication_event.dart';
@@ -57,6 +58,11 @@ class AuthenticationBloc
         final role = result['role'];
         final schoolID = event.schoolID;
         final password = event.password;
+
+        final socketService = SocketService();
+        await socketService.connectChatSocket(schoolID); 
+        print("Socket connected with schoolID: $schoolID");
+
         storeToken(token, schoolID, password, role);
         print(schoolID + password);
 

@@ -12,61 +12,56 @@ class SocketService {
 
   SocketService._internal();
 
-  void connectChatSocket() {
+  Future<void> connectChatSocket(String userId) async {
     print("Connect Chat Socket Hit");
-    chatSocket = IO.io('http://localhost:3000/chat', <String, dynamic>{
+
+    // Initialize the chat socket connection
+    chatSocket =
+        IO.io('https://scholarium-l8gk.onrender.com/chat', <String, dynamic>{
       'transports': ['websocket'],
+      'autoConnect': false, // Prevent automatic connection
     });
 
+    // Connect to the chat namespace
+    chatSocket.connect();
+
+    // Wait for the connection before proceeding
+    await Future.delayed(Duration(seconds: 1)); // Ensure socket is connected
+
+    // Listen for connection events
     chatSocket.onConnect((_) {
       print('Connected to chat namespace');
+      chatSocket.emit('registerUser', userId); // Register user after connection
     });
 
+    // Listen for incoming messages
     chatSocket.on('receiveMessage', (data) {
+      print("hit");
       print('New chat message from ${data['sender']}: ${data['content']}');
     });
 
+    // Listen for disconnection events
     chatSocket.onDisconnect((_) {
       print('Disconnected from chat namespace');
     });
   }
 
-  void connectAnnouncementSocket() {
-    announcementSocket =
-        IO.io('http://<your-server-ip>:3000/announcements', <String, dynamic>{
-      'transports': ['websocket'],
-    });
-
-    announcementSocket.onConnect((_) {
-      print('Connected to announcements namespace');
-    });
-
-    announcementSocket.on('newAnnouncement', (data) {
-      print('New announcement: ${data['message']}');
-    });
-
-    announcementSocket.onDisconnect((_) {
-      print('Disconnected from announcements namespace');
-    });
-  }
-
   void sendMessage(String sender, String receiver, String content) {
-    chatSocket.emit('sendMessage', {
-      'sender': sender,
-      'receiver': receiver,
-      'content': content,
-    });
-  }
-
-  void sendAnnouncement(String message, String department) {
-    announcementSocket.emit('sendAnnouncement', {
-      'message': message,
-      'department': department,
-    });
+    if (chatSocket.connected) {
+      chatSocket.emit('sendMessage', {
+        'sender': sender,
+        'receiver': receiver,
+        'content': content,
+      });
+    } else {
+      print('Socket is not connected. Unable to send message.');
+    }
   }
 
   void disconnectSockets() {
     chatSocket.disconnect();
-    announcementSocket.disconnect();
+    if (announcementSocket != null) {
+      announcementSocket.disconnect();
+    }
   }
 }
