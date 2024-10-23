@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:isHKolarium/config/constants/colors.dart';
 
 class AccountStatusCard extends StatelessWidget {
   final String title;
@@ -14,8 +16,8 @@ class AccountStatusCard extends StatelessWidget {
     required this.activeCount,
     required this.inactiveCount,
     required this.cardColor,
-    this.width = 160,
-    this.height = 235,
+    this.width = 260,
+    this.height = 270,
   });
 
   @override
@@ -43,13 +45,22 @@ class AccountStatusCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    title,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                      color: Colors.green,
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        title,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                          color: ColorPalette.primary,
+                        ),
+                      ),
+                      Icon(
+                        CupertinoIcons.person_alt_circle_fill,
+                        color: ColorPalette.primary,
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 20),
                   Row(
