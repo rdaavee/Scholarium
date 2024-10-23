@@ -1,4 +1,3 @@
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_admin_scaffold/admin_scaffold.dart';
@@ -9,9 +8,8 @@ import 'package:isHKolarium/blocs/bloc_admin/admin_bloc.dart';
 import 'package:isHKolarium/blocs/bloc_bottom_nav/bottom_nav_bloc.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
 import 'package:isHKolarium/features/widgets/admin_widgets/account_status_card.dart';
-import 'package:isHKolarium/features/widgets/admin_widgets/dtr_status_card.dart';
-import 'package:isHKolarium/features/widgets/admin_widgets/duty_status_card.dart';
-import 'package:isHKolarium/features/widgets/admin_widgets/hk_discount_status_card.dart';
+import 'package:isHKolarium/features/widgets/admin_widgets/admin_monitoring.dart';
+import 'package:isHKolarium/features/widgets/admin_widgets/line_graph.dart';
 import 'package:isHKolarium/features/widgets/label_text_widget.dart';
 import 'package:isHKolarium/features/widgets/loading_circular.dart';
 
@@ -104,132 +102,56 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
           listener: (BuildContext context, AdminState state) {},
           builder: (context, state) {
             if (state is AdminLoadedSuccessState) {
-              return SingleChildScrollView(
-                child: Container(
-                  decoration: const BoxDecoration(
-                    color: Color(0xFFF0F3F4),
-                    borderRadius:
-                        BorderRadius.vertical(top: Radius.circular(10)),
-                  ),
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 23),
-                      const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 25.0),
-                        child: Align(
-                          alignment: Alignment.topLeft,
-                          child: LabelTextWidget(title: 'Account Monitoring'),
+              return Scaffold(
+                body: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 20,
+                        horizontal: 20,
+                      ),
+                      child: Align(
+                        alignment: Alignment.topLeft,
+                        child: LabelTextWidget(
+                          title: 'Admin Monitoring',
                         ),
                       ),
-                      Container(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            Wrap(
-                              spacing: 13.0,
-                              runSpacing: 13.0,
-                              children: [
-                                SizedBox(
-                                  width: MediaQuery.of(context).size.width / 2 -
-                                      20,
-                                  child: AccountStatusCard(
-                                    title: 'Account Status',
-                                    activeCount: state.activeCount,
-                                    inactiveCount: state.inactiveCount,
-                                    cardColor: Colors.green,
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: MediaQuery.of(context).size.width / 2 -
-                                      20,
-                                  child: HkDiscountStatusCard(
-                                    title: 'HK Discounts',
-                                    discount25: state.hk25,
-                                    discount50: state.hk50,
-                                    discount75: state.hk75,
-                                    cardColor: Colors.red,
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: MediaQuery.of(context).size.width / 2 -
-                                      20,
-                                  child: DutyStatusCard(
-                                    title: 'Duty Status',
-                                    ongoingCount: state.todaySchedulesCount,
-                                    completedCount:
-                                        state.completedSchedulesCount,
-                                    cardColor: Colors.orange,
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: MediaQuery.of(context).size.width / 2 -
-                                      20,
-                                  child: DtrStatusCard(
-                                    title: 'DTR Status',
-                                    completedCount: state.completedDtr,
-                                    cardColor: Colors.purple,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 20),
-                            const Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 25.0),
-                              child: Align(
-                                alignment: Alignment.topLeft,
-                                child: LabelTextWidget(title: 'Status Chart'),
-                              ),
-                            ),
-                            const SizedBox(height: 20),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 16.0),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(15),
-                                ),
-                                height: 270,
-                                child: PieChart(
-                                  PieChartData(
-                                    sections: [
-                                      PieChartSectionData(
-                                        color: ColorPalette.primary,
-                                        value: state.activeCount.toDouble(),
-                                        title: 'Active',
-                                        radius: 120,
-                                        titleStyle: const TextStyle(
-                                          fontSize: 10,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      PieChartSectionData(
-                                        color: Colors.grey.withOpacity(0.85),
-                                        value: state.inactiveCount.toDouble(),
-                                        title: 'Inactive',
-                                        radius: 120,
-                                        titleStyle: const TextStyle(
-                                          fontSize: 10,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ],
-                                    borderData: FlBorderData(show: false),
-                                    sectionsSpace: 0,
-                                    centerSpaceRadius: 0,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Row(
+                        children: [
+                          AccountStatusCard(
+                            title: 'Account Status',
+                            activeCount: state.activeCount,
+                            inactiveCount: state.inactiveCount,
+                            cardColor: ColorPalette.primary,
+                          ),
+                          AdminMonitoring(),
+                        ],
                       ),
-                      const SizedBox(height: 30),
-                    ],
-                  ),
+                    ),
+                    SizedBox(
+                      height: 360,
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 20,
+                              horizontal: 20,
+                            ),
+                            child: Align(
+                              alignment: Alignment.topLeft,
+                              child: LabelTextWidget(
+                                title: 'Analytics',
+                              ),
+                            ),
+                          ),
+                          const LineGraph(),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               );
             } else if (state is AdminErrorState) {

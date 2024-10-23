@@ -41,10 +41,11 @@ class BottomNavWidget extends StatelessWidget {
             final selectedIndex = state.selectedIndex;
             final unreadCount = state.unreadCount;
 
-            return _buildBottomNavigationBar(context, selectedIndex, unreadCount);
+            return _buildBottomNavigationBar(
+                context, selectedIndex, unreadCount);
           }
 
-          return const SizedBox.shrink(); 
+          return const SizedBox.shrink();
         },
       ),
     );
@@ -211,7 +212,9 @@ class BottomNavWidget extends StatelessWidget {
   Icon _getIconForRole(String role, String itemType) {
     switch (itemType) {
       case 'home':
-        return const Icon(CupertinoIcons.home);
+        return role == 'Admin'
+            ? const Icon(CupertinoIcons.graph_square)
+            : const Icon(CupertinoIcons.home);
       case 'schedule':
         return role == 'Admin'
             ? const Icon(CupertinoIcons.person_2_square_stack)
