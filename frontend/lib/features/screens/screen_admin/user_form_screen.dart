@@ -262,18 +262,20 @@ class _UserFormScreenState extends State<UserFormScreen> {
                 if (widget.isRole == 'Student')
                   DropdownButton<String>(
                     isExpanded: true,
-                    value: selectedProfessor == 'Select Professor'
-                        ? null
-                        : selectedProfessor,
+                    value: selectedProfessor != null &&
+                            selectedProfessor != 'Select Professor'
+                        ? selectedProfessor
+                        : professors.isNotEmpty
+                            ? professors.first[
+                                'school_id'] // Set to the first available professor if no match
+                            : null, // Handle case where professors list might be empty
                     hint: const Text(
                       "Select Professor",
                       style: TextStyle(fontSize: 12),
                     ),
                     items: professors.map((professor) {
                       return DropdownMenuItem<String>(
-                        value: professor['school_id'] == ""
-                            ? null
-                            : professor['school_id'],
+                        value: professor['school_id'],
                         child: Text(professor['name']!),
                       );
                     }).toList(),

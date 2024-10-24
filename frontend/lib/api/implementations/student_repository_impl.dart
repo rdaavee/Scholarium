@@ -1,12 +1,11 @@
 import 'dart:convert';
-
 import 'package:http/http.dart' as http;
-import 'package:isHKolarium/api/implementations/endpoint.dart';
 import 'package:isHKolarium/api/models/dtr_model.dart';
 import 'package:isHKolarium/api/models/dtr_total_hours_model.dart';
 import 'package:isHKolarium/api/models/schedule_model.dart';
 import 'package:isHKolarium/api/models/user_model.dart';
 import 'package:isHKolarium/api/repositories/student_repository.dart';
+import 'package:isHKolarium/config/constants/endpoint.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class StudentRepositoryImpl extends StudentRepository implements Endpoint {
