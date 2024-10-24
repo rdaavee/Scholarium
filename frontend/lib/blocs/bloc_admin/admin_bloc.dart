@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:isHKolarium/api/implementations/admin_repository_impl.dart';
@@ -52,7 +53,8 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
         hk25: 0,
         hk50: 0,
         hk75: 0,
-        completedDtr: 0));
+        announcementsCount: 0,
+        dtrCompletedCount: 0));
   }
 
   Future<void> _onFetchDataEvent(
@@ -60,6 +62,9 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
     emit(AdminLoadingState());
     try {
       final users = await _adminRepositoryImpl.fetchAllUsers();
+      final dtrsCount = await _adminRepositoryImpl.fetchAllDTRs();
+      final annoucements = await _adminRepositoryImpl.fetchAllAnnouncements();
+
       int activeCount = users.where((user) => user.status == 'Active').length;
       int inactiveCount =
           users.where((user) => user.status == 'Inactive').length;
@@ -78,6 +83,7 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
               schedule.date == today &&
               schedule.isCompleted?.toLowerCase() != 'true')
           .length;
+      int announcementsCount = annoucements.length;
 
       emit(AdminLoadedSuccessState(
           users: users,
@@ -89,7 +95,8 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
           hk25: hk25,
           hk50: hk50,
           hk75: hk75,
-          completedDtr: 25));
+          announcementsCount: announcementsCount,
+          dtrCompletedCount: dtrsCount));
     } catch (e) {
       emit(AdminErrorState(message: 'Failed to load users: $e'));
     }
@@ -174,7 +181,8 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
           hk25: 0,
           hk50: 0,
           hk75: 0,
-          completedDtr: 0));
+          announcementsCount: 0,
+          dtrCompletedCount: 0));
     } catch (e) {
       emit(AdminErrorState(message: 'Failed to load announcement: $e'));
     }
