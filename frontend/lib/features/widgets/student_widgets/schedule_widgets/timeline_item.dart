@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 import 'package:isHKolarium/features/widgets/student_widgets/schedule_widgets/timeline_card.dart';
 

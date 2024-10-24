@@ -110,18 +110,19 @@ class _UserFormScreenState extends State<UserFormScreen> {
                 Center(
                   child: Image.asset(
                     'assets/images/create-user-img.png',
-                    height: 200.0,
+                    height: 240.0,
                     width: 200.0,
                     fit: BoxFit.cover,
                   ),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 30),
                 Row(
                   children: [
                     Expanded(
                       child: CustomTextField(
                         labelText: 'First Name',
                         controller: firstNameController,
+                        allowNumbers: false,
                       ),
                     ),
                     const SizedBox(width: 10),
@@ -129,6 +130,7 @@ class _UserFormScreenState extends State<UserFormScreen> {
                       child: CustomTextField(
                         labelText: 'Middle Name',
                         controller: middleNameController,
+                        allowNumbers: false,
                       ),
                     ),
                     const SizedBox(width: 10),
@@ -136,6 +138,7 @@ class _UserFormScreenState extends State<UserFormScreen> {
                       child: CustomTextField(
                         labelText: 'Last Name',
                         controller: lastNameController,
+                        allowNumbers: false,
                       ),
                     ),
                   ],
@@ -160,6 +163,7 @@ class _UserFormScreenState extends State<UserFormScreen> {
                       child: CustomTextField(
                         labelText: 'Password',
                         controller: passwordController,
+                        isPassword: true,
                       ),
                     ),
                   ],
@@ -265,18 +269,18 @@ class _UserFormScreenState extends State<UserFormScreen> {
                     value: selectedProfessor != null &&
                             selectedProfessor != 'Select Professor'
                         ? selectedProfessor
-                        : professors.isNotEmpty
-                            ? professors.first[
-                                'school_id'] // Set to the first available professor if no match
-                            : null, // Handle case where professors list might be empty
+                        : null,
                     hint: const Text(
                       "Select Professor",
-                      style: TextStyle(fontSize: 12),
+                      style: TextStyle(fontSize: 12, color: Colors.black),
                     ),
                     items: professors.map((professor) {
                       return DropdownMenuItem<String>(
                         value: professor['school_id'],
-                        child: Text(professor['name']!),
+                        child: Text(
+                          professor['name']!,
+                          style: TextStyle(fontSize: 14, color: Colors.black),
+                        ),
                       );
                     }).toList(),
                     onChanged: (value) {
@@ -284,6 +288,13 @@ class _UserFormScreenState extends State<UserFormScreen> {
                         selectedProfessor = value ?? 'Select Professor';
                       });
                     },
+                    style: TextStyle(color: Colors.grey, fontSize: 16),
+                    underline: Container(
+                      height: 2,
+                      color: Colors.grey,
+                    ),
+                    iconEnabledColor: Colors.black,
+                    iconSize: 24,
                   ),
                 const SizedBox(height: 20),
                 SubmitButton(

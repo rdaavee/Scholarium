@@ -48,7 +48,7 @@ class _AdminMonitoringState extends State<AdminMonitoring> {
             announcementContainer(
               context,
               CupertinoIcons.checkmark_alt_circle_fill,
-              "Duties Completed",
+              "DTR Completed",
               widget.dtrCompletedCount,
               ColorPalette.primary,
               Colors.white,
