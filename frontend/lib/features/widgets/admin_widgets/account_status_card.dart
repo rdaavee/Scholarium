@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:diagonal_decoration/diagonal_decoration.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
 
 class AccountStatusCard extends StatelessWidget {
@@ -25,13 +26,14 @@ class AccountStatusCard extends StatelessWidget {
     return SizedBox(
       width: width,
       height: height,
-      child: Card(
-        clipBehavior: Clip.antiAliasWithSaveLayer,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        elevation: 5,
+      child: Container(
         margin: const EdgeInsets.all(10),
+        decoration: MatrixDecoration(
+          lineColor: Colors.white,
+          backgroundColor: Color(0xFFEBEBEB),
+          radius: Radius.circular(10),
+          lineWidth: 1,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -71,6 +73,7 @@ class AccountStatusCard extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 17,
                           color: Color(0xFF6D7278),
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
                       Text(
@@ -91,6 +94,7 @@ class AccountStatusCard extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 17,
                           color: Color(0xFF6D7278),
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
                       Text(
