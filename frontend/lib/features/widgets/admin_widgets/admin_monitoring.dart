@@ -3,7 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
 
 class AdminMonitoring extends StatefulWidget {
-  const AdminMonitoring({super.key});
+  final int announcementCount;
+  final int dtrCompletedCount;
+  const AdminMonitoring(
+      {super.key,
+      required this.announcementCount,
+      required this.dtrCompletedCount});
 
   @override
   State<AdminMonitoring> createState() => _AdminMonitoringState();
@@ -36,15 +41,15 @@ class _AdminMonitoringState extends State<AdminMonitoring> {
               context,
               CupertinoIcons.bell_circle_fill,
               "Announcements",
-              12,
+              widget.announcementCount,
               ColorPalette.primary,
               Colors.white,
             ),
             announcementContainer(
               context,
-              CupertinoIcons.bell_circle_fill,
-              "Announcements",
-              12,
+              CupertinoIcons.checkmark_alt_circle_fill,
+              "Duties Completed",
+              widget.dtrCompletedCount,
               ColorPalette.primary,
               Colors.white,
             ),

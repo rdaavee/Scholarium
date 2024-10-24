@@ -127,7 +127,10 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                             inactiveCount: state.inactiveCount,
                             cardColor: ColorPalette.primary,
                           ),
-                          AdminMonitoring(),
+                          AdminMonitoring(
+                            announcementCount: state.announcementsCount,
+                            dtrCompletedCount: state.dtrCompletedCount,
+                          ),
                         ],
                       ),
                     ),

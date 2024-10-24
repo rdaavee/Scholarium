@@ -2,11 +2,12 @@ const mongoose = require("mongoose");
 const moment = require("moment");
 const User = require("../models/user_model");
 const Schedule = require("../models/schedule_model");
+const DTR = require("../models/dtr_model");
 const Announcement = require("../models/announcement_model");
 const Notifications = require("../models/notifications_model");
 const currentDate = moment().format("YYYY-MM-DD");
 const currentTime = moment().format("HH:mm:ss");
-const connectedUsers = require('../sockets/connected_users'); 
+const connectedUsers = require("../sockets/connected_users");
 
 //-------------------------------------------- STUDENT CRUD ----------------------------------------------------------------------
 // Get all users
@@ -20,6 +21,56 @@ exports.getAllUsers = async (req, res) => {
   }
 };
 
+exports.getAllDTR = async (req, res) => {
+  try {
+    const result = await DTR.aggregate([
+      // Group by school_id and calculate the sum of hours_rendered and hours_to_rendered
+      {
+        $group: {
+          _id: "$school_id",
+          totalHoursRendered: { $sum: "$hours_rendered" },
+          totalHoursToRendered: { $first: "$hours_to_rendered" }
+        }
+      },
+      // Add a field to check if totalHoursRendered > totalHoursToRendered
+      {
+        $addFields: {
+          exceededHours: { $gt: ["$totalHoursRendered", "$totalHoursToRendered"] }
+        }
+      },
+      // Count only the entries where exceededHours is true
+      {
+        $group: {
+          _id: null,
+          count: { $sum: { $cond: ["$exceededHours", 1, 0] } }
+        }
+      }
+    ]);
+
+    // If no records are found
+    const exceededCount = result.length > 0 ? result[0].count : 0;
+
+    res.status(200).json({
+      message: "DTRs processed successfully",
+      exceededCount: exceededCount,
+    });
+  } catch (error) {
+    console.error("Error fetching DTRs:", error);
+    res.status(500).json({ message: "Error fetching DTRs" });
+  }
+};
+
+
+exports.getAllAnnouncement = async (req, res) => {
+  try {
+    const announcement = await Announcement.find();
+    res.status(200).json(announcement);
+  } catch (error) {
+    console.error("Error fetching announcement:", error);
+    res.status(500).json({ message: "Error fetching annoucement" });
+  }
+};
+
 // Create a user
 exports.createUser = async (req, res) => {
   const params = req.body;
@@ -27,7 +78,9 @@ exports.createUser = async (req, res) => {
   try {
     const existingUser = await User.findOne({ school_id: params.school_id });
     if (existingUser) {
-      return res.status(400).json({ message: "User with this school ID already exists." });
+      return res
+        .status(400)
+        .json({ message: "User with this school ID already exists." });
     }
 
     let professorName = "";
@@ -35,7 +88,9 @@ exports.createUser = async (req, res) => {
     if (params.prof_id) {
       const prof = await User.findOne({ school_id: params.prof_id });
       if (prof) {
-        professorName = `${prof.first_name ?? ''} ${prof.last_name ?? ''}`.trim();
+        professorName = `${prof.first_name ?? ""} ${
+          prof.last_name ?? ""
+        }`.trim();
         professorId = params.prof_id;
       }
     }
@@ -53,14 +108,13 @@ exports.createUser = async (req, res) => {
       address: params.address,
       role: params.role,
       professor: professorName,
-      prof_id: professorId,   
+      prof_id: professorId,
       hk_type: params.hk_type,
       status: params.status,
       token: params.token,
     });
 
     await user.save();
-
 
     res.status(200).json({
       message: `Record of ${user.last_name}, ${user.first_name} has been added.`,
@@ -71,27 +125,26 @@ exports.createUser = async (req, res) => {
   }
 };
 
-
-exports.getScheduleAdmin = async (req,res) =>{
-  const {month} = req.params;
+exports.getScheduleAdmin = async (req, res) => {
+  const { month } = req.params;
   console.log(month);
-  try{
+  try {
     const startOfMonth = moment(month).startOf("month").format("YYYY-MM-DD");
     const endOfMonth = moment(month).endOf("month").format("YYYY-MM-DD");
     const schedules = await Schedule.find({
-      date: {$gte: startOfMonth, $lte: endOfMonth},
-    }).sort({date: 1});
+      date: { $gte: startOfMonth, $lte: endOfMonth },
+    }).sort({ date: 1 });
     console.log(schedules);
-    if(schedules.length>0){
+    if (schedules.length > 0) {
       res.status(200).json(schedules);
-    }else{
-      res.status(404).json({message: "No schedules found for this month"});
+    } else {
+      res.status(404).json({ message: "No schedules found for this month" });
     }
-  }catch(error){console.error(error);
-    res.status(500).json({message: " Server error occured"});
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: " Server error occured" });
   }
-}
-
+};
 
 exports.createScheduleAndNotification = async (req, res) => {
   try {
@@ -110,7 +163,7 @@ exports.createScheduleAndNotification = async (req, res) => {
       time_out: schedule.time_out,
       date: schedule.date,
       isActive: schedule.isActive,
-      isCompleted: schedule.isCompleted || 'pending',
+      isCompleted: schedule.isCompleted || "pending",
     });
 
     const savedSchedule = await newSchedule.save();
@@ -123,35 +176,41 @@ exports.createScheduleAndNotification = async (req, res) => {
       receiverName: notification.receiverName,
       role: notification.role,
       title: notification.title,
-      message: `You have been assigned a schedule to professor ${profInfo.first_name} ${profInfo.last_name}'s` +
+      message:
+        `You have been assigned a schedule to professor ${profInfo.first_name} ${profInfo.last_name}'s` +
         `${notification.message}`,
       scheduleId: savedSchedule._id,
-      date: new Date().toISOString().split('T')[0], // Current date
+      date: new Date().toISOString().split("T")[0], // Current date
       time: new Date().toLocaleTimeString(), // Current time
       status: notification.status,
       profile_picture: notification.profile_picture,
     });
 
     await newNotification.save();
-    const io = req.app.get('io');
+    const io = req.app.get("io");
     if (connectedUsers[receiverId]) {
-      io.of('/notifications').to(connectedUsers[receiverId]).emit('receiveNotification', newNotification);
+      io.of("/notifications")
+        .to(connectedUsers[receiverId])
+        .emit("receiveNotification", newNotification);
       console.log("Notify success");
     } else {
-      console.error(`Failed to send notification: Receiver ${receiverId} is not connected.`);
+      console.error(
+        `Failed to send notification: Receiver ${receiverId} is not connected.`
+      );
     }
 
     res.status(200).json({
-      message: `Notification "${notification.title}" has been sent by ${notification.senderName} to ${notification.receiverName || 'all'}.`,
+      message: `Notification "${notification.title}" has been sent by ${
+        notification.senderName
+      } to ${notification.receiverName || "all"}.`,
       schedule: savedSchedule,
       notification: newNotification,
     });
   } catch (error) {
-    console.error('Error creating schedule or notification:', error);
+    console.error("Error creating schedule or notification:", error);
     res.status(500).json({ message: error.message });
   }
 };
-
 
 // Delete a schedule
 exports.deleteScheduleAndNotification = async (req, res) => {
@@ -282,7 +341,7 @@ exports.updateUser = async (req, res) => {
   const school_id = req.params.school_id;
   const params = req.body;
   const prof = await User.findOne({ school_id: params.prof_id });
-  console.log(prof.first_name + prof.last_name)
+  console.log(prof.first_name + prof.last_name);
   try {
     const user = await User.findOneAndUpdate(
       { school_id: school_id },

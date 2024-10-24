@@ -1,9 +1,12 @@
+import 'package:isHKolarium/api/models/dtr_model.dart';
 import 'package:isHKolarium/api/models/schedule_model.dart';
 import 'package:isHKolarium/api/models/user_model.dart';
 import 'package:isHKolarium/api/models/announcement_model.dart';
 
 abstract class AdminRepository {
   Future<List<UserModel>> fetchAllUsers();
+  Future<int> fetchAllDTRs();
+  Future<List<AnnouncementModel>> fetchAllAnnouncements();
   Future<List<ScheduleModel>> fetchYearSchedule();
   Future<void> createUser(UserModel user);
   Future<void> updateUser(String schoolId, UserModel user);
