@@ -50,6 +50,31 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
     }
   }
 
+  FutureOr<void> updateScheduleEvent(
+      UpdateScheduleStatusEvent event, Emitter<NotificationsState> emit) async {
+    try {
+      await _studentRepository.confirmSchedule(scheduleId: event.scheduleId);
+
+      if (state is NotificationsLoadedSuccessState) {
+        final currentState = state as NotificationsLoadedSuccessState;
+
+        final updatedNotifications =
+            currentState.notifications.map((notification) {
+          if (notification.scheduleId == event.scheduleId) {
+            return notification.copyWith(status: true);
+          }
+          return notification;
+        }).toList();
+
+        emit(NotificationsLoadedSuccessState(
+            notifications: updatedNotifications, users: currentState.users));
+      }
+    } catch (e) {
+      emit(NotificationsErrorState(
+          message: 'Failed to update schedule status: $e'));
+    }
+  }
+
   FutureOr<void> updateNotificationsEvent(UpdateNotificationStatusEvent event,
       Emitter<NotificationsState> emit) async {
     try {
@@ -93,31 +118,6 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
     } catch (e) {
       emit(NotificationsErrorState(
           message: 'Failed to delete notification: $e'));
-    }
-  }
-
-  FutureOr<void> updateScheduleEvent(
-      UpdateScheduleStatusEvent event, Emitter<NotificationsState> emit) async {
-    try {
-      await _studentRepository.confirmSchedule(scheduleId: event.scheduleId);
-
-      if (state is NotificationsLoadedSuccessState) {
-        final currentState = state as NotificationsLoadedSuccessState;
-
-        final updatedNotifications =
-            currentState.notifications.map((notification) {
-          if (notification.scheduleId == event.scheduleId) {
-            return notification.copyWith(status: true);
-          }
-          return notification;
-        }).toList();
-
-        emit(NotificationsLoadedSuccessState(
-            notifications: updatedNotifications, users: currentState.users));
-      }
-    } catch (e) {
-      emit(NotificationsErrorState(
-          message: 'Failed to update schedule status: $e'));
     }
   }
 

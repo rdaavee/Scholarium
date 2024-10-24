@@ -145,6 +145,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.8"
+  diagonal_decoration:
+    dependency: "direct main"
+    description:
+      name: diagonal_decoration
+      sha256: "4f775403eec6e3a27d82611021be640b682dfda56ce29f4c37cc73c7ade841cf"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.2+3"
   dropdown_search:
     dependency: "direct main"
     description:

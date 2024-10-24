@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_print
 
 import 'dart:async';
+import 'package:isHKolarium/blocs/bloc_bottom_nav/bottom_nav_bloc.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class SocketService {
@@ -10,6 +11,7 @@ class SocketService {
 
   final StreamController<dynamic> _messagesController =
       StreamController<dynamic>.broadcast();
+  BottomNavBloc? bottomNavBloc;
 
   factory SocketService() {
     return _instance;
@@ -72,6 +74,9 @@ class SocketService {
         print(
             'New notification: ${notification['title']}, Message: ${notification['message']}');
         _messagesController.add(notification); // Emit the notification
+        if (bottomNavBloc != null) {
+          bottomNavBloc!.add(BottomNavNewNotificationEvent());
+        }
       } else {
         print('Received notification data is null or not in expected format.');
       }
