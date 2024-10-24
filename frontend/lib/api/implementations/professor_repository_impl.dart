@@ -1,11 +1,10 @@
 import 'dart:convert';
-
-import 'package:isHKolarium/api/implementations/endpoint.dart';
 import 'package:isHKolarium/api/models/dtr_model.dart';
 import 'package:isHKolarium/api/models/notifications_model.dart';
 import 'package:isHKolarium/api/models/professor_schedule_model.dart';
 import 'package:isHKolarium/api/repositories/professor_repository.dart';
 import 'package:http/http.dart' as http;
+import 'package:isHKolarium/config/constants/endpoint.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfessorRepositoryImpl extends ProfessorRepository implements Endpoint {

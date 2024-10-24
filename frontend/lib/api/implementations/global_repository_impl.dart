@@ -1,8 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:isHKolarium/api/implementations/endpoint.dart';
 import 'package:isHKolarium/api/models/announcement_model.dart';
 import 'package:isHKolarium/api/models/event_model.dart';
 import 'package:isHKolarium/api/models/message_model.dart';
@@ -12,6 +10,7 @@ import 'package:isHKolarium/api/models/update_password_model.dart';
 import 'package:isHKolarium/api/repositories/global_repository.dart';
 import 'package:isHKolarium/api/models/user_model.dart';
 import 'package:http/http.dart' as http;
+import 'package:isHKolarium/config/constants/endpoint.dart';
 import 'package:isHKolarium/features/screens/screen_login/login_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

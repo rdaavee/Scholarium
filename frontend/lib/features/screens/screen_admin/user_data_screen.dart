@@ -46,60 +46,6 @@ class UserDataScreenState extends State<UserDataScreen> {
     });
   }
 
-  Future<void> exportToExcel(List<UserModel> users) async {
-    final excel = Excel.createExcel(); // Create an Excel sheet
-    final sheet = excel['User List'];
-
-    // Add header row
-    sheet.appendRow([
-      'ID',
-      'First Name',
-      'Last Name',
-      'Email',
-      'Contact',
-      'Address',
-      'Role',
-      'HK Type',
-      'Status',
-    ]);
-
-    // Add user data rows
-    for (var user in users) {
-      sheet.appendRow([
-        user.schoolID,
-        user.firstName,
-        user.lastName,
-        user.email,
-        user.contact,
-        user.address,
-        user.role,
-        user.hkType,
-        user.status,
-      ]);
-    }
-
-    // Request storage permissions
-    var status = await Permission.storage.request();
-    if (status.isGranted) {
-      // Save the Excel file
-      final directory = Directory('/storage/emulated/0/Download');
-      String filePath = '${directory.path}/user_list.xlsx';
-      final excelFile = excel.encode();
-      if (excelFile != null) {
-        File(filePath)
-          ..createSync(recursive: true)
-          ..writeAsBytesSync(excelFile);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Excel file saved at $filePath')),
-        );
-      }
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Storage permission denied')),
-      );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocProvider<AdminBloc>.value(
@@ -161,23 +107,18 @@ class UserDataScreenState extends State<UserDataScreen> {
                       ),
                     ),
                     const SizedBox(width: 16),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        TextButton.icon(
-                          onPressed: () async {
-                            if (adminBloc.state
-                                is AdminListScreenSuccessState) {
-                              final state = adminBloc.state
-                                  as AdminListScreenSuccessState;
-                              await exportToExcel(state.filteredUsers);
-                            }
-                          },
-                          icon: const Icon(Icons.download),
-                          label: const Text('Download Excel'),
-                        ),
-                      ],
-                    ),
+                    Expanded(
+                      child: StatusDropdown(
+                        statusFilter: statusFilter,
+                        onChanged: (newValue) {
+                          setState(() {
+                            statusFilter = newValue!;
+                          });
+                          adminBloc
+                              .add(FetchUsersEvent(selectedRole, statusFilter));
+                        },
+                      ),
+                    )
                   ],
                 ),
               ),

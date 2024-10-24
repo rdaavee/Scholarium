@@ -281,8 +281,8 @@ exports.getCurrentYearSchedules = async (req, res) => {
 exports.updateUser = async (req, res) => {
   const school_id = req.params.school_id;
   const params = req.body;
-  const prof = User.findOne({ school_id: params.prof_id });
-
+  const prof = await User.findOne({ school_id: params.prof_id });
+  console.log(prof.first_name + prof.last_name)
   try {
     const user = await User.findOneAndUpdate(
       { school_id: school_id },
