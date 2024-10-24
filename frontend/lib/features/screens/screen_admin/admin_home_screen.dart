@@ -140,7 +140,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                         children: [
                           Padding(
                             padding: const EdgeInsets.symmetric(
-                              vertical: 20,
+                              vertical: 30,
                               horizontal: 20,
                             ),
                             child: Align(
@@ -154,6 +154,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                         ],
                       ),
                     ),
+                    SizedBox()
                   ],
                 ),
               );

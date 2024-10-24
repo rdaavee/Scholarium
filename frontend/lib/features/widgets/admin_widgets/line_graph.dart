@@ -15,11 +15,11 @@ class _LineGraphState extends State<LineGraph> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: SizedBox(
-        height: 270,
+        height: 275,
         child: LineChart(
           LineChartData(
             minX: 0,
-            maxX: 10,
+            maxX: 5,
             minY: 0,
             maxY: 10,
             lineBarsData: [
@@ -31,11 +31,6 @@ class _LineGraphState extends State<LineGraph> {
                   const FlSpot(3, 6.2),
                   const FlSpot(4, 6),
                   const FlSpot(5, 8),
-                  const FlSpot(6, 9),
-                  const FlSpot(7, 7),
-                  const FlSpot(8, 6),
-                  const FlSpot(9, 7.8),
-                  const FlSpot(10, 8),
                 ],
                 isCurved: true,
                 gradient: const LinearGradient(
@@ -90,51 +85,46 @@ class _LineGraphState extends State<LineGraph> {
               bottomTitles: AxisTitles(
                 sideTitles: SideTitles(
                   showTitles: true,
-                  reservedSize: 11,
                   getTitlesWidget: (value, meta) {
+                    if (value % 1 != 0 || value < 0 || value > 5) {
+                      return Container();
+                    }
                     String text = "";
                     switch (value.toInt()) {
+                      case 0:
+                        text = "Mon";
+                        break;
                       case 1:
-                        text = "1";
+                        text = "Tue";
                         break;
                       case 2:
-                        text = "2";
+                        text = "Wed";
                         break;
                       case 3:
-                        text = "3";
+                        text = "Thu";
                         break;
                       case 4:
-                        text = "4";
+                        text = "Fri";
                         break;
                       case 5:
-                        text = "5";
-                        break;
-                      case 6:
-                        text = "6";
-                        break;
-                      case 7:
-                        text = "7";
-                        break;
-                      case 8:
-                        text = "8";
-                        break;
-                      case 9:
-                        text = "9";
-                        break;
-                      case 10:
-                        text = "10";
+                        text = "Sat";
                         break;
                       default:
                         return Container();
                     }
-                    return Text(
-                      text,
-                      style: const TextStyle(
-                        color: ColorPalette.accentBlack,
-                        fontSize: 10,
+
+                    return Padding(
+                      padding: const EdgeInsets.only(top: 5.0),
+                      child: Text(
+                        text,
+                        style: const TextStyle(
+                          color: ColorPalette.accentBlack,
+                          fontSize: 8,
+                        ),
                       ),
                     );
                   },
+                  reservedSize: 20,
                 ),
               ),
             ),

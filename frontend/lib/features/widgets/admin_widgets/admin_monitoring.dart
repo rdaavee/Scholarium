@@ -16,20 +16,16 @@ class AdminMonitoring extends StatefulWidget {
 
 class _AdminMonitoringState extends State<AdminMonitoring> {
   final List itemList = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
+    "Whole Week",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
   ];
 
-  String? selectedValue = "August";
+  String? selectedValue = "Whole Week";
 
   @override
   Widget build(BuildContext context) {
@@ -66,23 +62,23 @@ class _AdminMonitoringState extends State<AdminMonitoring> {
                     "Day",
                     style: TextStyle(
                       color: const Color(0xFF6D7278),
-                      fontSize: 15,
+                      fontSize: 14,
                     ),
                   ),
                   Text(
                     "Week",
                     style: TextStyle(
                       color: const Color(0xFF6D7278),
-                      fontSize: 15,
+                      fontSize: 14,
                     ),
                   ),
-                  Text(
-                    "Month",
-                    style: TextStyle(
-                      color: ColorPalette.primary,
-                      fontSize: 15,
-                    ),
-                  ),
+                  // Text(
+                  //   "Month",
+                  //   style: TextStyle(
+                  //     color: ColorPalette.primary,
+                  //     fontSize: 14,
+                  //   ),
+                  // ),
                 ],
               ),
               Container(
@@ -90,7 +86,7 @@ class _AdminMonitoringState extends State<AdminMonitoring> {
                 height: 30,
                 width: 180,
                 decoration: BoxDecoration(
-                  color: Colors.grey.shade50,
+                  color: Color(0xFFEBEBEB),
                   borderRadius: BorderRadius.circular(5),
                 ),
                 child: DropdownButtonHideUnderline(
@@ -127,10 +123,10 @@ class _AdminMonitoringState extends State<AdminMonitoring> {
   Widget announcementContainer(BuildContext context, IconData icon, String text,
       int announcementCreated, Color color, Color textColor) {
     return Padding(
-      padding: const EdgeInsets.all(10),
+      padding: const EdgeInsets.all(5),
       child: Container(
-        height: 80,
-        width: 190,
+        height: 85,
+        width: 195,
         decoration: BoxDecoration(
           color: color,
           borderRadius: BorderRadius.circular(10),
