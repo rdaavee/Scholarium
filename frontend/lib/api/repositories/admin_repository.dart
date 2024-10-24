@@ -1,4 +1,3 @@
-import 'package:isHKolarium/api/models/dtr_model.dart';
 import 'package:isHKolarium/api/models/schedule_model.dart';
 import 'package:isHKolarium/api/models/user_model.dart';
 import 'package:isHKolarium/api/models/announcement_model.dart';

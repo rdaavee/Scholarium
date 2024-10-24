@@ -6,7 +6,6 @@ import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
 import 'package:isHKolarium/api/models/announcement_model.dart';
 import 'package:isHKolarium/blocs/bloc_admin/admin_bloc.dart';
 import 'package:isHKolarium/blocs/bloc_student/students_bloc.dart';
-import 'package:isHKolarium/config/constants/colors.dart';
 import 'package:isHKolarium/features/widgets/app_bar.dart';
 import 'package:isHKolarium/features/widgets/loading_circular.dart';
 import 'package:isHKolarium/features/widgets/student_widgets/announcement_widgets/announcement_card.dart';
