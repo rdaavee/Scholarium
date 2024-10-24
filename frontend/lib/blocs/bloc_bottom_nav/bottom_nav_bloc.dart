@@ -14,6 +14,7 @@ class BottomNavBloc extends Bloc<BottomNavEvent, BottomNavState> {
     on<FetchUnreadCountEvent>(_fetchUnreadCount);
     on<BottomNavItemSelected>(_onItemTapped);
     on<RefreshBottomNavEvent>(_onRefreshBottomNav);
+    on<BottomNavNewNotificationEvent>(_onNewNotificationEvent);
   }
 
   FutureOr<void> _onInitialEvent(
@@ -22,10 +23,11 @@ class BottomNavBloc extends Bloc<BottomNavEvent, BottomNavState> {
 
     try {
       final unreadCount = await _globalService.fetchUnreadNotificationCount();
-      emit(BottomNavLoadedSuccessState(unreadCount: unreadCount, selectedIndex: 0));
+      emit(BottomNavLoadedSuccessState(
+          unreadCount: unreadCount, selectedIndex: 0));
     } catch (e) {
       print("Error fetching unread count: $e");
-      emit(BottomNavLoadedSuccessState(unreadCount: 0, selectedIndex: 0)); 
+      emit(BottomNavLoadedSuccessState(unreadCount: 0, selectedIndex: 0));
     }
   }
 
@@ -41,7 +43,6 @@ class BottomNavBloc extends Bloc<BottomNavEvent, BottomNavState> {
     }
   }
 
-
   FutureOr<void> _fetchUnreadCount(
       FetchUnreadCountEvent event, Emitter<BottomNavState> emit) async {
     try {
@@ -56,6 +57,23 @@ class BottomNavBloc extends Bloc<BottomNavEvent, BottomNavState> {
       }
     } catch (e) {
       print("Error fetching unread messages: $e");
+    }
+  }
+
+    FutureOr<void> _onNewNotificationEvent(
+      BottomNavNewNotificationEvent event, Emitter<BottomNavState> emit) async {
+    try {
+      final currentState = state;
+      if (currentState is BottomNavLoadedSuccessState) {
+        final unreadCount =
+            currentState.unreadCount + 1; // Increase unread count
+        emit(BottomNavLoadedSuccessState(
+          unreadCount: unreadCount,
+          selectedIndex: currentState.selectedIndex,
+        ));
+      }
+    } catch (e) {
+      print("Error handling new notification: $e");
     }
   }
 

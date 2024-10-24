@@ -4,6 +4,7 @@ import 'package:isHKolarium/api/implementations/admin_repository_impl.dart';
 import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
 import 'package:isHKolarium/api/implementations/professor_repository_impl.dart';
 import 'package:isHKolarium/api/implementations/student_repository_impl.dart';
+import 'package:isHKolarium/api/socket/socket_service.dart';
 import 'package:isHKolarium/blocs/bloc_admin/admin_bloc.dart';
 import 'package:isHKolarium/blocs/bloc_bottom_nav/bottom_nav_bloc.dart';
 import 'package:isHKolarium/blocs/bloc_professor/professors_bloc.dart';
@@ -44,6 +45,8 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
       adminBloc.add(AdminInitialEvent());
     }
     bottomNavBloc = BottomNavBloc(globalRepository);
+    final socketService = SocketService();
+    socketService.bottomNavBloc = bottomNavBloc;
   }
 
   @override
@@ -70,7 +73,6 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
           ? BlocConsumer<StudentsBloc, StudentsState>(
               listener: (context, state) {},
               builder: (context, studentState) {
-                
                 if (studentState is StudentsLoadingState) {
                   return const LoadingCircular();
                 } else if (studentState is StudentsLoadedSuccessState) {
