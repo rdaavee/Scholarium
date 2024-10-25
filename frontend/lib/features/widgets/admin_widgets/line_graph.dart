@@ -1,41 +1,18 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:isHKolarium/api/implementations/admin_repository_impl.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
 
 class LineGraph extends StatefulWidget {
-  const LineGraph({super.key});
+  final Map<String, int> completedSchedules;
+
+  const LineGraph({super.key, required this.completedSchedules});
 
   @override
   State<LineGraph> createState() => _LineGraphState();
 }
 
 class _LineGraphState extends State<LineGraph> {
-  Map<String, int> completedSchedules = {};
-  bool isLoading = true;
-
-  @override
-  void initState() {
-    super.initState();
-    _fetchData();
-  }
-
-  Future<void> _fetchData() async {
-    try {
-      AdminRepositoryImpl scheduleService = AdminRepositoryImpl();
-      Map<String, int> data =
-          await scheduleService.fetchCompletedSchedulesByDay();
-      setState(() {
-        completedSchedules = data;
-        isLoading = false;
-      });
-    } catch (error) {
-      print('Error fetching schedule data: $error');
-      setState(() {
-        isLoading = false;
-      });
-    }
-  }
+  bool isLoading = false; // Set this to false as data is already provided
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +25,7 @@ class _LineGraphState extends State<LineGraph> {
             : LineChart(
                 LineChartData(
                   minX: 0,
-                  maxX: 5, // Use 5 because there are 6 days indexed from 0-5
+                  maxX: 5, // Ensure this corresponds to your data length
                   minY: 0,
                   maxY: 10,
                   lineBarsData: [
@@ -107,10 +84,43 @@ class _LineGraphState extends State<LineGraph> {
                     bottomTitles: AxisTitles(
                       sideTitles: SideTitles(
                         showTitles: true,
-                        getTitlesWidget: (value, meta) {
-                          return _getDayLabel(value.toInt());
-                        },
                         reservedSize: 20,
+                        getTitlesWidget: (value, meta) {
+                          if (value % 1 != 0 || value < 0 || value > 5) {
+                            return Container();
+                          }
+                          String text = "";
+                          switch (value.toInt()) {
+                            case 0:
+                              text = "Mon";
+                              break;
+                            case 1:
+                              text = "Tue";
+                              break;
+                            case 2:
+                              text = "Wed";
+                              break;
+                            case 3:
+                              text = "Thu";
+                              break;
+                            case 4:
+                              text = "Fri";
+                              break;
+                            case 5:
+                              text = "Sat";
+                              break;
+                            default:
+                              return Container();
+                          }
+                          return Padding(
+                            padding: const EdgeInsets.only(top: 5.0),
+                            child: Text(text,
+                                style: const TextStyle(
+                                  color: ColorPalette.accentBlack,
+                                  fontSize: 10,
+                                )),
+                          );
+                        },
                       ),
                     ),
                   ),
@@ -133,11 +143,8 @@ class _LineGraphState extends State<LineGraph> {
 
     List<FlSpot> spots = [];
 
-    // Iterate through the fullWeekDays to create the FlSpot list
     for (int i = 0; i < fullWeekDays.length; i++) {
-      final count =
-          completedSchedules[fullWeekDays[i]] ?? 0; // Match with full day names
-      // Add spot only if count is non-zero or if you want to show zero values as well
+      final count = widget.completedSchedules[fullWeekDays[i]] ?? 0;
       spots.add(FlSpot(i.toDouble(), count.toDouble()));
     }
     print("Generated spots: $spots");
@@ -145,20 +152,14 @@ class _LineGraphState extends State<LineGraph> {
     return spots;
   }
 
-  // Helper to get the labels for the X-axis
-  Widget _getDayLabel(int index) {
-    const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-    if (index < 0 || index >= days.length) {
-      return Container();
-    }
-
+  Widget _buildLabel(String day) {
     return Padding(
       padding: const EdgeInsets.only(top: 5.0),
       child: Text(
-        days[index],
+        day,
         style: const TextStyle(
           color: ColorPalette.accentBlack,
-          fontSize: 8,
+          fontSize: 10, // Adjust font size as needed
         ),
       ),
     );

@@ -150,7 +150,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                               ),
                             ),
                           ),
-                          const LineGraph(),
+                          LineGraph(completedSchedules: state.graph),
                         ],
                       ),
                     ),
