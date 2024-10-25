@@ -23,7 +23,8 @@ class _LineGraphState extends State<LineGraph> {
   Future<void> _fetchData() async {
     try {
       AdminRepositoryImpl scheduleService = AdminRepositoryImpl();
-      Map<String, int> data = await scheduleService.fetchCompletedSchedulesByDay();
+      Map<String, int> data =
+          await scheduleService.fetchCompletedSchedulesByDay();
       setState(() {
         completedSchedules = data;
         isLoading = false;
@@ -47,7 +48,7 @@ class _LineGraphState extends State<LineGraph> {
             : LineChart(
                 LineChartData(
                   minX: 0,
-                  maxX: 5,
+                  maxX: 5, // Use 5 because there are 6 days indexed from 0-5
                   minY: 0,
                   maxY: 10,
                   lineBarsData: [
@@ -119,15 +120,27 @@ class _LineGraphState extends State<LineGraph> {
     );
   }
 
-  // Helper to convert the data into FlSpot list
   List<FlSpot> _getSpotsFromData() {
-    const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    // Define the full week days for proper mapping
+    const fullWeekDays = [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday"
+    ];
+
     List<FlSpot> spots = [];
 
-    for (int i = 0; i < days.length; i++) {
-      final count = completedSchedules[days[i]] ?? 0;
+    // Iterate through the fullWeekDays to create the FlSpot list
+    for (int i = 0; i < fullWeekDays.length; i++) {
+      final count =
+          completedSchedules[fullWeekDays[i]] ?? 0; // Match with full day names
+      // Add spot only if count is non-zero or if you want to show zero values as well
       spots.add(FlSpot(i.toDouble(), count.toDouble()));
     }
+    print("Generated spots: $spots");
 
     return spots;
   }

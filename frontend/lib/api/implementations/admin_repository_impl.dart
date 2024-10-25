@@ -94,20 +94,51 @@ class AdminRepositoryImpl extends AdminRepository implements Endpoint {
 
   @override
   Future<Map<String, int>> fetchCompletedSchedulesByDay() async {
+    final String? token = await _getToken();
     final response = await http.get(
       Uri.parse('$baseUrl/admin/getUserDutiesCompletedPerWeek'),
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
     );
 
     if (response.statusCode == 200) {
-      final List<dynamic> data = json.decode(response.body);
+      try {
+        final List<dynamic> data = json.decode(response.body);
+        // Log the response to see the structure
+        print("Response data: $data");
 
-      // Transform the API response into a map where keys are days and values are counts
-      Map<String, int> completedSchedules = {};
-      for (var dayData in data) {
-        completedSchedules[dayData['day']] = dayData['userCount'];
+        // Initialize a map with all days set to 0
+        Map<String, int> completedSchedules = {
+          "Monday": 0,
+          "Tuesday": 0,
+          "Wednesday": 0,
+          "Thursday": 0,
+          "Friday": 0,
+          "Saturday": 0,
+        };
+
+        for (var dayData in data) {
+          // Ensure the fields 'day' and 'userCount' exist
+          if (dayData.containsKey('day') && dayData.containsKey('userCount')) {
+            // Update the count for the specific day
+            completedSchedules[dayData['day']] = dayData['userCount'];
+          } else {
+            throw Exception(
+                "Invalid data format: Missing 'day' or 'userCount'");
+          }
+        }
+
+        // Log the final map to verify counts
+        print("Completed schedules: $completedSchedules");
+
+        return completedSchedules;
+      } catch (e) {
+        print("Error parsing data: $e");
+        throw Exception('Failed to parse schedule data');
       }
-      return completedSchedules;
     } else {
+      print("Error response: ${response.statusCode}, ${response.body}");
       throw Exception('Failed to load schedule data');
     }
   }
