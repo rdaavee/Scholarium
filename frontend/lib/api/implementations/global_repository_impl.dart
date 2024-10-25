@@ -406,7 +406,6 @@ class GlobalRepositoryImpl extends GlobalRepository implements Endpoint {
       String scheduleId, String schoolId) async {
     final String? token = await _getToken();
     final url = Uri.parse('$baseUrl/admin/deleteSchedule');
-    print(schoolId);
     try {
       final response = await http.put(
         url,
@@ -420,7 +419,12 @@ class GlobalRepositoryImpl extends GlobalRepository implements Endpoint {
         }),
       );
 
-      if (response.statusCode != 200) {
+      if (response.statusCode == 200) {
+        final responseData = json.decode(response.body);
+        print('Notification updated: ${responseData['notification']}');
+        print(response.statusCode);
+      } else {
+        print(response.statusCode);
         throw Exception(
             'Failed to delete notification: ${response.statusCode}');
       }
