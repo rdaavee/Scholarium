@@ -314,7 +314,6 @@ exports.deleteScheduleAndNotification = async (req, res) => {
         { new: true, runValidators: true }
       );
       await profNotification.save();
-      console.log(profNotification);
 
       const adminNotification = new Notifications({
         sender: bot.school_id,
@@ -332,7 +331,6 @@ exports.deleteScheduleAndNotification = async (req, res) => {
       });
 
       await adminNotification.save();
-      console.log(adminNotification);
     } else {
       result = await Notifications.updateOne(
         { scheduleId: scheduleId },
@@ -355,7 +353,6 @@ exports.deleteScheduleAndNotification = async (req, res) => {
       });
 
       await profNotification.save();
-      console.log(profNotification);
 
       const adminNotification = new Notifications({
         sender: bot.school_id,
@@ -373,18 +370,12 @@ exports.deleteScheduleAndNotification = async (req, res) => {
       });
 
       await adminNotification.save();
-      console.log(adminNotification);
     }
 
-    if (scheduleId && result && result.deletedCount > 0) {
-      // Only check result if schedule deletion occurs
-      console.log(`Deleted this record ${result}`);
-      res.status(200).json({
-        message: `Record with schedule ID #${scheduleId} has been deleted.`,
-      });
-    } else {
-      res.status(404).json({ message: "User not found" });
-    }
+    res.status(200).json({
+      message: `Record with schedule ID #${scheduleId} has been deleted.`,
+    });
+    
   } catch (error) {
     console.error("Error deleting user:", error);
     res.status(500).json({ message: "Server error occurred" });

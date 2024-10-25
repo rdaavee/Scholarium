@@ -38,6 +38,7 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
 
   FutureOr<void> fetchNotificationsEvent(
       FetchNotificationsEvent event, Emitter<NotificationsState> emit) async {
+    print("Fetch Event");
     try {
       emit(NotificationsLoadingState());
       List<NotificationsModel> notifications =
@@ -52,6 +53,7 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
 
   FutureOr<void> updateScheduleEvent(
       UpdateScheduleStatusEvent event, Emitter<NotificationsState> emit) async {
+    print("Update Sched Event");
     try {
       await _studentRepository.confirmSchedule(scheduleId: event.scheduleId);
 
@@ -61,7 +63,7 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
         final updatedNotifications =
             currentState.notifications.map((notification) {
           if (notification.scheduleId == event.scheduleId) {
-            return notification.copyWith(status: true);
+            return notification.copyWith(status: true, scheduleId: "");
           }
           return notification;
         }).toList();
@@ -77,6 +79,7 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
 
   FutureOr<void> updateNotificationsEvent(UpdateNotificationStatusEvent event,
       Emitter<NotificationsState> emit) async {
+    print("Update Notif Event");
     try {
       await _globalRepository.updateNotificationStatus(event.notificationId);
 
@@ -102,6 +105,7 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
 
   FutureOr<void> deleteNotificationEvent(
       DeleteNotificationEvent event, Emitter<NotificationsState> emit) async {
+    print("Delete Sched Event");
     try {
       await _globalRepository.deleteNotification(event.notificationId);
 
@@ -123,6 +127,7 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
 
   FutureOr<void> handleNewNotificationEvent(
       NewNotificationEvent event, Emitter<NotificationsState> emit) {
+    print("New Notif Event");
     if (state is NotificationsLoadedSuccessState) {
       final currentState = state as NotificationsLoadedSuccessState;
       final updatedNotifications =
@@ -137,10 +142,25 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
   FutureOr<void> deleteScheduleNotificationEvent(
       DeleteScheduleNotificationEvent event,
       Emitter<NotificationsState> emit) async {
+    print("Delete Sched Notif Event");
     try {
       await _globalRepository.deleteNotificationAndScheduleStatus(
           event.scheduleId, event.schoolId);
-      add(FetchNotificationsEvent());
+
+      if (state is NotificationsLoadedSuccessState) {
+        final currentState = state as NotificationsLoadedSuccessState;
+
+        final updatedNotifications =
+            currentState.notifications.map((notification) {
+          if (notification.scheduleId == event.scheduleId) {
+            return notification.copyWith(status: true, scheduleId: "");
+          }
+          return notification;
+        }).toList();
+
+        emit(NotificationsLoadedSuccessState(
+            notifications: updatedNotifications, users: currentState.users));
+      }
     } catch (e) {
       emit(NotificationsErrorState(
           message: 'Failed to delete schedule and notification: $e'));
