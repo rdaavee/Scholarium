@@ -7,6 +7,7 @@ const { verifyToken }  = require('../middleware/auth');
 //User control
 router.get('/listUsers', verifyToken, adminController.getAllUsers);
 router.get('/getAllDTR', verifyToken, adminController.getAllDTR);
+router.get('/getUserDutiesCompletedPerWeek', verifyToken, adminController.countCompletedSchedulesByDayThisWeek);
 router.get('/getYearSched', verifyToken, adminController.getCurrentYearSchedules);
 router.post('/insertUser', verifyToken, adminController.createUser);
 router.post('/createSchedule', verifyToken, adminController.createScheduleAndNotification);

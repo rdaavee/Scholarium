@@ -29,22 +29,24 @@ exports.getAllDTR = async (req, res) => {
         $group: {
           _id: "$school_id",
           totalHoursRendered: { $sum: "$hours_rendered" },
-          totalHoursToRendered: { $first: "$hours_to_rendered" }
-        }
+          totalHoursToRendered: { $first: "$hours_to_rendered" },
+        },
       },
       // Add a field to check if totalHoursRendered > totalHoursToRendered
       {
         $addFields: {
-          exceededHours: { $gt: ["$totalHoursRendered", "$totalHoursToRendered"] }
-        }
+          exceededHours: {
+            $gt: ["$totalHoursRendered", "$totalHoursToRendered"],
+          },
+        },
       },
       // Count only the entries where exceededHours is true
       {
         $group: {
           _id: null,
-          count: { $sum: { $cond: ["$exceededHours", 1, 0] } }
-        }
-      }
+          count: { $sum: { $cond: ["$exceededHours", 1, 0] } },
+        },
+      },
     ]);
 
     // If no records are found
@@ -60,16 +62,83 @@ exports.getAllDTR = async (req, res) => {
   }
 };
 
-
-exports.getAllAnnouncement = async (req, res) => {
+exports.countCompletedSchedulesByDayThisWeek = async (req, res) => {
   try {
-    const announcement = await Announcement.find();
-    res.status(200).json(announcement);
+    // Get the start and end dates of the current week (Monday to Saturday)
+    const startOfWeek = moment().startOf('isoWeek').toDate(); // Monday
+    const endOfWeek = moment().endOf('isoWeek').subtract(1, 'days').toDate(); // Saturday
+
+    // Aggregate the schedules for the current week
+    const result = await Schedule.aggregate([
+      {
+        // Match schedules that are completed and fall within the current week's createdAt range
+        $match: {
+          completed: "true",
+          createdAt: { $gte: startOfWeek, $lte: endOfWeek }, // Filter for the current week based on createdAt
+        },
+      },
+      {
+        // Add a new field to extract the day of the week from createdAt
+        $addFields: {
+          dayOfWeek: {
+            $dayOfWeek: "$createdAt", // Extract day of the week directly from createdAt
+          },
+        },
+      },
+      {
+        // Group by day of the week and school_id to ensure no repeat users for a particular day
+        $group: {
+          _id: { dayOfWeek: "$dayOfWeek", school_id: "$school_id" },
+        },
+      },
+      {
+        // Group again by dayOfWeek to count distinct users per day
+        $group: {
+          _id: "$_id.dayOfWeek",
+          userCount: { $sum: 1 },
+        },
+      },
+      {
+        // Only include results for Monday to Saturday
+        $match: {
+          _id: { $gte: 2, $lte: 7 }, // 2 is Monday, 7 is Saturday in MongoDB's $dayOfWeek
+        },
+      },
+      {
+        // Project the day of the week as a string
+        $project: {
+          day: {
+            $switch: {
+              branches: [
+                { case: { $eq: [2, "$_id"] }, then: "Monday" },
+                { case: { $eq: [3, "$_id"] }, then: "Tuesday" },
+                { case: { $eq: [4, "$_id"] }, then: "Wednesday" },
+                { case: { $eq: [5, "$_id"] }, then: "Thursday" },
+                { case: { $eq: [6, "$_id"] }, then: "Friday" },
+                { case: { $eq: [7, "$_id"] }, then: "Saturday" },
+              ],
+              default: "Unknown",
+            },
+          },
+          userCount: 1,
+        },
+      },
+      {
+        // Sort the results by day of the week
+        $sort: { _id: 1 },
+      },
+    ]);
+
+    console.log(result); // { day: 'Monday', userCount: 10 }, etc.
+    res.status(200).json(result);
   } catch (error) {
-    console.error("Error fetching announcement:", error);
-    res.status(500).json({ message: "Error fetching annoucement" });
+    console.error("Error fetching schedule counts by day:", error);
+    throw new Error("Error fetching schedule counts by day");
   }
 };
+
+
+
 
 // Create a user
 exports.createUser = async (req, res) => {
