@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:diagonal_decoration/diagonal_decoration.dart';
 
 class DutyStatusCard extends StatelessWidget {
   final String title;
@@ -14,7 +15,7 @@ class DutyStatusCard extends StatelessWidget {
     required this.ongoingCount,
     required this.completedCount,
     required this.cardColor,
-    this.width = 160,
+    this.width = 260,
     this.height = 235,
   });
 
@@ -23,13 +24,14 @@ class DutyStatusCard extends StatelessWidget {
     return SizedBox(
       width: width,
       height: height,
-      child: Card(
-        clipBehavior: Clip.antiAliasWithSaveLayer,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0),
+      child: Container(
+        margin: const EdgeInsets.all(10),
+        decoration: MatrixDecoration(
+          lineColor: Colors.white,
+          backgroundColor: Color(0xFFEBEBEB),
+          radius: Radius.circular(10),
+          lineWidth: 1,
         ),
-        elevation: 5,
-        margin: EdgeInsets.all(10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

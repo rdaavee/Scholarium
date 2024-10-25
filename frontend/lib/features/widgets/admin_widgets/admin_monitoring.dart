@@ -15,17 +15,17 @@ class AdminMonitoring extends StatefulWidget {
 }
 
 class _AdminMonitoringState extends State<AdminMonitoring> {
-  final List itemList = [
-    "Whole Week",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-  ];
+  // final List itemList = [
+  //   "Whole Week",
+  //   "Monday",
+  //   "Tuesday",
+  //   "Wednesday",
+  //   "Thursday",
+  //   "Friday",
+  //   "Saturday",
+  // ];
 
-  String? selectedValue = "Whole Week";
+  // String? selectedValue = "Whole Week";
 
   @override
   Widget build(BuildContext context) {
@@ -51,71 +51,71 @@ class _AdminMonitoringState extends State<AdminMonitoring> {
             ),
           ],
         ),
-        SizedBox(
-          width: 180,
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Day",
-                    style: TextStyle(
-                      color: const Color(0xFF6D7278),
-                      fontSize: 14,
-                    ),
-                  ),
-                  Text(
-                    "Week",
-                    style: TextStyle(
-                      color: const Color(0xFF6D7278),
-                      fontSize: 14,
-                    ),
-                  ),
-                  // Text(
-                  //   "Month",
-                  //   style: TextStyle(
-                  //     color: ColorPalette.primary,
-                  //     fontSize: 14,
-                  //   ),
-                  // ),
-                ],
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 8),
-                height: 30,
-                width: 180,
-                decoration: BoxDecoration(
-                  color: Color(0xFFEBEBEB),
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                child: DropdownButtonHideUnderline(
-                  child: DropdownButton(
-                    value: selectedValue,
-                    dropdownColor: ColorPalette.accent,
-                    items: itemList.map<DropdownMenuItem<String>>((value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(
-                          value,
-                          style: TextStyle(
-                            color: ColorPalette.accentBlack,
-                            fontSize: 13,
-                          ),
-                        ),
-                      );
-                    }).toList(),
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        selectedValue = newValue;
-                      });
-                    },
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
+        // SizedBox(
+        //   width: 180,
+        //   child: Column(
+        //     children: [
+        //       Row(
+        //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //         children: [
+        //           Text(
+        //             "Day",
+        //             style: TextStyle(
+        //               color: const Color(0xFF6D7278),
+        //               fontSize: 14,
+        //             ),
+        //           ),
+        //           Text(
+        //             "Week",
+        //             style: TextStyle(
+        //               color: const Color(0xFF6D7278),
+        //               fontSize: 14,
+        //             ),
+        //           ),
+        // Text(
+        //   "Month",
+        //   style: TextStyle(
+        //     color: ColorPalette.primary,
+        //     fontSize: 14,
+        //   ),
+        // ),
+        //         ],
+        //       ),
+        //       Container(
+        //         padding: EdgeInsets.symmetric(horizontal: 8),
+        //         height: 30,
+        //         width: 180,
+        //         decoration: BoxDecoration(
+        //           color: Color(0xFFEBEBEB),
+        //           borderRadius: BorderRadius.circular(5),
+        //         ),
+        //         child: DropdownButtonHideUnderline(
+        //           child: DropdownButton(
+        //             value: selectedValue,
+        //             dropdownColor: ColorPalette.accent,
+        //             items: itemList.map<DropdownMenuItem<String>>((value) {
+        //               return DropdownMenuItem<String>(
+        //                 value: value,
+        //                 child: Text(
+        //                   value,
+        //                   style: TextStyle(
+        //                     color: ColorPalette.accentBlack,
+        //                     fontSize: 13,
+        //                   ),
+        //                 ),
+        //               );
+        //             }).toList(),
+        //             onChanged: (String? newValue) {
+        //               setState(() {
+        //                 selectedValue = newValue;
+        //               });
+        //             },
+        //           ),
+        //         ),
+        //       ),
+        //     ],
+        //   ),
+        // ),
       ],
     );
   }
@@ -125,7 +125,7 @@ class _AdminMonitoringState extends State<AdminMonitoring> {
     return Padding(
       padding: const EdgeInsets.all(5),
       child: Container(
-        height: 85,
+        height: 100,
         width: 195,
         decoration: BoxDecoration(
           color: color,
@@ -153,14 +153,14 @@ class _AdminMonitoringState extends State<AdminMonitoring> {
                     text,
                     style: TextStyle(
                       color: textColor,
-                      fontSize: 13,
+                      fontSize: 14,
                     ),
                   ),
                   Text(
                     "$announcementCreated",
                     style: TextStyle(
                       color: textColor,
-                      fontSize: 17,
+                      fontSize: 21,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
