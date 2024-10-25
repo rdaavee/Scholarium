@@ -21,20 +21,21 @@ class AdminLoadedSuccessState extends AdminState {
   final int todaySchedulesCount;
   final int announcementsCount;
   final int dtrCompletedCount;
+  final Map<String, int> graph;
 
-  AdminLoadedSuccessState({
-    required this.users,
-    required this.announcements,
-    required this.activeCount,
-    required this.inactiveCount,
-    required this.hk25,
-    required this.hk50,
-    required this.hk75,
-    required this.completedSchedulesCount,
-    required this.todaySchedulesCount,
-    required this.announcementsCount,
-    required this.dtrCompletedCount
-  });
+  AdminLoadedSuccessState(
+      {required this.users,
+      required this.announcements,
+      required this.activeCount,
+      required this.inactiveCount,
+      required this.hk25,
+      required this.hk50,
+      required this.hk75,
+      required this.completedSchedulesCount,
+      required this.todaySchedulesCount,
+      required this.announcementsCount,
+      required this.dtrCompletedCount,
+      required this.graph});
 }
 
 class AdminListScreenSuccessState extends AdminState {

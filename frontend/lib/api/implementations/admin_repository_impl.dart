@@ -105,10 +105,6 @@ class AdminRepositoryImpl extends AdminRepository implements Endpoint {
     if (response.statusCode == 200) {
       try {
         final List<dynamic> data = json.decode(response.body);
-        // Log the response to see the structure
-        print("Response data: $data");
-
-        // Initialize a map with all days set to 0
         Map<String, int> completedSchedules = {
           "Monday": 0,
           "Tuesday": 0,
@@ -119,9 +115,7 @@ class AdminRepositoryImpl extends AdminRepository implements Endpoint {
         };
 
         for (var dayData in data) {
-          // Ensure the fields 'day' and 'userCount' exist
           if (dayData.containsKey('day') && dayData.containsKey('userCount')) {
-            // Update the count for the specific day
             completedSchedules[dayData['day']] = dayData['userCount'];
           } else {
             throw Exception(
@@ -129,7 +123,6 @@ class AdminRepositoryImpl extends AdminRepository implements Endpoint {
           }
         }
 
-        // Log the final map to verify counts
         print("Completed schedules: $completedSchedules");
 
         return completedSchedules;

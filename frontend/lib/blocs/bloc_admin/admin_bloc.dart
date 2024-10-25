@@ -52,7 +52,8 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
         hk50: 0,
         hk75: 0,
         announcementsCount: 0,
-        dtrCompletedCount: 0));
+        dtrCompletedCount: 0,
+        graph: {}));
   }
 
   Future<void> _onFetchDataEvent(
@@ -82,7 +83,8 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
               schedule.isCompleted?.toLowerCase() != 'true')
           .length;
       int announcementsCount = annoucements.length;
-
+      Map<String, int> data =
+          await _adminRepositoryImpl.fetchCompletedSchedulesByDay();
       emit(AdminLoadedSuccessState(
           users: users,
           announcements: const [],
@@ -94,7 +96,8 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
           hk50: hk50,
           hk75: hk75,
           announcementsCount: announcementsCount,
-          dtrCompletedCount: dtrsCount));
+          dtrCompletedCount: dtrsCount,
+          graph: data));
     } catch (e) {
       emit(AdminErrorState(message: 'Failed to load users: $e'));
     }
@@ -180,7 +183,8 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
           hk50: 0,
           hk75: 0,
           announcementsCount: 0,
-          dtrCompletedCount: 0));
+          dtrCompletedCount: 0,
+          graph: {}));
     } catch (e) {
       emit(AdminErrorState(message: 'Failed to load announcement: $e'));
     }
