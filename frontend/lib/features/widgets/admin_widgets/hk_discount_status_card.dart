@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:diagonal_decoration/diagonal_decoration.dart';
 
 class HkDiscountStatusCard extends StatelessWidget {
   final String title;
@@ -16,7 +18,7 @@ class HkDiscountStatusCard extends StatelessWidget {
     required this.discount50,
     required this.discount75,
     required this.cardColor,
-    this.width = 160,
+    this.width = 260,
     this.height = 235,
   });
 
@@ -25,13 +27,14 @@ class HkDiscountStatusCard extends StatelessWidget {
     return SizedBox(
       width: width,
       height: height,
-      child: Card(
-        clipBehavior: Clip.antiAliasWithSaveLayer,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0),
+      child: Container(
+        margin: const EdgeInsets.all(10),
+        decoration: MatrixDecoration(
+          lineColor: Colors.white,
+          backgroundColor: Color(0xFFEBEBEB),
+          radius: Radius.circular(10),
+          lineWidth: 1,
         ),
-        elevation: 5,
-        margin: EdgeInsets.all(10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

@@ -9,6 +9,9 @@ import 'package:isHKolarium/blocs/bloc_bottom_nav/bottom_nav_bloc.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
 import 'package:isHKolarium/features/widgets/admin_widgets/account_status_card.dart';
 import 'package:isHKolarium/features/widgets/admin_widgets/admin_monitoring.dart';
+import 'package:isHKolarium/features/widgets/admin_widgets/dtr_status_card.dart';
+import 'package:isHKolarium/features/widgets/admin_widgets/duty_status_card.dart';
+import 'package:isHKolarium/features/widgets/admin_widgets/hk_discount_status_card.dart';
 import 'package:isHKolarium/features/widgets/admin_widgets/line_graph.dart';
 import 'package:isHKolarium/features/widgets/label_text_widget.dart';
 import 'package:isHKolarium/features/widgets/loading_circular.dart';
@@ -103,40 +106,60 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
           builder: (context, state) {
             if (state is AdminLoadedSuccessState) {
               return Scaffold(
-                body: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 20,
-                        horizontal: 20,
-                      ),
-                      child: Align(
-                        alignment: Alignment.topLeft,
-                        child: LabelTextWidget(
-                          title: 'Admin Monitoring',
+                body: SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 20,
+                          horizontal: 20,
+                        ),
+                        child: Align(
+                          alignment: Alignment.topLeft,
+                          child: LabelTextWidget(
+                            title: 'Admin Monitoring',
+                          ),
                         ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: Row(
-                        children: [
-                          AccountStatusCard(
-                            title: 'Account Status',
-                            activeCount: state.activeCount,
-                            inactiveCount: state.inactiveCount,
-                            cardColor: ColorPalette.primary,
-                          ),
-                          AdminMonitoring(
-                            announcementCount: state.announcementsCount,
-                            dtrCompletedCount: state.dtrCompletedCount,
-                          ),
-                        ],
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: Row(
+                          children: [
+                            AccountStatusCard(
+                              title: 'Account Status',
+                              activeCount: state.activeCount,
+                              inactiveCount: state.inactiveCount,
+                              cardColor: ColorPalette.primary,
+                            ),
+                            AdminMonitoring(
+                              announcementCount: state.announcementsCount,
+                              dtrCompletedCount: state.dtrCompletedCount,
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      height: 360,
-                      child: Column(
+                      SizedBox(
+                        height: 360,
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 30,
+                                horizontal: 20,
+                              ),
+                              child: Align(
+                                alignment: Alignment.topLeft,
+                                child: LabelTextWidget(
+                                  title: 'Analytics',
+                                ),
+                              ),
+                            ),
+                            LineGraph(completedSchedules: state.graph),
+                          ],
+                        ),
+                      ),
+                      Column(
                         children: [
                           Padding(
                             padding: const EdgeInsets.symmetric(
@@ -145,17 +168,46 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                             ),
                             child: Align(
                               alignment: Alignment.topLeft,
-                              child: LabelTextWidget(
-                                title: 'Analytics',
+                              child: LabelTextWidget(title: 'Status'),
+                            ),
+                          ),
+                          SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              child: Row(
+                                children: [
+                                  DtrStatusCard(
+                                    title: 'DTR Status',
+                                    completedCount: state.dtrCompletedCount,
+                                    cardColor: Colors.purple,
+                                  ),
+                                  HkDiscountStatusCard(
+                                    title: 'HK Discounts',
+                                    discount25: state.hk25,
+                                    discount50: state.hk50,
+                                    discount75: state.hk75,
+                                    cardColor: Colors.red,
+                                  ),
+                                  DutyStatusCard(
+                                    title: 'Duty Status',
+                                    ongoingCount: state.todaySchedulesCount,
+                                    completedCount:
+                                        state.completedSchedulesCount,
+                                    cardColor: Colors.orange,
+                                  ),
+                                ],
                               ),
                             ),
                           ),
-                          LineGraph(completedSchedules: state.graph),
                         ],
                       ),
-                    ),
-                    SizedBox()
-                  ],
+                      SizedBox(
+                        height: 40,
+                      ),
+                    ],
+                  ),
                 ),
               );
             } else if (state is AdminErrorState) {
