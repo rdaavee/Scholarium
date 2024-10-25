@@ -93,6 +93,26 @@ class AdminRepositoryImpl extends AdminRepository implements Endpoint {
   }
 
   @override
+  Future<Map<String, int>> fetchCompletedSchedulesByDay() async {
+    final response = await http.get(
+      Uri.parse('$baseUrl/admin/getUserDutiesCompletedPerWeek'),
+    );
+
+    if (response.statusCode == 200) {
+      final List<dynamic> data = json.decode(response.body);
+
+      // Transform the API response into a map where keys are days and values are counts
+      Map<String, int> completedSchedules = {};
+      for (var dayData in data) {
+        completedSchedules[dayData['day']] = dayData['userCount'];
+      }
+      return completedSchedules;
+    } else {
+      throw Exception('Failed to load schedule data');
+    }
+  }
+
+  @override
   Future<List<ScheduleModel>> fetchYearSchedule() async {
     final String? token = await _getToken();
     final url = Uri.parse('$baseUrl/admin/getYearSched');
