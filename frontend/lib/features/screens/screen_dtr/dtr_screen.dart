@@ -35,7 +35,7 @@ class _DtrScreenState extends State<DtrScreen> {
     super.initState();
     final apiService = StudentRepositoryImpl();
     dtrBloc = DtrBloc(apiService);
-    dtrBloc.add(FetchDtrEvent());
+    dtrBloc.add(FetchDtrEvent(schoolId: widget.user.schoolID.toString()));
   }
 
   Future<pw.ImageProvider> fetchImage(String url) async {

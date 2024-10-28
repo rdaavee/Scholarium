@@ -139,14 +139,10 @@ exports.getUserDTR = async (req, res) => {
 
 // Get User Total Hours
 exports.getUserTotalHours = async (req, res) => {
+  const school_id = req.params.school_id;
   try {
-    const user = await User.findById(req.userId); // Get user ID from middleware
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
     const result = await DTR.aggregate([
-      { $match: { school_id: user.school_id } },
+      { $match: { school_id: school_id } },
       {
         $group: {
           _id: null,

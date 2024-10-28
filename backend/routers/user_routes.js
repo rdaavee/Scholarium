@@ -11,7 +11,7 @@ router.get("/getUpcomingSchedule",verifyToken, userController.getUserUpcomingSch
 router.get("/getAnnouncements",verifyToken, userController.getAnnouncements);
 router.get("/getLatestAnnouncement",verifyToken, userController.getLatestAnnouncement);
 router.get("/getPosts/:status",verifyToken, userController.getPosts);
-router.get("/getTotalHours",verifyToken, userController.getUserTotalHours);
+router.get("/getTotalHours/:school_id",verifyToken, userController.getUserTotalHours);
 router.get("/getDTR",verifyToken, userController.getUserDTR);
 router.get("/fetchEvents", verifyToken, userController.fetchEvents);
 

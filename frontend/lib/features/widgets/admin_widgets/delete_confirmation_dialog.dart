@@ -32,7 +32,6 @@ class DeleteConfirmationDialog {
       ),
       btnOk: ElevatedButton(
         onPressed: () {
-          adminBloc.add(DeleteUserEvent(schoolId)); 
           completer.complete(true);
           Navigator.of(context).pop();
         },

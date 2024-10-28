@@ -42,7 +42,7 @@ class StudentsBloc extends Bloc<StudentsEvent, StudentsState> {
       AnnouncementModel latestAnnouncement =
           await _globalRepositoryImpl.fetchLatestAnnouncementData();
       DtrHoursModel totalhours =
-          await _studentRepositoryImpl.fetchDtrTotalHoursData();
+          await _studentRepositoryImpl.fetchDtrTotalHoursData(event.schoolId);
       emit(StudentsLoadedSuccessState(
         users: [user],
         todaySchedule: scheduleData['today'],

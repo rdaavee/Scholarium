@@ -19,7 +19,7 @@ class DtrBloc extends Bloc<DtrEvent, DtrState> {
   FutureOr<void> fetchDtrEvent(
       FetchDtrEvent event, Emitter<DtrState> emit) async {
     try {
-      DtrHoursModel totalhours = await _apiService.fetchDtrTotalHoursData();
+      DtrHoursModel totalhours = await _apiService.fetchDtrTotalHoursData(event.schoolId);
       List<DtrModel> dtr = await _apiService.fetchDtrData();
       emit(DtrLoadedSuccessState(hours: [totalhours], dtr: dtr));
     } catch (error) {

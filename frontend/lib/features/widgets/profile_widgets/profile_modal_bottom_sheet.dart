@@ -52,6 +52,7 @@ class _ProfileModalBottomSheetState extends State<ProfileModalBottomSheet> {
         if (state is ProfileLoadingState) {
           return const Center(child: LoadingCircular());
         } else if (state is ProfileLoadedSuccessState) {
+          print(state.hours[0].targethours);
           return Scaffold(
             body: SizedBox(
               height: 880,
