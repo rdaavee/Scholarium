@@ -132,7 +132,7 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
     emit(AdminLoadingState());
     try {
       await _adminRepositoryImpl.createUser(event.user);
-      add(FetchDataEvent());
+      add(FetchUsersEvent('All Users', 'Any'));
     } catch (e) {
       emit(AdminErrorState(message: 'Failed to create user: $e'));
     }
@@ -140,10 +140,9 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
 
   Future<void> _onUpdateUserEvent(
       UpdateUserEvent event, Emitter<AdminState> emit) async {
-    emit(AdminLoadingState());
     try {
       await _adminRepositoryImpl.updateUser(event.schoolId, event.user);
-      add(FetchDataEvent());
+      add(FetchUsersEvent('All Users', 'Any'));
     } catch (e) {
       emit(AdminErrorState(message: 'Failed to update user: ${e.toString()}'));
     }
@@ -151,10 +150,9 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
 
   Future<void> _onDeleteUserEvent(
       DeleteUserEvent event, Emitter<AdminState> emit) async {
-    emit(AdminLoadingState());
     try {
       await _adminRepositoryImpl.deleteUser(event.schoolId);
-      add(FetchDataEvent());
+      add(FetchUsersEvent('All Users', 'Any'));
     } catch (e) {
       emit(AdminErrorState(message: 'Failed to delete user: $e'));
     }

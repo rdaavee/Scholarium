@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:isHKolarium/api/implementations/global_repository_impl.dart';
@@ -46,117 +45,113 @@ class UserDataScreenState extends State<UserDataScreen> {
   Widget build(BuildContext context) {
     return BlocProvider<AdminBloc>.value(
       value: adminBloc,
-      child: RefreshIndicator.adaptive(
-        onRefresh: _initialize,
-        child: Scaffold(
-          appBar: const AppBarWidget(
-            title: "User List",
-            isBackButton: false,
-          ),
-          floatingActionButton: FloatingActionButton(
-            backgroundColor: ColorPalette.primary.withOpacity(0.6),
-            onPressed: () async {
-              final bool? isCompleted = await Navigator.of(context).push<bool>(
-                MaterialPageRoute(
-                  builder: (context) => BlocProvider.value(
-                    value: adminBloc,
-                    child: const UserFormScreen(
-                      filteredUsers: [],
-                      index: 0,
-                      isRole: "Student",
-                    ),
+      child: Scaffold(
+        appBar: const AppBarWidget(
+          title: "User List",
+          isBackButton: false,
+        ),
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: ColorPalette.primary.withOpacity(0.6),
+          onPressed: () async {
+            final UserModel newUser = await Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => BlocProvider.value(
+                  value: adminBloc,
+                  child: const UserFormScreen(
+                    filteredUsers: [],
+                    index: 0,
+                    isRole: "Student",
                   ),
                 ),
-              );
-              if (isCompleted == true) {
-                adminBloc.add(FetchUsersEvent(selectedRole, statusFilter));
-                context.read<BottomNavBloc>().add(FetchUnreadCountEvent());
-              }
-            },
-            child: const Icon(
-              Icons.add,
-              color: Colors.white,
+              ),
+            );
+            adminBloc.add(CreateUserEvent(
+              newUser,
+            ));
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('User created successfully!')),
+            );
+          },
+          child: const Icon(
+            Icons.add,
+            color: Colors.white,
+          ),
+        ),
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(
+                left: 15,
+                right: 15,
+                top: 30,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: RoleDropdown(
+                      selectedRole: selectedRole,
+                      onChanged: (newValue) {
+                        setState(() {
+                          selectedRole = newValue;
+                        });
+                        adminBloc
+                            .add(FetchUsersEvent(selectedRole, statusFilter));
+                      },
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: StatusDropdown(
+                      statusFilter: statusFilter,
+                      onChanged: (newValue) {
+                        setState(() {
+                          statusFilter = newValue!;
+                        });
+                        adminBloc
+                            .add(FetchUsersEvent(selectedRole, statusFilter));
+                      },
+                    ),
+                  )
+                ],
+              ),
             ),
-          ),
-          body: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                  left: 15,
-                  right: 15,
-                  top: 30,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: RoleDropdown(
-                        selectedRole: selectedRole,
-                        onChanged: (newValue) {
-                          setState(() {
-                            selectedRole = newValue;
-                          });
+            const SizedBox(height: 16),
+            Expanded(
+              child: RefreshIndicator.adaptive(
+                onRefresh: () => _initialize(),
+                child: BlocBuilder<AdminBloc, AdminState>(
+                  builder: (context, state) {
+                    if (state is AdminLoadingState) {
+                      return LoadingCircular();
+                    } else if (state is AdminListScreenSuccessState) {
+                      List<UserModel> allUsers = state.filteredUsers;
+                      List<UserModel> filteredUsers = allUsers.where((user) {
+                        bool matchesRole = (selectedRole == null ||
+                            selectedRole == 'All Users' ||
+                            user.role == selectedRole);
+                        bool matchesStatus = (statusFilter == 'Any' ||
+                            user.status == statusFilter);
+                        return matchesRole && matchesStatus;
+                      }).toList();
+                      return UserDataTable(
+                        filteredUsers: filteredUsers,
+                        adminBloc: adminBloc,
+                        onUpdated: () {
                           adminBloc
                               .add(FetchUsersEvent(selectedRole, statusFilter));
                         },
-                      ),
-                    ),
-                    const SizedBox(width: 16),
-                    Expanded(
-                      child: StatusDropdown(
-                        statusFilter: statusFilter,
-                        onChanged: (newValue) {
-                          setState(() {
-                            statusFilter = newValue!;
-                          });
-                          adminBloc
-                              .add(FetchUsersEvent(selectedRole, statusFilter));
-                        },
-                      ),
-                    )
-                  ],
+                      );
+                    } else if (state is AdminErrorState) {
+                      return Center(child: Text('Error: ${state.message}'));
+                    }
+                    return const Center(child: Text('No users found.'));
+                  },
                 ),
               ),
-              const SizedBox(height: 16),
-              Expanded(
-                child: RefreshIndicator(
-                  onRefresh: _initialize,
-                  child: BlocBuilder<AdminBloc, AdminState>(
-                    builder: (context, state) {
-                      if (state is AdminLoadingState) {
-                        return LoadingCircular();
-                      } else if (state is AdminListScreenSuccessState) {
-                        List<UserModel> allUsers = state.filteredUsers;
-                        List<UserModel> filteredUsers = allUsers.where((user) {
-                          bool matchesRole = (selectedRole == null ||
-                              selectedRole == 'All Users' ||
-                              user.role == selectedRole);
-                          bool matchesStatus = (statusFilter == 'Any' ||
-                              user.status == statusFilter);
-                          return matchesRole && matchesStatus;
-                        }).toList();
-                        return UserDataTable(
-                          filteredUsers: filteredUsers,
-                          adminBloc: adminBloc,
-                          onUpdated: () {
-                            adminBloc.add(
-                                FetchUsersEvent(selectedRole, statusFilter));
-                            context
-                                .read<BottomNavBloc>()
-                                .add(FetchUnreadCountEvent());
-                          },
-                        );
-                      } else if (state is AdminErrorState) {
-                        return Center(child: Text('Error: ${state.message}'));
-                      }
-                      return const Center(child: Text('No users found.'));
-                    },
-                  ),
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
