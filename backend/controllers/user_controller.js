@@ -9,6 +9,19 @@ const Events = require("../models/events_model");
 const currentDate = moment().format("YYYY-MM-DD");
 const currentTime = moment().format("HH:mm:ss");
 
+//--------------------------------------------SEND NOTIFICATION FUNCTION-------------------------------------------------------
+function sendNotification(io, schoolId, notification) {
+  if (connectedUsers[schoolId]) {
+    io.of("/notifications")
+      .to(connectedUsers[schoolId])
+      .emit("receiveNotification", notification);
+    console.log(`Notify success for ${schoolId}`);
+  } else {
+    console.error(`Failed to send notification: Receiver ${schoolId} is not connected.`);
+  }
+}
+
+
 // Get Events
 exports.fetchEvents = async (req, res) => {
   try {
@@ -416,7 +429,7 @@ exports.notificationConfirmSched = async (req, res) => {
     const now = new Date();
     const date = now.toISOString().split('T')[0];
     const time = now.toTimeString().split(' ')[0];
-
+    const io = req.app.get("io");
     const newNotification = new Notification({
       sender: bot.school_id,
       senderName: `${bot.first_name} ${bot.last_name}`,
@@ -445,6 +458,18 @@ exports.notificationConfirmSched = async (req, res) => {
       status: false,
     });
     await adminNotification.save();
+    if (connectedUsers[adminInfo.school_id]) {
+      io.of("/notifications")
+        .to(connectedUsers[adminInfo.school_id])
+        .emit("receiveNotification", adminNotification);
+      console.log("Notify success");
+    } else {
+      console.error(
+        `Failed to send notification: Receiver ${adminInfo.school_id} is not connected.`
+      );
+    }
+    sendNotification(io, receiverInfo.school_id, newNotification);
+    sendNotification(io, adminInfo.school_id, adminNotification);
     await Notification.updateMany(
       { scheduleId: scheduleId },
       { $set: { scheduleId: "" } }

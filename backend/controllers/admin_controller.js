@@ -9,6 +9,19 @@ const currentDate = moment().format("YYYY-MM-DD");
 const currentTime = moment().format("HH:mm:ss");
 const connectedUsers = require("../sockets/connected_users");
 
+
+//--------------------------------------------SEND NOTIFICATION FUNCTION-------------------------------------------------------
+function sendNotification(io, schoolId, notification) {
+  if (connectedUsers[schoolId]) {
+    io.of("/notifications")
+      .to(connectedUsers[schoolId])
+      .emit("receiveNotification", notification);
+    console.log(`Notify success for ${schoolId}`);
+  } else {
+    console.error(`Failed to send notification: Receiver ${schoolId} is not connected.`);
+  }
+}
+
 //-------------------------------------------- STUDENT CRUD ----------------------------------------------------------------------
 // Get all users
 exports.getAllUsers = async (req, res) => {
@@ -61,6 +74,7 @@ exports.getAllDTR = async (req, res) => {
     res.status(500).json({ message: "Error fetching DTRs" });
   }
 };
+
 
 exports.countCompletedSchedulesByDayThisWeek = async (req, res) => {
   try {
@@ -290,9 +304,9 @@ exports.deleteScheduleAndNotification = async (req, res) => {
     const schedule = await Schedule.findOne({ _id: scheduleId });
     const admin = await User.findOne({ school_id: "03-0000-00003" });
     const bot = await User.findOne({ school_id: "00-0000-00000" });
-
     const user = await User.findOne({ school_id: schedule.school_id });
     const prof = await User.findOne({ school_id: schedule.prof_id });
+    const io = req.app.get("io");
     if (scheduleId == null || scheduleId == "") {
       const profNotification = new Notifications({
         sender: bot.school_id,
@@ -314,7 +328,6 @@ exports.deleteScheduleAndNotification = async (req, res) => {
         { new: true, runValidators: true }
       );
       await profNotification.save();
-
       const adminNotification = new Notifications({
         sender: bot.school_id,
         senderName: bot.first_name + " " + bot.last_name,
@@ -329,8 +342,10 @@ exports.deleteScheduleAndNotification = async (req, res) => {
         status: false,
         profile_picture: bot.profile_picture,
       });
-
       await adminNotification.save();
+
+      sendNotification(io, admin.school_id, adminNotification);
+      sendNotification(io, prof.school_id, profNotification);
     } else {
       result = await Notifications.updateOne(
         { scheduleId: scheduleId },
@@ -368,10 +383,10 @@ exports.deleteScheduleAndNotification = async (req, res) => {
         status: false,
         profile_picture: bot.profile_picture,
       });
-
       await adminNotification.save();
+      sendNotification(io, admin.school_id, adminNotification);
+      sendNotification(io, prof.school_id, profNotification);
     }
-
     res.status(200).json({
       message: `Record with schedule ID #${scheduleId} has been deleted.`,
     });
