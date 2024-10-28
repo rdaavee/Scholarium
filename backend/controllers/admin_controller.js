@@ -271,16 +271,7 @@ exports.createScheduleAndNotification = async (req, res) => {
 
     await newNotification.save();
     const io = req.app.get("io");
-    if (connectedUsers[receiverId]) {
-      io.of("/notifications")
-        .to(connectedUsers[receiverId])
-        .emit("receiveNotification", newNotification);
-      console.log("Notify success");
-    } else {
-      console.error(
-        `Failed to send notification: Receiver ${receiverId} is not connected.`
-      );
-    }
+    sendNotification(io, receiverId, newNotification);
 
     res.status(200).json({
       message: `Notification "${notification.title}" has been sent by ${
