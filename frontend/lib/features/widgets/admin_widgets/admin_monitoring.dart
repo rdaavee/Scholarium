@@ -65,9 +65,6 @@ class _AdminMonitoringState extends State<AdminMonitoring> {
                   color: textColor,
                 ),
               ),
-              SizedBox(
-                width: 5,
-              ),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,

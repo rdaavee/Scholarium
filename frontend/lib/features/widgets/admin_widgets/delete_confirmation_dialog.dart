@@ -5,7 +5,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:isHKolarium/blocs/bloc_admin/admin_bloc.dart';
 
 class DeleteConfirmationDialog {
-  static Future<bool> show(BuildContext context, AdminBloc adminBloc, String schoolId) {
+  static show(BuildContext context, AdminBloc adminBloc, String schoolId) {
     print('Showing delete confirmation dialog...');
     // Use a Completer to manage the Future result
     Completer<bool> completer = Completer<bool>();
@@ -20,7 +20,7 @@ class DeleteConfirmationDialog {
         onPressed: () {
           // Return false on cancel
           completer.complete(false);
-          Navigator.of(context).pop(); 
+          Navigator.pop(context, false);
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.red,
@@ -33,7 +33,7 @@ class DeleteConfirmationDialog {
       btnOk: ElevatedButton(
         onPressed: () {
           completer.complete(true);
-          Navigator.of(context).pop();
+          Navigator.pop(context, schoolId.toString());
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.green,
