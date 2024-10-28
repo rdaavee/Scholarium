@@ -9,8 +9,7 @@ import 'package:isHKolarium/blocs/bloc_bottom_nav/bottom_nav_bloc.dart';
 import 'package:isHKolarium/config/constants/colors.dart';
 import 'package:isHKolarium/features/widgets/admin_widgets/account_status_card.dart';
 import 'package:isHKolarium/features/widgets/admin_widgets/admin_monitoring.dart';
-import 'package:isHKolarium/features/widgets/admin_widgets/dtr_status_card.dart';
-import 'package:isHKolarium/features/widgets/admin_widgets/duty_status_card.dart';
+
 import 'package:isHKolarium/features/widgets/admin_widgets/hk_discount_status_card.dart';
 import 'package:isHKolarium/features/widgets/admin_widgets/line_graph.dart';
 import 'package:isHKolarium/features/widgets/label_text_widget.dart';

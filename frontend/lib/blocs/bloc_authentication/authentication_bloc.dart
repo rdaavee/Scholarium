@@ -59,6 +59,7 @@ class AuthenticationBloc
         schoolID: event.schoolID,
         password: event.password,
         role: '',
+        status: '',
       );
 
       if (result['statusCode'] == 200) {

@@ -29,6 +29,7 @@ class GlobalRepositoryImpl extends GlobalRepository implements Endpoint {
     required String schoolID,
     required String password,
     required String role,
+    required String status,
   }) async {
     final url = Uri.parse('$baseUrl/auth/login');
 
@@ -51,6 +52,7 @@ class GlobalRepositoryImpl extends GlobalRepository implements Endpoint {
           'statusCode': response.statusCode,
           'token': responseData['token'],
           'role': responseData['role'],
+          'status': responseData['status'],
         };
       } else {
         final Map<String, dynamic> errorResponse = json.decode(response.body);
