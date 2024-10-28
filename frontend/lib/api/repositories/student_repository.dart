@@ -6,7 +6,7 @@ abstract class StudentRepository {
   Future<Map<String, dynamic>> fetchUpcomingSchedule();
   Future<List<Map<String, dynamic>>> getSchedule(
       {required String selectedMonth});
-  Future<DtrHoursModel> fetchDtrTotalHoursData();
+  Future<DtrHoursModel> fetchDtrTotalHoursData(String schoolId);
   Future<List<DtrModel>> fetchDtrData();
   Future<UserModel> fetchUserData();
   Future<void> confirmSchedule({required String scheduleId});

@@ -12,6 +12,7 @@ import 'package:isHKolarium/features/screens/screen_announcement/announcement.da
 import 'package:isHKolarium/features/screens/screen_dtr/dtr_screen.dart';
 import 'package:isHKolarium/features/screens/screen_event/events_screen.dart';
 import 'package:isHKolarium/features/widgets/app_bar.dart';
+import 'package:isHKolarium/features/widgets/authentication_widgets/school_id_textfield.dart';
 import 'package:isHKolarium/features/widgets/label_text_widget.dart';
 import 'package:isHKolarium/features/widgets/student_widgets/announcement_widgets/announcement_card.dart';
 import 'package:isHKolarium/features/widgets/student_widgets/dtr_widgets/dtr_hours_card.dart';
@@ -19,6 +20,7 @@ import 'package:isHKolarium/features/widgets/student_widgets/event_widgets/event
 import 'package:isHKolarium/features/widgets/student_widgets/schedule_widgets/schedule_card.dart';
 import 'package:isHKolarium/features/widgets/student_widgets/shimmer_widgets/student_shimmer.dart';
 import 'package:isHKolarium/features/widgets/view_all_widget.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class StudentHomeScreen extends StatefulWidget {
   const StudentHomeScreen({super.key});
@@ -42,7 +44,9 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
     final studentRepositoryImpl = StudentRepositoryImpl();
     final globalRepositoryImpl = GlobalRepositoryImpl();
     studentBloc = StudentsBloc(studentRepositoryImpl, globalRepositoryImpl);
-    studentBloc.add(FetchLatestEvent());
+    final prefs = await SharedPreferences.getInstance();
+    final schoolId = prefs.getString('schoolID');
+    studentBloc.add(FetchLatestEvent(schoolId: schoolId.toString()));
     bottomNavBloc = BottomNavBloc(globalRepositoryImpl);
     context.read<BottomNavBloc>().add(FetchUnreadCountEvent());
   }

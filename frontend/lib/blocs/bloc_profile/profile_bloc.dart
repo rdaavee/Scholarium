@@ -55,7 +55,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       FetchUserDataEvent event, Emitter<ProfileState> emit) async {
     emit(ProfileLoadingState());
     try {
-      DtrHoursModel totalhours = await _studentService.fetchDtrTotalHoursData();
+      DtrHoursModel totalhours = await _studentService.fetchDtrTotalHoursData(event.schoolId);
       UserModel user = await _globalService.fetchUserData(event.schoolId);
       emit(ProfileLoadedSuccessState(users: [user], hours: [totalhours]));
     } catch (e) {

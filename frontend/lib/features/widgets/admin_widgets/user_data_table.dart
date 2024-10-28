@@ -152,7 +152,8 @@ class UserDataTable extends StatelessWidget {
                                     user.schoolID.toString(),
                                   );
                                   if (isUpdated == true) {
-                                    onUpdated();
+                                    adminBloc.add(DeleteUserEvent(
+                                        user.schoolID.toString()));
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
                                           content: Text(

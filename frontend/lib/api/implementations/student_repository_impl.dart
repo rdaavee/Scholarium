@@ -137,10 +137,10 @@ class StudentRepositoryImpl extends StudentRepository implements Endpoint {
   }
 
   @override
-  Future<DtrHoursModel> fetchDtrTotalHoursData() async {
+  Future<DtrHoursModel> fetchDtrTotalHoursData(String schoolId) async {
     final token = await _getToken();
     final response = await http.get(
-      Uri.parse('$baseUrl/user/getTotalHours'),
+      Uri.parse('$baseUrl/user/getTotalHours/$schoolId'),
       headers: {
         'Authorization': 'Bearer $token',
         'Content-Type': 'application/json',
