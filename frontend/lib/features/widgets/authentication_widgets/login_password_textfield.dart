@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:isHKolarium/blocs/bloc_authentication/authentication_bloc.dart';
 
-class PasswordField extends StatelessWidget {
+class PasswordField extends StatefulWidget {
   final TextEditingController schoolIdController;
   final TextEditingController passwordController;
   final AuthenticationBloc loginBloc;
@@ -14,13 +14,20 @@ class PasswordField extends StatelessWidget {
   });
 
   @override
+  _PasswordFieldState createState() => _PasswordFieldState();
+}
+
+class _PasswordFieldState extends State<PasswordField> {
+  bool _obscureText = true;
+
+  @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: 287,
       height: 55,
       child: TextField(
-        controller: passwordController,
-        obscureText: true,
+        controller: widget.passwordController,
+        obscureText: _obscureText,
         decoration: InputDecoration(
           labelText: 'Password',
           labelStyle: const TextStyle(
@@ -38,18 +45,30 @@ class PasswordField extends StatelessWidget {
               const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8.0),
-            borderSide: BorderSide(color: Colors.grey),
+            borderSide: const BorderSide(color: Colors.grey),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8.0),
-            borderSide: BorderSide(color: Colors.grey),
+            borderSide: const BorderSide(color: Colors.grey),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12.0),
-            borderSide: BorderSide(
-              color: const Color(0xFF00A4E4),
+            borderSide: const BorderSide(
+              color: Color(0xFF00A4E4),
               width: 2,
             ),
+          ),
+          suffixIcon: IconButton(
+            icon: Icon(
+              _obscureText ? Icons.visibility_off : Icons.visibility,
+              color: Colors.grey,
+              size: 13,
+            ),
+            onPressed: () {
+              setState(() {
+                _obscureText = !_obscureText;
+              });
+            },
           ),
         ),
         style: const TextStyle(
@@ -58,10 +77,10 @@ class PasswordField extends StatelessWidget {
           fontWeight: FontWeight.w300,
         ),
         onSubmitted: (value) {
-          loginBloc.add(
+          widget.loginBloc.add(
             LoginButtonClickedEvent(
-              schoolIdController.text,
-              passwordController.text,
+              widget.schoolIdController.text,
+              widget.passwordController.text,
             ),
           );
         },
