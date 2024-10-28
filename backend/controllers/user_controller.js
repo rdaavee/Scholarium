@@ -8,6 +8,7 @@ const Notification = require("../models/notifications_model");
 const Events = require("../models/events_model");
 const currentDate = moment().format("YYYY-MM-DD");
 const currentTime = moment().format("HH:mm:ss");
+const connectedUsers = require("../sockets/connected_users");
 
 //--------------------------------------------SEND NOTIFICATION FUNCTION-------------------------------------------------------
 function sendNotification(io, schoolId, notification) {
