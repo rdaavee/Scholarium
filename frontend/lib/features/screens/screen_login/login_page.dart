@@ -33,9 +33,9 @@ class _LoginPageState extends State<LoginPage> {
   void _initialize() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final isLogin = prefs.getString('login');
-    final schoolID = prefs.getString('schoolID').toString();
-    final password = prefs.getString('password').toString();
     if (isLogin == "true") {
+      final schoolID = prefs.getString('schoolID').toString();
+      final password = prefs.getString('password').toString();
       _loginBloc.add(LoginAutomaticEvent(schoolID, password));
     }
   }
@@ -71,11 +71,7 @@ class _LoginPageState extends State<LoginPage> {
           BlocConsumer<AuthenticationBloc, AuthenticationState>(
             bloc: _loginBloc,
             listener: (context, state) {
-              if (state is LoginLoadingState) {
-                const Center(child: LoadingCircular());
-              } else if (state is LoginNavigateToStudentHomePageActionState) {
-                _showSnackBar('Success', 'Student Login Successfully',
-                    ContentType.success);
+              if (state is LoginNavigateToStudentHomePageActionState) {
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
@@ -83,9 +79,9 @@ class _LoginPageState extends State<LoginPage> {
                         const BottomNavigationPage(isRole: "Student"),
                   ),
                 );
+                // _showSnackBar('Success', 'Student Login Successfully',
+                //     ContentType.success);
               } else if (state is LoginNavigateToProfessorHomePageActionState) {
-                _showSnackBar('Success', 'Professor Login Successfully',
-                    ContentType.success);
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
@@ -93,9 +89,9 @@ class _LoginPageState extends State<LoginPage> {
                         const BottomNavigationPage(isRole: "Professor"),
                   ),
                 );
+                // _showSnackBar('Success', 'Professor Login Successfully',
+                //     ContentType.success);
               } else if (state is LoginNavigateToAdminHomePageActionState) {
-                _showSnackBar(
-                    'Success', 'Admin Login Successfully', ContentType.success);
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
@@ -103,14 +99,19 @@ class _LoginPageState extends State<LoginPage> {
                         const BottomNavigationPage(isRole: "Admin"),
                   ),
                 );
+                // _showSnackBar(
+                //     'Success', 'Admin Login Successfully', ContentType.success);
               } else if (state is LoginErrorState) {
                 _showSnackBar('Error', state.errorMessage, ContentType.failure);
               }
             },
             builder: (context, state) {
-              if (state is LoginLoadingState) {
+              if (state is LoginLoadingState ||
+                  state is LoginNavigateToAdminHomePageActionState ||
+                  state is LoginNavigateToStudentHomePageActionState ||
+                  state is LoginNavigateToProfessorHomePageActionState) {
                 return const Center(child: LoadingCircular());
-              }  else {
+              } else {
                 return LoginFormWidget(loginBloc: _loginBloc);
               }
             },
