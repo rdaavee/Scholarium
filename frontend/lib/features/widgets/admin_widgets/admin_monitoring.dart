@@ -15,23 +15,11 @@ class AdminMonitoring extends StatefulWidget {
 }
 
 class _AdminMonitoringState extends State<AdminMonitoring> {
-  // final List itemList = [
-  //   "Whole Week",
-  //   "Monday",
-  //   "Tuesday",
-  //   "Wednesday",
-  //   "Thursday",
-  //   "Friday",
-  //   "Saturday",
-  // ];
-
-  // String? selectedValue = "Whole Week";
-
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Column(
+        Row(
           children: [
             announcementContainer(
               context,
@@ -51,71 +39,6 @@ class _AdminMonitoringState extends State<AdminMonitoring> {
             ),
           ],
         ),
-        // SizedBox(
-        //   width: 180,
-        //   child: Column(
-        //     children: [
-        //       Row(
-        //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //         children: [
-        //           Text(
-        //             "Day",
-        //             style: TextStyle(
-        //               color: const Color(0xFF6D7278),
-        //               fontSize: 14,
-        //             ),
-        //           ),
-        //           Text(
-        //             "Week",
-        //             style: TextStyle(
-        //               color: const Color(0xFF6D7278),
-        //               fontSize: 14,
-        //             ),
-        //           ),
-        // Text(
-        //   "Month",
-        //   style: TextStyle(
-        //     color: ColorPalette.primary,
-        //     fontSize: 14,
-        //   ),
-        // ),
-        //         ],
-        //       ),
-        //       Container(
-        //         padding: EdgeInsets.symmetric(horizontal: 8),
-        //         height: 30,
-        //         width: 180,
-        //         decoration: BoxDecoration(
-        //           color: Color(0xFFEBEBEB),
-        //           borderRadius: BorderRadius.circular(5),
-        //         ),
-        //         child: DropdownButtonHideUnderline(
-        //           child: DropdownButton(
-        //             value: selectedValue,
-        //             dropdownColor: ColorPalette.accent,
-        //             items: itemList.map<DropdownMenuItem<String>>((value) {
-        //               return DropdownMenuItem<String>(
-        //                 value: value,
-        //                 child: Text(
-        //                   value,
-        //                   style: TextStyle(
-        //                     color: ColorPalette.accentBlack,
-        //                     fontSize: 13,
-        //                   ),
-        //                 ),
-        //               );
-        //             }).toList(),
-        //             onChanged: (String? newValue) {
-        //               setState(() {
-        //                 selectedValue = newValue;
-        //               });
-        //             },
-        //           ),
-        //         ),
-        //       ),
-        //     ],
-        //   ),
-        // ),
       ],
     );
   }
@@ -123,10 +46,10 @@ class _AdminMonitoringState extends State<AdminMonitoring> {
   Widget announcementContainer(BuildContext context, IconData icon, String text,
       int announcementCreated, Color color, Color textColor) {
     return Padding(
-      padding: const EdgeInsets.all(5),
+      padding: const EdgeInsets.all(10),
       child: Container(
-        height: 100,
-        width: 180,
+        height: 80,
+        width: 160,
         decoration: BoxDecoration(
           color: color,
           borderRadius: BorderRadius.circular(10),
@@ -153,14 +76,14 @@ class _AdminMonitoringState extends State<AdminMonitoring> {
                     text,
                     style: TextStyle(
                       color: textColor,
-                      fontSize: 14,
+                      fontSize: 12,
                     ),
                   ),
                   Text(
                     "$announcementCreated",
                     style: TextStyle(
                       color: textColor,
-                      fontSize: 21,
+                      fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
                   ),

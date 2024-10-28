@@ -132,11 +132,21 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                               inactiveCount: state.inactiveCount,
                               cardColor: ColorPalette.primary,
                             ),
-                            AdminMonitoring(
-                              announcementCount: state.announcementsCount,
-                              dtrCompletedCount: state.dtrCompletedCount,
+                            HkDiscountStatusCard(
+                              title: 'HK Discounts',
+                              discount25: state.hk25,
+                              discount50: state.hk50,
+                              discount75: state.hk75,
+                              cardColor: ColorPalette.primary,
                             ),
                           ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: AdminMonitoring(
+                          announcementCount: state.announcementsCount,
+                          dtrCompletedCount: state.dtrCompletedCount,
                         ),
                       ),
                       SizedBox(
@@ -159,50 +169,50 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                           ],
                         ),
                       ),
-                      Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 30,
-                              horizontal: 20,
-                            ),
-                            child: Align(
-                              alignment: Alignment.topLeft,
-                              child: LabelTextWidget(title: 'Status'),
-                            ),
-                          ),
-                          SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 10),
-                              child: Row(
-                                children: [
-                                  DtrStatusCard(
-                                    title: 'DTR Status',
-                                    completedCount: state.dtrCompletedCount,
-                                    cardColor: Colors.purple,
-                                  ),
-                                  HkDiscountStatusCard(
-                                    title: 'HK Discounts',
-                                    discount25: state.hk25,
-                                    discount50: state.hk50,
-                                    discount75: state.hk75,
-                                    cardColor: Colors.red,
-                                  ),
-                                  DutyStatusCard(
-                                    title: 'Duty Status',
-                                    ongoingCount: state.todaySchedulesCount,
-                                    completedCount:
-                                        state.completedSchedulesCount,
-                                    cardColor: Colors.orange,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                      // Column(
+                      //   children: [
+                      //     Padding(
+                      //       padding: const EdgeInsets.symmetric(
+                      //         vertical: 30,
+                      //         horizontal: 20,
+                      //       ),
+                      //       child: Align(
+                      //         alignment: Alignment.topLeft,
+                      //         child: LabelTextWidget(title: 'Status'),
+                      //       ),
+                      //     ),
+                      //     SingleChildScrollView(
+                      //       scrollDirection: Axis.horizontal,
+                      //       child: Padding(
+                      //         padding:
+                      //             const EdgeInsets.symmetric(horizontal: 10),
+                      //         child: Row(
+                      //           children: [
+                      //             DtrStatusCard(
+                      //               title: 'DTR Status',
+                      //               completedCount: state.dtrCompletedCount,
+                      //               cardColor: Colors.purple,
+                      //             ),
+                      //             HkDiscountStatusCard(
+                      //               title: 'HK Discounts',
+                      //               discount25: state.hk25,
+                      //               discount50: state.hk50,
+                      //               discount75: state.hk75,
+                      //               cardColor: Colors.red,
+                      //             ),
+                      //             DutyStatusCard(
+                      //               title: 'Duty Status',
+                      //               ongoingCount: state.todaySchedulesCount,
+                      //               completedCount:
+                      //                   state.completedSchedulesCount,
+                      //               cardColor: Colors.orange,
+                      //             ),
+                      //           ],
+                      //         ),
+                      //       ),
+                      //     ),
+                      //   ],
+                      // ),
                       SizedBox(
                         height: 40,
                       ),

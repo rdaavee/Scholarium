@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:diagonal_decoration/diagonal_decoration.dart';
+import 'package:isHKolarium/config/constants/colors.dart';
 
 class HkDiscountStatusCard extends StatelessWidget {
   final String title;
@@ -18,7 +19,7 @@ class HkDiscountStatusCard extends StatelessWidget {
     required this.discount50,
     required this.discount75,
     required this.cardColor,
-    this.width = 260,
+    this.width = 180,
     this.height = 235,
   });
 
@@ -55,7 +56,7 @@ class HkDiscountStatusCard extends StatelessWidget {
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
-                      color: Colors.red,
+                      color: ColorPalette.primary,
                     ),
                   ),
                   const SizedBox(height: 35),
