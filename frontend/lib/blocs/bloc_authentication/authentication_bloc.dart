@@ -101,7 +101,6 @@ class AuthenticationBloc
   Future<void> automaticLogin(
       LoginAutomaticEvent event, Emitter<AuthenticationState> emit) async {
     emit(LoginLoadingState());
-
     try {
       final result = await _globalService.loginUser(
           schoolID: event.schoolID, password: event.password, role: '');

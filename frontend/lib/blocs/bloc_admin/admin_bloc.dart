@@ -104,27 +104,23 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
   }
 
 //--------------------------------------USER FUNCTION----------------------------------------------------------------
+
   Future<void> _onFetchUsersEvent(
       FetchUsersEvent event, Emitter<AdminState> emit) async {
     emit(AdminLoadingState());
     try {
       List<UserModel> allUsers = await _adminRepositoryImpl.fetchAllUsers();
-
       List<UserModel> filteredUsers = allUsers.where((user) {
         bool matchesRole = true;
         bool matchesStatus = true;
-
         if (event.selectedRole != 'All Users') {
           matchesRole = user.role == event.selectedRole;
         }
-
         if (event.statusFilter != 'Any') {
           matchesStatus = user.status == event.statusFilter;
         }
-
         return matchesRole && matchesStatus;
       }).toList();
-
       emit(AdminListScreenSuccessState(filteredUsers: filteredUsers));
     } catch (e) {
       emit(AdminErrorState(message: 'Failed to fetch users: $e'));
@@ -149,7 +145,6 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
       await _adminRepositoryImpl.updateUser(event.schoolId, event.user);
       add(FetchDataEvent());
     } catch (e) {
-      print('UpdateUserEvent error: $e');
       emit(AdminErrorState(message: 'Failed to update user: ${e.toString()}'));
     }
   }

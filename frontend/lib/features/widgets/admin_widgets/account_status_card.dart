@@ -17,8 +17,8 @@ class AccountStatusCard extends StatelessWidget {
     required this.activeCount,
     required this.inactiveCount,
     required this.cardColor,
-    this.width = 260,
-    this.height = 235,
+    this.width = 180,
+    this.height = 230,
   });
 
   @override
@@ -58,10 +58,10 @@ class AccountStatusCard extends StatelessWidget {
                           color: ColorPalette.primary,
                         ),
                       ),
-                      Icon(
-                        CupertinoIcons.person_alt_circle_fill,
-                        color: ColorPalette.primary,
-                      ),
+                      // Icon(
+                      //   CupertinoIcons.person_alt_circle_fill,
+                      //   color: ColorPalette.primary,
+                      // ),
                     ],
                   ),
                   const SizedBox(height: 20),

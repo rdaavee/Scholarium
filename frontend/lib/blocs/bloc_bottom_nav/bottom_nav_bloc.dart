@@ -20,6 +20,7 @@ class BottomNavBloc extends Bloc<BottomNavEvent, BottomNavState> {
   FutureOr<void> _onInitialEvent(
       BottomNavInitialEvent event, Emitter<BottomNavState> emit) async {
     emit(BottomNavLoadingState());
+    await Future.delayed(const Duration(seconds: 1));
 
     try {
       final unreadCount = await _globalService.fetchUnreadNotificationCount();
@@ -47,7 +48,6 @@ class BottomNavBloc extends Bloc<BottomNavEvent, BottomNavState> {
       FetchUnreadCountEvent event, Emitter<BottomNavState> emit) async {
     try {
       final unreadCount = await _globalService.fetchUnreadNotificationCount();
-
       final currentState = state;
       if (currentState is BottomNavLoadedSuccessState) {
         emit(BottomNavLoadedSuccessState(
@@ -60,7 +60,7 @@ class BottomNavBloc extends Bloc<BottomNavEvent, BottomNavState> {
     }
   }
 
-    FutureOr<void> _onNewNotificationEvent(
+  FutureOr<void> _onNewNotificationEvent(
       BottomNavNewNotificationEvent event, Emitter<BottomNavState> emit) async {
     try {
       final currentState = state;

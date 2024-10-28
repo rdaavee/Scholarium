@@ -136,7 +136,7 @@ class NotificationMessageState extends State<NotificationMessageWidget> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        minimumSize: const Size(150, 60),
+                        minimumSize: const Size(120, 60),
                       ),
                       child: const Text(
                         "Accept",
@@ -161,7 +161,7 @@ class NotificationMessageState extends State<NotificationMessageWidget> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        minimumSize: const Size(150, 60),
+                        minimumSize: const Size(120, 60),
                       ),
                       child: const Text(
                         "Reject",

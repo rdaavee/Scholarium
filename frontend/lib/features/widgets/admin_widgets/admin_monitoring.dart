@@ -126,7 +126,7 @@ class _AdminMonitoringState extends State<AdminMonitoring> {
       padding: const EdgeInsets.all(5),
       child: Container(
         height: 100,
-        width: 195,
+        width: 180,
         decoration: BoxDecoration(
           color: color,
           borderRadius: BorderRadius.circular(10),
@@ -143,7 +143,7 @@ class _AdminMonitoringState extends State<AdminMonitoring> {
                 ),
               ),
               SizedBox(
-                width: 12,
+                width: 5,
               ),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,

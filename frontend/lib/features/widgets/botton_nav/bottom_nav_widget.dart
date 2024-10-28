@@ -12,10 +12,15 @@ import 'package:isHKolarium/features/screens/screen_schedule/schedule_screen.dar
 import 'package:isHKolarium/features/screens/screen_student/student_home.dart';
 import 'package:isHKolarium/features/widgets/loading_circular.dart';
 
-class BottomNavWidget extends StatelessWidget {
+class BottomNavWidget extends StatefulWidget {
   final String isRole;
   const BottomNavWidget({super.key, required this.isRole});
 
+  @override
+  State<BottomNavWidget> createState() => _BottomNavWidgetState();
+}
+
+class _BottomNavWidgetState extends State<BottomNavWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,7 +28,28 @@ class BottomNavWidget extends StatelessWidget {
       body: BlocBuilder<BottomNavBloc, BottomNavState>(
         builder: (context, state) {
           if (state is BottomNavLoadingState) {
-            return const LoadingCircular();
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    'assets/images/logo.png',
+                    width: 100,
+                    height: 100,
+                  ),
+                  SizedBox(height: 20),
+                  Text(
+                    'Welcome To isHKolarium',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      fontStyle: FontStyle.italic,
+                      color: ColorPalette.primary,
+                    ),
+                  ),
+                ],
+              ),
+            );
           }
 
           if (state is BottomNavLoadedSuccessState) {
@@ -32,7 +58,8 @@ class BottomNavWidget extends StatelessWidget {
           }
 
           context.read<BottomNavBloc>().add(BottomNavInitialEvent());
-          return const Center(child: CircularProgressIndicator());
+          // return const Center(child: LoadingCircular());
+          return const SizedBox.shrink();
         },
       ),
       bottomNavigationBar: BlocBuilder<BottomNavBloc, BottomNavState>(
@@ -71,25 +98,25 @@ class BottomNavWidget extends StatelessWidget {
         },
         items: [
           BottomNavigationBarItem(
-            icon: _getIconForRole(isRole, 'home'),
-            label: _getLabelForRole(isRole, 'home'),
+            icon: _getIconForRole(widget.isRole, 'home'),
+            label: _getLabelForRole(widget.isRole, 'home'),
           ),
           BottomNavigationBarItem(
-            icon: _getIconForRole(isRole, 'schedule'),
-            label: _getLabelForRole(isRole, 'schedule'),
+            icon: _getIconForRole(widget.isRole, 'schedule'),
+            label: _getLabelForRole(widget.isRole, 'schedule'),
           ),
           BottomNavigationBarItem(
             icon: Stack(
               children: [
-                _getIconForRole(isRole, 'notification'),
+                _getIconForRole(widget.isRole, 'notification'),
                 if (unreadCount > 0) _buildUnreadBadge(unreadCount),
               ],
             ),
-            label: _getLabelForRole(isRole, 'notification'),
+            label: _getLabelForRole(widget.isRole, 'notification'),
           ),
           BottomNavigationBarItem(
-            icon: _getIconForRole(isRole, 'profile'),
-            label: _getLabelForRole(isRole, 'profile'),
+            icon: _getIconForRole(widget.isRole, 'profile'),
+            label: _getLabelForRole(widget.isRole, 'profile'),
           ),
         ],
       ),
@@ -123,7 +150,7 @@ class BottomNavWidget extends StatelessWidget {
   }
 
   Widget _getRoleSpecificPage(int index) {
-    switch (isRole) {
+    switch (widget.isRole) {
       case "Student":
         return _getStudentPages(index);
       case "Professor":

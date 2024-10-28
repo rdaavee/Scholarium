@@ -77,6 +77,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
     _currentPage = 1;
     _displayedNotifications.clear();
     notificationsBloc.add(FetchNotificationsEvent());
+    context.read<BottomNavBloc>().add(FetchUnreadCountEvent());
   }
 
   void _onScroll() {
@@ -97,18 +98,21 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
   void _confirmSchedule(String scheduleId) {
     notificationsBloc.add(UpdateScheduleStatusEvent(scheduleId.toString()));
+    context.read<BottomNavBloc>().add(FetchUnreadCountEvent());
   }
 
   void _rejectSchedule(String scheduleId, String sender) {
     notificationsBloc.add(DeleteScheduleNotificationEvent(
         scheduleId.toString(), sender.toString()));
+    context.read<BottomNavBloc>().add(FetchUnreadCountEvent());
   }
 
-  void _deleteNotification(String notificationId) {
+  Future<void> _deleteNotification(String notificationId) async {
     setState(() {
       _displayedNotifications.removeWhere((n) => n.id == notificationId);
     });
     notificationsBloc.add(DeleteNotificationEvent(notificationId));
+    context.read<BottomNavBloc>().add(FetchUnreadCountEvent());
   }
 
   @override
