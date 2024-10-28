@@ -10,7 +10,6 @@ import 'package:isHKolarium/features/screens/screen_professor/professor_screen.d
 import 'package:isHKolarium/features/screens/screen_profile/profile_screen.dart';
 import 'package:isHKolarium/features/screens/screen_schedule/schedule_screen.dart';
 import 'package:isHKolarium/features/screens/screen_student/student_home.dart';
-import 'package:isHKolarium/features/widgets/loading_circular.dart';
 
 class BottomNavWidget extends StatefulWidget {
   final String isRole;
@@ -20,7 +19,34 @@ class BottomNavWidget extends StatefulWidget {
   State<BottomNavWidget> createState() => _BottomNavWidgetState();
 }
 
-class _BottomNavWidgetState extends State<BottomNavWidget> {
+class _BottomNavWidgetState extends State<BottomNavWidget>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _animationController;
+  late Animation<double> _fadeAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 1),
+    );
+
+    _fadeAnimation = CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeInOut,
+    );
+
+    _animationController.forward();
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,26 +54,32 @@ class _BottomNavWidgetState extends State<BottomNavWidget> {
       body: BlocBuilder<BottomNavBloc, BottomNavState>(
         builder: (context, state) {
           if (state is BottomNavLoadingState) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset(
-                    'assets/images/logo.png',
-                    width: 100,
-                    height: 100,
-                  ),
-                  SizedBox(height: 20),
-                  Text(
-                    'Welcome To isHKolarium',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      fontStyle: FontStyle.italic,
-                      color: ColorPalette.primary,
+            return FadeTransition(
+              opacity: _fadeAnimation,
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(50),
+                      child: Image.asset(
+                        'assets/images/ishkolarium.png',
+                        width: 100,
+                        height: 100,
+                        fit: BoxFit.cover,
+                      ),
                     ),
-                  ),
-                ],
+                    const SizedBox(height: 20),
+                    const Text(
+                      'Welcome To isHKolarium',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: ColorPalette.primary,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             );
           }
@@ -58,7 +90,6 @@ class _BottomNavWidgetState extends State<BottomNavWidget> {
           }
 
           context.read<BottomNavBloc>().add(BottomNavInitialEvent());
-          // return const Center(child: LoadingCircular());
           return const SizedBox.shrink();
         },
       ),

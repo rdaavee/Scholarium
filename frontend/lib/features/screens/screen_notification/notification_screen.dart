@@ -267,7 +267,11 @@ class _NotificationScreenState extends State<NotificationScreen> {
               title: 'No Notification Available',
             );
           } else {
-            return const Center(child: LoadingCircular());
+            return const Scaffold(
+              body: Center(
+                child: LoadingCircular(),
+              ),
+            );
           }
         },
       ),
