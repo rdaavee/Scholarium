@@ -247,11 +247,7 @@ class _UserFormScreenState extends State<UserFormScreen> {
                     Expanded(
                       child: CustomDropdown(
                         labelText: 'Account Status',
-                        options: [
-                          'Select Status',
-                          'Active',
-                          'Inactive'
-                        ],
+                        options: ['Select Status', 'Active', 'Inactive'],
                         selectedValue: accountStatus,
                         onChanged: (statusValue) {
                           setState(() {

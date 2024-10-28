@@ -18,7 +18,7 @@ class AccountStatusCard extends StatelessWidget {
     required this.inactiveCount,
     required this.cardColor,
     this.width = 180,
-    this.height = 230,
+    this.height = 235,
   });
 
   @override
