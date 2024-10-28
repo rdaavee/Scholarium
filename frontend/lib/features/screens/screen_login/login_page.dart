@@ -36,7 +36,7 @@ class _LoginPageState extends State<LoginPage> {
     if (isLogin == "true") {
       final schoolID = prefs.getString('schoolID').toString();
       final password = prefs.getString('password').toString();
-      _loginBloc.add(LoginAutomaticEvent(schoolID, password));
+      _loginBloc.add(LoginButtonClickedEvent(schoolID, password));
     }
   }
 
@@ -79,8 +79,6 @@ class _LoginPageState extends State<LoginPage> {
                         const BottomNavigationPage(isRole: "Student"),
                   ),
                 );
-                // _showSnackBar('Success', 'Student Login Successfully',
-                //     ContentType.success);
               } else if (state is LoginNavigateToProfessorHomePageActionState) {
                 Navigator.pushReplacement(
                   context,
@@ -89,8 +87,6 @@ class _LoginPageState extends State<LoginPage> {
                         const BottomNavigationPage(isRole: "Professor"),
                   ),
                 );
-                // _showSnackBar('Success', 'Professor Login Successfully',
-                //     ContentType.success);
               } else if (state is LoginNavigateToAdminHomePageActionState) {
                 Navigator.pushReplacement(
                   context,
@@ -99,8 +95,11 @@ class _LoginPageState extends State<LoginPage> {
                         const BottomNavigationPage(isRole: "Admin"),
                   ),
                 );
-                // _showSnackBar(
-                //     'Success', 'Admin Login Successfully', ContentType.success);
+              } else if (state is LoginInactiveAccountState) {
+                _showSnackBar(
+                    "Inactive Account",
+                    "This account does not have an active HK scholarship.",
+                    ContentType.failure);
               } else if (state is LoginErrorState) {
                 _showSnackBar('Error', state.errorMessage, ContentType.failure);
               }

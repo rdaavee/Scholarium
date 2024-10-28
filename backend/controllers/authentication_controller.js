@@ -87,6 +87,7 @@ exports.login = async (req, res) => {
         message: `Welcome, ${user.first_name} ${user.last_name}`,
         token: token,
         role: user.role,
+        status: user.status
       });
     } else {
       res.status(401).json({ message: "Invalid school ID or password" });

@@ -70,7 +70,7 @@ class GlobalRepositoryImpl extends GlobalRepository implements Endpoint {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('token');
     await prefs.remove('login');
-    await prefs.remove('schooldId');
+    await prefs.remove('schoolId');
     await prefs.remove('password');
 
     Navigator.of(context).pushReplacementNamed(LoginPage.routeName);
