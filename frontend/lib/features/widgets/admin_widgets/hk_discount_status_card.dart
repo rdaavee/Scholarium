@@ -59,7 +59,7 @@ class HkDiscountStatusCard extends StatelessWidget {
                       color: ColorPalette.primary,
                     ),
                   ),
-                  const SizedBox(height: 35),
+                  const SizedBox(height: 15),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [

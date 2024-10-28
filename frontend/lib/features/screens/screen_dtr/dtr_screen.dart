@@ -268,75 +268,77 @@ class _DtrScreenState extends State<DtrScreen> {
               return Column(
                 children: [
                   Expanded(
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        color: Color(0xFFF0F3F4),
-                        borderRadius: BorderRadius.vertical(
-                          top: Radius.circular(10),
-                        ),
-                      ),
-                      child: Column(
-                        children: [
-                          Container(
-                            margin: const EdgeInsets.all(10.0),
-                            child: YourDtrHoursCard(
-                              progress: (state.hours[0].totalhours /
-                                      state.hours[0].targethours)
-                                  .clamp(0.0, 1.0),
-                              cardColor: Colors.white,
-                            ),
+                    child: SingleChildScrollView(
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          color: Color(0xFFF0F3F4),
+                          borderRadius: BorderRadius.vertical(
+                            top: Radius.circular(10),
                           ),
-                          Table(
-                            border: TableBorder.all(
-                              color: Colors.black.withOpacity(1),
-                              width: 0.5,
-                            ),
-                            columnWidths: const {
-                              0: FixedColumnWidth(85),
-                              1: FixedColumnWidth(85),
-                              2: FixedColumnWidth(85),
-                              3: FixedColumnWidth(90),
-                              4: FixedColumnWidth(105),
-                            },
-                            children: [
-                              TableRow(
-                                decoration: BoxDecoration(
-                                  color: Colors.grey[200],
-                                ),
-                                children: [
-                                  HeaderWidget(text: 'Date'),
-                                  HeaderWidget(text: 'Time In'),
-                                  HeaderWidget(text: 'Time Out'),
-                                  HeaderWidget(text: 'Hrs Rendered'),
-                                  HeaderWidget(text: 'Remarks'),
-                                ],
+                        ),
+                        child: Column(
+                          children: [
+                            Container(
+                              margin: const EdgeInsets.all(10.0),
+                              child: YourDtrHoursCard(
+                                progress: (state.hours[0].totalhours /
+                                        state.hours[0].targethours)
+                                    .clamp(0.0, 1.0),
+                                cardColor: Colors.white,
                               ),
-                              ...state.dtr.map((dtr) {
-                                return TableRow(
+                            ),
+                            Table(
+                              border: TableBorder.all(
+                                color: Colors.black.withOpacity(1),
+                                width: 0.5,
+                              ),
+                              columnWidths: const {
+                                0: FixedColumnWidth(60),
+                                1: FixedColumnWidth(80),
+                                2: FixedColumnWidth(80),
+                                3: FixedColumnWidth(40),
+                                4: FixedColumnWidth(105),
+                              },
+                              children: [
+                                TableRow(
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey[200],
+                                  ),
                                   children: [
-                                    CellWidget(
-                                      text: DateFormat('yyyy-MM-dd').format(
-                                        DateTime.parse(
-                                          dtr.date.toString(),
+                                    HeaderWidget(text: 'Date'),
+                                    HeaderWidget(text: 'Time In'),
+                                    HeaderWidget(text: 'Time Out'),
+                                    HeaderWidget(text: 'Hours'),
+                                    HeaderWidget(text: 'Remarks'),
+                                  ],
+                                ),
+                                ...state.dtr.map((dtr) {
+                                  return TableRow(
+                                    children: [
+                                      CellWidget(
+                                        text: DateFormat('yyyy-MM-dd').format(
+                                          DateTime.parse(
+                                            dtr.date.toString(),
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    CellWidget(
-                                      text: dtr.timeIn.toString(),
-                                    ),
-                                    CellWidget(
-                                      text: dtr.timeOut.toString(),
-                                    ),
-                                    CellWidget(
-                                      text: dtr.hoursRendered.toString(),
-                                    ),
-                                    CellWidget(text: dtr.remarks.toString()),
-                                  ],
-                                );
-                              }),
-                            ],
-                          ),
-                        ],
+                                      CellWidget(
+                                        text: dtr.timeIn.toString(),
+                                      ),
+                                      CellWidget(
+                                        text: dtr.timeOut.toString(),
+                                      ),
+                                      CellWidget(
+                                        text: dtr.hoursRendered.toString(),
+                                      ),
+                                      CellWidget(text: dtr.remarks.toString()),
+                                    ],
+                                  );
+                                }),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
