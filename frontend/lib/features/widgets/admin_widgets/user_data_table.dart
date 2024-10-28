@@ -123,7 +123,8 @@ class UserDataTable extends StatelessWidget {
                                     onUpdated();
                                   }
                                 } else if (result == 'Edit') {
-                                  final isUpdated = await Navigator.push(
+                                  final UserModel newUser =
+                                      await Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) {
@@ -136,9 +137,13 @@ class UserDataTable extends StatelessWidget {
                                       },
                                     ),
                                   );
-                                  if (isUpdated == true) {
-                                    onUpdated();
-                                  }
+                                  adminBloc.add(UpdateUserEvent(
+                                      newUser.schoolID.toString(), newUser));
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        content:
+                                            Text('User updated successfully!')),
+                                  );
                                 } else if (result == 'Delete') {
                                   final isUpdated =
                                       await DeleteConfirmationDialog.show(
@@ -148,6 +153,11 @@ class UserDataTable extends StatelessWidget {
                                   );
                                   if (isUpdated == true) {
                                     onUpdated();
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                          content: Text(
+                                              'User deleted successfully!')),
+                                    );
                                   }
                                 }
                               },

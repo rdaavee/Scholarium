@@ -458,16 +458,6 @@ exports.notificationConfirmSched = async (req, res) => {
       status: false,
     });
     await adminNotification.save();
-    if (connectedUsers[adminInfo.school_id]) {
-      io.of("/notifications")
-        .to(connectedUsers[adminInfo.school_id])
-        .emit("receiveNotification", adminNotification);
-      console.log("Notify success");
-    } else {
-      console.error(
-        `Failed to send notification: Receiver ${adminInfo.school_id} is not connected.`
-      );
-    }
     sendNotification(io, receiverInfo.school_id, newNotification);
     sendNotification(io, adminInfo.school_id, adminNotification);
     await Notification.updateMany(

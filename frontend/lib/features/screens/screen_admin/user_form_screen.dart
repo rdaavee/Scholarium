@@ -70,7 +70,7 @@ class _UserFormScreenState extends State<UserFormScreen> {
     } else {
       selectedHkType = 'Select HK Type';
       selectedRole = 'Select User Role';
-      accountStatus = 'Select Account Status';
+      accountStatus = 'Select Status';
       selectedProfessor = 'Select Professor';
       selectedGender = 'Select Gender';
     }
@@ -248,7 +248,7 @@ class _UserFormScreenState extends State<UserFormScreen> {
                       child: CustomDropdown(
                         labelText: 'Account Status',
                         options: [
-                          'Select Account Status',
+                          'Select Status',
                           'Active',
                           'Inactive'
                         ],
@@ -351,13 +351,7 @@ class _UserFormScreenState extends State<UserFormScreen> {
 
     if (widget.schoolId == null) {
       try {
-        _adminBloc.add(CreateUserEvent(
-          newUser,
-        ));
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('User created successfully!')),
-        );
-        Navigator.pop(context, true);
+        Navigator.pop(context, newUser);
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Error creating user: $e')),
@@ -365,11 +359,7 @@ class _UserFormScreenState extends State<UserFormScreen> {
       }
     } else {
       try {
-        _adminBloc.add(UpdateUserEvent(widget.schoolId!, newUser));
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('User updated successfully!')),
-        );
-        Navigator.pop(context, true);
+        Navigator.pop(context, newUser);
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Error updating user: $e')),

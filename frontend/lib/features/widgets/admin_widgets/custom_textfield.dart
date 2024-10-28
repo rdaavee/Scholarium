@@ -53,6 +53,27 @@ class _CustomTextFieldState extends State<CustomTextField> {
     }
   }
 
+  void validatePhone(String value) {
+    if (value.isEmpty) {
+      setState(() {
+        errorMessage = null;
+      });
+      return;
+    }
+
+    if (widget.isPhone) {
+      if (value.length > 11 || value.length < 11) {
+        setState(() {
+          errorMessage = 'Contact Number should be 11 digits';
+        });
+      } else {
+        setState(() {
+          errorMessage = null;
+        });
+      }
+    }
+  }
+
   void validatePassword(String value) {
     if (value.isEmpty) {
       setState(() {
@@ -102,14 +123,18 @@ class _CustomTextFieldState extends State<CustomTextField> {
             : widget.isPhone
                 ? TextInputType.phone
                 : TextInputType.text,
-        inputFormatters: !widget.allowNumbers
-            ? [FilteringTextInputFormatter.allow(RegExp(r'[^\d]'))]
-            : null,
+        inputFormatters: [
+          if (!widget.allowNumbers)
+            FilteringTextInputFormatter.allow(RegExp(r'[^\d]')),
+          if (widget.isPhone) LengthLimitingTextInputFormatter(11),
+        ],
         onChanged: (value) {
           if (widget.isEmail) {
             validateEmail(value);
           } else if (widget.isPassword) {
             validatePassword(value);
+          } else if (widget.isPhone) {
+            validatePhone(value);
           }
         },
         decoration: InputDecoration(
