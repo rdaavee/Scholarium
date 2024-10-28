@@ -288,7 +288,7 @@ exports.deleteScheduleAndNotification = async (req, res) => {
   try {
     let result;
     const schedule = await Schedule.findOne({ _id: scheduleId });
-    const admin = await User.findOne({ school_id: school_id });
+    const admin = await User.findOne({ school_id: "03-0000-00003" });
     const bot = await User.findOne({ school_id: "00-0000-00000" });
 
     const user = await User.findOne({ school_id: schedule.school_id });
