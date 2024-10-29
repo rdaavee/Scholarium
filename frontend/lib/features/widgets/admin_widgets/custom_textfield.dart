@@ -6,7 +6,9 @@ class CustomTextField extends StatefulWidget {
   final TextEditingController controller;
   final bool isEmail;
   final bool isPhone;
+  final bool isReadOnly;
   final bool allowNumbers;
+  final bool isSchoolId;
   final bool isPassword;
 
   const CustomTextField({
@@ -17,7 +19,8 @@ class CustomTextField extends StatefulWidget {
     this.isPhone = false,
     this.allowNumbers = true,
     this.isPassword = false,
-    s,
+    this.isReadOnly = false,
+    this.isSchoolId = false,
   });
 
   @override
@@ -27,6 +30,28 @@ class CustomTextField extends StatefulWidget {
 class _CustomTextFieldState extends State<CustomTextField> {
   String? errorMessage;
   bool _isPasswordVisible = false;
+
+  void validateSchoolId(String value) {
+    if (value.isEmpty) {
+      setState(() {
+        errorMessage = null;
+      });
+      return;
+    }
+
+    if (widget.isSchoolId) {
+      // Check if the input matches the format 00-0000-00000
+      if (!RegExp(r'^\d{2}-\d{4}-\d{5}$').hasMatch(value)) {
+        setState(() {
+          errorMessage = 'Follow the format 00-0000-00000';
+        });
+      } else {
+        setState(() {
+          errorMessage = null; // Clear error if valid
+        });
+      }
+    }
+  }
 
   void validateEmail(String value) {
     if (value.isEmpty) {
@@ -62,9 +87,13 @@ class _CustomTextFieldState extends State<CustomTextField> {
     }
 
     if (widget.isPhone) {
-      if (value.length > 11 || value.length < 11) {
+      if (!RegExp(r'^\d+$').hasMatch(value)) {
         setState(() {
-          errorMessage = 'Contact Number should be 11 digits';
+          errorMessage = 'Contact should contain only digits';
+        });
+      } else if (value.length != 11) {
+        setState(() {
+          errorMessage = 'Contact should be 11 digits';
         });
       } else {
         setState(() {
@@ -118,15 +147,18 @@ class _CustomTextFieldState extends State<CustomTextField> {
       child: TextField(
         controller: widget.controller,
         obscureText: widget.isPassword && !_isPasswordVisible,
+        readOnly: widget.isReadOnly,
         keyboardType: widget.isEmail
             ? TextInputType.emailAddress
             : widget.isPhone
                 ? TextInputType.phone
                 : TextInputType.text,
         inputFormatters: [
+          LengthLimitingTextInputFormatter(150),
           if (!widget.allowNumbers)
             FilteringTextInputFormatter.allow(RegExp(r'[^\d]')),
           if (widget.isPhone) LengthLimitingTextInputFormatter(11),
+          if (widget.isSchoolId) LengthLimitingTextInputFormatter(13),
         ],
         onChanged: (value) {
           if (widget.isEmail) {
@@ -135,6 +167,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
             validatePassword(value);
           } else if (widget.isPhone) {
             validatePhone(value);
+          } else if (widget.isSchoolId) {
+            validateSchoolId(value);
           }
         },
         decoration: InputDecoration(

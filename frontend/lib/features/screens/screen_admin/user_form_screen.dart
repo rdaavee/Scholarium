@@ -156,6 +156,9 @@ class _UserFormScreenState extends State<UserFormScreen> {
                       child: CustomTextField(
                         labelText: 'School ID',
                         controller: schoolIdController,
+                        isReadOnly: widget.schoolId != null &&
+                            widget.schoolId!.isNotEmpty,
+                        isSchoolId: true,
                       ),
                     ),
                     const SizedBox(width: 10),
@@ -306,6 +309,7 @@ class _UserFormScreenState extends State<UserFormScreen> {
   }
 
   void _handleSubmit() {
+    // Check required fields and apply validations directly
     if (schoolIdController.text.isEmpty ||
         firstNameController.text.isEmpty ||
         lastNameController.text.isEmpty ||
@@ -314,19 +318,26 @@ class _UserFormScreenState extends State<UserFormScreen> {
         passwordController.text.isEmpty ||
         emailController.text.isEmpty ||
         accountStatus == "Select Account Status" ||
-        selectedGender == "Select Gender") {
+        selectedGender == "Select Gender" ||
+        (emailController.text.contains('@gmail.com') &&
+            !emailController.text.endsWith('up@phinmaed.com')) ||
+        (!RegExp(r'^\d+$').hasMatch(contactController.text) ||
+            contactController.text.length != 11) ||
+        (passwordController.text.length < 8 ||
+            !RegExp(r'[A-Z]').hasMatch(passwordController.text) ||
+            !RegExp(r'[a-z]').hasMatch(passwordController.text) ||
+            !RegExp(r'[0-9]').hasMatch(passwordController.text) ||
+            !RegExp(r'[!@#%^&*(),.?":{}|<>]')
+                .hasMatch(passwordController.text)) ||
+        (selectedRole == "Student" && selectedHkType == "Select HK Type")) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please fill in all required fields.')),
+        const SnackBar(
+            content: Text(
+                'Please fill in all required fields and validate your inputs.')),
       );
       return;
     }
 
-    if (selectedRole == "Student" && selectedHkType == "Select HK Type") {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please indicate HK type.')),
-      );
-      return;
-    }
     final newUser = UserModel(
       schoolID: schoolIdController.text,
       email: emailController.text,
@@ -345,22 +356,12 @@ class _UserFormScreenState extends State<UserFormScreen> {
       status: accountStatus,
     );
 
-    if (widget.schoolId == null) {
-      try {
-        Navigator.pop(context, newUser);
-      } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error creating user: $e')),
-        );
-      }
-    } else {
-      try {
-        Navigator.pop(context, newUser);
-      } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error updating user: $e')),
-        );
-      }
+    try {
+      Navigator.pop(context, newUser);
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error creating or updating user: $e')),
+      );
     }
   }
 }

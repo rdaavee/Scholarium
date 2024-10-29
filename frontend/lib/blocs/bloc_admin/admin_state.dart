@@ -49,3 +49,15 @@ class AdminErrorState extends AdminState {
 
   AdminErrorState({required this.message});
 }
+
+class AdminCreateUserSuccessState extends AdminState {
+  final String message;
+
+  AdminCreateUserSuccessState({required this.message});
+}
+
+class AdminCreateUserErrorState extends AdminState {
+  final String message;
+
+  AdminCreateUserErrorState({required this.message});
+}

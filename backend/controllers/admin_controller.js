@@ -9,7 +9,6 @@ const currentDate = moment().format("YYYY-MM-DD");
 const currentTime = moment().format("HH:mm:ss");
 const connectedUsers = require("../sockets/connected_users");
 
-
 //--------------------------------------------SEND NOTIFICATION FUNCTION-------------------------------------------------------
 function sendNotification(io, schoolId, notification) {
   if (connectedUsers[schoolId]) {
@@ -18,7 +17,9 @@ function sendNotification(io, schoolId, notification) {
       .emit("receiveNotification", notification);
     console.log(`Notify success for ${schoolId}`);
   } else {
-    console.error(`Failed to send notification: Receiver ${schoolId} is not connected.`);
+    console.error(
+      `Failed to send notification: Receiver ${schoolId} is not connected.`
+    );
   }
 }
 
@@ -75,12 +76,11 @@ exports.getAllDTR = async (req, res) => {
   }
 };
 
-
 exports.countCompletedSchedulesByDayThisWeek = async (req, res) => {
   try {
     // Get the start and end dates of the current week (Monday to Saturday)
-    const startOfWeek = moment().startOf('isoWeek').toDate(); // Monday
-    const endOfWeek = moment().endOf('isoWeek').subtract(1, 'days').toDate(); // Saturday
+    const startOfWeek = moment().startOf("isoWeek").toDate(); // Monday
+    const endOfWeek = moment().endOf("isoWeek").subtract(1, "days").toDate(); // Saturday
 
     // Aggregate the schedules for the current week
     const result = await Schedule.aggregate([
@@ -151,9 +151,6 @@ exports.countCompletedSchedulesByDayThisWeek = async (req, res) => {
   }
 };
 
-
-
-
 // Create a user
 exports.createUser = async (req, res) => {
   const params = req.body;
@@ -161,9 +158,10 @@ exports.createUser = async (req, res) => {
   try {
     const existingUser = await User.findOne({ school_id: params.school_id });
     if (existingUser) {
-      return res
-        .status(400)
-        .json({ message: "User with this school ID already exists." });
+      return res.status(400).json({
+        error: true,
+        message: "User with this school ID already exists.",
+      });
     }
 
     let professorName = "";
@@ -204,7 +202,7 @@ exports.createUser = async (req, res) => {
     });
   } catch (error) {
     console.error("Error creating user:", error);
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ error: true, message: error.message });
   }
 };
 
@@ -381,7 +379,6 @@ exports.deleteScheduleAndNotification = async (req, res) => {
     res.status(200).json({
       message: `Record with schedule ID #${scheduleId} has been deleted.`,
     });
-    
   } catch (error) {
     console.error("Error deleting user:", error);
     res.status(500).json({ message: "Server error occurred" });

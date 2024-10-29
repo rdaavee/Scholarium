@@ -68,9 +68,6 @@ class UserDataScreenState extends State<UserDataScreen> {
             adminBloc.add(CreateUserEvent(
               newUser,
             ));
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('User created successfully!')),
-            );
           },
           child: const Icon(
             Icons.add,
@@ -121,7 +118,19 @@ class UserDataScreenState extends State<UserDataScreen> {
             Expanded(
               child: RefreshIndicator.adaptive(
                 onRefresh: () => _initialize(),
-                child: BlocBuilder<AdminBloc, AdminState>(
+                child: BlocConsumer<AdminBloc, AdminState>(
+                  bloc: adminBloc,
+                  listener: (context, state) {
+                    if (state is AdminCreateUserSuccessState) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text(state.message)),
+                      );
+                    } else if (state is AdminCreateUserErrorState) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text(state.message)),
+                      );
+                    }
+                  },
                   builder: (context, state) {
                     if (state is AdminLoadingState) {
                       return LoadingCircular();
