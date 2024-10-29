@@ -170,13 +170,21 @@ class AdminRepositoryImpl extends AdminRepository implements Endpoint {
           'Authorization': 'Bearer $token',
           'Content-Type': 'application/json',
         },
-        body: json.encode(user.toMap()), // Use toMap to convert to JSON
+        body: json.encode(user.toMap()),
       );
 
-      if (response.statusCode != 200) {
-        throw Exception('Failed to create user: ${response.statusCode}');
+      if (response.statusCode == 400) {
+        final responseData = json.decode(response.body);
+        if (responseData['error'] == true && responseData['message'] != null) {
+          throw Exception(responseData['message']);
+        } else {
+          throw Exception('Failed to create user.');
+        }
+      } else if (response.statusCode != 200) {
+        print("Failed to create user: ${response.statusCode}");
       }
     } catch (e) {
+      print('Error: $e');
       throw Exception('Error: $e');
     }
   }

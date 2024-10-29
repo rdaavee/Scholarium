@@ -132,9 +132,11 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
     emit(AdminLoadingState());
     try {
       await _adminRepositoryImpl.createUser(event.user);
+      emit(AdminCreateUserSuccessState(message: "User Created Successfully"));
       add(FetchUsersEvent('All Users', 'Any'));
     } catch (e) {
-      emit(AdminErrorState(message: 'Failed to create user: $e'));
+      emit(AdminCreateUserErrorState(message: "User with this school ID already exists"));
+      add(FetchUsersEvent('All Users', 'Any'));
     }
   }
 
